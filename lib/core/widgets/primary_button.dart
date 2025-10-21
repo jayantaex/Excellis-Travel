@@ -7,11 +7,13 @@ class AppPrimaryButton extends StatelessWidget {
   final String title;
   final bool isLoading;
   final Color? bgColor;
+  final TextStyle? style;
   const AppPrimaryButton(
       {super.key,
       this.onPressed,
       required this.title,
       required this.isLoading,
+      this.style,
       this.bgColor});
 
   @override
@@ -30,7 +32,8 @@ class AppPrimaryButton extends StatelessWidget {
           ? const CircularProgressIndicator.adaptive()
           : Text(
               title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+              style: style ??
+                  const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
     );
   }
