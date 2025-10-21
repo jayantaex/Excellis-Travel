@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'features/auth/auth_module.dart';
 import 'features/bottom_navigation/bottom_nav_module.dart';
 import 'features/edit_profile/edit_profile_module.dart';
+import 'features/flight_booking/flight_booling_module.dart';
 import 'features/profile/profile_module.dart';
 import 'features/splash/screens/splash_screen.dart';
 import 'features/ticket/ticket_module.dart';
@@ -85,6 +86,28 @@ class AppRouter {
         name: TicketModule.routeName,
         builder: (context, state) => TicketModule.builder(),
       ),
+      GoRoute(
+        path: FlightBoolingModule.searchResult,
+        name: FlightBoolingModule.searchName,
+        builder: (context, state) => FlightBoolingModule.searchBuilder(),
+      ),
+      GoRoute(
+        path: FlightBoolingModule.seatSelection,
+        name: FlightBoolingModule.seatSelectionName,
+        builder: (context, state) => FlightBoolingModule.seatSelectionBuilder(),
+      ),
+      GoRoute(
+        path: FlightBoolingModule.passengerDetails,
+        name: FlightBoolingModule.passengerDetailsName,
+        builder: (context, state) =>
+            FlightBoolingModule.passengerDetailsBuilder(),
+      ),
+      GoRoute(
+        path: FlightBoolingModule.paymentDetails,
+        name: FlightBoolingModule.paymentDetailsName,
+        builder: (context, state) =>
+            FlightBoolingModule.paymentDetailsBuilder(),
+      )
     ],
     errorBuilder: (context, state) => const Scaffold(
       body: Center(
