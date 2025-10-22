@@ -31,6 +31,6 @@ class AppConstants {
   static const String imageNotFound = 'assets/images/image_not_found.png';
 
   //Legality
-  static const String privacyPolicy = 'https://google.com';
-  static const String termsAndConditions = 'https://google.com';
+  static const String privacyPolicy = 'https://github.com/';
+  static const String termsAndConditions = 'https://github.com/';
 }
