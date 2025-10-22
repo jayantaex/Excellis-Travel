@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 
-
-Future<void> showLogoutSheet({required BuildContext context}) async {
+Future<void> showDeleteAccountSheet({required BuildContext context}) async {
   showModalBottomSheet(
       backgroundColor: AppColors.white,
       showDragHandle: true,
       context: context,
-      builder: (context) => const LogOutSheet());
+      builder: (context) => const DeleteAccountSheet());
 }
 
-class LogOutSheet extends StatelessWidget {
-  const LogOutSheet({super.key});
+class DeleteAccountSheet extends StatelessWidget {
+  const DeleteAccountSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +22,20 @@ class LogOutSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SvgPicture.asset(
-            '${AppConstants.assetIcontUrl}sign_out.svg',
-            height: 52,
-            width: 42,
-            colorFilter:
-                const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+          const Icon(
+            Icons.delete_outline_rounded,
+            size: 52,
+            color: AppColors.primary,
           ),
           const Text(
-            'Sign Out',
+            'Delete Account',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          const Text('You will be logged out of your account.'),
+          const Text(
+            'Are you sure you want to delete your account? this action cannot be undone.',
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 55),
           SizedBox(
             width: AppHelpers.getScreenWidth(context),
@@ -53,13 +51,12 @@ class LogOutSheet extends StatelessWidget {
                         title: 'Cancel',
                         isLoading: false)),
                 SizedBox(
-                  width: AppHelpers.getScreenWidth(context) * 0.4,
-                  child: const AppPrimaryButton(
-                    title: 'Sign Out',
-                    isLoading: false,
-                    bgColor: AppColors.primary,
-                  ),
-                )
+                    width: AppHelpers.getScreenWidth(context) * 0.4,
+                    child: const AppPrimaryButton(
+                      title: 'Delete',
+                      isLoading: false,
+                      bgColor: AppColors.primary,
+                    ))
               ],
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -113,7 +114,9 @@ class MyProfileScreen extends StatelessWidget {
                               option['title'] == 'Sign Out') {
                             showLogoutSheet(context: context);
                           }
-                          if (option['routeName'] != '') {}
+                          if (option['routeName'] != '') {
+                            context.pushNamed(option['routeName']);
+                          }
                         }))
                   ],
                 ),
