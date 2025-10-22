@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'presentation/screens/policy.dart';
+import 'presentation/screens/policy_screen.dart';
+import 'presentation/screens/terms_screen.dart';
 
 class LegalModule {
 //policy
@@ -11,5 +12,5 @@ class LegalModule {
 //terms
   static String termsRoute = '/terms';
   static String termsName = 'terms';
-  static Widget termsBuilder() => const PolicyScreen();
+  static Widget termsBuilder() => const TermsScreen();
 }
