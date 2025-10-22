@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reiselab/core/utils/app_helpers.dart';
 import '../../../../core/constants/app_styles.dart';
 
 class SeatWidget extends StatelessWidget {
@@ -27,8 +28,8 @@ class SeatWidget extends StatelessWidget {
             },
       child: Container(
           alignment: Alignment.center,
-          height: 45,
-          width: 45,
+          height: AppHelpers.getScreenWidth(context) * 0.1,
+          width: AppHelpers.getScreenWidth(context) * 0.1,
           decoration: BoxDecoration(
             color: isSelected
                 ? AppColors.primary

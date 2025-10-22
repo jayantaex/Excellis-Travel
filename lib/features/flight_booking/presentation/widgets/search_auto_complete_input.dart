@@ -58,7 +58,6 @@ class _SearchAutoCompleteInputState extends State<SearchAutoCompleteInput> {
         }
       },
       child: Autocomplete<AirportModel>(
-        initialValue: TextEditingValue(text: widget.placeHolder),
         optionsViewOpenDirection: OptionsViewOpenDirection.down,
         displayStringForOption: (option) {
           return '${option.code}(${option.city}) \n${option.name}';

@@ -132,7 +132,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 label: 'From',
                                 placeHolder: 'Enter your departure airport',
                                 onSelected: (value) {
-                                  log('$value');
                                   _fromController.text = value.name ?? '';
                                   setState(() {});
                                 },
@@ -143,7 +142,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 label: 'To',
                                 placeHolder: 'Enter your arrival airport',
                                 onSelected: (value) {
-                                  log('$value');
                                   _toController.text = value.name ?? '';
                                   setState(() {});
                                 },

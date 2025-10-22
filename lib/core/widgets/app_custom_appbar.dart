@@ -40,7 +40,7 @@ class AppCustomAppbar extends StatelessWidget {
             ),
           ),
           SizedBox(
-              width: 300,
+              width: AppHelpers.getScreenWidth(context) * 0.6,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: centerTitle == null
