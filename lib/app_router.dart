@@ -8,6 +8,7 @@ import 'features/legal/legal_module.dart';
 import 'features/profile/profile_module.dart';
 import 'features/profile_management/profile_management_module.dart';
 import 'features/splash/screens/splash_screen.dart';
+import 'features/splash/splash_module.dart';
 import 'features/ticket/ticket_module.dart';
 import 'features/todo/todo_module.dart';
 import 'features/wallet_management/presentation/screens/wallet_payment_failed_screen.dart';
@@ -17,7 +18,7 @@ import 'features/wish_list/wish_list_module.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: SplashModule.splashRoute,
     routes: [
       //DEPRICATED
       GoRoute(
@@ -37,8 +38,8 @@ class AppRouter {
 
       //Splash
       GoRoute(
-        path: '/splash',
-        name: 'splash',
+        path: SplashModule.splashRoute,
+        name: SplashModule.spashName,
         builder: (context, state) => const SplashScreen(),
       ),
 
@@ -47,6 +48,11 @@ class AppRouter {
         path: AuthModule.loginPath,
         name: AuthModule.loginName,
         builder: (context, state) => AuthModule.loginBuilder(),
+      ),
+      GoRoute(
+        path: AuthModule.registerPath,
+        name: AuthModule.registerName,
+        builder: (context, state) => AuthModule.registerBuilder(),
       ),
 
       //bottom navigation

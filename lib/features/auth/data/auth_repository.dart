@@ -5,8 +5,16 @@ class AuthRepository {
   final AuthApi authApi;
   AuthRepository({required this.authApi});
 
-  Future<ApiResponse<String>> login(String username, String password) async {
-    return authApi.login(username, password);
+  Future<ApiResponse<String>> login(
+      {required String username,
+      required String password,
+      required String fcmToken,
+      required String userType}) async {
+    return authApi.login(
+        username: username,
+        password: password,
+        fcmToken: fcmToken,
+        userType: userType);
   }
 
   Future<ApiResponse<void>> register(String username, String password) async {

@@ -1,5 +1,3 @@
-
-
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 
@@ -7,7 +5,11 @@ class AuthApi {
   final ApiClient apiClient;
   AuthApi({required this.apiClient});
 
-  Future<ApiResponse<String>> login(String username, String password) async {
+  Future<ApiResponse<String>> login(
+      {required String username,
+      required String password,
+      required String fcmToken,
+      required String userType}) async {
     return apiClient.postRequest(
       endPoint: '/login',
       fromJson: (p0) {
