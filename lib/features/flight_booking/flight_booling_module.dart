@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'presentation/screens/flight_search_result_screen.dart';
 import 'presentation/screens/pasenger_details_screen.dart';
+import 'presentation/screens/pass_download_screen.dart';
 import 'presentation/screens/payment_details_screen.dart';
 import 'presentation/screens/seat_selection_screen.dart';
 
@@ -25,4 +26,9 @@ class FlightBoolingModule {
   static const String paymentDetails = '/payment-details';
   static const String paymentDetailsName = 'paymentDetails';
   static Widget paymentDetailsBuilder() => PaymentDetailsScreen();
+
+  //pass download
+  static const String passDownload = '/pass-download';
+  static const String passDownloadName = 'passDownload';
+  static Widget passDownloadBuilder() => PassDownloadScreen();
 }

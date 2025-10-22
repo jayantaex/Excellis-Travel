@@ -107,6 +107,11 @@ class AppRouter {
         name: FlightBoolingModule.paymentDetailsName,
         builder: (context, state) =>
             FlightBoolingModule.paymentDetailsBuilder(),
+      ),
+      GoRoute(
+        path: FlightBoolingModule.passDownload,
+        name: FlightBoolingModule.passDownloadName,
+        builder: (context, state) => FlightBoolingModule.passDownloadBuilder(),
       )
     ],
     errorBuilder: (context, state) => const Scaffold(

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:reiselab/core/widgets/primary_button.dart';
 import 'package:reiselab/core/widgets/primary_input.dart';
 import 'package:reiselab/features/flight_booking/flight_booling_module.dart';
+import 'package:reiselab/features/flight_booking/presentation/widgets/launge_access_widget.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -141,36 +142,7 @@ class PasengerDetailsScreen extends StatelessWidget {
                                 .toList(),
                           ),
                           const SizedBox(height: 27),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 0),
-                            decoration: BoxDecoration(
-                              color: AppColors.grey.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            width: AppHelpers.getScreenWidth(context),
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.all(0),
-                              leading: AppHelpers.svgAsset(
-                                  assetName: 'loungeIcon', isIcon: true),
-                              title: const Text(
-                                'Airport Lounge Access',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w400),
-                              ),
-                              subtitle: const Text(
-                                'Free snacks, Wi-Fi, and workspace',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.grey),
-                              ),
-                              trailing: const Icon(
-                                Icons.add_circle_outline_rounded,
-                                size: 18,
-                              ),
-                            ),
-                          )
+                          LaungeAccessWidget()
                         ],
                       ),
                     ),
