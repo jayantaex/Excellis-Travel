@@ -1,19 +1,44 @@
+import 'dart:io';
+
+import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:reiselab/core/widgets/primary_input.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/services/barcode_service.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
-import '../../flight_booling_module.dart';
+import '../widgets/launge_access_widget.dart';
 import '../widgets/nav_bar.dart';
 
-class PaymentDetailsScreen extends StatelessWidget {
-  PaymentDetailsScreen({super.key});
+class PassDownloadScreen extends StatefulWidget {
+  const PassDownloadScreen({super.key});
+
+  @override
+  State<PassDownloadScreen> createState() => _PassDownloadScreenState();
+}
+
+class _PassDownloadScreenState extends State<PassDownloadScreen> {
   final SearchData searchData = SearchData();
+  String barCodeSvg = '';
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      barCodeSvg = BarcodeService.buildBarcode(
+        Barcode.code39(),
+        'CODE 39',
+        width: 300,
+        height: 80,
+      );
+      setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +66,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                         Navigator.pop(context);
                       },
                       onMoreClicked: () {},
-                      centerTitle: 'Payment Details',
+                      centerTitle: 'E-Boarding Pass',
                       trailing: CircleAvatar(
                         backgroundColor: AppColors.black.withOpacity(0.1),
                         child: IconButton(
@@ -62,7 +87,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                     child: TicketWidget(
                       isCornerRounded: true,
                       width: AppHelpers.getScreenWidth(context),
-                      height: AppHelpers.getScreenHeight(context) * 0.65,
+                      height: AppHelpers.getScreenHeight(context) * 0.45,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 30, vertical: 25),
@@ -226,14 +251,14 @@ class PaymentDetailsScreen extends StatelessWidget {
                                     width: AppHelpers.getScreenWidth(context) *
                                         0.38,
                                     child: AppPrimaryInput(
+                                      enable: false,
+                                      label: 'Arrival',
+                                      maxCharacters: 10,
                                       style: const TextStyle(
                                         color: AppColors.black,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                       ),
-                                      enable: false,
-                                      label: 'Arrival',
-                                      maxCharacters: 10,
                                       controller: TextEditingController(
                                           text: 'Jun 08, 07:40'),
                                     ),
@@ -242,16 +267,19 @@ class PaymentDetailsScreen extends StatelessWidget {
                               ),
                             ),
                             const Spacer(),
-                            const PassenderInfo(),
-                            const SizedBox(height: 12),
-                            const PassenderInfo(),
-                            const Spacer(),
-                            const BaggageInfo(),
+                            Container(
+                              height: 73,
+                              child: SvgPicture.string(
+                                barCodeSvg,
+                                width: 300,
+                                height: 80,
+                              ),
+                            )
                           ],
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -259,30 +287,41 @@ class PaymentDetailsScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        height: 150,
+        height: 250,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        color: AppColors.white,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.grey.withOpacity(0.2),
+              blurRadius: 4,
+              offset: const Offset(0, -4),
+            ),
+          ],
+          color: AppColors.white,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(18),
+            topRight: Radius.circular(18),
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            AppPrimaryButton(
-              onPressed: () {
-                context.pushNamed(FlightBoolingModule.passDownloadName);
-              },
-              title: 'Pay Now',
+            const LaungeAccessWidget(),
+            const Spacer(),
+            const AppPrimaryButton(
+              title: 'Download Pass',
               isLoading: false,
               bgColor: AppColors.primary,
             ),
             TextButton(
-              onPressed: () {},
-              child: const Text(
-                'Book another flight',
-                style: TextStyle(
-                    color: AppColors.grey,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400),
-              ),
-            )
+                onPressed: () {},
+                child: const Text(
+                  'Book another flight',
+                  style: TextStyle(
+                      color: AppColors.grey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400),
+                ))
           ],
         ),
       ),
@@ -294,112 +333,4 @@ getDuration({required int min}) {
   String hours = (min / 60).floor().toString();
   String minutes = (min % 60).toString();
   return '${hours}h ${minutes}m';
-}
-
-class PassenderInfo extends StatelessWidget {
-  const PassenderInfo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          width: 1,
-          color: AppColors.grey.withOpacity(0.2),
-        ),
-      ),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: AppColors.grey.withOpacity(0.2),
-          child: const Icon(
-            Icons.person,
-            size: 18,
-          ),
-        ),
-        title: const Text(
-          'Bidisha Roy',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        subtitle: Row(
-          children: [
-            AppHelpers.svgAsset(
-                assetName: 'idIcon', width: 16, height: 16, isIcon: true),
-            const SizedBox(width: 8),
-            const Text(
-              'ID2845655258',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-            ),
-          ],
-        ),
-        trailing: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Seat',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.grey),
-            ),
-            Text(
-              'A06',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class BaggageInfo extends StatelessWidget {
-  const BaggageInfo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          width: 1,
-          color: AppColors.grey.withOpacity(0.2),
-        ),
-      ),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: AppColors.grey.withOpacity(0.2),
-          child: AppHelpers.svgAsset(
-              assetName: 'baggage', width: 25, height: 25, isIcon: true),
-        ),
-        title: const Text(
-          'Baggage Allowance',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-        subtitle: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              'Cabin: 7Kgs (1 Piece only)/ adult',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-            ),
-            SizedBox(width: 8),
-            Text(
-              'Cabin: 7Kgs (1 Piece only)/ adult',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-            ),
-          ],
-        ),
-        trailing: const Icon(
-          Icons.check_circle_outline_rounded,
-          size: 18,
-        ),
-      ),
-    );
-  }
 }
