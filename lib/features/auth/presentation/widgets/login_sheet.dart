@@ -1,34 +1,36 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:reiselab/features/auth/auth_module.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
-import '../../../bottom_navigation/bottom_nav_module.dart';
+import '../../bloc/auth_bloc.dart';
 import 'auth_dropdown_widget.dart';
 import 'auth_input_widget.dart';
-import 'registration_sheet.dart';
 
-Future<void> showLoginSheet(BuildContext context) async {
-  showModalBottomSheet(
-    enableDrag: false,
-    isDismissible: false,
-    isScrollControlled: true,
-    elevation: 0,
-    barrierColor: AppColors.transparent,
-    backgroundColor: AppColors.white,
-    context: context,
-    builder: (context) => LoginSheet(),
-  );
+class LoginSheet extends StatefulWidget {
+  final bool isLoading;
+  const LoginSheet({super.key, required this.isLoading});
+
+  @override
+  State<LoginSheet> createState() => _LoginSheetState();
 }
 
-class LoginSheet extends StatelessWidget {
-  LoginSheet({super.key});
-
+class _LoginSheetState extends State<LoginSheet> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String usertype = 'retailer';
   String errMsg = '';
+
+  @override
+  void dispose() {
+    _userNameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,41 +95,49 @@ class LoginSheet extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: AppPrimaryButton(
               title: 'LOGIN',
-              isLoading: false,
+              isLoading: widget.isLoading,
               onPressed: () {
-                context.goNamed(BottomNavModule.name);
+                log('Login pressed');
+                context.read<AuthBloc>().add(
+                      LoginEvent(
+                        fcmToken: '',
+                        userName: _userNameController.text,
+                        password: _passwordController.text,
+                        userType: usertype,
+                      ),
+                    );
               },
             ),
           ),
           const SizedBox(height: 20),
           SizedBox(
-              width: AppHelpers.getScreenWidth(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Don’t have an account? ',
+            width: AppHelpers.getScreenWidth(context),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Don’t have an account? ',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                InkWell(
+                  splashColor: Colors.transparent,
+                  onTap: () async {
+                    context.goNamed(AuthModule.registerName);
+                  },
+                  child: const Text(
+                    'Sign up',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  InkWell(
-                    splashColor: Colors.transparent,
-                    onTap: () async {
-                      Navigator.of(context).pop();
-                      await showAgencyRegistrationSheet(context);
-                    },
-                    child: const Text(
-                      'Sign up',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
