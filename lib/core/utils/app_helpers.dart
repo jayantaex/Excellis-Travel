@@ -269,7 +269,7 @@ class AppHelpers {
   static Image assetImage(
       {required String assetName, double? width, double? height, String? ext}) {
     return Image.asset(
-      '${AppConstants.assetIcontUrl}$assetName.${ext ?? 'png'}',
+      '${AppConstants.assetImageUrl}$assetName.${ext ?? 'png'}',
       width: width,
       height: height,
     );
