@@ -24,7 +24,7 @@ class AppButtonNav extends StatelessWidget {
               const Border(top: BorderSide(color: AppColors.black, width: 2)),
         ),
         child: SvgPicture.asset(
-          '${AppConstants.assetIcontUrl}selected_home.svg',
+          '${AppConstants.assetIcontUrl}home.svg',
           colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
         ),
       ),
@@ -36,7 +36,7 @@ class AppButtonNav extends StatelessWidget {
               Border(top: BorderSide(color: AppColors.transparent, width: 2)),
         ),
         child: SvgPicture.asset(
-          '${AppConstants.assetIcontUrl}selected_home.svg',
+          '${AppConstants.assetIcontUrl}home.svg',
           colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
         ),
       ),
