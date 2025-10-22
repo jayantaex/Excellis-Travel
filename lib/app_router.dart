@@ -6,6 +6,7 @@ import 'features/bottom_navigation/bottom_nav_module.dart';
 import 'features/edit_profile/edit_profile_module.dart';
 import 'features/flight_booking/flight_booling_module.dart';
 import 'features/profile/profile_module.dart';
+import 'features/profile_management/profile_management_module.dart';
 import 'features/splash/screens/splash_screen.dart';
 import 'features/ticket/ticket_module.dart';
 import 'features/todo/todo_module.dart';
@@ -37,11 +38,6 @@ class AppRouter {
         path: '/profile',
         name: 'profile',
         builder: (context, state) => ProfileModule.route(),
-      ),
-      GoRoute(
-        path: '/edit_profile',
-        name: 'edit_profile',
-        builder: (context, state) => EditProfileModule.route(),
       ),
       GoRoute(
         path: BottomNavModule.path,
@@ -112,6 +108,12 @@ class AppRouter {
         path: FlightBoolingModule.passDownload,
         name: FlightBoolingModule.passDownloadName,
         builder: (context, state) => FlightBoolingModule.passDownloadBuilder(),
+      ),
+      GoRoute(
+        path: ProfileManagementModule.editProfilePath,
+        name: ProfileManagementModule.editProfileName,
+        builder: (context, state) =>
+            ProfileManagementModule.editProfileBuilder(),
       )
     ],
     errorBuilder: (context, state) => const Scaffold(
