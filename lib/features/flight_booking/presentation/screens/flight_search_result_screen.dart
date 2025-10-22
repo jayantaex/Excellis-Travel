@@ -57,6 +57,7 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
         child: TransWhiteBgWidget(
           child: Center(
             child: SafeArea(
+              bottom: false,
               child: Column(
                 children: [
                   //nav Controller
@@ -85,7 +86,7 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     margin: const EdgeInsets.only(top: 16),
-                    height: AppHelpers.getScreenHeight(context) - 300,
+                    height: AppHelpers.getScreenHeight(context) * 0.7,
                     child: ListView.builder(
                       itemCount: searchData.ticketData.length,
                       itemBuilder: (context, index) => Container(
