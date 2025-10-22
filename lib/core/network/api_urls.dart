@@ -1,9 +1,11 @@
+import '../constants/app_constants.dart';
+
 class MainUrl {
-  final String env = "production";
+  final String env = "development";
 
   String getUrl() {
     if (env == "production") {
-      return 'https://dummyjson.com';
+      return AppConstants.baseUrl;
     } else {
       return 'http://localhost:4000';
     }

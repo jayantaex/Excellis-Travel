@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../utils/storage_service.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
@@ -27,16 +29,29 @@ class ApiClient {
       return handler.next(e);
     }));
     // print request and response
-    _dio.interceptors.add(LogInterceptor(
+    // _dio.interceptors.add(
+    //   LogInterceptor(
+    //     requestBody: true,
+    //     responseBody: true,
+    //     requestHeader: false,
+    //     responseHeader: false,
+    //     error: true,
+    //     request: true,
+    //     logPrint: (obj) {
+    //       log(obj.toString());
+    //     },
+    //   ),
+    // );
+
+    _dio.interceptors.add(PrettyDioLogger(
+      requestHeader: true,
       requestBody: true,
       responseBody: true,
-      requestHeader: false,
       responseHeader: false,
       error: true,
-      request: true,
-      logPrint: (obj) {
-        log(obj.toString());
-      },
+      compact: true,
+      maxWidth: 90,
+      enabled: kDebugMode,
     ));
   }
 

@@ -58,6 +58,7 @@ dependencies:
   # Network logger
   pretty_dio_logger: ^1.4.0
   
+  
 
 
 dev_dependencies:
@@ -68,6 +69,7 @@ dev_dependencies:
   # Code Generation
   build_runner: ^2.4.12
   json_serializable: ^6.8.0
+
   
 flutter:
   uses-material-design: true

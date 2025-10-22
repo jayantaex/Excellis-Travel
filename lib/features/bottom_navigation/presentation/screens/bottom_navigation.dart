@@ -10,6 +10,7 @@ import '../../../profile_management/presentation/screens/my_profile_screen.dart'
 import '../../../ticket/presentation/screens/ticket_screen.dart';
 import '../../../wish_list/presentation/screens/wish_list_screen.dart';
 import '../widgets/app_button_nav.dart';
+import '../widgets/bottom_navigation_loading.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -20,6 +21,7 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _currentIndex = 0;
+  bool isLoading = false;
   final List<Widget> _screens = [
     const FlightSearchScreen(),
     const TicketScreen(),
@@ -37,29 +39,31 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient:
-              LinearGradient(colors: [AppColors.primary, AppColors.secondary]),
-          borderRadius: BorderRadiusDirectional.only(
-            topStart: Radius.circular(18),
-            topEnd: Radius.circular(18),
-          ),
-        ),
-        height: AppHelpers.percenHeight(context: context),
-        width: AppHelpers.percenWidth(context: context),
-        child: _screens[_currentIndex],
-      ),
-      bottomNavigationBar: AppButtonNav(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-      ),
-    );
+    return isLoading
+        ? BottomNavigationLoading()
+        : Scaffold(
+            backgroundColor: AppColors.primary,
+            body: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [AppColors.primary, AppColors.secondary]),
+                borderRadius: BorderRadiusDirectional.only(
+                  topStart: Radius.circular(18),
+                  topEnd: Radius.circular(18),
+                ),
+              ),
+              height: AppHelpers.percenHeight(context: context),
+              width: AppHelpers.percenWidth(context: context),
+              child: _screens[_currentIndex],
+            ),
+            bottomNavigationBar: AppButtonNav(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          );
   }
 }

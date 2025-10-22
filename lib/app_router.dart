@@ -19,7 +19,6 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/splash',
     routes: [
-      
       //DEPRICATED
       GoRoute(
         path: '/profile',
@@ -48,11 +47,6 @@ class AppRouter {
         path: AuthModule.loginPath,
         name: AuthModule.loginName,
         builder: (context, state) => AuthModule.loginBuilder(),
-      ),
-      GoRoute(
-        path: AuthModule.registerPath,
-        name: AuthModule.registerName,
-        builder: (context, state) => AuthModule.registerBuilder(),
       ),
 
       //bottom navigation
@@ -96,7 +90,7 @@ class AppRouter {
         name: TicketModule.routeName,
         builder: (context, state) => TicketModule.builder(),
       ),
-     
+
       //Flight Booking
       GoRoute(
         path: FlightBoolingModule.searchResult,
@@ -133,7 +127,7 @@ class AppRouter {
         builder: (context, state) =>
             ProfileManagementModule.editProfileBuilder(),
       ),
-      
+
       //legal
       GoRoute(
         path: LegalModule.termsRoute,
