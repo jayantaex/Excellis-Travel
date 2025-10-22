@@ -53,6 +53,9 @@ dependencies:
   # Barcode - generator
   barcode: ^2.2.9
   path_provider: ^2.1.4
+  # Web view
+  webview_flutter: ^4.10.0
+  
 
 
 dev_dependencies:
