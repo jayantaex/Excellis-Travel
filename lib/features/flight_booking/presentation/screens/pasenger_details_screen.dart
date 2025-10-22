@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/core/widgets/primary_button.dart';
-import 'package:reiselab/core/widgets/primary_input.dart';
-import 'package:reiselab/features/flight_booking/flight_booling_module.dart';
-import 'package:reiselab/features/flight_booking/presentation/widgets/launge_access_widget.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/primary_button.dart';
+import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../flight_booling_module.dart';
+import '../widgets/launge_access_widget.dart';
 import '../widgets/nav_bar.dart';
 import '../widgets/search_drop_down.dart';
 
@@ -142,7 +142,7 @@ class PasengerDetailsScreen extends StatelessWidget {
                                 .toList(),
                           ),
                           const SizedBox(height: 27),
-                          LaungeAccessWidget()
+                          const LaungeAccessWidget()
                         ],
                       ),
                     ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
-import 'package:reiselab/features/flight_booking/models/ticket_data_model.dart';
+
 import 'package:ticket_widget/ticket_widget.dart';
 
+import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
 import '../../flight_booling_module.dart';
+import '../../models/ticket_data_model.dart';
 
 class RecentSearchedTicket extends StatelessWidget {
   final TicketModel data;

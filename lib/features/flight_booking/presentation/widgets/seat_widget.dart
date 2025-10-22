@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_styles.dart';
 
 class SeatWidget extends StatelessWidget {

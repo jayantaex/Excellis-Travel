@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/features/bottom_navigation/bottom_nav_module.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../bottom_navigation/bottom_nav_module.dart';
 import 'auth_dropdown_widget.dart';
 import 'auth_input_widget.dart';
 import 'login_sheet.dart';

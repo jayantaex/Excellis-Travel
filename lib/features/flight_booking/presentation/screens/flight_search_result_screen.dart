@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../widgets/class_filer_widget.dart';
 import '../widgets/date_filter_widget.dart';
 import '../widgets/nav_bar.dart';
 import '../widgets/recent_searched_ticket.dart';
-import '../widgets/search_filter_widget.dart';
 
 class FlightSearchResultScreen extends StatefulWidget {
   const FlightSearchResultScreen({super.key});
@@ -84,7 +83,7 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     margin: const EdgeInsets.only(top: 16),
                     height: AppHelpers.getScreenHeight(context) - 300,
                     child: ListView.builder(
@@ -105,7 +104,4 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
       ),
     );
   }
-
-
-
 }

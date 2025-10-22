@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
@@ -141,7 +141,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                   ),
                   const SeatSelectionInformation(
                     title: 'Reserved',
-                    bg: const Color(0XFF9F4018),
+                    bg: Color(0XFF9F4018),
                   ),
                   const SeatSelectionInformation(
                     title: 'Selected',
@@ -215,7 +215,7 @@ class SeatSelectionInformation extends StatelessWidget {
 
 class SeatArrangemnt extends StatefulWidget {
   final int row;
-  SeatArrangemnt({super.key, required this.row});
+  const SeatArrangemnt({super.key, required this.row});
 
   @override
   State<SeatArrangemnt> createState() => _SeatArrangemntState();

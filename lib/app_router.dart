@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import 'features/auth/auth_module.dart';
 import 'features/bottom_navigation/bottom_nav_module.dart';
-import 'features/edit_profile/edit_profile_module.dart';
 import 'features/flight_booking/flight_booling_module.dart';
 import 'features/profile/profile_module.dart';
 import 'features/profile_management/profile_management_module.dart';

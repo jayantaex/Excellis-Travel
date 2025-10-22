@@ -1,15 +1,14 @@
-import 'dart:io';
 
 import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:reiselab/core/widgets/primary_input.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../widgets/launge_access_widget.dart';
@@ -267,7 +266,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                               ),
                             ),
                             const Spacer(),
-                            Container(
+                            SizedBox(
                               height: 73,
                               child: SvgPicture.string(
                                 barCodeSvg,

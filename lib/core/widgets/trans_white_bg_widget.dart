@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
 
 import '../constants/app_styles.dart';
+import '../utils/app_helpers.dart';
 
 class TransWhiteBgWidget extends StatelessWidget {
   final Widget child;

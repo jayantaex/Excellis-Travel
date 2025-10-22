@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:reiselab/features/ticket/presentation/screens/ticket_screen.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -9,6 +7,7 @@ import '../../../flight_booking/presentation/screens/flight_search_screen.dart';
 import '../../../profile/bloc/profile_bloc.dart';
 import '../../../profile/bloc/profile_event.dart';
 import '../../../profile_management/presentation/screens/my_profile_screen.dart';
+import '../../../ticket/presentation/screens/ticket_screen.dart';
 import '../../../wish_list/presentation/screens/wish_list_screen.dart';
 import '../widgets/app_button_nav.dart';
 
@@ -20,10 +19,9 @@ class BottomNavigationScreen extends StatefulWidget {
 }
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-  int _userId = 0;
   int _currentIndex = 0;
   final List<Widget> _screens = [
-    FlightSearchScreen(),
+    const FlightSearchScreen(),
     const TicketScreen(),
     const WishListScreen(),
     MyProfileScreen()

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:reiselab/core/constants/app_constants.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
+
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_styles.dart';
+
 
 class AppButtonNav extends StatelessWidget {
   final int currentIndex;
