@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-
 import '../../data/todo_repository.dart';
 import '../../models/todo_model.dart';
 
@@ -60,14 +59,14 @@ class TodoBloc extends Bloc<TodoBlocEvent, TodoState> {
         case DeleteTodos():
           {
             try {
-              emit(TodoDeletingState());
-              final res = await repository.deleteTodo(event.id);
-              log(res.statusCode.toString());
-              if (res.statusCode == 200) {
-                emit(TodoDeletedState());
-              } else {
-                emit(const TodoDeleteErrorState("Failed to delete todo"));
-              }
+              // emit(TodoDeletingState());
+              // // final res = await repository.deleteTodo(event.id);
+              // log(res.statusCode.toString());
+              // if (res.statusCode == 200) {
+              //   emit(TodoDeletedState());
+              // } else {
+              //   emit(const TodoDeleteErrorState("Failed to delete todo"));
+              // }
             } catch (e) {
               emit(TodoDeleteErrorState(e.toString()));
             }

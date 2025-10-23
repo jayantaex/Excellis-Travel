@@ -1,5 +1,3 @@
-
-
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
@@ -26,10 +24,10 @@ class TodoApi {
     );
   }
 
-  Future<ApiResponse> deleteTodo(int id) {
-    return _client.deleteRequest(
-      endPoint: '${EndPoints.todos}/$id',
-      queryParameters: null,
-    );
-  }
+  // Future<ApiResponse> deleteTodo(int id) {
+  //   return _client.deleteRequest(
+  //     endPoint: '${EndPoints.todos}/$id',
+  //     queryParameters: null,
+  //   );
+  // }
 }
