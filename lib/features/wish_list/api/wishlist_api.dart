@@ -23,4 +23,13 @@ class WishlistApi {
       },
     );
   }
+
+  Future<ApiResponse<String>> removeFromWishList() async {
+    return await apiClient.deleteRequest(
+      endPoint: EndPoints.wishList,
+      fromJson: (p0) {
+        return p0 as String;
+      },
+    );
+  }
 }
