@@ -31,10 +31,10 @@ class _WishListScreenState extends State<WishListScreen> {
             children: [
               //app bar
               const Text(
-                'Wish List',
+                'Wishlist',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
                     color: AppColors.white),
               ),
 
@@ -47,7 +47,7 @@ class _WishListScreenState extends State<WishListScreen> {
                           child: Text(
                           'No Tickets Found',
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 20,
                               fontWeight: FontWeight.w500,
                               color: AppColors.white),
                         ))
