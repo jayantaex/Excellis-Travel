@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/features/auth/auth_module.dart';
-import 'package:reiselab/features/auth/bloc/auth_bloc.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../auth_module.dart';
+import '../../bloc/auth_bloc.dart';
 import 'auth_dropdown_widget.dart';
 import 'auth_input_widget.dart';
 
@@ -31,11 +31,11 @@ class AgencyRegistrationSheet extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _conPasswordController = TextEditingController();
   String usertype = 'retailer';
-  final _items = <DropdownMenuItem<String>>[
+  final List<DropdownMenuItem<String>> _items = <DropdownMenuItem<String>>[
     const DropdownMenuItem(value: 'retailer', child: Text('Become a Retailer')),
     const DropdownMenuItem(value: 'user', child: Text('Become a User')),
   ];
-  String errMsg = '';
+  final String errMsg = '';
 
   @override
   Widget build(BuildContext context) {

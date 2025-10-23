@@ -24,10 +24,11 @@ class TodoApi {
     );
   }
 
-  // Future<ApiResponse> deleteTodo(int id) {
-  //   return _client.deleteRequest(
-  //     endPoint: '${EndPoints.todos}/$id',
-  //     queryParameters: null,
-  //   );
-  // }
+  Future<ApiResponse> deleteTodo(int id) {
+    return _client.deleteRequest(
+      endPoint: '${EndPoints.todos}/$id',
+      queryParameters: null,
+      fromJson: (json) => json,
+    );
+  }
 }

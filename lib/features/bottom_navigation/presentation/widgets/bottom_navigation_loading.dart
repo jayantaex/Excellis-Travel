@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/widgets/app_gradient_bg.dart';
-import 'package:reiselab/core/widgets/trans_white_bg_widget.dart';
-import 'package:shimmer/shimmer.dart';
 
-import '../../../../core/constants/app_styles.dart';
+
 import '../../../../core/utils/app_helpers.dart';
-import '../../../../core/widgets/common_widgets.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/loading_widget.dart';
+import '../../../../core/widgets/trans_white_bg_widget.dart';
 
 class BottomNavigationLoading extends StatelessWidget {
   const BottomNavigationLoading({super.key});

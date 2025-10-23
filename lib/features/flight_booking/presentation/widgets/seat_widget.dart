@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
 
 class SeatWidget extends StatelessWidget {
   final bool isSelected;

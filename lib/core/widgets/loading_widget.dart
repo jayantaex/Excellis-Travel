@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../constants/app_styles.dart';
 
 class LoadingEffect extends StatelessWidget {
   final double? height;
