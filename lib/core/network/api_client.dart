@@ -7,6 +7,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../utils/storage_service.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
+import 'authentication_interceptor.dart';
 
 class ApiClient {
   final Dio _dio = Dio();
@@ -53,6 +54,7 @@ class ApiClient {
       maxWidth: 90,
       enabled: kDebugMode,
     ));
+    _dio.interceptors.add(AuthenticationInterceptor(_dio));
   }
 
   // API request method GET
@@ -223,8 +225,7 @@ class ApiClient {
         errorMessage = _handleStatusCode(statusCode);
         break;
       case DioExceptionType.connectionError:
-        errorMessage =
-            "Connection to API server failed due to internet connection";
+        errorMessage = "please check your connection";
         break;
       case DioExceptionType.unknown:
         errorMessage =

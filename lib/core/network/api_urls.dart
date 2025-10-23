@@ -21,4 +21,11 @@ class EndPoints {
   //todo
   static const todos = "/todos";
   static const addTodo = "/todos/add";
+
+  // Authentication
+  static const login = '/auth/login';
+  static const registration = "/auth/registration";
+  static const refreshToken = "/auth/refreshToken";
+  //Profile
+  static const userProfile = "/user";
 }

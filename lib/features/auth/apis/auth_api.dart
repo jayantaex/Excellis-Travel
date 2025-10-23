@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:reiselab/core/network/api_urls.dart';
 
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
@@ -13,7 +13,7 @@ class AuthApi {
       required String fcmToken,
       required String userType}) async {
     return await apiClient.postRequest(
-      endPoint: '/login',
+      endPoint: EndPoints.login,
       fromJson: (p0) {
         return p0 as String;
       },
@@ -22,7 +22,7 @@ class AuthApi {
 
   Future<ApiResponse<void>> register(String username, String password) async {
     return apiClient.postRequest(
-      endPoint: '/register',
+      endPoint: EndPoints.registration,
       fromJson: (p0) {
         return;
       },
