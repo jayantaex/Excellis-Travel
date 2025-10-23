@@ -26,6 +26,9 @@ class EndPoints {
   static const login = '/auth/login';
   static const registration = "/auth/registration";
   static const refreshToken = "/auth/refreshToken";
+
+  //wish-list
+  static const wishList = "/wish-list";
   //Profile
   static const userProfile = "/user";
 }

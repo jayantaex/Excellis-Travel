@@ -25,7 +25,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   final List<Widget> _screens = [
     const FlightSearchScreen(),
     TicketScreen(),
-    const WishListScreen(),
+    WishListScreen(),
     MyProfileScreen()
   ];
 
