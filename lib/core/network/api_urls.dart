@@ -30,6 +30,4 @@ class EndPoints {
   static const wishList = "/wish-list";
   //Profile
   static const userProfile = "/user";
-  //wishlist
-  static const wishList = "/wishlists";
 }
