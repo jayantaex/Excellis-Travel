@@ -23,7 +23,7 @@ class AppConstants {
   // payment gateway credentials [razorpay]
   static const String razorpayKey = kDebugMode ? 'rzp_test_1DP5mmOlF5G5ag' : '';
   static const String razorpaySecret = kDebugMode ? '12345678' : '';
-  static const String razorpayUserName = 'ReiseLab';
+  static const String razorpayUserName = 'Excellis Travel';
 
   //assetUrl
   static const String assetImageUrl = 'assets/images/';
