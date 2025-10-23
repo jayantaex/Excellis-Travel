@@ -1,4 +1,3 @@
-
 import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -122,7 +121,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                               children: [
                                 SizedBox(
                                     height: 60,
-                                    width: 100,
+                                    width: AppHelpers.getScreenWidth(context) *
+                                        0.2,
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -143,11 +143,15 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                       ],
                                     )),
                                 SizedBox(
-                                    width: 100,
+                                    width: AppHelpers.getScreenWidth(context) *
+                                        0.2,
                                     child: Column(
                                       children: [
                                         AppHelpers.svgAsset(
-                                            assetName: 'flight', width: 100),
+                                            assetName: 'flight',
+                                            width: AppHelpers.getScreenWidth(
+                                                    context) *
+                                                0.2),
                                         Text(
                                           getDuration(
                                               min: searchData
@@ -160,7 +164,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                     )),
                                 SizedBox(
                                   height: 60,
-                                  width: 100,
+                                  width:
+                                      AppHelpers.getScreenWidth(context) * 0.2,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -190,7 +195,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                 children: [
                                   SizedBox(
                                     width: AppHelpers.getScreenWidth(context) *
-                                        0.38,
+                                        0.35,
                                     child: AppPrimaryInput(
                                       style: const TextStyle(
                                         color: AppColors.black,
@@ -206,7 +211,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                   ),
                                   SizedBox(
                                     width: AppHelpers.getScreenWidth(context) *
-                                        0.38,
+                                        0.35,
                                     child: AppPrimaryInput(
                                       style: const TextStyle(
                                         color: AppColors.black,
@@ -232,7 +237,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                 children: [
                                   SizedBox(
                                     width: AppHelpers.getScreenWidth(context) *
-                                        0.38,
+                                        0.35,
                                     child: AppPrimaryInput(
                                       style: const TextStyle(
                                         color: AppColors.black,
@@ -248,7 +253,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                   ),
                                   SizedBox(
                                     width: AppHelpers.getScreenWidth(context) *
-                                        0.38,
+                                        0.35,
                                     child: AppPrimaryInput(
                                       enable: false,
                                       label: 'Arrival',
@@ -312,6 +317,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
               isLoading: false,
               bgColor: AppColors.primary,
             ),
+            const SizedBox(height: 8),
             TextButton(
                 onPressed: () {},
                 child: const Text(

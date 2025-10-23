@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:excellistravel/core/widgets/app_exit_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,29 +43,44 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? BottomNavigationLoading()
-        : Scaffold(
-            backgroundColor: AppColors.primary,
-            body: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [AppColors.primary, AppColors.secondary]),
-                borderRadius: BorderRadiusDirectional.only(
-                  topStart: Radius.circular(18),
-                  topEnd: Radius.circular(18),
-                ),
-              ),
-              height: AppHelpers.percenHeight(context: context),
-              width: AppHelpers.percenWidth(context: context),
-              child: _screens[_currentIndex],
-            ),
-            bottomNavigationBar: AppButtonNav(
-              currentIndex: _currentIndex,
-              onTap: (index) {
+        ? const BottomNavigationLoading()
+        : PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) async {
+              log('didPop $didPop');
+              log('pop result $result');
+              if (!didPop) {
+                if (_currentIndex == 0) {
+                  await showAppExitSheet(context: context);
+                }
                 setState(() {
-                  _currentIndex = index;
+                  _currentIndex = 0;
                 });
-              },
+              }
+            },
+            child: Scaffold(
+              backgroundColor: AppColors.primary,
+              body: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [AppColors.primary, AppColors.secondary]),
+                  borderRadius: BorderRadiusDirectional.only(
+                    topStart: Radius.circular(18),
+                    topEnd: Radius.circular(18),
+                  ),
+                ),
+                height: AppHelpers.percenHeight(context: context),
+                width: AppHelpers.percenWidth(context: context),
+                child: _screens[_currentIndex],
+              ),
+              bottomNavigationBar: AppButtonNav(
+                currentIndex: _currentIndex,
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+              ),
             ),
           );
   }

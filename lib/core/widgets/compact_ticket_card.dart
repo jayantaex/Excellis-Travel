@@ -27,7 +27,6 @@ class CompactTicketCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = AppHelpers.getScreenWidth(context);
-    log("SCREEN WIDTH $width");
     return InkWell(
       onTap: onTap,
       child: TicketWidget(

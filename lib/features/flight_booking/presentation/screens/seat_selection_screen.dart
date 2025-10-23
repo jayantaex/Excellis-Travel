@@ -110,7 +110,7 @@ class _SeatSelectionState extends State<SeatSelection> {
                     ),
                     margin: const EdgeInsets.only(top: 16),
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    height: AppHelpers.getScreenHeight(context) - 400,
+                    height: AppHelpers.getScreenHeight(context) * 0.52,
                     child: ListView.builder(
                       itemCount: row,
                       itemBuilder: (context, index) => SeatArrangemnt(
@@ -126,9 +126,10 @@ class _SeatSelectionState extends State<SeatSelection> {
       ),
       bottomNavigationBar: Container(
         color: AppColors.white,
-        height: 130,
+        height: AppHelpers.getScreenHeight(context) * 0.16,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             SizedBox(
               height: 50,
