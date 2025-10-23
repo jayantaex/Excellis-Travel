@@ -1,67 +1,102 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:reiselab/core/constants/app_styles.dart';
 import 'package:reiselab/core/utils/app_helpers.dart';
 import 'package:reiselab/features/flight_booking/models/ticket_data_model.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 
-import '../../features/flight_booking/flight_booling_module.dart';
-
 class CompactTicketCard extends StatelessWidget {
   final TicketModel data;
-  const CompactTicketCard({super.key, required this.data});
+  final bool? isOnWishList;
+  final bool? isFavIconRequired;
+  final Function()? onWishListTap;
+  final Function() onTap;
+  const CompactTicketCard(
+      {super.key,
+      required this.data,
+      this.isFavIconRequired,
+      this.isOnWishList,
+      this.onWishListTap,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     double width = AppHelpers.getScreenWidth(context);
     return InkWell(
-      onTap: () {
-        context.pushNamed(FlightBoolingModule.seatSelectionName);
-      },
+      onTap: onTap,
       child: TicketWidget(
         height: 200,
         width: width * 0.85,
         isCornerRounded: true,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 9),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-                width: width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 16,
-                      width: 40,
-                      color: AppColors.grey,
-                    ),
-                    data.tag != null
-                        ? Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color:
-                                  getColorByStatus(data.tag!).withOpacity(0.3),
-                            ),
-                            child: Text(
-                              data.tag!.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                                color: getColorByStatus(data.tag!),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 45,
+              width: width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 16),
+                    height: 16,
+                    width: 40,
+                    color: AppColors.grey,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      data.tag != null
+                          ? Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              height: 25,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: getColorByStatus(data.tag!)
+                                    .withOpacity(0.3),
                               ),
-                            ),
-                          )
-                        : const SizedBox(),
-                  ],
-                ),
+                              child: Text(
+                                data.tag!.toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                  color: getColorByStatus(data.tag!),
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                      isFavIconRequired ?? false
+                          ? InkWell(
+                              onTap: onWishListTap,
+                              child: CircleAvatar(
+                                backgroundColor:
+                                    AppColors.grey.withOpacity(0.1),
+                                radius: 18,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: isOnWishList ?? false
+                                      ? const Icon(Icons.favorite_rounded,
+                                          color: AppColors.error, size: 18)
+                                      : const Icon(
+                                          Icons.favorite_border_rounded,
+                                          color: AppColors.black,
+                                          size: 18),
+                                ),
+                              ),
+                            )
+                          : SizedBox()
+                    ],
+                  ),
+                ],
               ),
-              const SizedBox(height: 4),
-              Row(
+            ),
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
@@ -119,8 +154,11 @@ class CompactTicketCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const Spacer(),
-              const Row(
+            ),
+            const Spacer(),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 22),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -141,7 +179,10 @@ class CompactTicketCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const Row(
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 22),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
@@ -154,8 +195,8 @@ class CompactTicketCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
