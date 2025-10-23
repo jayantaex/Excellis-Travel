@@ -2,20 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
 
-
-class AuthDropdownWidget extends StatefulWidget {
+class UserTypeSelection extends StatefulWidget {
+  final List<DropdownMenuItem<String>>? items;
   final Function(String?)? onChanged;
-  const AuthDropdownWidget({super.key, this.onChanged});
+  const UserTypeSelection({super.key, this.onChanged, this.items});
 
   @override
-  State<AuthDropdownWidget> createState() => _AuthDropdownWidgetState();
+  State<UserTypeSelection> createState() => _UserTypeSelectionState();
 }
 
-class _AuthDropdownWidgetState extends State<AuthDropdownWidget> {
-  final _items = <DropdownMenuItem<String>>[
-    const DropdownMenuItem(value: 'retailer', child: Text('Become a Retailer')),
-    const DropdownMenuItem(value: 'user', child: Text('Become a User')),
-  ];
+class _UserTypeSelectionState extends State<UserTypeSelection> {
   String _defaultValue = 'retailer';
 
   @override
@@ -28,13 +24,15 @@ class _AuthDropdownWidgetState extends State<AuthDropdownWidget> {
         borderRadius: BorderRadius.circular(90),
       ),
       child: DropdownButton(
+        borderRadius: BorderRadius.circular(8),
+        dropdownColor: AppColors.white,
         underline: const SizedBox(),
         icon: const Icon(Icons.keyboard_arrow_down_rounded),
         style: const TextStyle(
             fontSize: 16, color: AppColors.black, fontWeight: FontWeight.w400),
         isExpanded: true,
         value: _defaultValue,
-        items: _items,
+        items: widget.items,
         onChanged: (String? value) {
           setState(() {
             _defaultValue = value!;

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:reiselab/core/constants/app_constants.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
-import 'package:reiselab/core/widgets/primary_button.dart';
+import 'package:go_router/go_router.dart';
+import 'package:reiselab/core/utils/storage_service.dart';
+import 'package:reiselab/features/auth/auth_module.dart';
+
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/primary_button.dart';
 
 Future<void> showLogoutSheet({required BuildContext context}) async {
   showModalBottomSheet(
@@ -44,15 +48,26 @@ class LogOutSheet extends StatelessWidget {
               children: [
                 SizedBox(
                     width: AppHelpers.getScreenWidth(context) * 0.4,
-                    child: const AppPrimaryButton(
-                        title: 'Cancel', isLoading: false)),
+                    child: AppPrimaryButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        title: 'Cancel',
+                        isLoading: false)),
                 SizedBox(
-                    width: AppHelpers.getScreenWidth(context) * 0.4,
-                    child: const AppPrimaryButton(
-                      title: 'Sign Out',
-                      isLoading: false,
-                      bgColor: AppColors.primary,
-                    ))
+                  width: AppHelpers.getScreenWidth(context) * 0.4,
+                  child: AppPrimaryButton(
+                    onPressed: () async {
+                      await StorageService.clearTokens();
+                      context.mounted
+                          ? context.goNamed(AuthModule.loginName)
+                          : null;
+                    },
+                    title: 'Sign Out',
+                    isLoading: false,
+                    bgColor: AppColors.primary,
+                  ),
+                )
               ],
             ),
           ),

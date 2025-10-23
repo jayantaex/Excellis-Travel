@@ -29,4 +29,8 @@ class AppConstants {
   static const String assetImageUrl = 'assets/images/';
   static const String assetIcontUrl = 'assets/icons/';
   static const String imageNotFound = 'assets/images/image_not_found.png';
+
+  //Legality
+  static const String privacyPolicy = 'https://github.com/';
+  static const String termsAndConditions = 'https://github.com/';
 }

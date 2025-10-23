@@ -2,15 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+
+import '../constants/app_constants.dart';
 
 class AppHelpers {
   // Date formatting
   static String formatDate(DateTime date, {String pattern = 'dd/MM/yyyy'}) {
     return DateFormat(pattern).format(date);
   }
-
-
 
   static String formatDateTime(DateTime date,
       {String pattern = 'dd/MM/yyyy HH:mm'}) {
@@ -167,18 +168,23 @@ class AppHelpers {
   static Future<void> showSnackBar(
     BuildContext context,
     String message, {
+    Color? textColor,
+    bool? showCloseButton,
     Color? backgroundColor,
     Duration duration = const Duration(seconds: 3),
     SnackBarAction? action,
   }) async {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: backgroundColor,
-        duration: duration,
-        action: action,
-      ),
-    );
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: backgroundColor,
+          duration: duration,
+          action: action,
+          showCloseIcon: showCloseButton ?? false,
+        ),
+      );
   }
 
   static Future<bool?> showConfirmDialog(
@@ -263,5 +269,38 @@ class AppHelpers {
       return MediaQuery.sizeOf(context).height;
     }
     return (MediaQuery.sizeOf(context).height * percent) / 100;
+  }
+
+  static Image assetImage(
+      {required String assetName, double? width, double? height, String? ext}) {
+    return Image.asset(
+      '${AppConstants.assetImageUrl}$assetName.${ext ?? 'png'}',
+      width: width,
+      height: height,
+    );
+  }
+
+  static Image networkImage(
+      {required String url, double? width, double? height, String? ext}) {
+    return Image.network(
+      url,
+      width: width,
+      height: height,
+    );
+  }
+
+  static SvgPicture svgAsset({
+    required String assetName,
+    bool? isIcon,
+    double? width,
+    double? height,
+  }) {
+    return SvgPicture.asset(
+      isIcon == true
+          ? '${AppConstants.assetIcontUrl}$assetName.svg'
+          : '${AppConstants.assetImageUrl}$assetName.svg',
+      width: width,
+      height: height,
+    );
   }
 }
