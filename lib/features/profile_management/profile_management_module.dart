@@ -9,30 +9,32 @@ import 'presentation/screens/edit_profile_screen.dart';
 import 'presentation/screens/my_profile_screen.dart';
 
 class ProfileManagementModule {
-  static final ProfileManagementRepository _repository =
-      ProfileManagementRepository(
-    profileManagementApi: ProfileManagementApi(
-      apiClient: ApiClient(),
-    ),
-  );
-  //my profile
   static String myProfileName = 'my_profile';
+  static String editProfileName = 'edit_profile';
+
   static String myProfilePath = '/my_profile';
+  static String editProfilePath = '/edit_profile';
+
   static Widget myProfileBuilder() {
+    ProfileManagementRepository repository = ProfileManagementRepository(
+      profileManagementApi: ProfileManagementApi(
+        apiClient: ApiClient(),
+      ),
+    );
     return BlocProvider(
-      create: (_) => ProfileBloc(profileRepository: _repository),
+      create: (_) => ProfileBloc(profileRepository: repository),
       child: MyProfileScreen(),
     );
   }
 
-//edit profile
-  static String editProfilePath = '/edit_profile';
-  static String editProfileName = 'edit_profile';
-
   static Widget editProfileBuilder() {
     return BlocProvider(
       create: (_) => ProfileBloc(
-        profileRepository: _repository,
+        profileRepository: ProfileManagementRepository(
+          profileManagementApi: ProfileManagementApi(
+            apiClient: ApiClient(),
+          ),
+        ),
       ),
       child: const EditProfileScreen(),
     );

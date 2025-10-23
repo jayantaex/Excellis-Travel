@@ -2,12 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../utils/storage_service.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
-import 'authentication_interceptor.dart';
 
 class ApiClient {
   final Dio _dio = Dio();
@@ -30,31 +27,17 @@ class ApiClient {
       return handler.next(e);
     }));
     // print request and response
-    // _dio.interceptors.add(
-    //   LogInterceptor(
-    //     requestBody: true,
-    //     responseBody: true,
-    //     requestHeader: false,
-    //     responseHeader: false,
-    //     error: true,
-    //     request: true,
-    //     logPrint: (obj) {
-    //       log(obj.toString());
-    //     },
-    //   ),
-    // );
-
-    _dio.interceptors.add(PrettyDioLogger(
-      requestHeader: true,
+    _dio.interceptors.add(LogInterceptor(
       requestBody: true,
       responseBody: true,
+      requestHeader: false,
       responseHeader: false,
       error: true,
-      compact: true,
-      maxWidth: 90,
-      enabled: kDebugMode,
+      request: true,
+      logPrint: (obj) {
+        log(obj.toString());
+      },
     ));
-    _dio.interceptors.add(AuthenticationInterceptor(_dio));
   }
 
   // API request method GET
@@ -223,9 +206,6 @@ class ApiClient {
         break;
       case DioExceptionType.badResponse:
         errorMessage = _handleStatusCode(statusCode);
-        break;
-      case DioExceptionType.connectionError:
-        errorMessage = "please check your connection";
         break;
       case DioExceptionType.unknown:
         errorMessage =

@@ -1,11 +1,9 @@
-import '../constants/app_constants.dart';
-
 class MainUrl {
-  final String env = "development";
+  final String env = "production";
 
   String getUrl() {
     if (env == "production") {
-      return AppConstants.baseUrl;
+      return 'https://dummyjson.com';
     } else {
       return 'http://localhost:4000';
     }
@@ -21,11 +19,4 @@ class EndPoints {
   //todo
   static const todos = "/todos";
   static const addTodo = "/todos/add";
-
-  // Authentication
-  static const login = '/auth/login';
-  static const registration = "/auth/registration";
-  static const refreshToken = "/auth/refreshToken";
-  //Profile
-  static const userProfile = "/user";
 }

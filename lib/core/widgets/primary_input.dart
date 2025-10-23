@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../constants/app_styles.dart';
+import 'package:reiselab/core/constants/app_styles.dart';
 
 class AppPrimaryInput extends StatelessWidget {
   final String? label;
@@ -12,10 +11,8 @@ class AppPrimaryInput extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool? enable;
-  final bool? isMultiline;
   final TextStyle? style;
   final VoidCallback? onTap;
-  final FocusNode? focusNode;
   final Function(String)? onChange;
 
   const AppPrimaryInput({
@@ -31,20 +28,16 @@ class AppPrimaryInput extends StatelessWidget {
     this.style,
     this.onTap,
     this.onChange,
-    this.focusNode,
-    this.isMultiline,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      enabled: enable ?? true,
-      maxLines: isMultiline == true ? null : 1,
       onChanged: onChange,
       onTap: onTap,
+      enabled: true,
       controller: controller,
       keyboardType: keyboardType,
-      focusNode: focusNode,
       style: style,
       inputFormatters: [
         if (maxCharacters > 0) LengthLimitingTextInputFormatter(maxCharacters),
@@ -52,19 +45,19 @@ class AppPrimaryInput extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(color: AppColors.grey),
         ),
-        border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
             Radius.circular(16),
           ),
-          borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+          borderSide: BorderSide(color: AppColors.grey),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(color: AppColors.grey),
         ),
         labelText: label,
         hintText: hint,
