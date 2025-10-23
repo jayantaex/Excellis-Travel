@@ -1,5 +1,3 @@
-
-
 import '../../../core/network/api_response.dart';
 import '../api/todo_api.dart';
 import '../models/todo_model.dart';
@@ -16,7 +14,7 @@ class TodoRepository {
     return api.addTodo(data);
   }
 
-  Future<ApiResponse> deleteTodo(int id) {
-    return api.deleteTodo(id);
-  }
+  // Future<ApiResponse> deleteTodo(int id) {
+  //   // return api.deleteTodo(id);
+  // }
 }

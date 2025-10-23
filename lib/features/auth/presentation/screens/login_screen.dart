@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -24,7 +25,10 @@ class LoginScreen extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              margin: const EdgeInsets.only(top: 120),
+              padding: const EdgeInsets.only(top: 40),
+              margin: EdgeInsets.only(
+                  //onkey board
+                  top: AppHelpers.getScreenHeight(context) * 0.1),
               alignment: Alignment.bottomCenter,
               decoration: const BoxDecoration(
                 color: AppColors.white,
