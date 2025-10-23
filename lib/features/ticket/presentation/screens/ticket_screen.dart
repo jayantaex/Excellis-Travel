@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/widgets/compact_ticket_card.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/widgets/compact_ticket_card.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../flight_booking/data/search_data.dart';
 

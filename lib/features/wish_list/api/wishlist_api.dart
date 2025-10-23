@@ -1,5 +1,4 @@
-import 'package:reiselab/core/network/api_client.dart';
-
+import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
 
