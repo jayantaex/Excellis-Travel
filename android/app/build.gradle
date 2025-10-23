@@ -1,7 +1,6 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
     id "com.google.gms.google-services"
 }
@@ -20,6 +19,21 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
     }
 
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        release {
+            storeFile file('release-key.jks')
+            storePassword project.property("KEYSTORE_PASSWORD")
+            keyAlias project.property("KEY_ALIAS")
+            keyPassword project.property("KEY_PASSWORD")
+    }
+    }
+
     defaultConfig {
         applicationId = "com.reiselab"
         minSdk = 23
@@ -30,6 +44,9 @@ android {
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.release
+        }
+         debug {
             signingConfig = signingConfigs.debug
         }
     }
