@@ -1,40 +1,34 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/features/auth/auth_module.dart';
+
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
-import '../../bloc/auth_bloc.dart';
+import '../../../bottom_navigation/bottom_nav_module.dart';
 import 'auth_dropdown_widget.dart';
 import 'auth_input_widget.dart';
+import 'registration_sheet.dart';
 
-class LoginSheet extends StatefulWidget {
-  final bool isLoading;
-  const LoginSheet({super.key, required this.isLoading});
-
-  @override
-  State<LoginSheet> createState() => _LoginSheetState();
+Future<void> showLoginSheet(BuildContext context) async {
+  showModalBottomSheet(
+    enableDrag: false,
+    isDismissible: false,
+    isScrollControlled: true,
+    elevation: 0,
+    barrierColor: AppColors.transparent,
+    backgroundColor: AppColors.white,
+    context: context,
+    builder: (context) => LoginSheet(),
+  );
 }
 
-class _LoginSheetState extends State<LoginSheet> {
+class LoginSheet extends StatelessWidget {
+  LoginSheet({super.key});
+
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final _items = <DropdownMenuItem<String>>[
-    const DropdownMenuItem(value: 'retailer', child: Text('Retailer')),
-    const DropdownMenuItem(value: 'user', child: Text('User')),
-  ];
   String usertype = 'retailer';
   String errMsg = '';
-
-  @override
-  void dispose() {
-    _userNameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +47,7 @@ class _LoginSheetState extends State<LoginSheet> {
           const SizedBox(height: 53),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: UserTypeSelection(
-              items: _items,
+            child: AuthDropdownWidget(
               onChanged: (value) {
                 usertype = value ?? 'retailer';
               },
@@ -100,49 +93,41 @@ class _LoginSheetState extends State<LoginSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: AppPrimaryButton(
               title: 'LOGIN',
-              isLoading: widget.isLoading,
+              isLoading: false,
               onPressed: () {
-                log('Login pressed');
-                context.read<AuthBloc>().add(
-                      LoginEvent(
-                        fcmToken: '',
-                        userName: _userNameController.text,
-                        password: _passwordController.text,
-                        userType: usertype,
-                      ),
-                    );
+                context.goNamed(BottomNavModule.name);
               },
             ),
           ),
           const SizedBox(height: 20),
           SizedBox(
-            width: AppHelpers.getScreenWidth(context),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Don’t have an account? ',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                InkWell(
-                  splashColor: Colors.transparent,
-                  onTap: () async {
-                    context.goNamed(AuthModule.registerName);
-                  },
-                  child: const Text(
-                    'Sign up',
+              width: AppHelpers.getScreenWidth(context),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Don’t have an account? ',
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      await showAgencyRegistrationSheet(context);
+                    },
+                    child: const Text(
+                      'Sign up',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              )),
         ],
       ),
     );

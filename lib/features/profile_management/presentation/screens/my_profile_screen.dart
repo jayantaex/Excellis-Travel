@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../../legal/legal_module.dart';
 import '../../profile_management_module.dart';
 import '../widgets/log_out_sheet.dart';
 import '../widgets/user_content_widget.dart';
@@ -22,12 +20,12 @@ class MyProfileScreen extends StatelessWidget {
     {
       'title': 'Terms & Conditions',
       'iconPath': '${AppConstants.assetIcontUrl}terms.svg',
-      'routeName': LegalModule.termsName
+      'routeName': ProfileManagementModule.editProfileName
     },
     {
       'title': 'Privacy Policy',
       'iconPath': '${AppConstants.assetIcontUrl}privacy_policy.svg',
-      'routeName': LegalModule.policyName
+      'routeName': ProfileManagementModule.editProfileName
     },
     {
       'title': 'Settings',
@@ -115,9 +113,7 @@ class MyProfileScreen extends StatelessWidget {
                               option['title'] == 'Sign Out') {
                             showLogoutSheet(context: context);
                           }
-                          if (option['routeName'] != '') {
-                            context.pushNamed(option['routeName']);
-                          }
+                          if (option['routeName'] != '') {}
                         }))
                   ],
                 ),

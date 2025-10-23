@@ -2,12 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../utils/storage_service.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
-import 'authentication_interceptor.dart';
 
 class ApiClient {
   final Dio _dio = Dio();
@@ -30,31 +27,17 @@ class ApiClient {
       return handler.next(e);
     }));
     // print request and response
-    // _dio.interceptors.add(
-    //   LogInterceptor(
-    //     requestBody: true,
-    //     responseBody: true,
-    //     requestHeader: false,
-    //     responseHeader: false,
-    //     error: true,
-    //     request: true,
-    //     logPrint: (obj) {
-    //       log(obj.toString());
-    //     },
-    //   ),
-    // );
-
-    _dio.interceptors.add(PrettyDioLogger(
-      requestHeader: true,
+    _dio.interceptors.add(LogInterceptor(
       requestBody: true,
       responseBody: true,
+      requestHeader: false,
       responseHeader: false,
       error: true,
-      compact: true,
-      maxWidth: 90,
-      enabled: kDebugMode,
+      request: true,
+      logPrint: (obj) {
+        log(obj.toString());
+      },
     ));
-    _dio.interceptors.add(AuthenticationInterceptor(_dio));
   }
 
   // API request method GET
@@ -144,19 +127,19 @@ class ApiClient {
   }
 
   // API request method DELETE
-  Future<ApiResponse<T>> deleteRequest<T>(
-      {required String endPoint,
-      Map<String, dynamic>? queryParameters,
-      required T Function(Map<String, dynamic>) fromJson}) async {
+  Future<ApiResponse<Map<String, dynamic>>> deleteRequest(
+      {required String endPoint, Map<String, dynamic>? queryParameters}) async {
     try {
       final response =
           await _dio.delete(endPoint, queryParameters: queryParameters);
-      final data = fromJson(response.data);
-      return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
+      final data = response.data as Map<String, dynamic>;
+      return ApiResponse<Map<String, dynamic>>(
+          data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
       final statusCode = e.response?.statusCode ?? 0;
       final errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<Map<String, dynamic>>(
+          statusCode: statusCode, errorMessage: errorMessage);
     }
   }
 
@@ -223,9 +206,6 @@ class ApiClient {
         break;
       case DioExceptionType.badResponse:
         errorMessage = _handleStatusCode(statusCode);
-        break;
-      case DioExceptionType.connectionError:
-        errorMessage = "please check your connection";
         break;
       case DioExceptionType.unknown:
         errorMessage =

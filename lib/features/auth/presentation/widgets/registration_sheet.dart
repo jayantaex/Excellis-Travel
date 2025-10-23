@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/features/auth/auth_module.dart';
-import 'package:reiselab/features/auth/bloc/auth_bloc.dart';
+import 'package:reiselab/features/bottom_navigation/bottom_nav_module.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import 'auth_dropdown_widget.dart';
 import 'auth_input_widget.dart';
+import 'login_sheet.dart';
+
+Future<void> showAgencyRegistrationSheet(BuildContext context) async {
+  showModalBottomSheet(
+      enableDrag: false,
+      isDismissible: false,
+      isScrollControlled: true,
+      elevation: 0,
+      barrierColor: AppColors.transparent,
+      backgroundColor: AppColors.white,
+      context: context,
+      builder: (context) => AgencyRegistrationSheet());
+}
 
 class AgencyRegistrationSheet extends StatelessWidget {
   AgencyRegistrationSheet({super.key});
@@ -31,10 +42,6 @@ class AgencyRegistrationSheet extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _conPasswordController = TextEditingController();
   String usertype = 'retailer';
-  final _items = <DropdownMenuItem<String>>[
-    const DropdownMenuItem(value: 'retailer', child: Text('Become a Retailer')),
-    const DropdownMenuItem(value: 'user', child: Text('Become a User')),
-  ];
   String errMsg = '';
 
   @override
@@ -61,8 +68,7 @@ class AgencyRegistrationSheet extends StatelessWidget {
               const SizedBox(height: 53),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: UserTypeSelection(
-                  items: _items,
+                child: AuthDropdownWidget(
                   onChanged: (value) {
                     usertype = value ?? 'retailer';
                   },
@@ -245,24 +251,7 @@ class AgencyRegistrationSheet extends StatelessWidget {
                   title: 'REGISTER',
                   isLoading: false,
                   onPressed: () {
-                    context.read<AuthBloc>().add(RegisterEvent(
-                          confirmPassword: _conPasswordController.text,
-                          password: _passwordController.text,
-                          nearByAirport: _nearbyAirportController.text,
-                          userType: usertype,
-                          companyName: _companyNameController.text,
-                          firstName: _firstNameController.text,
-                          lastName: _lastNameController.text,
-                          panNumber: _panNoController.text,
-                          emailId: _emailController.text,
-                          phoneNumber: _phoneController.text,
-                          officeAddress: _officeAddressController.text,
-                          pinCode: _pinController.text,
-                          city: _cityController.text,
-                          state: _stateController.text,
-                          gstNumber: _gstNoController.text,
-                          aadhaarNumber: _aadhaarNoController.text,
-                        ));
+                    context.goNamed(BottomNavModule.name);
                   },
                 ),
               ),
@@ -273,7 +262,7 @@ class AgencyRegistrationSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      'Already have an account? ',
+                      'Don’t have an account? ',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -282,7 +271,8 @@ class AgencyRegistrationSheet extends StatelessWidget {
                     InkWell(
                       splashColor: Colors.transparent,
                       onTap: () async {
-                        context.goNamed(AuthModule.loginName);
+                        context.pop();
+                        await showLoginSheet(context);
                       },
                       child: const Text(
                         'Login',

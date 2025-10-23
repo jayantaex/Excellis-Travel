@@ -41,10 +41,7 @@ class GreetingWidget extends StatelessWidget {
             backgroundColor: AppColors.white.withOpacity(0.2),
             child: IconButton(
                 onPressed: () {},
-                icon: const Icon(
-                  Icons.notifications_none_rounded,
-                  color: AppColors.white,
-                )),
+                icon: const Icon(Icons.notifications_none_rounded)),
           )
         ],
       ),

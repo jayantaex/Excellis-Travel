@@ -16,9 +16,11 @@ class Validators {
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
+
     if (value.length < (minLength ?? 6)) {
       return 'Password must be at least ${minLength ?? 6} characters long';
     }
+
     return null;
   }
 
