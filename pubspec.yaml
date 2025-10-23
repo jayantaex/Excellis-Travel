@@ -52,6 +52,13 @@ dependencies:
   flutter_local_notifications: ^19.4.2
   # Barcode - generator
   barcode: ^2.2.9
+  path_provider: ^2.1.4
+  # Web view
+  webview_flutter: ^4.10.0
+  # Network logger
+  pretty_dio_logger: ^1.4.0
+  
+  
 
 
 dev_dependencies:
@@ -62,6 +69,7 @@ dev_dependencies:
   # Code Generation
   build_runner: ^2.4.12
   json_serializable: ^6.8.0
+
   
 flutter:
   uses-material-design: true

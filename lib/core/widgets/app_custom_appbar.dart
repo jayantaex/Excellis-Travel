@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 
-class Navbar extends StatelessWidget {
-  final Function onBcakClicked;
-  final Function onMoreClicked;
+class AppCustomAppbar extends StatelessWidget {
+  final Function? onBackClicked;
+  final Function? onMoreClicked;
   final Widget? trailing;
   final String? start;
   final String? end;
   final String? centerTitle;
 
-  const Navbar(
+  const AppCustomAppbar(
       {super.key,
-      required this.onBcakClicked,
-      required this.onMoreClicked,
+      this.onBackClicked,
+      this.onMoreClicked,
       this.trailing,
       this.start,
       this.end,
@@ -68,19 +68,7 @@ class Navbar extends StatelessWidget {
                                 color: AppColors.white)),
                       ],
               )),
-          trailing ??
-              CircleAvatar(
-                backgroundColor: AppColors.black.withOpacity(0.1),
-                child: IconButton(
-                  onPressed: () {
-                    onMoreClicked();
-                  },
-                  icon: const Icon(
-                    Icons.more_horiz_sharp,
-                    color: AppColors.white,
-                  ),
-                ),
-              )
+          trailing ?? const SizedBox()
         ],
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
 
+import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 
 class TicketScreen extends StatelessWidget {

@@ -77,6 +77,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
 
   Future<void> _pickDate(BuildContext context) async {
     selectedDate = await showDatePicker(
+      
       context: context,
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(
@@ -132,7 +133,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 label: 'From',
                                 placeHolder: 'Enter your departure airport',
                                 onSelected: (value) {
-                                  log('$value');
                                   _fromController.text = value.name ?? '';
                                   setState(() {});
                                 },
@@ -143,7 +143,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 label: 'To',
                                 placeHolder: 'Enter your arrival airport',
                                 onSelected: (value) {
-                                  log('$value');
                                   _toController.text = value.name ?? '';
                                   setState(() {});
                                 },
@@ -155,7 +154,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       selectedDate ?? DateTime.now(),
                                       pattern: 'E, dd MMM yyyy'),
                                 ),
-                                enable: false,
+                                enable: true,
                                 maxCharacters: 10,
                                 hint: 'Pick your departure date',
                                 label: 'Departure',

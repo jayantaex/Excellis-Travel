@@ -30,5 +30,5 @@ class FlightBoolingModule {
   //pass download
   static const String passDownload = '/pass-download';
   static const String passDownloadName = 'passDownload';
-  static Widget passDownloadBuilder() => PassDownloadScreen();
+  static Widget passDownloadBuilder() => const PassDownloadScreen();
 }

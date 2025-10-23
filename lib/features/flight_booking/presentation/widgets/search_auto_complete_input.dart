@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
 
+import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../data/search_data.dart';
@@ -58,7 +58,6 @@ class _SearchAutoCompleteInputState extends State<SearchAutoCompleteInput> {
         }
       },
       child: Autocomplete<AirportModel>(
-        initialValue: TextEditingValue(text: widget.placeHolder),
         optionsViewOpenDirection: OptionsViewOpenDirection.down,
         displayStringForOption: (option) {
           return '${option.code}(${option.city}) \n${option.name}';

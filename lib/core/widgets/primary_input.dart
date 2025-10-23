@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
+
+import '../constants/app_styles.dart';
 
 class AppPrimaryInput extends StatelessWidget {
   final String? label;

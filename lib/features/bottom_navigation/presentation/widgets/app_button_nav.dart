@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:reiselab/core/constants/app_constants.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
+
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_styles.dart';
+
 
 class AppButtonNav extends StatelessWidget {
   final int currentIndex;
@@ -24,7 +26,7 @@ class AppButtonNav extends StatelessWidget {
               const Border(top: BorderSide(color: AppColors.black, width: 2)),
         ),
         child: SvgPicture.asset(
-          '${AppConstants.assetIcontUrl}selected_home.svg',
+          '${AppConstants.assetIcontUrl}home.svg',
           colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
         ),
       ),
@@ -36,7 +38,7 @@ class AppButtonNav extends StatelessWidget {
               Border(top: BorderSide(color: AppColors.transparent, width: 2)),
         ),
         child: SvgPicture.asset(
-          '${AppConstants.assetIcontUrl}selected_home.svg',
+          '${AppConstants.assetIcontUrl}home.svg',
           colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
         ),
       ),

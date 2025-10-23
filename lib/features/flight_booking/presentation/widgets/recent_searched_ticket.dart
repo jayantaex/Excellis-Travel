@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
-import 'package:reiselab/features/flight_booking/models/ticket_data_model.dart';
+
 import 'package:ticket_widget/ticket_widget.dart';
 
+import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
 import '../../flight_booling_module.dart';
+import '../../models/ticket_data_model.dart';
 
 class RecentSearchedTicket extends StatelessWidget {
   final TicketModel data;
@@ -61,17 +62,55 @@ class RecentSearchedTicket extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
+              SizedBox(
+                height: 65,
+                width: width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                        height: 60,
+                        width: width * 0.22,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(data.start!,
+                                style: const TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.w600)),
+                            Text(
+                              AppHelpers.formatDateTime(DateTime.now(),
+                                  pattern: 'dd MMM, yyyy'),
+                              style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.grey),
+                            ),
+                          ],
+                        )),
+                    SizedBox(
+                        width: 100,
+                        child: Column(
+                          children: [
+                            AppHelpers.svgAsset(
+                              assetName: 'flight',
+                              width: width * 0.22,
+                            ),
+                            Text(
+                              getDuration(min: data.duration!),
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        )),
+                    SizedBox(
                       height: 60,
-                      width: 100,
+                      width: width * 0.22,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(data.start!,
+                          Text(data.end!,
                               style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600)),
                           Text(
@@ -83,41 +122,10 @@ class RecentSearchedTicket extends StatelessWidget {
                                 color: AppColors.grey),
                           ),
                         ],
-                      )),
-                  SizedBox(
-                      width: 100,
-                      child: Column(
-                        children: [
-                          AppHelpers.svgAsset(assetName: 'flight', width: 100),
-                          Text(
-                            getDuration(min: data.duration!),
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      )),
-                  SizedBox(
-                    height: 60,
-                    width: 100,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(data.end!,
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w600)),
-                        Text(
-                          AppHelpers.formatDateTime(DateTime.now(),
-                              pattern: 'dd MMM, yyyy'),
-                          style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.grey),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const Spacer(),
               const Row(
