@@ -22,6 +22,10 @@ class LoginSheet extends StatefulWidget {
 class _LoginSheetState extends State<LoginSheet> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _items = <DropdownMenuItem<String>>[
+    const DropdownMenuItem(value: 'retailer', child: Text('Retailer')),
+    const DropdownMenuItem(value: 'user', child: Text('User')),
+  ];
   String usertype = 'retailer';
   String errMsg = '';
 
@@ -49,7 +53,8 @@ class _LoginSheetState extends State<LoginSheet> {
           const SizedBox(height: 53),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: AuthDropdownWidget(
+            child: UserTypeSelection(
+              items: _items,
               onChanged: (value) {
                 usertype = value ?? 'retailer';
               },

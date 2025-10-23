@@ -31,6 +31,10 @@ class AgencyRegistrationSheet extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _conPasswordController = TextEditingController();
   String usertype = 'retailer';
+  final _items = <DropdownMenuItem<String>>[
+    const DropdownMenuItem(value: 'retailer', child: Text('Become a Retailer')),
+    const DropdownMenuItem(value: 'user', child: Text('Become a User')),
+  ];
   String errMsg = '';
 
   @override
@@ -57,7 +61,8 @@ class AgencyRegistrationSheet extends StatelessWidget {
               const SizedBox(height: 53),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: AuthDropdownWidget(
+                child: UserTypeSelection(
+                  items: _items,
                   onChanged: (value) {
                     usertype = value ?? 'retailer';
                   },

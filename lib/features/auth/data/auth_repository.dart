@@ -10,7 +10,7 @@ class AuthRepository {
       required String password,
       required String fcmToken,
       required String userType}) async {
-    return authApi.login(
+    return await authApi.login(
         username: username,
         password: password,
         fcmToken: fcmToken,

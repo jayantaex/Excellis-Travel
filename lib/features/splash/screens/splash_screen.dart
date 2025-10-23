@@ -38,13 +38,27 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _handleAuthentication() async {
     try {
       String? asscessToken = await StorageService.getAccessToken();
+      String? refreshToken = await StorageService.getAccessToken();
 
-      if (asscessToken != null && asscessToken.isNotEmpty) {
-        context.mounted ? context.goNamed(BottomNavModule.name) : null;
+      if ((asscessToken != null && asscessToken.isNotEmpty) &&
+          (refreshToken != null && refreshToken.isNotEmpty)) {
+        //check if token is valid
+
+        //if token is inValid take another token from api using refresh token
+
+        //if refresh token is inValid go to login
+
+        // if refresh token is valid and got access token successfully then save it to secure storage
+
+        // if api got failed while getting access token then go to login
+        if (context.mounted) {
+          context.goNamed(BottomNavModule.name);
+        }
         return;
       }
-
-      context.mounted ? context.goNamed(AuthModule.loginName) : null;
+      if (context.mounted) {
+        context.goNamed(AuthModule.loginName);
+      }
     } catch (e) {
       log('Error: $e');
     }

@@ -1,9 +1,5 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
-
 import '../../../core/utils/validators.dart';
 import '../data/auth_repository.dart';
 
@@ -19,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LogoutEvent>(_handleLogoutEvent);
   }
 
-  FutureOr<void> _handleLoginEvent(
+  Future<void> _handleLoginEvent(
       LoginEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthLoading());
@@ -59,14 +55,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         fcmToken: event.fcmToken,
         userType: event.userType,
       );
+      if (user.errorMessage != null) {
+        emit(AuthError(message: user.errorMessage!));
+        return;
+      }
       emit(Authenticated(token: user.data!));
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
   }
 
-  FutureOr<void> _handleRegistrationEvent(
-      RegisterEvent event, Emitter<AuthState> emit) {
+  Future<void> _handleRegistrationEvent(
+      RegisterEvent event, Emitter<AuthState> emit) async {
     try {
       emit(RegistrationInProgress());
       String? errMessage = validateRegisTration(
@@ -98,8 +98,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  FutureOr<void> _handleLogoutEvent(
-      LogoutEvent event, Emitter<AuthState> emit) {
+  Future<void> _handleLogoutEvent(
+      LogoutEvent event, Emitter<AuthState> emit) async {
     emit(LogingOut());
     try {
       emit(LoggedOutSucess());

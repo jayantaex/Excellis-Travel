@@ -168,18 +168,23 @@ class AppHelpers {
   static Future<void> showSnackBar(
     BuildContext context,
     String message, {
+    Color? textColor,
+    bool? showCloseButton,
     Color? backgroundColor,
     Duration duration = const Duration(seconds: 3),
     SnackBarAction? action,
   }) async {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: backgroundColor,
-        duration: duration,
-        action: action,
-      ),
-    );
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: backgroundColor,
+          duration: duration,
+          action: action,
+          showCloseIcon: showCloseButton ?? false,
+        ),
+      );
   }
 
   static Future<bool?> showConfirmDialog(
