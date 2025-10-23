@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 
@@ -10,7 +12,7 @@ class AuthApi {
       required String password,
       required String fcmToken,
       required String userType}) async {
-    return apiClient.postRequest(
+    return await apiClient.postRequest(
       endPoint: '/login',
       fromJson: (p0) {
         return p0 as String;
@@ -22,7 +24,7 @@ class AuthApi {
     return apiClient.postRequest(
       endPoint: '/register',
       fromJson: (p0) {
-        return null;
+        return;
       },
     );
   }

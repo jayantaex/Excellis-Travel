@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
           log('Auth states :::: $state');
           if (state is AuthError) {
             AppHelpers.showSnackBar(context, state.message,
-                backgroundColor: AppColors.error);
+                backgroundColor: AppColors.error, showCloseButton: true);
           }
         },
         child: Column(

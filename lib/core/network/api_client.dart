@@ -222,6 +222,10 @@ class ApiClient {
       case DioExceptionType.badResponse:
         errorMessage = _handleStatusCode(statusCode);
         break;
+      case DioExceptionType.connectionError:
+        errorMessage =
+            "Connection to API server failed due to internet connection";
+        break;
       case DioExceptionType.unknown:
         errorMessage =
             "Connection to API server failed due to internet connection";
