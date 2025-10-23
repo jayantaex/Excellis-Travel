@@ -57,8 +57,8 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
       if (context.mounted) {
-        context.goNamed(AuthModule.loginName);
-        // context.goNamed(BottomNavModule.name);
+        // context.goNamed(AuthModule.loginName);
+        context.goNamed(BottomNavModule.name);
       }
     } catch (e) {
       log('Error: $e');

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:excellistravel/core/widgets/compact_ticket_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,7 +15,6 @@ import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../../flight_booling_module.dart';
 import '../widgets/greeting_widget.dart';
-import '../widgets/recent_searched_ticket.dart';
 import '../widgets/search_auto_complete_input.dart';
 import '../widgets/search_drop_down.dart';
 
@@ -32,6 +32,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
 
   final TextEditingController _fromController = TextEditingController();
   final TextEditingController _toController = TextEditingController();
+  bool isRoundTrip = true;
   //mock data
   SearchData searchData = SearchData();
   String _selectedSeatType = 'Business';
@@ -77,7 +78,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
 
   Future<void> _pickDate(BuildContext context) async {
     selectedDate = await showDatePicker(
-      
       context: context,
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(
@@ -134,6 +134,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 placeHolder: 'Enter your departure airport',
                                 onSelected: (value) {
                                   _fromController.text = value.name ?? '';
+                                  FocusScope.of(context).unfocus();
                                   setState(() {});
                                 },
                               ),
@@ -144,6 +145,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 placeHolder: 'Enter your arrival airport',
                                 onSelected: (value) {
                                   _toController.text = value.name ?? '';
+                                  //hide the key board
+                                  FocusScope.of(context).unfocus();
                                   setState(() {});
                                 },
                               ),
@@ -164,24 +167,29 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     '${AppConstants.assetIcontUrl}calender.svg',
                                   ),
                                 ),
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 0, vertical: 10),
-                                  child: SizedBox(
-                                    width: 140,
-                                    child: Row(
-                                      children: [
-                                        const Text(
-                                          'Roundtrip?',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColors.grey),
-                                        ),
-                                        CupertinoSwitch(
-                                            value: true, onChanged: (value) {}),
-                                      ],
-                                    ),
+                                suffixIcon: SizedBox(
+                                  width: 140,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      const Text(
+                                        'Roundtrip?',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.grey),
+                                      ),
+                                      Transform.scale(
+                                        scale: 0.7,
+                                        child: CupertinoSwitch(
+                                            value: isRoundTrip,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                isRoundTrip = value;
+                                              });
+                                            }),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 style: const TextStyle(
@@ -310,8 +318,11 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               const SizedBox(height: 16),
                               AppPrimaryButton(
                                   onPressed: () {
-                                    context.pushNamed(
-                                        FlightBoolingModule.searchName);
+                                    if (_toController.text.isNotEmpty &&
+                                        _fromController.text.isNotEmpty) {
+                                      context.pushNamed(
+                                          FlightBoolingModule.searchName);
+                                    }
                                   },
                                   style: const TextStyle(
                                     fontSize: 16,
@@ -387,7 +398,13 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                     itemBuilder: (context, index) {
                       return Container(
                           margin: const EdgeInsets.only(right: 10),
-                          child: RecentSearchedTicket(
+                          child: CompactTicketCard(
+                            customWidth:
+                                AppHelpers.getScreenWidth(context) * 0.2,
+                            onTap: () {
+                              context.pushNamed(
+                                  FlightBoolingModule.seatSelectionName);
+                            },
                             data: searchData.ticketData[index],
                           ));
                     },
