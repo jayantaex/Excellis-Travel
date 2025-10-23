@@ -28,4 +28,6 @@ class EndPoints {
   static const refreshToken = "/auth/refreshToken";
   //Profile
   static const userProfile = "/user";
+  //wishlist
+  static const wishList = "/wishlists";
 }
