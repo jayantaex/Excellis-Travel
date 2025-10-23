@@ -16,7 +16,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 // on init fetch profile
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<EditProfileBloc>().add(FetchProfileEvent());
