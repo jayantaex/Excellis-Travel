@@ -1,5 +1,6 @@
 import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -74,7 +75,7 @@ class _SettingScreenState extends State<SettingScreen> {
                             )),
                         trailing: Transform.scale(
                           scale: 0.8,
-                          child: Switch.adaptive(
+                          child: CupertinoSwitch(
                             value: notificationOn,
                             onChanged: (value) {
                               setState(() {

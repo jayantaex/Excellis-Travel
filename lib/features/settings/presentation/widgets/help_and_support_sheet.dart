@@ -67,6 +67,7 @@ class HelpAndSupportSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 40),
       width: AppHelpers.getScreenWidth(context),
+      height: AppHelpers.getScreenHeight(context) * 0.95,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -91,54 +92,65 @@ class HelpAndSupportSheet extends StatelessWidget {
             thickness: 0.5,
           ),
           const SizedBox(height: 15),
-          AppDropDown(
-            onChanged: (p0) {},
-            items: supportItems,
-            label: 'Subject*',
-            title: 'Select Subject',
-            value: selectedSubject,
-          ),
-          const SizedBox(height: 15),
-          AppPrimaryInput(
-            maxCharacters: 50,
-            label: 'Name*',
-            controller: _nameController,
-            isMultiline: false,
-            hint: 'Enter your name',
-          ),
-          const SizedBox(height: 15),
-          AppPrimaryInput(
-            maxCharacters: 10,
-            label: 'Phone*',
-            controller: _phoneController,
-            isMultiline: false,
-            hint: 'Enter your phone number',
-            keyboardType: TextInputType.phone,
-          ),
-          const SizedBox(height: 15),
-          AppPrimaryInput(
-            maxCharacters: 50,
-            label: 'Email',
-            controller: _nameController,
-            isMultiline: false,
-            hint: 'Enter your email address',
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 15),
-          AppPrimaryInput(
-            maxCharacters: 50,
-            label: 'Remark*',
-            controller: _remarkController,
-            isMultiline: false,
-            hint: 'Enter your query',
-          ),
-          const SizedBox(height: 15),
-          AppPrimaryButton(
-            title: 'Submit',
-            isLoading: false,
-            onPressed: () {
-              Navigator.pop(context);
-            },
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  AppDropDown(
+                    onChanged: (p0) {
+                      selectedSubject = p0!;
+                    },
+                    items: supportItems,
+                    label: 'Subject*',
+                    title: 'Select Subject',
+                    value: selectedSubject,
+                  ),
+                  const SizedBox(height: 15),
+                  AppPrimaryInput(
+                    maxCharacters: 50,
+                    label: 'Name*',
+                    controller: _nameController,
+                    isMultiline: false,
+                    hint: 'Enter your name',
+                  ),
+                  const SizedBox(height: 15),
+                  AppPrimaryInput(
+                    maxCharacters: 10,
+                    label: 'Phone*',
+                    controller: _phoneController,
+                    isMultiline: false,
+                    hint: 'Enter your phone number',
+                    keyboardType: TextInputType.phone,
+                  ),
+                  const SizedBox(height: 15),
+                  AppPrimaryInput(
+                    maxCharacters: 50,
+                    label: 'Email',
+                    controller: _emailController,
+                    isMultiline: false,
+                    hint: 'Enter your email address',
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 15),
+                  AppPrimaryInput(
+                    maxCharacters: 50,
+                    keyboardType: TextInputType.multiline,
+                    label: 'Remark*',
+                    controller: _remarkController,
+                    isMultiline: true,
+                    hint: 'Enter your query',
+                  ),
+                  const SizedBox(height: 45),
+                  AppPrimaryButton(
+                    title: 'Submit',
+                    isLoading: false,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              ),
+            ),
           )
         ],
       ),

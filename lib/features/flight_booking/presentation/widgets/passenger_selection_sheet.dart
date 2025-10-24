@@ -188,7 +188,7 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
               subtitle: 'Age above 18',
             ),
           ),
-          const SizedBox(height: 60),
+          const SizedBox(height: 55),
           AppPrimaryButton(
             title: 'Done',
             isLoading: false,

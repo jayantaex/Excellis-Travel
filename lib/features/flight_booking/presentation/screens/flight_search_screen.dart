@@ -52,11 +52,11 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     ),
     const DropdownMenuItem<String>(
       value: 'Premium Economy',
-      child: Text('Premium Economy'),
+      child: Text('Premium Eco.'),
     ),
     const DropdownMenuItem<String>(
-      value: 'Business Class',
-      child: Text('Business Class'),
+      value: 'Business',
+      child: Text('Business'),
     ),
     const DropdownMenuItem<String>(
       value: 'First Class',
@@ -96,8 +96,13 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   ];
 
   bool isRoundTrip = false;
+  final TextStyle _defaultTextStyple = const TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: AppColors.black,
+  );
 
-  Future<void> _pickDate(BuildContext context) async {
+  Future<DateTime?> _pickDate(BuildContext context) async {
     selectedDate = await showDatePicker(
       context: context,
       firstDate: DateTime.now(),
@@ -108,7 +113,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     );
     setState(() {});
 
-    log(selectedDate.toString());
+    return selectedDate;
   }
 
   @override
@@ -229,19 +234,20 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   ),
                                 ),
                                 suffixIcon: SizedBox(
-                                  width: 140,
+                                  width:
+                                      AppHelpers.getScreenWidth(context) * 0.37,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       const Text(
                                         'Roundtrip?',
                                         style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300,
                                             color: AppColors.grey),
                                       ),
                                       Transform.scale(
-                                        scale: 0.7,
+                                        scale: 0.6,
                                         child: CupertinoSwitch(
                                             value: isRoundTrip,
                                             onChanged: (value) {
@@ -253,12 +259,17 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     ],
                                   ),
                                 ),
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.black),
+                                style: _defaultTextStyple,
                                 onTap: () async {
-                                  await _pickDate(context);
+                                  if (context.mounted) {
+                                    FocusScope.of(context).unfocus();
+                                  }
+                                  DateTime? date = await _pickDate(context);
+                                  if (context.mounted) {
+                                    FocusScope.of(context).unfocus();
+                                  }
+
+                                  //hide keyboard
                                 },
                               ),
                               const SizedBox(height: 16),
@@ -271,7 +282,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     SizedBox(
                                       width:
                                           AppHelpers.getScreenWidth(context) *
-                                              0.41,
+                                              0.4,
                                       child: AppPrimaryInput(
                                         keyboardType: TextInputType.number,
                                         controller: _travellerController,
@@ -302,7 +313,9 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         },
                                         suffixIcon: Container(
                                           alignment: Alignment.centerLeft,
-                                          width: 100,
+                                          width: AppHelpers.getScreenWidth(
+                                                  context) *
+                                              0.19,
                                           child: const Text(
                                             'Travellers',
                                             style: TextStyle(
@@ -312,11 +325,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             ),
                                           ),
                                         ),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.black,
-                                        ),
+                                        style: _defaultTextStyple,
                                         onChange: (p0) {
                                           setState(() {});
                                         },
@@ -325,7 +334,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     SizedBox(
                                       width:
                                           AppHelpers.getScreenWidth(context) *
-                                              0.41,
+                                              0.4,
                                       child: SearchDropDown(
                                         label: 'Cabin Class',
                                         prefixIconName: 'seat',
@@ -352,7 +361,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     SizedBox(
                                       width:
                                           AppHelpers.getScreenWidth(context) *
-                                              0.41,
+                                              0.4,
                                       child: SearchDropDown(
                                         label: 'Fare Type',
                                         prefixIconName: 'users',
@@ -370,7 +379,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     SizedBox(
                                       width:
                                           AppHelpers.getScreenWidth(context) *
-                                              0.41,
+                                              0.4,
                                       child: SearchDropDown(
                                         label: 'Trending Search',
                                         prefixIconName: 'seat',

@@ -43,7 +43,7 @@ class AppPrimaryInput extends StatelessWidget {
       onChanged: onChange,
       onTap: onTap,
       controller: controller,
-      keyboardType: keyboardType,
+      keyboardType: onTap != null ? TextInputType.none : keyboardType,
       focusNode: focusNode,
       style: style,
       inputFormatters: [
