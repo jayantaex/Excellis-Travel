@@ -125,6 +125,11 @@ class AppRouter {
         name: FlightBoolingModule.passDownloadName,
         builder: (context, state) => FlightBoolingModule.passDownloadBuilder(),
       ),
+        GoRoute(
+        path: FlightBoolingModule.airportSearch,
+        name: FlightBoolingModule.airportSearchName,
+        builder: (context, state) => FlightBoolingModule.airportSearchBuilder(context,state),
+      ),
 
       //Profile Management
       GoRoute(
