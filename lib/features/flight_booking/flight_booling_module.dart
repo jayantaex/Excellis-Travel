@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/features/flight_booking/models/air_port_model.dart';
+import 'models/air_port_model.dart';
 import 'presentation/screens/airport_search_screen.dart';
 import 'presentation/screens/flight_search_result_screen.dart';
 import 'presentation/screens/pasenger_details_screen.dart';
