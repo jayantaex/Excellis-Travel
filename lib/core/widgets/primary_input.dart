@@ -49,6 +49,7 @@ class AppPrimaryInput extends StatelessWidget {
       inputFormatters: [
         if (maxCharacters > 0) LengthLimitingTextInputFormatter(maxCharacters),
       ],
+      cursorWidth: onTap == null ? 2 : 0,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,

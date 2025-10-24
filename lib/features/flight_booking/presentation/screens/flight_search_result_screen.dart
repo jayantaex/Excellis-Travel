@@ -24,11 +24,9 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
   SearchData searchData = SearchData();
   List<String> filters = [
     'All',
-    'Economy',
-    'Business',
-    'First',
-    'Last',
-    'Non stop',
+    'Cheapest',
+    'Discounted Price',
+    'Non Stop First',
   ];
   int dateDuration = 20; //days
   String selectedFilter = 'All';

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 
-
 class SearchDropDown extends StatelessWidget {
   final String title;
   final String value;
@@ -26,7 +25,7 @@ class SearchDropDown extends StatelessWidget {
     return DropdownButtonFormField(
       dropdownColor: Theme.of(context).scaffoldBackgroundColor,
       style: const TextStyle(
-          fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.black),
+          fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.black),
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       value: value,
       icon: const SizedBox(),
