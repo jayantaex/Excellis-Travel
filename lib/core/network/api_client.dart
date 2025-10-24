@@ -144,19 +144,19 @@ class ApiClient {
   }
 
   // API request method DELETE
-  Future<ApiResponse<Map<String, dynamic>>> deleteRequest(
-      {required String endPoint, Map<String, dynamic>? queryParameters}) async {
+  Future<ApiResponse<T>> deleteRequest<T>(
+      {required String endPoint,
+      Map<String, dynamic>? queryParameters,
+      required T Function(Map<String, dynamic>) fromJson}) async {
     try {
       final response =
           await _dio.delete(endPoint, queryParameters: queryParameters);
-      final data = response.data as Map<String, dynamic>;
-      return ApiResponse<Map<String, dynamic>>(
-          data: data, statusCode: response.statusCode ?? 0);
+      final data = fromJson(response.data);
+      return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
       final statusCode = e.response?.statusCode ?? 0;
       final errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<Map<String, dynamic>>(
-          statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
     }
   }
 

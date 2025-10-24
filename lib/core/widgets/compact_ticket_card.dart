@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
-import 'package:reiselab/features/flight_booking/models/ticket_data_model.dart';
+
 import 'package:ticket_widget/ticket_widget.dart';
+
+import '../../features/flight_booking/models/ticket_data_model.dart';
+import '../constants/app_styles.dart';
+import '../utils/app_helpers.dart';
 
 class CompactTicketCard extends StatelessWidget {
   final TicketModel data;
   final bool? isOnWishList;
+  final double? customWidth;
   final bool? isFavIconRequired;
   final Function()? onWishListTap;
   final Function() onTap;
@@ -16,7 +21,8 @@ class CompactTicketCard extends StatelessWidget {
       this.isFavIconRequired,
       this.isOnWishList,
       this.onWishListTap,
-      required this.onTap});
+      required this.onTap,
+      this.customWidth});
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +107,7 @@ class CompactTicketCard extends StatelessWidget {
                 children: [
                   SizedBox(
                       height: 60,
-                      width: 100,
+                      width: customWidth ?? width * 0.25,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +126,7 @@ class CompactTicketCard extends StatelessWidget {
                         ],
                       )),
                   SizedBox(
-                      width: 100,
+                      width: customWidth ?? width * 0.25,
                       child: Column(
                         children: [
                           AppHelpers.svgAsset(assetName: 'flight', width: 100),
@@ -133,7 +139,7 @@ class CompactTicketCard extends StatelessWidget {
                       )),
                   SizedBox(
                     height: 60,
-                    width: 100,
+                    width: customWidth ?? width * 0.25,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,

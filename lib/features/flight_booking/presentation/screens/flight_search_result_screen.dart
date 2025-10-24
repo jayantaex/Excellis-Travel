@@ -1,9 +1,12 @@
+import 'package:excellistravel/core/widgets/compact_ticket_card.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
+import '../../flight_booling_module.dart';
 import '../widgets/class_filer_widget.dart';
 import '../widgets/date_filter_widget.dart';
 import '../widgets/nav_bar.dart';
@@ -84,12 +87,16 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     margin: const EdgeInsets.only(top: 16),
-                    height: AppHelpers.getScreenHeight(context) * 0.7,
+                    height: AppHelpers.getScreenHeight(context) * 0.69,
                     child: ListView.builder(
                       itemCount: searchData.ticketData.length,
                       itemBuilder: (context, index) => Container(
                         margin: const EdgeInsets.only(bottom: 16),
-                        child: RecentSearchedTicket(
+                        child: CompactTicketCard(
+                          onTap: () {
+                            context.pushNamed(
+                                FlightBoolingModule.seatSelectionName);
+                          },
                           data: searchData.ticketData[index],
                         ),
                       ),

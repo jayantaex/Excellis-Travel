@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/services.dart';
 
-import '../../../../core/constants/app_constants.dart';
-import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../../../core/utils/storage_service.dart';
-import '../../../../core/widgets/primary_button.dart';
-import '../../../auth/auth_module.dart';
+import '../constants/app_styles.dart';
+import '../utils/app_helpers.dart';
+import 'primary_button.dart';
 
-Future<void> showLogoutSheet({required BuildContext context}) async {
+Future<void> showAppExitSheet({required BuildContext context}) async {
   showModalBottomSheet(
       backgroundColor: AppColors.white,
-      showDragHandle: true,
+      showDragHandle: false,
       context: context,
-      builder: (context) => const LogOutSheet());
+      builder: (context) => const AppExitSheet());
 }
 
-class LogOutSheet extends StatelessWidget {
-  const LogOutSheet({super.key});
+class AppExitSheet extends StatelessWidget {
+  const AppExitSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +23,21 @@ class LogOutSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SvgPicture.asset(
-            '${AppConstants.assetIcontUrl}sign_out.svg',
+          const SizedBox(height: 24),
+          AppHelpers.svgAsset(
+            assetName: 'sign_out',
+            isIcon: true,
             height: 52,
             width: 42,
-            colorFilter:
-                const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
           ),
+          const SizedBox(height: 12),
           const Text(
-            'Sign Out',
+            'Exit',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          const Text('You will be logged out of your account.'),
-          const SizedBox(height: 55),
+          const Text('Are you sure you want to exit the app?'),
+          const SizedBox(height: 25),
           SizedBox(
             width: AppHelpers.getScreenWidth(context),
             child: Row(
@@ -53,17 +50,22 @@ class LogOutSheet extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         title: 'Cancel',
+                        style: const TextStyle(
+                            color: AppColors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400),
                         isLoading: false)),
                 SizedBox(
                   width: AppHelpers.getScreenWidth(context) * 0.4,
                   child: AppPrimaryButton(
                     onPressed: () async {
-                      await StorageService.clearTokens();
-                      context.mounted
-                          ? context.goNamed(AuthModule.loginName)
-                          : null;
+                      await SystemNavigator.pop();
                     },
-                    title: 'Sign Out',
+                    title: 'Yes',
+                    style: const TextStyle(
+                        color: AppColors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400),
                     isLoading: false,
                     bgColor: AppColors.primary,
                   ),
@@ -71,7 +73,7 @@ class LogOutSheet extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 35)
+          const SizedBox(height: 25)
         ],
       ),
     );

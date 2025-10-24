@@ -104,6 +104,17 @@ class _SearchAutoCompleteInputState extends State<SearchAutoCompleteInput> {
               child:
                   AppHelpers.svgAsset(assetName: widget.iconName, isIcon: true),
             ),
+            suffixIcon: textEditingController.text.isNotEmpty
+                ? IconButton(
+                    onPressed: () {
+                      textEditingController.clear();
+                      setState(() {});
+                    },
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      size: 18,
+                    ))
+                : null,
           );
         },
         optionsBuilder: (TextEditingValue query) {
