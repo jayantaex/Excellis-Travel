@@ -8,6 +8,7 @@ import 'features/legal/legal_module.dart';
 import 'features/notifiaction/notification_module.dart';
 import 'features/profile/profile_module.dart';
 import 'features/profile_management/profile_management_module.dart';
+import 'features/settings/settings_module.dart';
 import 'features/splash/screens/splash_screen.dart';
 import 'features/splash/splash_module.dart';
 import 'features/ticket/ticket_module.dart';
@@ -157,7 +158,13 @@ class AppRouter {
         path: NotificationModule.routePath,
         name: NotificationModule.routeName,
         builder: (context, state) => NotificationModule.builder(),
-      )
+      ),
+      //settings
+      GoRoute(
+        path: SettingsModule.routePath,
+        name: SettingsModule.routeName,
+        builder: (context, state) => SettingsModule.builder(),
+      ),
     ],
     errorBuilder: (context, state) => const Scaffold(
       body: Center(

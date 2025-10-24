@@ -48,7 +48,7 @@ class AppCustomAppbar extends StatelessWidget {
                         const Text('CKG',
                             style: TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w600,
                                 color: AppColors.white)),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -57,14 +57,14 @@ class AppCustomAppbar extends StatelessWidget {
                         const Text('NTR',
                             style: TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w600,
                                 color: AppColors.white)),
                       ]
                     : [
                         Text(centerTitle!,
                             style: const TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w600,
                                 color: AppColors.white)),
                       ],
               )),
