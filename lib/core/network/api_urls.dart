@@ -30,4 +30,7 @@ class EndPoints {
   static const wishList = "/wish-list";
   //Profile
   static const userProfile = "/user";
+  //airport
+  static const airportSearch = "/v1/reference-data/locations";
+  
 }

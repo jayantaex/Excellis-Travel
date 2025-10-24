@@ -13,7 +13,7 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
-import '../../flight_booling_module.dart';
+import '../../flight_booking_module.dart';
 import '../../models/air_port_model.dart';
 import '../widgets/greeting_widget.dart';
 import '../widgets/passenger_selection_sheet.dart';
@@ -167,7 +167,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     color: AppColors.black),
                                 onTap: () async {
                                   context.pushNamed(
-                                      FlightBoolingModule.airportSearchName,
+                                      FlightBookingModule.airportSearchName,
                                       extra: {
                                         'type': 'Departure',
                                         'selectedAirport':
@@ -198,7 +198,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     color: AppColors.black),
                                 onTap: () async {
                                   context.pushNamed(
-                                      FlightBoolingModule.airportSearchName,
+                                      FlightBookingModule.airportSearchName,
                                       extra: {
                                         'type': 'Arrival',
                                         'selectedAirport':
@@ -393,7 +393,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     if (_arrivalController.text.isNotEmpty &&
                                         _depurtureController.text.isNotEmpty) {
                                       context.pushNamed(
-                                          FlightBoolingModule.searchName);
+                                          FlightBookingModule.searchName);
                                     }
                                   },
                                   style: const TextStyle(
@@ -471,7 +471,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 AppHelpers.getScreenWidth(context) * 0.2,
                             onTap: () {
                               context.pushNamed(
-                                  FlightBoolingModule.seatSelectionName);
+                                  FlightBookingModule.seatSelectionName);
                             },
                             data: searchData.ticketData[index],
                           ));

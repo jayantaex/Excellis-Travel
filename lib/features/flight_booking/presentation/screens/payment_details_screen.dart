@@ -8,7 +8,7 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
-import '../../flight_booling_module.dart';
+import '../../flight_booking_module.dart';
 import '../widgets/nav_bar.dart';
 
 class PaymentDetailsScreen extends StatelessWidget {
@@ -326,7 +326,7 @@ class PaymentDetailsScreen extends StatelessWidget {
           children: [
             AppPrimaryButton(
               onPressed: () {
-                context.pushNamed(FlightBoolingModule.passDownloadName);
+                context.pushNamed(FlightBookingModule.passDownloadName);
               },
               title: 'Pay Now',
               isLoading: false,

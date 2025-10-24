@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/network/api_client.dart';
+import 'bloc/flight_bloc.dart';
+import 'data/flight_booking_repository.dart';
 import 'models/air_port_model.dart';
 import 'presentation/screens/airport_search_screen.dart';
 import 'presentation/screens/flight_search_result_screen.dart';
@@ -6,8 +10,9 @@ import 'presentation/screens/pasenger_details_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
 import 'presentation/screens/payment_details_screen.dart';
 import 'presentation/screens/seat_selection_screen.dart';
+import 'src/flight_booking_remote_data_src.dart';
 
-class FlightBoolingModule {
+class FlightBookingModule {
   static const String searchroute = '/flight-search';
   static const String searchName = 'flightSearch';
 
@@ -22,10 +27,22 @@ class FlightBoolingModule {
 
     final airportType = extra?['type'] as String?;
     final selectedAirport = extra?['selectedAirport'] as String?;
-    return AirportSearchScreen(
-      type: airportType,
-      selectedAirport: selectedAirport,
-      onAirportSelected: onAirportSelected,
+
+    final apiClient = ApiClient();
+    final remoteSrc = FlightBookingRemoteDataSrc(
+      apiClient: apiClient,
+    );
+    final repository = FlightBookingRepository(remoteSc: remoteSrc);
+
+    return BlocProvider(
+      create: (context) => FlightBloc(
+        repository: repository,
+      ),
+      child: AirportSearchScreen(
+        type: airportType,
+        selectedAirport: selectedAirport,
+        onAirportSelected: onAirportSelected,
+      ),
     );
   }
 
