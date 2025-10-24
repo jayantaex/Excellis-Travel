@@ -6,7 +6,7 @@ import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../flight_booling_module.dart';
+import '../../flight_booking_module.dart';
 import '../widgets/launge_access_widget.dart';
 import '../widgets/nav_bar.dart';
 import '../widgets/search_drop_down.dart';
@@ -162,7 +162,7 @@ class PasengerDetailsScreen extends StatelessWidget {
           color: AppColors.white,
           child: AppPrimaryButton(
             onPressed: () {
-              context.pushNamed(FlightBoolingModule.paymentDetailsName);
+              context.pushNamed(FlightBookingModule.paymentDetailsName);
             },
             title: 'Done',
             isLoading: false,

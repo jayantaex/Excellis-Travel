@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -8,6 +9,7 @@ import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../bloc/flight_bloc.dart';
 import '../../data/search_data.dart';
 import '../../models/air_port_model.dart';
 
@@ -37,6 +39,15 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
     airports = _data.airports;
     _selectedAirport = widget.selectedAirport?.split('\n')[1] ?? '';
     _searchController.text = _selectedAirport;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<FlightBloc>().add(
+            SearchAirportEvent(
+              countryCode: 'IN',
+              keyword: _selectedAirport,
+              subType: 'CITY,AIRPORT',
+            ),
+          );
+    });
     super.initState();
   }
 
@@ -73,8 +84,16 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                               AppHelpers.debounce(
                                 () {
                                   setState(() {
-                                    airports =
-                                        _data.searchAirports(query: query);
+                                    // airports =
+                                    //     _data.searchAirports(query: query);
+
+                                    context.read<FlightBloc>().add(
+                                          SearchAirportEvent(
+                                            countryCode: 'IN',
+                                            keyword: query,
+                                            subType: 'CITY,AIRPORT',
+                                          ),
+                                        );
                                   });
                                 },
                               );
@@ -87,31 +106,57 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                           ),
                           const SizedBox(height: 20),
                           Expanded(
-                              child: ListView.builder(
-                            itemCount: airports.length,
-                            itemBuilder: (context, index) => ListTile(
-                                leading: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    airports[index].code ?? 'NO-CODE',
-                                    style: const TextStyle(
-                                        color: AppColors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                title: Text(airports[index].name ?? 'NO-NAME'),
-                                subtitle:
-                                    Text(airports[index].city ?? 'NO-CITY'),
-                                onTap: () {
-                                  widget.onAirportSelected!(airports[index]);
-                                  Navigator.pop(context);
-                                }),
+                              child: BlocConsumer<FlightBloc, FlightState>(
+                            listener: (context, state) {
+                              log(state.toString());
+                            },
+                            builder: (context, state) {
+                              if (state is AirportSearching) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+
+                              if (state is AirportLoaded) {
+                                return ListView.builder(
+                                  itemCount: airports.length,
+                                  itemBuilder: (context, index) => ListTile(
+                                      leading: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.primary,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          airports[index].code ?? 'NO-CODE',
+                                          style: const TextStyle(
+                                              color: AppColors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      title: Text(
+                                          airports[index].name ?? 'NO-NAME'),
+                                      subtitle: Text(
+                                          airports[index].city ?? 'NO-CITY'),
+                                      onTap: () {
+                                        widget.onAirportSelected!(
+                                            airports[index]);
+                                        Navigator.pop(context);
+                                      }),
+                                );
+                              }
+                              if (state is AirportSearchingError) {
+                                return Center(
+                                  child: Text(state.message),
+                                );
+                              }
+
+                              return Center(
+                                child: Text("Something went wrong"),
+                              );
+                            },
                           ))
                         ],
                       ),

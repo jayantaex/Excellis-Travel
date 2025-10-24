@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import 'features/auth/auth_module.dart';
 import 'features/bottom_navigation/bottom_nav_module.dart';
-import 'features/flight_booking/flight_booling_module.dart';
+import 'features/flight_booking/flight_booking_module.dart';
 import 'features/legal/legal_module.dart';
 import 'features/notifiaction/notification_module.dart';
 import 'features/profile/profile_module.dart';
@@ -100,37 +100,37 @@ class AppRouter {
 
       //Flight Booking
       GoRoute(
-        path: FlightBoolingModule.searchResult,
-        name: FlightBoolingModule.searchName,
-        builder: (context, state) => FlightBoolingModule.searchBuilder(),
+        path: FlightBookingModule.searchResult,
+        name: FlightBookingModule.searchName,
+        builder: (context, state) => FlightBookingModule.searchBuilder(),
       ),
       GoRoute(
-        path: FlightBoolingModule.seatSelection,
-        name: FlightBoolingModule.seatSelectionName,
-        builder: (context, state) => FlightBoolingModule.seatSelectionBuilder(),
+        path: FlightBookingModule.seatSelection,
+        name: FlightBookingModule.seatSelectionName,
+        builder: (context, state) => FlightBookingModule.seatSelectionBuilder(),
       ),
       GoRoute(
-        path: FlightBoolingModule.passengerDetails,
-        name: FlightBoolingModule.passengerDetailsName,
+        path: FlightBookingModule.passengerDetails,
+        name: FlightBookingModule.passengerDetailsName,
         builder: (context, state) =>
-            FlightBoolingModule.passengerDetailsBuilder(),
+            FlightBookingModule.passengerDetailsBuilder(),
       ),
       GoRoute(
-        path: FlightBoolingModule.paymentDetails,
-        name: FlightBoolingModule.paymentDetailsName,
+        path: FlightBookingModule.paymentDetails,
+        name: FlightBookingModule.paymentDetailsName,
         builder: (context, state) =>
-            FlightBoolingModule.paymentDetailsBuilder(),
+            FlightBookingModule.paymentDetailsBuilder(),
       ),
       GoRoute(
-        path: FlightBoolingModule.passDownload,
-        name: FlightBoolingModule.passDownloadName,
-        builder: (context, state) => FlightBoolingModule.passDownloadBuilder(),
+        path: FlightBookingModule.passDownload,
+        name: FlightBookingModule.passDownloadName,
+        builder: (context, state) => FlightBookingModule.passDownloadBuilder(),
       ),
       GoRoute(
-        path: FlightBoolingModule.airportSearch,
-        name: FlightBoolingModule.airportSearchName,
+        path: FlightBookingModule.airportSearch,
+        name: FlightBookingModule.airportSearchName,
         builder: (context, state) =>
-            FlightBoolingModule.airportSearchBuilder(context, state),
+            FlightBookingModule.airportSearchBuilder(context, state),
       ),
 
       //Profile Management
