@@ -10,10 +10,10 @@ import 'api_urls.dart';
 import 'authentication_interceptor.dart';
 
 class ApiClient {
-  final Dio _dio = Dio();
-
-  // Constructor to initialize Dio with base URL and interceptors
-  ApiClient() {
+  //single instance
+  static final ApiClient _instance = ApiClient._internal();
+  factory ApiClient() => _instance;
+  ApiClient._internal() {
     _dio.options.baseUrl = EndPoints.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 60);
     _dio.options.receiveTimeout = const Duration(seconds: 60);
@@ -56,6 +56,8 @@ class ApiClient {
     ));
     _dio.interceptors.add(AuthenticationInterceptor(_dio));
   }
+
+  final Dio _dio = Dio();
 
   // API request method GET
   Future<ApiResponse<T>> getRequest<T>(

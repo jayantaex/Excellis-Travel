@@ -7,7 +7,6 @@ import 'api_urls.dart';
 
 class AuthenticationInterceptor extends Interceptor {
   final Dio _dio;
-
   AuthenticationInterceptor(this._dio) {
     log('Authentication Interceptor initialized', name: 'Auth-Interceptor');
   }
