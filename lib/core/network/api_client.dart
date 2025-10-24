@@ -13,6 +13,7 @@ class ApiClient {
   //single instance
   static final ApiClient _instance = ApiClient._internal();
   factory ApiClient() => _instance;
+  final Dio _dio = Dio();
   ApiClient._internal() {
     _dio.options.baseUrl = EndPoints.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 60);
@@ -56,8 +57,6 @@ class ApiClient {
     ));
     _dio.interceptors.add(AuthenticationInterceptor(_dio));
   }
-
-  final Dio _dio = Dio();
 
   // API request method GET
   Future<ApiResponse<T>> getRequest<T>(
