@@ -1,9 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
-import 'package:reiselab/core/widgets/primary_button.dart';
+
+import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/primary_button.dart';
 
 Future<void> showPassengerSelectionSheet(
     {required BuildContext context,

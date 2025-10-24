@@ -5,6 +5,7 @@ import 'features/auth/auth_module.dart';
 import 'features/bottom_navigation/bottom_nav_module.dart';
 import 'features/flight_booking/flight_booling_module.dart';
 import 'features/legal/legal_module.dart';
+import 'features/notifiaction/notification_module.dart';
 import 'features/profile/profile_module.dart';
 import 'features/profile_management/profile_management_module.dart';
 import 'features/splash/screens/splash_screen.dart';
@@ -125,10 +126,11 @@ class AppRouter {
         name: FlightBoolingModule.passDownloadName,
         builder: (context, state) => FlightBoolingModule.passDownloadBuilder(),
       ),
-        GoRoute(
+      GoRoute(
         path: FlightBoolingModule.airportSearch,
         name: FlightBoolingModule.airportSearchName,
-        builder: (context, state) => FlightBoolingModule.airportSearchBuilder(context,state),
+        builder: (context, state) =>
+            FlightBoolingModule.airportSearchBuilder(context, state),
       ),
 
       //Profile Management
@@ -150,6 +152,12 @@ class AppRouter {
         name: LegalModule.policyName,
         builder: (context, state) => LegalModule.policyBuilder(),
       ),
+      //notification
+      GoRoute(
+        path: NotificationModule.routePath,
+        name: NotificationModule.routeName,
+        builder: (context, state) => NotificationModule.builder(),
+      )
     ],
     errorBuilder: (context, state) => const Scaffold(
       body: Center(

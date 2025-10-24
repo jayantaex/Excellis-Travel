@@ -1,15 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
-import 'package:reiselab/core/widgets/app_custom_appbar.dart';
-import 'package:reiselab/core/widgets/app_gradient_bg.dart';
-import 'package:reiselab/core/widgets/primary_input.dart';
-import 'package:reiselab/core/widgets/trans_white_bg_widget.dart';
-import 'package:reiselab/features/flight_booking/models/air_port_model.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
+import '../../../../core/widgets/primary_input.dart';
+import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
+import '../../models/air_port_model.dart';
 
 class AirportSearchScreen extends StatefulWidget {
   final String? selectedAirport;

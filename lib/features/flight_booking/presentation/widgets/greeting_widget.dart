@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../notifiaction/notification_module.dart';
 
 class GreetingWidget extends StatelessWidget {
   const GreetingWidget({super.key});
@@ -40,7 +42,9 @@ class GreetingWidget extends StatelessWidget {
           CircleAvatar(
             backgroundColor: AppColors.white.withOpacity(0.2),
             child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.pushNamed(NotificationModule.routeName);
+                },
                 icon: const Icon(
                   Icons.notifications_none_rounded,
                   color: AppColors.white,

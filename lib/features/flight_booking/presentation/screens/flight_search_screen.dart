@@ -5,8 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/features/flight_booking/models/air_port_model.dart';
-import 'package:reiselab/features/flight_booking/presentation/widgets/passenger_selection_sheet.dart';
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -16,8 +14,9 @@ import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../../flight_booling_module.dart';
+import '../../models/air_port_model.dart';
 import '../widgets/greeting_widget.dart';
-import '../widgets/recent_searched_ticket.dart';
+import '../widgets/passenger_selection_sheet.dart';
 import '../widgets/search_drop_down.dart';
 
 class FlightSearchScreen extends StatefulWidget {
@@ -95,6 +94,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
       child: Text('DBX-DEL'),
     ),
   ];
+
+  bool isRoundTrip = false;
 
   Future<void> _pickDate(BuildContext context) async {
     selectedDate = await showDatePicker(
@@ -389,8 +390,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               const SizedBox(height: 16),
                               AppPrimaryButton(
                                   onPressed: () {
-                                    if (_toController.text.isNotEmpty &&
-                                        _fromController.text.isNotEmpty) {
+                                    if (_arrivalController.text.isNotEmpty &&
+                                        _depurtureController.text.isNotEmpty) {
                                       context.pushNamed(
                                           FlightBoolingModule.searchName);
                                     }
