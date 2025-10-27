@@ -49,8 +49,8 @@ class AppCustomAppbar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: centerTitle == null
                     ? [
-                        const Text('CKG',
-                            style: TextStyle(
+                        Text(start ?? '',
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.white)),
@@ -58,8 +58,8 @@ class AppCustomAppbar extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: AppHelpers.svgAsset(assetName: 'appBarFlight'),
                         ),
-                        const Text('NTR',
-                            style: TextStyle(
+                        Text(end ?? '',
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.white)),

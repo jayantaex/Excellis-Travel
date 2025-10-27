@@ -1,8 +1,10 @@
 import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:excellistravel/core/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../flight_booking_module.dart';
 
 class FlightDetailsFeatureCard extends StatelessWidget {
   FlightDetailsFeatureCard({super.key});
@@ -106,8 +108,12 @@ class FlightDetailsFeatureCard extends StatelessWidget {
                 SizedBox(
                     height: 45,
                     width: AppHelpers.getScreenWidth(context) * 0.3,
-                    child: const AppPrimaryButton(
-                        style: TextStyle(
+                    child: AppPrimaryButton(
+                        onPressed: () {
+                          context.pushNamed(
+                              FlightBookingModule.passengerDetailsNewName);
+                        },
+                        style: const TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w600),
                         title: 'Book now',
                         isLoading: false))

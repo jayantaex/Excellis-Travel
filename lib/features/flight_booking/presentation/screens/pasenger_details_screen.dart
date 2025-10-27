@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -51,15 +52,7 @@ class PasengerDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient:
-              LinearGradient(colors: [AppColors.primary, AppColors.secondary]),
-          borderRadius: BorderRadiusDirectional.only(
-            topStart: Radius.circular(18),
-            topEnd: Radius.circular(18),
-          ),
-        ),
+      body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: Center(
             child: SafeArea(

@@ -9,6 +9,7 @@ import 'presentation/screens/flight_details.dart';
 import 'presentation/screens/flight_search_result_screen.dart';
 import 'presentation/screens/pasenger_details_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
+import 'presentation/screens/passenger_details_new.dart';
 import 'presentation/screens/payment_details_screen.dart';
 import 'presentation/screens/seat_selection_screen.dart';
 import 'src/flight_booking_remote_data_src.dart';
@@ -75,10 +76,10 @@ class FlightBookingModule {
   //flight Details
   static const String flightDetails = '/flight-details';
   static const String flightDetailsName = 'flightDetails';
-  static Widget flightDetailsBuilder() =>  const FlightDetailsScreen();
+  static Widget flightDetailsBuilder() => const FlightDetailsScreen();
 
   //passenger Details new
   static const String passengerDetailsNew = '/passenger-details-new';
   static const String passengerDetailsNewName = 'passengerDetailsNew';
-  static Widget passengerDetailsNewBuilder() => const PasengerDetailsScreen();
+  static Widget passengerDetailsNewBuilder() => const PassengetDetailsNew();
 }

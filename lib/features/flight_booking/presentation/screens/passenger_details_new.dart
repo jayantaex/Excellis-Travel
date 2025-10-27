@@ -1,13 +1,18 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/core/utils/app_helpers.dart';
-import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
-import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
-import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
+import '../../../../core/widgets/primary_button.dart';
+import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
-import 'flight_details_feature_card.dart';
+import '../../flight_booking_module.dart';
+import '../widgets/booking_policy_card.dart';
+import '../widgets/passenger_details_card.dart';
 
 class PassengetDetailsNew extends StatefulWidget {
   const PassengetDetailsNew({super.key});
@@ -28,13 +33,13 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
       body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: SafeArea(
-            bottom: false,
             child: Column(
               children: [
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: AppCustomAppbar(
-                    centerTitle: 'Flight Details & Fares',
+                    start: 'CCU',
+                    end: 'HDO',
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -70,6 +75,13 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                                     fontSize: 10,
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.grey),
+                              ),
+                              trailing: const Text(
+                                'Economy | Eco value',
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.black),
                               ),
                             ),
                           ),
@@ -200,19 +212,14 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                                   color: AppColors.grey),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: FlightDetailsFeatureCard(),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: PassengerDetailsCard(),
                           ),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: FlightDetailsFeatureCard(),
-                          ),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: FlightDetailsFeatureCard(),
+                          const SizedBox(height: 12),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: BookingPolicyCard(),
                           ),
                           const SizedBox(height: 45),
                         ],
@@ -223,6 +230,52 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
               ],
             ),
           ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 75,
+        color: AppColors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: AppHelpers.getScreenWidth(context) * 0.4,
+              height: 60,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '₹${data.price}',
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black),
+                  ),
+                  const Text(
+                    'Total Price',
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: AppHelpers.getScreenWidth(context) * 0.4,
+              height: 45,
+              child: AppPrimaryButton(
+                  onPressed: () {
+                    context.pushNamed(FlightBookingModule.seatSelectionName);
+                  },
+                  bgColor: AppColors.primary,
+                  style: const TextStyle(fontSize: 16, color: AppColors.white),
+                  title: 'Continue',
+                  isLoading: false),
+            )
+          ],
         ),
       ),
     );
