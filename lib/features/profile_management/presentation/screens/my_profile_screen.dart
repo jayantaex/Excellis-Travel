@@ -47,7 +47,6 @@ class MyProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        backgroundColor: AppColors.transparent,
         title: const Text(
           'Profile',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
