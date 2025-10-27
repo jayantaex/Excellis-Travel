@@ -97,14 +97,20 @@ class FlightDetailsFeatureCard extends StatelessWidget {
               children: [
                 SizedBox(
                     height: 45,
-                    width: AppHelpers.getScreenWidth(context) * 0.35,
+                    width: AppHelpers.getScreenWidth(context) * 0.3,
                     child: TextButton(
-                        onPressed: () {}, child: const Text('Lock In'))),
+                        onPressed: () {},
+                        child: const Text('Lock In',
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w600)))),
                 SizedBox(
                     height: 45,
-                    width: AppHelpers.getScreenWidth(context) * 0.4,
+                    width: AppHelpers.getScreenWidth(context) * 0.3,
                     child: const AppPrimaryButton(
-                        title: 'Book now', isLoading: false))
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w600),
+                        title: 'Book now',
+                        isLoading: false))
               ],
             ),
           )

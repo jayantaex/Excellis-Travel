@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
@@ -29,12 +30,9 @@ class _WishListScreenState extends State<WishListScreen> {
           child: Column(
             children: [
               //app bar
-              const Text(
-                'Wishlist',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.white),
+              AppCustomAppbar(
+                isBackButtonRequired: false,
+                centerTitle: 'Wish List',
               ),
 
               const SizedBox(height: 24),

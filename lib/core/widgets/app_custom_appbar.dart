@@ -10,6 +10,7 @@ class AppCustomAppbar extends StatelessWidget {
   final String? start;
   final String? end;
   final String? centerTitle;
+  final bool? isBackButtonRequired;
 
   const AppCustomAppbar(
       {super.key,
@@ -18,6 +19,7 @@ class AppCustomAppbar extends StatelessWidget {
       this.trailing,
       this.start,
       this.end,
+      this.isBackButtonRequired = true,
       this.centerTitle});
 
   @override
@@ -27,18 +29,20 @@ class AppCustomAppbar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CircleAvatar(
-            backgroundColor: AppColors.black.withOpacity(0.1),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_rounded,
-                color: AppColors.white,
-              ),
-            ),
-          ),
+          isBackButtonRequired ?? true
+              ? CircleAvatar(
+                  backgroundColor: AppColors.black.withOpacity(0.1),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back_rounded,
+                      color: AppColors.white,
+                    ),
+                  ),
+                )
+              : const SizedBox(),
           SizedBox(
               width: AppHelpers.getScreenWidth(context) * 0.6,
               child: Row(

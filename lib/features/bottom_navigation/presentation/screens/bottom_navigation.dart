@@ -1,14 +1,10 @@
 import 'dart:developer';
-
-import 'package:excellistravel/core/utils/storage_service.dart';
-import 'package:excellistravel/core/widgets/app_exit_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/storage_service.dart';
+import '../../../../core/widgets/app_exit_sheet.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../flight_booking/presentation/screens/flight_search_screen.dart';
-
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../../profile_management/presentation/screens/my_profile_screen.dart';
 import '../../../ticket/presentation/screens/ticket_screen.dart';
@@ -71,19 +67,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               }
             },
             child: Scaffold(
-              backgroundColor: AppColors.primary,
-              body: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [AppColors.primary, AppColors.secondary]),
-                  borderRadius: BorderRadiusDirectional.only(
-                    topStart: Radius.circular(18),
-                    topEnd: Radius.circular(18),
-                  ),
-                ),
-                height: AppHelpers.percenHeight(context: context),
-                width: AppHelpers.percenWidth(context: context),
-                child: _screens[_currentIndex],
+              body: AppGradientBg(
+                child: SafeArea(child: _screens[_currentIndex]),
               ),
               bottomNavigationBar: AppButtonNav(
                 currentIndex: _currentIndex,

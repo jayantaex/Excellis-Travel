@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/compact_ticket_card.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../flight_booking/data/search_data.dart';
@@ -15,12 +16,9 @@ class TicketScreen extends StatelessWidget {
           child: Column(
             children: [
               //app bar
-              const Text(
-                'Tickets',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.white),
+              const AppCustomAppbar(
+                isBackButtonRequired: false,
+                centerTitle: 'Tickets',
               ),
 
               const SizedBox(height: 24),

@@ -75,5 +75,10 @@ class FlightBookingModule {
   //flight Details
   static const String flightDetails = '/flight-details';
   static const String flightDetailsName = 'flightDetails';
-  static Widget flightDetailsBuilder() =>  FlightDetailsScreen();
+  static Widget flightDetailsBuilder() =>  const FlightDetailsScreen();
+
+  //passenger Details new
+  static const String passengerDetailsNew = '/passenger-details-new';
+  static const String passengerDetailsNewName = 'passengerDetailsNew';
+  static Widget passengerDetailsNewBuilder() => const PasengerDetailsScreen();
 }

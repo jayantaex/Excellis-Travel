@@ -9,21 +9,15 @@ import '../../../../core/constants/app_styles.dart';
 import '../../data/search_data.dart';
 import 'flight_details_feature_card.dart';
 
-class FlightDetailsScreen extends StatefulWidget {
-  const FlightDetailsScreen({super.key});
+class PassengetDetailsNew extends StatefulWidget {
+  const PassengetDetailsNew({super.key});
 
   @override
-  State<FlightDetailsScreen> createState() => _FlightDetailsScreenState();
+  State<PassengetDetailsNew> createState() => _PassengetDetailsNewState();
 }
 
-class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
+class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
   final SearchData _searchData = SearchData();
-  String seletedTab = 'Economy';
-  List<String> classList = [
-    'Economy',
-    'Business',
-    'First Class',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -204,59 +198,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.grey),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            height: 45,
-                            decoration: BoxDecoration(
-                              color: AppColors.background,
-                              borderRadius: BorderRadius.circular(32),
-                              border: Border.all(
-                                width: 1,
-                                color: AppColors.grey.withOpacity(0.2),
-                              ),
-                            ),
-                            width: AppHelpers.getScreenWidth(context),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ...classList.map((e) => InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          seletedTab = e;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12),
-                                        height: 45,
-                                        width: width / classList.length - 20,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          color: seletedTab == e
-                                              ? AppColors.black
-                                              : null,
-                                          borderRadius:
-                                              BorderRadius.circular(32),
-                                        ),
-                                        child: Text(
-                                          e,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: seletedTab == e
-                                                ? AppColors.white
-                                                : AppColors.black,
-                                            fontSize: 14,
-                                            fontWeight: seletedTab == e
-                                                ? FontWeight.w500
-                                                : FontWeight.w300,
-                                          ),
-                                        ),
-                                      ),
-                                    )),
-                              ],
                             ),
                           ),
                           Padding(

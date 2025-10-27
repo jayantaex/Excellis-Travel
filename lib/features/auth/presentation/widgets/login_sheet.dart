@@ -52,8 +52,16 @@ class _LoginSheetState extends State<LoginSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: AppHelpers.getScreenHeight(context) * 0.65,
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      padding: EdgeInsets.only(top: 20),
+      height: AppHelpers.getScreenHeight(context) * 0.62,
       width: AppHelpers.getScreenWidth(context),
       child: SingleChildScrollView(
         child: Column(
@@ -97,7 +105,7 @@ class _LoginSheetState extends State<LoginSheet> {
               'You can reach us anytime',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
             ),
-            const SizedBox(height: 43),
+            const SizedBox(height: 33),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: UserTypeSelection(
@@ -127,22 +135,8 @@ class _LoginSheetState extends State<LoginSheet> {
                   label: 'Password',
                   hint: 'Enter your Password'),
             ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SizedBox(
-                  width: AppHelpers.getScreenWidth(context),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        errMsg,
-                        style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.error),
-                      ))),
-            ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: AppPrimaryButton(
@@ -150,7 +144,7 @@ class _LoginSheetState extends State<LoginSheet> {
                 isLoading: widget.isLoading,
                 onPressed: () {
                   log('Login pressed');
-                
+
                   context.read<AuthBloc>().add(
                         LoginEvent(
                           fcmToken: '',
