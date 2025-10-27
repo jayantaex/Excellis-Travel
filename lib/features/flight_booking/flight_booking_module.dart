@@ -5,6 +5,7 @@ import 'bloc/flight_bloc.dart';
 import 'data/flight_booking_repository.dart';
 import 'models/air_port_model.dart';
 import 'presentation/screens/airport_search_screen.dart';
+import 'presentation/screens/flight_details.dart';
 import 'presentation/screens/flight_search_result_screen.dart';
 import 'presentation/screens/pasenger_details_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
@@ -70,4 +71,9 @@ class FlightBookingModule {
   static const String passDownload = '/pass-download';
   static const String passDownloadName = 'passDownload';
   static Widget passDownloadBuilder() => const PassDownloadScreen();
+
+  //flight Details
+  static const String flightDetails = '/flight-details';
+  static const String flightDetailsName = 'flightDetails';
+  static Widget flightDetailsBuilder() =>  FlightDetailsScreen();
 }

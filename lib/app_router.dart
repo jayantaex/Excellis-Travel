@@ -126,6 +126,11 @@ class AppRouter {
         builder: (context, state) =>
             FlightBookingModule.airportSearchBuilder(context, state),
       ),
+      GoRoute(
+        path: FlightBookingModule.flightDetails,
+        name: FlightBookingModule.flightDetailsName,
+        builder: (context, state) => FlightBookingModule.flightDetailsBuilder(),
+      ),
 
       //Profile Management
       GoRoute(

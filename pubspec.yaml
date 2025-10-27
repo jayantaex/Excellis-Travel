@@ -65,6 +65,9 @@ dependencies:
   # Package info
   package_info_plus: ^9.0.0
   
+  # Image Picker
+  dotted_border: ^2.1.0
+  
   
 
 
