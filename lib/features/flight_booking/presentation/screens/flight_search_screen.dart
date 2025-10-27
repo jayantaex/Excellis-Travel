@@ -130,15 +130,14 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return TransWhiteBgWidget(
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
+          child: SafeArea(
             child: Column(
               children: [
                 //greeting part
                 BlocBuilder<ProfileBloc, ProfileState>(
-                  
                   builder: (context, state) {
                     return const GreetingWidget();
                   },

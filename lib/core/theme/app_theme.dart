@@ -129,7 +129,7 @@ class AppTheme {
       ),
 
       // Scaffold Background
-      scaffoldBackgroundColor: AppColors.scaffoldBackground,
+      scaffoldBackgroundColor: Colors.transparent,
 
       // Divider Theme
       dividerTheme: const DividerThemeData(
@@ -140,7 +140,7 @@ class AppTheme {
 
       // Progress Indicator Theme
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.primary,
+        color: AppColors.white,
       ),
 
       // Snack Bar Theme

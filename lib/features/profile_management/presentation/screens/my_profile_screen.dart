@@ -45,7 +45,6 @@ class MyProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.transparent,
       appBar: AppBar(
         centerTitle: false,
         backgroundColor: AppColors.transparent,
