@@ -6,7 +6,6 @@ import 'features/bottom_navigation/bottom_nav_module.dart';
 import 'features/flight_booking/flight_booking_module.dart';
 import 'features/legal/legal_module.dart';
 import 'features/notifiaction/notification_module.dart';
-import 'features/profile/profile_module.dart';
 import 'features/profile_management/profile_management_module.dart';
 import 'features/settings/settings_module.dart';
 import 'features/splash/screens/splash_screen.dart';
@@ -22,12 +21,6 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: SplashModule.splashRoute,
     routes: [
-      //DEPRICATED
-      GoRoute(
-        path: '/profile',
-        name: 'profile',
-        builder: (context, state) => ProfileModule.route(),
-      ),
       GoRoute(
         path: TodoModule.addTodoPath,
         name: TodoModule.addTodoName,

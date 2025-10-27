@@ -12,10 +12,7 @@ final class AuthInitial extends AuthState {}
 //login states
 final class AuthLoading extends AuthState {}
 
-final class Authenticated extends AuthState {
-  final String token;
-  const Authenticated({required this.token});
-}
+final class Authenticated extends AuthState {}
 
 final class Unauthenticated extends AuthState {
   final String message;

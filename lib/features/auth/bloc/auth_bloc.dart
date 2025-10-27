@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:excellistravel/core/utils/storage_service.dart';
 import '../../../core/utils/validators.dart';
 import '../data/auth_repository.dart';
+import '../models/auth_resp_model.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -19,7 +23,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       LoginEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthLoading());
-
       if (event.userName.isEmpty || event.password.isEmpty) {
         emit(const AuthError(message: "Please enter username and password"));
         return;
@@ -59,7 +62,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthError(message: user.errorMessage!));
         return;
       }
-      emit(Authenticated(token: user.data!));
+      //save token into local
+      await StorageService.saveTokens(
+          user.data?.accessToken ?? '', user.data?.refreshToken ?? '');
+      emit(Authenticated());
+      log("Authenticated");
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }

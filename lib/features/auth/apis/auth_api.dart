@@ -1,21 +1,28 @@
-
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
+import '../models/auth_resp_model.dart';
 
 class AuthApi {
   final ApiClient apiClient;
   AuthApi({required this.apiClient});
 
-  Future<ApiResponse<String>> login(
+  Future<ApiResponse<AuthRespModel>> login(
       {required String username,
       required String password,
       required String fcmToken,
       required String userType}) async {
+    Map<String, dynamic> data = {
+      "username": username,
+      "password": password,
+      "fcmToken": fcmToken,
+      "userType": userType
+    };
     return await apiClient.postRequest(
       endPoint: EndPoints.login,
-      fromJson: (p0) {
-        return p0 as String;
+      reqModel: data,
+      fromJson: (jsonData) {
+        return AuthRespModel.fromJson(jsonData);
       },
     );
   }

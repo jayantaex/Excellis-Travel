@@ -1,9 +1,11 @@
 import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_wiget.dart';
 import '../../../../core/widgets/app_exit_sheet.dart';
+import '../../../bottom_navigation/bottom_nav_module.dart';
 import '../../bloc/auth_bloc.dart';
 import '../widgets/login_sheet.dart';
 
@@ -53,6 +55,10 @@ class LoginScreen extends StatelessWidget {
                           context: context,
                           message: state.message,
                           onOk: () {});
+                    }
+
+                    if (state is Authenticated) {
+                      context.goNamed(BottomNavModule.name);
                     }
                   },
                   builder: (context, state) {

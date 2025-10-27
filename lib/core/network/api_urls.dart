@@ -16,8 +16,7 @@ class EndPoints {
   static var baseUrl = MainUrl().getUrl();
   static const userLogin = '/auth/login';
   static const register = "/users/add";
-  static const profile = "/auth/me";
-  static const updateProfile = "/users";
+
   //todo
   static const todos = "/todos";
   static const addTodo = "/todos/add";
@@ -29,8 +28,7 @@ class EndPoints {
   //wish -list
   static const wishList = "/wish-list";
   //Profile
-  static const userProfile = "/user/me";
+  static const profile = "/auth/me";
   //airport
   static const airportSearch = "/v1/reference-data/locations";
-  
 }

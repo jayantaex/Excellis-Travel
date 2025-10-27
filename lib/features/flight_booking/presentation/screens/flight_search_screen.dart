@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:excellistravel/core/widgets/compact_ticket_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,6 +13,7 @@ import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../data/search_data.dart';
 import '../../flight_booking_module.dart';
 import '../../models/air_port_model.dart';
@@ -135,7 +137,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
             child: Column(
               children: [
                 //greeting part
-                const GreetingWidget(),
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  
+                  builder: (context, state) {
+                    return const GreetingWidget();
+                  },
+                ),
                 const SizedBox(height: 16),
                 //searching part
                 Container(

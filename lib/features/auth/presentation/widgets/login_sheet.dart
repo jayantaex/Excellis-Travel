@@ -1,5 +1,8 @@
 import 'dart:developer';
 
+import 'package:excellistravel/features/bottom_navigation/bottom_nav_module.dart';
+import 'package:excellistravel/features/legal/legal_module.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -30,6 +33,17 @@ class _LoginSheetState extends State<LoginSheet> {
   String errMsg = '';
 
   @override
+  void initState() {
+    kDebugMode
+        ? {
+            _userNameController.text = 'emilys',
+            _passwordController.text = 'emilyspass'
+          }
+        : null;
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _userNameController.dispose();
     _passwordController.dispose();
@@ -47,8 +61,38 @@ class _LoginSheetState extends State<LoginSheet> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // const SizedBox(height: 25),
-            const Text('Welcome back!',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+            SizedBox(
+              width: AppHelpers.getScreenWidth(context),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: InkWell(
+                  onTap: () {
+                    context.goNamed(BottomNavModule.name);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 16),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const Text(
+                      'Skip >>',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const Text(
+              'Welcome back!',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
             const Text(
               'You can reach us anytime',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
@@ -106,6 +150,7 @@ class _LoginSheetState extends State<LoginSheet> {
                 isLoading: widget.isLoading,
                 onPressed: () {
                   log('Login pressed');
+                
                   context.read<AuthBloc>().add(
                         LoginEvent(
                           fcmToken: '',
@@ -146,6 +191,59 @@ class _LoginSheetState extends State<LoginSheet> {
                 ],
               ),
             ),
+            const SizedBox(height: 20),
+            const Text(
+              'By continuing, you agree to our ',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            const SizedBox(height: 2),
+
+            SizedBox(
+              width: AppHelpers.getScreenWidth(context),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    onTap: () async {
+                      context.pushNamed(LegalModule.termsName);
+                    },
+                    child: const Text(
+                      'Terms & Conditions',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    ' and ',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    onTap: () async {
+                      context.pushNamed(LegalModule.policyName);
+                    },
+                    child: const Text(
+                      'Privacy Policy',
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
