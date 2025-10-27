@@ -1,12 +1,18 @@
+import 'dart:developer';
+
+import 'package:excellistravel/core/utils/storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../auth/auth_module.dart';
 import '../../../legal/legal_module.dart';
 import '../../../settings/settings_module.dart';
+import '../../bloc/profile_bloc.dart';
 import '../../profile_management_module.dart';
 import '../widgets/log_out_sheet.dart';
 import '../widgets/user_content_widget.dart';
@@ -64,67 +70,89 @@ class MyProfileScreen extends StatelessWidget {
         ],
       ),
       body: TransWhiteBgWidget(
-        child: Column(
-          children: [
-            //profile components
-            SizedBox(
-              width: AppHelpers.getScreenWidth(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const UserContentWidget(
-                    userImage: '${AppConstants.assetImageUrl}user.jpg',
-                    userName: 'John Doe',
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.light_mode,
-                        color: AppColors.white,
-                      ))
-                ],
-              ),
-            ),
+        child: BlocConsumer<ProfileBloc, ProfileState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            log('Profile states :::: $state');
 
-            //links
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(top: 25),
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+            if (state is ProfileInitial) {
+              options.removeLast();
+            }
+            return Column(
+              children: [
+                //profile components
+                SizedBox(
+                  width: AppHelpers.getScreenWidth(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      UserContentWidget(
+                        userImage: '${AppConstants.assetImageUrl}user.jpg',
+                        userName: state is ProfileLoaded
+                            ? state.profileData.firstName ?? 'No-Name'
+                            : 'Guest',
+                      ),
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.light_mode,
+                            color: AppColors.white,
+                          ))
+                    ],
                   ),
                 ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    ...options.map((option) => ListTile(
-                        leading: SvgPicture.asset(
-                          option['iconPath'],
-                          height: 17,
-                          width: 17,
-                        ),
-                        title: Text(
-                          option['title'],
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w400),
-                        ),
-                        onTap: () async {
-                          if (option['routeName'] == '' &&
-                              option['title'] == 'Sign Out') {
-                            showLogoutSheet(context: context);
-                          }
-                          if (option['routeName'] != '') {
-                            context.pushNamed(option['routeName']);
-                          }
-                        }))
-                  ],
-                ),
-              ),
-            )
-          ],
+
+                //links
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 25),
+                    decoration: const BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20),
+                        ...options.map(
+                          (option) => ListTile(
+                            leading: SvgPicture.asset(
+                              option['iconPath'],
+                              height: 17,
+                              width: 17,
+                            ),
+                            title: Text(
+                              option['title'],
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w400),
+                            ),
+                            onTap: () async {
+                              if (option['routeName'] == '' &&
+                                  option['title'] == 'Sign Out') {
+                                showLogoutSheet(context: context);
+                              }
+                              if (option['routeName'] != '') {
+                                if (state is ProfileInitial) {
+                                  if (option['title'] == 'Terms & Conditions' ||
+                                      option['title'] == 'Privacy Policy') {
+                                    context.pushNamed(option['routeName']);
+                                  } else {
+                                    context.pushNamed(AuthModule.loginName);
+                                  }
+                                }
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            );
+          },
         ),
       ),
     );

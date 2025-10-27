@@ -14,7 +14,6 @@ import '../../../profile_management/presentation/screens/my_profile_screen.dart'
 import '../../../ticket/presentation/screens/ticket_screen.dart';
 import '../../../wish_list/presentation/screens/wish_list_screen.dart';
 import '../widgets/app_button_nav.dart';
-import '../widgets/bottom_navigation_loading.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -25,7 +24,7 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _currentIndex = 0;
-  bool isLoading = false;
+  bool isLoading = true;
   final List<Widget> _screens = [
     const FlightSearchScreen(),
     TicketScreen(),
@@ -47,6 +46,8 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             }
           }
         }
+        isLoading = false;
+        setState(() {});
       }
     });
     super.initState();
@@ -54,38 +55,44 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const BottomNavigationLoading()
-        : PopScope(
-            canPop: false,
-            onPopInvokedWithResult: (didPop, result) async {
-              log('didPop $didPop');
-              log('pop result $result');
-              if (!didPop) {
-                if (_currentIndex == 0) {
-                  await showAppExitSheet(context: context);
-                }
-                setState(() {
-                  _currentIndex = 0;
-                });
-              }
-            },
-            child: Scaffold(
-              backgroundColor: AppColors.primary,
-              body: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [AppColors.primary, AppColors.secondary]),
-                  borderRadius: BorderRadiusDirectional.only(
-                    topStart: Radius.circular(18),
-                    topEnd: Radius.circular(18),
-                  ),
-                ),
-                height: AppHelpers.percenHeight(context: context),
-                width: AppHelpers.percenWidth(context: context),
-                child: _screens[_currentIndex],
-              ),
-              bottomNavigationBar: AppButtonNav(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        log('didPop $didPop');
+        log('pop result $result');
+        if (!didPop) {
+          if (_currentIndex == 0) {
+            await showAppExitSheet(context: context);
+          }
+          setState(() {
+            _currentIndex = 0;
+          });
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.primary,
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                colors: [AppColors.primary, AppColors.secondary]),
+            borderRadius: BorderRadiusDirectional.only(
+              topStart: Radius.circular(18),
+              topEnd: Radius.circular(18),
+            ),
+          ),
+          height: AppHelpers.percenHeight(context: context),
+          width: AppHelpers.percenWidth(context: context),
+          child: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator.adaptive(
+                  backgroundColor: AppColors.white,
+                  strokeWidth: 1,
+                ))
+              : _screens[_currentIndex],
+        ),
+        bottomNavigationBar: isLoading
+            ? null
+            : AppButtonNav(
                 currentIndex: _currentIndex,
                 onTap: (index) {
                   setState(() {
@@ -93,7 +100,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
                   });
                 },
               ),
-            ),
-          );
+      ),
+    );
   }
 }
