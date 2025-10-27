@@ -52,6 +52,8 @@ dependencies:
   flutter_local_notifications: ^19.4.2
   # Barcode - generator
   barcode: ^2.2.9
+  # image picker
+  image_picker: ^1.1.2
 
 
 dev_dependencies:

@@ -34,7 +34,7 @@ class ProfileManagementModule {
       create: (_) => ProfileBloc(
         profileRepository: _repository,
       ),
-      child: const EditProfileScreen(),
+      child: EditProfileScreen(),
     );
   }
 }
