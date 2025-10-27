@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:excellistravel/core/widgets/compact_ticket_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,11 +13,12 @@ import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../data/search_data.dart';
-import '../../flight_booling_module.dart';
+import '../../flight_booking_module.dart';
+import '../../models/air_port_model.dart';
 import '../widgets/greeting_widget.dart';
-import '../widgets/recent_searched_ticket.dart';
-import '../widgets/search_auto_complete_input.dart';
+import '../widgets/passenger_selection_sheet.dart';
 import '../widgets/search_drop_down.dart';
 
 class FlightSearchScreen extends StatefulWidget {
@@ -30,25 +33,36 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   final TextEditingController _travellerController =
       TextEditingController(text: '1');
 
-  final TextEditingController _fromController = TextEditingController();
-  final TextEditingController _toController = TextEditingController();
+  final TextEditingController _depurtureController = TextEditingController(
+    text: 'DEL (Delhi)\nIndira Gandhi International Airport',
+  );
+  final TextEditingController _arrivalController = TextEditingController(
+    text: 'DXB (Dubai)\nDubai International Airport',
+  );
   //mock data
   SearchData searchData = SearchData();
-  String _selectedSeatType = 'Business';
+  String _selectedSeatType = 'Economy';
   String _selectedFareType = 'Regular';
   String _trendingSearch = 'CCU-AU';
-  final List<DropdownMenuItem<String>> _seatTypes = <DropdownMenuItem<String>>[
+  int _adultCount = 1;
+  int _childCount = 0;
+  int _infantCount = 0;
+  final List<DropdownMenuItem<String>> _cabinTypes = <DropdownMenuItem<String>>[
+    const DropdownMenuItem<String>(
+      value: 'Economy',
+      child: Text('Economy'),
+    ),
+    const DropdownMenuItem<String>(
+      value: 'Premium Economy',
+      child: Text('Premium Eco.'),
+    ),
     const DropdownMenuItem<String>(
       value: 'Business',
       child: Text('Business'),
     ),
     const DropdownMenuItem<String>(
-      value: 'Economy',
-      child: Text('Echonomy'),
-    ),
-    const DropdownMenuItem<String>(
-      value: 'First',
-      child: Text('First'),
+      value: 'First Class',
+      child: Text('First Class'),
     ),
   ];
 
@@ -58,8 +72,16 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
       child: Text('Regular'),
     ),
     const DropdownMenuItem<String>(
-      value: 'First',
-      child: Text('First'),
+      value: 'Student',
+      child: Text('Student'),
+    ),
+    const DropdownMenuItem<String>(
+      value: 'Senior Citizen',
+      child: Text('Senior Citizen'),
+    ),
+    const DropdownMenuItem<String>(
+      value: 'Armed Forces',
+      child: Text('Student'),
     ),
   ];
 
@@ -75,7 +97,14 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     ),
   ];
 
-  Future<void> _pickDate(BuildContext context) async {
+  bool isRoundTrip = false;
+  final TextStyle _defaultTextStyple = const TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: AppColors.black,
+  );
+
+  Future<DateTime?> _pickDate(BuildContext context) async {
     selectedDate = await showDatePicker(
       context: context,
       firstDate: DateTime.now(),
@@ -86,14 +115,14 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     );
     setState(() {});
 
-    log(selectedDate.toString());
+    return selectedDate;
   }
 
   @override
   void dispose() {
     _travellerController.dispose();
-    _fromController.dispose();
-    _toController.dispose();
+    _depurtureController.dispose();
+    _arrivalController.dispose();
 
     super.dispose();
   }
@@ -108,7 +137,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
             child: Column(
               children: [
                 //greeting part
-                const GreetingWidget(),
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  
+                  builder: (context, state) {
+                    return const GreetingWidget();
+                  },
+                ),
                 const SizedBox(height: 16),
                 //searching part
                 Container(
@@ -127,25 +161,66 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                           width: AppHelpers.getScreenWidth(context),
                           child: Column(
                             children: [
-                              SearchAutoCompleteInput(
-                                iconName: 'from',
-                                label: 'From',
-                                placeHolder: 'Enter your departure airport',
-                                onSelected: (value) {
-                                  log('$value');
-                                  _fromController.text = value.name ?? '';
-                                  setState(() {});
+                              AppPrimaryInput(
+                                isMultiline: true,
+                                controller: _depurtureController,
+                                enable: true,
+                                maxCharacters: 10,
+                                hint: 'Enter your departure airport',
+                                label: 'Departure',
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: AppHelpers.svgAsset(
+                                      assetName: 'from', isIcon: true),
+                                ),
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.black),
+                                onTap: () async {
+                                  context.pushNamed(
+                                      FlightBookingModule.airportSearchName,
+                                      extra: {
+                                        'type': 'Departure',
+                                        'selectedAirport':
+                                            _depurtureController.text.trim(),
+                                        'onAirportSelected':
+                                            (AirportModel airport) {
+                                          log('Departure Airport ${airport.name}');
+                                        },
+                                      });
                                 },
                               ),
                               const SizedBox(height: 16),
-                              SearchAutoCompleteInput(
-                                iconName: 'to',
-                                label: 'To',
-                                placeHolder: 'Enter your arrival airport',
-                                onSelected: (value) {
-                                  log('$value');
-                                  _toController.text = value.name ?? '';
-                                  setState(() {});
+                              AppPrimaryInput(
+                                isMultiline: true,
+                                controller: _arrivalController,
+                                enable: true,
+                                maxCharacters: 10,
+                                hint: 'Enter your arrival airport',
+                                label: 'Arrival',
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: AppHelpers.svgAsset(
+                                      assetName: 'to', isIcon: true),
+                                ),
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.black),
+                                onTap: () async {
+                                  context.pushNamed(
+                                      FlightBookingModule.airportSearchName,
+                                      extra: {
+                                        'type': 'Arrival',
+                                        'selectedAirport':
+                                            _arrivalController.text,
+                                        'onAirportSelected':
+                                            (AirportModel airport) {
+                                          log('Arrival Airport ${airport.name}');
+                                          setState(() {});
+                                        },
+                                      });
                                 },
                               ),
                               const SizedBox(height: 16),
@@ -155,7 +230,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       selectedDate ?? DateTime.now(),
                                       pattern: 'E, dd MMM yyyy'),
                                 ),
-                                enable: false,
+                                enable: true,
                                 maxCharacters: 10,
                                 hint: 'Pick your departure date',
                                 label: 'Departure',
@@ -165,32 +240,43 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     '${AppConstants.assetIcontUrl}calender.svg',
                                   ),
                                 ),
-                                suffixIcon: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 0, vertical: 10),
-                                  child: SizedBox(
-                                    width: 140,
-                                    child: Row(
-                                      children: [
-                                        const Text(
-                                          'Roundtrip?',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColors.grey),
-                                        ),
-                                        CupertinoSwitch(
-                                            value: true, onChanged: (value) {}),
-                                      ],
-                                    ),
+                                suffixIcon: SizedBox(
+                                  width:
+                                      AppHelpers.getScreenWidth(context) * 0.37,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      const Text(
+                                        'Roundtrip?',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300,
+                                            color: AppColors.grey),
+                                      ),
+                                      Transform.scale(
+                                        scale: 0.6,
+                                        child: CupertinoSwitch(
+                                            value: isRoundTrip,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                isRoundTrip = value;
+                                              });
+                                            }),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.black),
+                                style: _defaultTextStyple,
                                 onTap: () async {
-                                  await _pickDate(context);
+                                  if (context.mounted) {
+                                    FocusScope.of(context).unfocus();
+                                  }
+                                  DateTime? date = await _pickDate(context);
+                                  if (context.mounted) {
+                                    FocusScope.of(context).unfocus();
+                                  }
+
+                                  //hide keyboard
                                 },
                               ),
                               const SizedBox(height: 16),
@@ -207,7 +293,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       child: AppPrimaryInput(
                                         keyboardType: TextInputType.number,
                                         controller: _travellerController,
-                                        enable: false,
+                                        enable: true,
                                         maxCharacters: 2,
                                         hint: '1 Adult',
                                         label: 'Travellers',
@@ -217,28 +303,36 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             '${AppConstants.assetIcontUrl}users.svg',
                                           ),
                                         ),
+                                        onTap: () {
+                                          showPassengerSelectionSheet(
+                                              adult: _adultCount,
+                                              child: _childCount,
+                                              infant: _infantCount,
+                                              onDone: (adult, child, infant) {
+                                                _adultCount = adult;
+                                                _childCount = child;
+                                                _infantCount = infant;
+                                                _travellerController.text =
+                                                    '${adult + child + infant}';
+                                                setState(() {});
+                                              },
+                                              context: context);
+                                        },
                                         suffixIcon: Container(
                                           alignment: Alignment.centerLeft,
-                                          width: 100,
-                                          child: Text(
-                                            _travellerController.text == '1'
-                                                ? 'Adult'
-                                                : _travellerController.text ==
-                                                        ''
-                                                    ? ''
-                                                    : 'Adults',
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
+                                          width: AppHelpers.getScreenWidth(
+                                                  context) *
+                                              0.19,
+                                          child: const Text(
+                                            'Travellers',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
                                               color: AppColors.black,
                                             ),
                                           ),
                                         ),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.black,
-                                        ),
+                                        style: _defaultTextStyple,
                                         onChange: (p0) {
                                           setState(() {});
                                         },
@@ -249,10 +343,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           AppHelpers.getScreenWidth(context) *
                                               0.4,
                                       child: SearchDropDown(
-                                        label: 'Seat Class',
+                                        label: 'Cabin Class',
                                         prefixIconName: 'seat',
-                                        title: 'Seat Class',
-                                        items: _seatTypes,
+                                        title: 'Cabin Class',
+                                        items: _cabinTypes,
                                         value: _selectedSeatType,
                                         onChanged: (value) {
                                           setState(() {
@@ -282,6 +376,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         items: _fareTipes,
                                         value: _selectedFareType,
                                         onChanged: (value) {
+                                          log('$value');
                                           setState(() {
                                             _selectedFareType = value ?? '';
                                           });
@@ -311,8 +406,11 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               const SizedBox(height: 16),
                               AppPrimaryButton(
                                   onPressed: () {
-                                    context.pushNamed(
-                                        FlightBoolingModule.searchName);
+                                    if (_arrivalController.text.isNotEmpty &&
+                                        _depurtureController.text.isNotEmpty) {
+                                      context.pushNamed(
+                                          FlightBookingModule.searchName);
+                                    }
                                   },
                                   style: const TextStyle(
                                     fontSize: 16,
@@ -330,11 +428,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                         //swap button
                         Positioned(
                           right: 30,
-                          top: _fromController.text.isEmpty ||
-                                  (_toController.text.isEmpty &&
-                                      _fromController.text.isEmpty)
-                              ? 40
-                              : 55,
+                          top: 55,
                           child: InkWell(
                             onTap: () {},
                             child: CircleAvatar(
@@ -388,7 +482,13 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                     itemBuilder: (context, index) {
                       return Container(
                           margin: const EdgeInsets.only(right: 10),
-                          child: RecentSearchedTicket(
+                          child: CompactTicketCard(
+                            customWidth:
+                                AppHelpers.getScreenWidth(context) * 0.2,
+                            onTap: () {
+                              context.pushNamed(
+                                  FlightBookingModule.flightDetailsName);
+                            },
                             data: searchData.ticketData[index],
                           ));
                     },

@@ -1,15 +1,13 @@
-import 'dart:io';
-
 import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:reiselab/core/widgets/primary_input.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../widgets/launge_access_widget.dart';
@@ -123,7 +121,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                               children: [
                                 SizedBox(
                                     height: 60,
-                                    width: 100,
+                                    width: AppHelpers.getScreenWidth(context) *
+                                        0.2,
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -144,11 +143,15 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                       ],
                                     )),
                                 SizedBox(
-                                    width: 100,
+                                    width: AppHelpers.getScreenWidth(context) *
+                                        0.2,
                                     child: Column(
                                       children: [
                                         AppHelpers.svgAsset(
-                                            assetName: 'flight', width: 100),
+                                            assetName: 'flight',
+                                            width: AppHelpers.getScreenWidth(
+                                                    context) *
+                                                0.2),
                                         Text(
                                           getDuration(
                                               min: searchData
@@ -161,7 +164,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                     )),
                                 SizedBox(
                                   height: 60,
-                                  width: 100,
+                                  width:
+                                      AppHelpers.getScreenWidth(context) * 0.2,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -191,7 +195,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                 children: [
                                   SizedBox(
                                     width: AppHelpers.getScreenWidth(context) *
-                                        0.38,
+                                        0.35,
                                     child: AppPrimaryInput(
                                       style: const TextStyle(
                                         color: AppColors.black,
@@ -207,7 +211,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                   ),
                                   SizedBox(
                                     width: AppHelpers.getScreenWidth(context) *
-                                        0.38,
+                                        0.35,
                                     child: AppPrimaryInput(
                                       style: const TextStyle(
                                         color: AppColors.black,
@@ -233,7 +237,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                 children: [
                                   SizedBox(
                                     width: AppHelpers.getScreenWidth(context) *
-                                        0.38,
+                                        0.35,
                                     child: AppPrimaryInput(
                                       style: const TextStyle(
                                         color: AppColors.black,
@@ -249,7 +253,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                   ),
                                   SizedBox(
                                     width: AppHelpers.getScreenWidth(context) *
-                                        0.38,
+                                        0.35,
                                     child: AppPrimaryInput(
                                       enable: false,
                                       label: 'Arrival',
@@ -267,7 +271,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                               ),
                             ),
                             const Spacer(),
-                            Container(
+                            SizedBox(
                               height: 73,
                               child: SvgPicture.string(
                                 barCodeSvg,
@@ -313,6 +317,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
               isLoading: false,
               bgColor: AppColors.primary,
             ),
+            const SizedBox(height: 8),
             TextButton(
                 onPressed: () {},
                 child: const Text(

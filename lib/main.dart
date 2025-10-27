@@ -6,7 +6,7 @@ import 'app_router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageService.init();
-  //   await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   // await FirebaseNotificationService.instance.initialize();
 
   runApp(const MyApp());
@@ -18,10 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Reiselab',
+      title: 'Excellis Travel',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      darkTheme: AppTheme.lightTheme,
       themeMode: ThemeMode.system,
       routerConfig: AppRouter.router,
     );

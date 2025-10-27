@@ -1,25 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/features/bottom_navigation/bottom_nav_module.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../legal/legal_module.dart';
+import '../../auth_module.dart';
+import '../../bloc/auth_bloc.dart';
 import 'auth_dropdown_widget.dart';
 import 'auth_input_widget.dart';
-import 'login_sheet.dart';
-
-Future<void> showAgencyRegistrationSheet(BuildContext context) async {
-  showModalBottomSheet(
-      enableDrag: false,
-      isDismissible: false,
-      isScrollControlled: true,
-      elevation: 0,
-      barrierColor: AppColors.transparent,
-      backgroundColor: AppColors.white,
-      context: context,
-      builder: (context) => AgencyRegistrationSheet());
-}
 
 class AgencyRegistrationSheet extends StatelessWidget {
   AgencyRegistrationSheet({super.key});
@@ -42,7 +32,11 @@ class AgencyRegistrationSheet extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _conPasswordController = TextEditingController();
   String usertype = 'retailer';
-  String errMsg = '';
+  final List<DropdownMenuItem<String>> _items = <DropdownMenuItem<String>>[
+    const DropdownMenuItem(value: 'retailer', child: Text('Become a Retailer')),
+    const DropdownMenuItem(value: 'user', child: Text('Become a User')),
+  ];
+  final String errMsg = '';
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +62,8 @@ class AgencyRegistrationSheet extends StatelessWidget {
               const SizedBox(height: 53),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: AuthDropdownWidget(
+                child: UserTypeSelection(
+                  items: _items,
                   onChanged: (value) {
                     usertype = value ?? 'retailer';
                   },
@@ -251,7 +246,24 @@ class AgencyRegistrationSheet extends StatelessWidget {
                   title: 'REGISTER',
                   isLoading: false,
                   onPressed: () {
-                    context.goNamed(BottomNavModule.name);
+                    context.read<AuthBloc>().add(RegisterEvent(
+                          confirmPassword: _conPasswordController.text,
+                          password: _passwordController.text,
+                          nearByAirport: _nearbyAirportController.text,
+                          userType: usertype,
+                          companyName: _companyNameController.text,
+                          firstName: _firstNameController.text,
+                          lastName: _lastNameController.text,
+                          panNumber: _panNoController.text,
+                          emailId: _emailController.text,
+                          phoneNumber: _phoneController.text,
+                          officeAddress: _officeAddressController.text,
+                          pinCode: _pinController.text,
+                          city: _cityController.text,
+                          state: _stateController.text,
+                          gstNumber: _gstNoController.text,
+                          aadhaarNumber: _aadhaarNoController.text,
+                        ));
                   },
                 ),
               ),
@@ -262,7 +274,7 @@ class AgencyRegistrationSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      'Don’t have an account? ',
+                      'Already have an account? ',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -271,14 +283,65 @@ class AgencyRegistrationSheet extends StatelessWidget {
                     InkWell(
                       splashColor: Colors.transparent,
                       onTap: () async {
-                        context.pop();
-                        await showLoginSheet(context);
+                        context.goNamed(AuthModule.loginName);
                       },
                       child: const Text(
                         'Login',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 13),
+              const Text(
+                'By continuing, you agree to our ',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              const SizedBox(height: 2),
+              SizedBox(
+                width: AppHelpers.getScreenWidth(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      onTap: () async {
+                        context.pushNamed(LegalModule.termsName);
+                      },
+                      child: const Text(
+                        'Terms & Conditions',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      ' and ',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      onTap: () async {
+                        context.pushNamed(LegalModule.policyName);
+                      },
+                      child: const Text(
+                        'Privacy Policy',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),

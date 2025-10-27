@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:reiselab/core/widgets/primary_button.dart';
-import 'package:reiselab/core/widgets/primary_input.dart';
-import 'package:reiselab/features/flight_booking/flight_booling_module.dart';
-import 'package:reiselab/features/flight_booking/presentation/widgets/launge_access_widget.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/primary_button.dart';
+import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../flight_booking_module.dart';
+import '../widgets/launge_access_widget.dart';
 import '../widgets/nav_bar.dart';
 import '../widgets/search_drop_down.dart';
 
@@ -87,63 +87,65 @@ class PasengerDetailsScreen extends StatelessWidget {
                           horizontal: 16, vertical: 20),
                       margin: const EdgeInsets.only(top: 16),
                       height: AppHelpers.getScreenHeight(context),
-                      child: Column(
-                        children: [
-                          const Text(
-                            'Passenger Details',
-                            style: TextStyle(
-                                fontSize: 28, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Complete the form by providing necessary information',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w400),
-                          ),
-                          const SizedBox(height: 16),
-                          const AppPrimaryInput(
-                            hint: 'Enter your first name',
-                            label: 'First Name',
-                            maxCharacters: 30,
-                          ),
-                          const SizedBox(height: 16),
-                          const AppPrimaryInput(
-                            hint: 'Enter your last name',
-                            label: 'Last Name',
-                            maxCharacters: 30,
-                          ),
-                          const SizedBox(height: 16),
-                          const AppPrimaryInput(
-                            hint: 'Enter your email address',
-                            label: 'Email Address',
-                            maxCharacters: 50,
-                          ),
-                          const SizedBox(height: 16),
-                          const AppPrimaryInput(
-                            hint: 'Mobile Number',
-                            label: 'Enter your mobile number',
-                            maxCharacters: 10,
-                            keyboardType: TextInputType.phone,
-                          ),
-                          const SizedBox(height: 16),
-                          SearchDropDown(
-                            onChanged: (p0) {},
-                            label: 'Citizenship',
-                            title: 'Select Citizenship',
-                            value: 'India',
-                            items: citizenshipData
-                                .map(
-                                  (String e) => DropdownMenuItem(
-                                    value: e,
-                                    child: Text(e),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                          const SizedBox(height: 27),
-                          LaungeAccessWidget()
-                        ],
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const Text(
+                              'Passenger Details',
+                              style: TextStyle(
+                                  fontSize: 28, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'Complete the form by providing necessary information',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(height: 16),
+                            const AppPrimaryInput(
+                              hint: 'Enter your first name',
+                              label: 'First Name',
+                              maxCharacters: 30,
+                            ),
+                            const SizedBox(height: 16),
+                            const AppPrimaryInput(
+                              hint: 'Enter your last name',
+                              label: 'Last Name',
+                              maxCharacters: 30,
+                            ),
+                            const SizedBox(height: 16),
+                            const AppPrimaryInput(
+                              hint: 'Enter your email address',
+                              label: 'Email Address',
+                              maxCharacters: 50,
+                            ),
+                            const SizedBox(height: 16),
+                            const AppPrimaryInput(
+                              hint: 'Mobile Number',
+                              label: 'Enter your mobile number',
+                              maxCharacters: 10,
+                              keyboardType: TextInputType.phone,
+                            ),
+                            const SizedBox(height: 16),
+                            SearchDropDown(
+                              onChanged: (p0) {},
+                              label: 'Citizenship',
+                              title: 'Select Citizenship',
+                              value: 'India',
+                              items: citizenshipData
+                                  .map(
+                                    (String e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                            const SizedBox(height: 27),
+                            const LaungeAccessWidget()
+                          ],
+                        ),
                       ),
                     ),
                   )
@@ -153,16 +155,19 @@ class PasengerDetailsScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-        color: AppColors.white,
-        child: AppPrimaryButton(
-          onPressed: () {
-            context.pushNamed(FlightBoolingModule.paymentDetailsName);
-          },
-          title: 'Done',
-          isLoading: false,
-          bgColor: AppColors.primary,
+      bottomNavigationBar: SizedBox(
+        height: 70,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          color: AppColors.white,
+          child: AppPrimaryButton(
+            onPressed: () {
+              context.pushNamed(FlightBookingModule.paymentDetailsName);
+            },
+            title: 'Done',
+            isLoading: false,
+            bgColor: AppColors.primary,
+          ),
         ),
       ),
     );

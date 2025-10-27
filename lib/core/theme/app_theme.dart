@@ -54,7 +54,7 @@ class AppTheme {
           foregroundColor: AppColors.primary,
           minimumSize: const Size(double.infinity, AppSizes.buttonHeight),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+            borderRadius: BorderRadius.circular(300),
           ),
           textStyle:
               AppTextStyles.buttonText.copyWith(color: AppColors.primary),

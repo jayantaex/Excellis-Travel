@@ -1,16 +1,66 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_exit_sheet.dart';
+import '../../bloc/auth_bloc.dart';
+import '../widgets/registration_sheet.dart';
 
 class RegistrationScreen extends StatelessWidget {
   const RegistrationScreen({super.key});
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-      ),
-      body: const Center(
-        child: Placeholder(),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (!didPop) {
+          await showAppExitSheet(context: context);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.black,
+        body: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            log('Auth states :::: $state');
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Center(
+                  child: Image.asset('assets/images/app_logo.png'),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                    alignment: Alignment.bottomCenter,
+                    decoration: const BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: BlocConsumer<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        if (state is RegistrationFailure) {
+                          AppHelpers.showSnackBar(context, state.message,
+                              backgroundColor: AppColors.error);
+                        }
+                      },
+                      builder: (context, state) {
+                        return AgencyRegistrationSheet();
+                      },
+                    )),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

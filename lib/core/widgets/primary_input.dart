@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reiselab/core/constants/app_styles.dart';
+
+import '../constants/app_styles.dart';
 
 class AppPrimaryInput extends StatelessWidget {
   final String? label;
@@ -42,12 +43,13 @@ class AppPrimaryInput extends StatelessWidget {
       onChanged: onChange,
       onTap: onTap,
       controller: controller,
-      keyboardType: keyboardType,
+      keyboardType: onTap != null ? TextInputType.none : keyboardType,
       focusNode: focusNode,
       style: style,
       inputFormatters: [
         if (maxCharacters > 0) LengthLimitingTextInputFormatter(maxCharacters),
       ],
+      cursorWidth: onTap == null ? 2 : 0,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,

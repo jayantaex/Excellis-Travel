@@ -5,6 +5,8 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../legal/legal_module.dart';
+import '../../../settings/settings_module.dart';
 import '../../profile_management_module.dart';
 import '../widgets/log_out_sheet.dart';
 import '../widgets/user_content_widget.dart';
@@ -21,17 +23,17 @@ class MyProfileScreen extends StatelessWidget {
     {
       'title': 'Terms & Conditions',
       'iconPath': '${AppConstants.assetIcontUrl}terms.svg',
-      'routeName': ProfileManagementModule.editProfileName
+      'routeName': LegalModule.termsName
     },
     {
       'title': 'Privacy Policy',
       'iconPath': '${AppConstants.assetIcontUrl}privacy_policy.svg',
-      'routeName': ProfileManagementModule.editProfileName
+      'routeName': LegalModule.policyName
     },
     {
       'title': 'Settings',
       'iconPath': '${AppConstants.assetIcontUrl}settings.svg',
-      'routeName': ProfileManagementModule.editProfileName
+      'routeName': SettingsModule.routeName
     },
     {
       'title': 'Sign Out',

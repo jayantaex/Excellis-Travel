@@ -1,16 +1,20 @@
+import 'dart:developer';
+
+import 'package:excellistravel/core/utils/storage_service.dart';
+import 'package:excellistravel/core/widgets/app_exit_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:reiselab/features/ticket/presentation/screens/ticket_screen.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../flight_booking/presentation/screens/flight_search_screen.dart';
-import '../../../profile/bloc/profile_bloc.dart';
-import '../../../profile/bloc/profile_event.dart';
+
+import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../../profile_management/presentation/screens/my_profile_screen.dart';
+import '../../../ticket/presentation/screens/ticket_screen.dart';
 import '../../../wish_list/presentation/screens/wish_list_screen.dart';
 import '../widgets/app_button_nav.dart';
+import '../widgets/bottom_navigation_loading.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   const BottomNavigationScreen({super.key});
@@ -20,48 +24,76 @@ class BottomNavigationScreen extends StatefulWidget {
 }
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
-  int _userId = 0;
   int _currentIndex = 0;
+  bool isLoading = false;
   final List<Widget> _screens = [
-    FlightSearchScreen(),
-    const TicketScreen(),
+    const FlightSearchScreen(),
+    TicketScreen(),
     const WishListScreen(),
     MyProfileScreen()
   ];
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 0), () {
-      if (context.mounted) context.read<ProfileBloc>().add(FetchProfile());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      {
+        String? accessToken = await StorageService.getAccessToken();
+        if (context.mounted) {
+          if (accessToken != null && accessToken.isNotEmpty) {
+            if (context.mounted) {
+              context
+                  .read<ProfileBloc>()
+                  .add(LoadProfileEvent(token: accessToken));
+            }
+          }
+        }
+      }
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient:
-              LinearGradient(colors: [AppColors.primary, AppColors.secondary]),
-          borderRadius: BorderRadiusDirectional.only(
-            topStart: Radius.circular(18),
-            topEnd: Radius.circular(18),
-          ),
-        ),
-        height: AppHelpers.percenHeight(context: context),
-        width: AppHelpers.percenWidth(context: context),
-        child: _screens[_currentIndex],
-      ),
-      bottomNavigationBar: AppButtonNav(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-      ),
-    );
+    return isLoading
+        ? const BottomNavigationLoading()
+        : PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, result) async {
+              log('didPop $didPop');
+              log('pop result $result');
+              if (!didPop) {
+                if (_currentIndex == 0) {
+                  await showAppExitSheet(context: context);
+                }
+                setState(() {
+                  _currentIndex = 0;
+                });
+              }
+            },
+            child: Scaffold(
+              backgroundColor: AppColors.primary,
+              body: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [AppColors.primary, AppColors.secondary]),
+                  borderRadius: BorderRadiusDirectional.only(
+                    topStart: Radius.circular(18),
+                    topEnd: Radius.circular(18),
+                  ),
+                ),
+                height: AppHelpers.percenHeight(context: context),
+                width: AppHelpers.percenWidth(context: context),
+                child: _screens[_currentIndex],
+              ),
+              bottomNavigationBar: AppButtonNav(
+                currentIndex: _currentIndex,
+                onTap: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+              ),
+            ),
+          );
   }
 }

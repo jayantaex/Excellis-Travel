@@ -1,6 +1,6 @@
 {
-    "name": "reiselab",
-    "short_name": "reiselab",
+    "name": "excellis_travel",
+    "short_name": "excellis_travel",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

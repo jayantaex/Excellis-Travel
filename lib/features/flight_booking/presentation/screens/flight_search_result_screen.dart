@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/utils/app_helpers.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/compact_ticket_card.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
+import '../../flight_booking_module.dart';
 import '../widgets/class_filer_widget.dart';
 import '../widgets/date_filter_widget.dart';
 import '../widgets/nav_bar.dart';
-import '../widgets/recent_searched_ticket.dart';
-import '../widgets/search_filter_widget.dart';
 
 class FlightSearchResultScreen extends StatefulWidget {
   const FlightSearchResultScreen({super.key});
@@ -25,11 +26,9 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
   SearchData searchData = SearchData();
   List<String> filters = [
     'All',
-    'Economy',
-    'Business',
-    'First',
-    'Last',
-    'Non stop',
+    'Cheapest',
+    'Discounted Price',
+    'Non Stop First',
   ];
   int dateDuration = 20; //days
   String selectedFilter = 'All';
@@ -58,6 +57,7 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
         child: TransWhiteBgWidget(
           child: Center(
             child: SafeArea(
+              bottom: false,
               child: Column(
                 children: [
                   //nav Controller
@@ -84,14 +84,18 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     margin: const EdgeInsets.only(top: 16),
-                    height: AppHelpers.getScreenHeight(context) - 300,
+                    height: AppHelpers.getScreenHeight(context) * 0.69,
                     child: ListView.builder(
                       itemCount: searchData.ticketData.length,
                       itemBuilder: (context, index) => Container(
                         margin: const EdgeInsets.only(bottom: 16),
-                        child: RecentSearchedTicket(
+                        child: CompactTicketCard(
+                          onTap: () {
+                            context.pushNamed(
+                                FlightBookingModule.seatSelectionName);
+                          },
                           data: searchData.ticketData[index],
                         ),
                       ),
@@ -105,7 +109,4 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
       ),
     );
   }
-
-
-
 }

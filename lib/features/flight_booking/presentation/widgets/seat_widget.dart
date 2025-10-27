@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
 
 class SeatWidget extends StatelessWidget {
   final bool isSelected;
@@ -30,8 +28,8 @@ class SeatWidget extends StatelessWidget {
             },
       child: Container(
           alignment: Alignment.center,
-          height: 45,
-          width: 45,
+          height: AppHelpers.getScreenWidth(context) * 0.1,
+          width: AppHelpers.getScreenWidth(context) * 0.1,
           decoration: BoxDecoration(
             color: isSelected
                 ? AppColors.primary

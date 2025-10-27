@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../core/models/profile_data_model.dart';
 import '../../../core/network/api_response.dart';
 import '../data/profile_management_repository.dart';
 

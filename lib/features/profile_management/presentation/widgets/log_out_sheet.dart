@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/primary_button.dart';
-
+import '../../../auth/auth_module.dart';
 
 Future<void> showLogoutSheet({required BuildContext context}) async {
   showModalBottomSheet(
@@ -54,7 +56,13 @@ class LogOutSheet extends StatelessWidget {
                         isLoading: false)),
                 SizedBox(
                   width: AppHelpers.getScreenWidth(context) * 0.4,
-                  child: const AppPrimaryButton(
+                  child: AppPrimaryButton(
+                    onPressed: () async {
+                      await StorageService.clearTokens();
+                      context.mounted
+                          ? context.goNamed(AuthModule.loginName)
+                          : null;
+                    },
                     title: 'Sign Out',
                     isLoading: false,
                     bgColor: AppColors.primary,

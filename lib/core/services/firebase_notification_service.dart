@@ -31,7 +31,7 @@ class FirebaseNotificationService {
       sound: true,
       provisional: false,
     );
-    print('Permission status: ${settings.authorizationStatus}');
+    log('Permission status: ${settings.authorizationStatus}');
   }
 
   Future<void> _setupMessageHandlers() async {

@@ -2,15 +2,19 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../utils/storage_service.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
+import 'authentication_interceptor.dart';
 
 class ApiClient {
+  //single instance
+  static final ApiClient _instance = ApiClient._internal();
+  factory ApiClient() => _instance;
   final Dio _dio = Dio();
-
-  // Constructor to initialize Dio with base URL and interceptors
-  ApiClient() {
+  ApiClient._internal() {
     _dio.options.baseUrl = EndPoints.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 60);
     _dio.options.receiveTimeout = const Duration(seconds: 60);
@@ -27,17 +31,31 @@ class ApiClient {
       return handler.next(e);
     }));
     // print request and response
-    _dio.interceptors.add(LogInterceptor(
+    // _dio.interceptors.add(
+    //   LogInterceptor(
+    //     requestBody: true,
+    //     responseBody: true,
+    //     requestHeader: false,
+    //     responseHeader: false,
+    //     error: true,
+    //     request: true,
+    //     logPrint: (obj) {
+    //       log(obj.toString());
+    //     },
+    //   ),
+    // );
+
+    _dio.interceptors.add(PrettyDioLogger(
+      requestHeader: true,
       requestBody: true,
       responseBody: true,
-      requestHeader: false,
       responseHeader: false,
       error: true,
-      request: true,
-      logPrint: (obj) {
-        log(obj.toString());
-      },
+      compact: true,
+      maxWidth: 90,
+      enabled: kDebugMode,
     ));
+    _dio.interceptors.add(AuthenticationInterceptor(_dio));
   }
 
   // API request method GET
@@ -87,7 +105,7 @@ class ApiClient {
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
       final statusCode = e.response?.statusCode ?? 0;
-      final errorMessage = _handleDioError(e, statusCode);
+      final errorMessage = e.response?.data['message'];
       return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
     }
   }
@@ -127,19 +145,19 @@ class ApiClient {
   }
 
   // API request method DELETE
-  Future<ApiResponse<Map<String, dynamic>>> deleteRequest(
-      {required String endPoint, Map<String, dynamic>? queryParameters}) async {
+  Future<ApiResponse<T>> deleteRequest<T>(
+      {required String endPoint,
+      Map<String, dynamic>? queryParameters,
+      required T Function(Map<String, dynamic>) fromJson}) async {
     try {
       final response =
           await _dio.delete(endPoint, queryParameters: queryParameters);
-      final data = response.data as Map<String, dynamic>;
-      return ApiResponse<Map<String, dynamic>>(
-          data: data, statusCode: response.statusCode ?? 0);
+      final data = fromJson(response.data);
+      return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
       final statusCode = e.response?.statusCode ?? 0;
       final errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<Map<String, dynamic>>(
-          statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
     }
   }
 
@@ -206,6 +224,9 @@ class ApiClient {
         break;
       case DioExceptionType.badResponse:
         errorMessage = _handleStatusCode(statusCode);
+        break;
+      case DioExceptionType.connectionError:
+        errorMessage = "please check your connection";
         break;
       case DioExceptionType.unknown:
         errorMessage =
