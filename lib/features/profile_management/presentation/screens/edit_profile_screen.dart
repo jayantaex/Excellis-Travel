@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/image_picker.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../widgets/delete_account_sheet.dart';
+import '../widgets/profile_photo_preview.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({super.key});
-
+  EditProfileScreen({super.key});
+  final AppImagePicker _appImagePicker = AppImagePicker();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,13 +42,17 @@ class EditProfileScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              const Badge(
-                offset: Offset(-10, -30),
+              Badge(
+                offset: const Offset(-10, -30),
                 backgroundColor: AppColors.white,
-                padding: EdgeInsets.all(0),
+                padding: const EdgeInsets.all(0),
                 alignment: Alignment.bottomRight,
                 label: InkWell(
-                  child: Padding(
+                  onTap: () async {
+                    XFile? image = await _appImagePicker.pickFromGallery();
+                    await showPhotoPreview(context: context, url: image!.path);
+                  },
+                  child: const Padding(
                     padding: EdgeInsets.all(6.0),
                     child: Icon(
                       Icons.camera_alt_rounded,
@@ -53,7 +60,7 @@ class EditProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                child: CircleAvatar(
+                child: const CircleAvatar(
                   radius: 60,
                   backgroundImage: AssetImage('assets/images/user.jpg'),
                 ),
