@@ -127,6 +127,12 @@ class AppRouter {
             FlightBookingModule.airportSearchBuilder(context, state),
       ),
       GoRoute(
+        path: FlightBookingModule.passengerDetailsNew,
+        name: FlightBookingModule.passengerDetailsNewName,
+        builder: (context, state) =>
+            FlightBookingModule.passengerDetailsNewBuilder(),
+      ),
+      GoRoute(
         path: FlightBookingModule.flightDetails,
         name: FlightBookingModule.flightDetailsName,
         builder: (context, state) => FlightBookingModule.flightDetailsBuilder(),
