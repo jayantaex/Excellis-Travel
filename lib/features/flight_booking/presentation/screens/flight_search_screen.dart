@@ -471,7 +471,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 AppHelpers.getScreenWidth(context) * 0.2,
                             onTap: () {
                               context.pushNamed(
-                                  FlightBookingModule.seatSelectionName);
+                                  FlightBookingModule.flightDetailsName);
                             },
                             data: searchData.ticketData[index],
                           ));

@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import 'package:ticket_widget/ticket_widget.dart';
-
 import '../../features/flight_booking/models/ticket_data_model.dart';
 import '../constants/app_styles.dart';
 import '../utils/app_helpers.dart';
