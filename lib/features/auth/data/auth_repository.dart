@@ -1,11 +1,13 @@
+
 import '../../../core/network/api_response.dart';
 import '../apis/auth_api.dart';
+import '../models/auth_resp_model.dart';
 
 class AuthRepository {
   final AuthApi authApi;
   AuthRepository({required this.authApi});
 
-  Future<ApiResponse<String>> login(
+  Future<ApiResponse<AuthRespModel>> login(
       {required String username,
       required String password,
       required String fcmToken,

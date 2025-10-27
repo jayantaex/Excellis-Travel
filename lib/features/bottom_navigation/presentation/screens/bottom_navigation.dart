@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:excellistravel/core/utils/storage_service.dart';
 import 'package:excellistravel/core/widgets/app_exit_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../flight_booking/presentation/screens/flight_search_screen.dart';
-import '../../../profile/bloc/profile_bloc.dart';
-import '../../../profile/bloc/profile_event.dart';
+
+import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../../profile_management/presentation/screens/my_profile_screen.dart';
 import '../../../ticket/presentation/screens/ticket_screen.dart';
 import '../../../wish_list/presentation/screens/wish_list_screen.dart';
@@ -34,8 +35,19 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 0), () {
-      if (context.mounted) context.read<ProfileBloc>().add(FetchProfile());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      {
+        String? accessToken = await StorageService.getAccessToken();
+        if (context.mounted) {
+          if (accessToken != null && accessToken.isNotEmpty) {
+            if (context.mounted) {
+              context
+                  .read<ProfileBloc>()
+                  .add(LoadProfileEvent(token: accessToken));
+            }
+          }
+        }
+      }
     });
     super.initState();
   }

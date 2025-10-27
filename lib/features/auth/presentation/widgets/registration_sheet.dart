@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../legal/legal_module.dart';
 import '../../auth_module.dart';
 import '../../bloc/auth_bloc.dart';
 import 'auth_dropdown_widget.dart';
@@ -289,6 +290,58 @@ class AgencyRegistrationSheet extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 13),
+              const Text(
+                'By continuing, you agree to our ',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              const SizedBox(height: 2),
+              SizedBox(
+                width: AppHelpers.getScreenWidth(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      onTap: () async {
+                        context.pushNamed(LegalModule.termsName);
+                      },
+                      child: const Text(
+                        'Terms & Conditions',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      ' and ',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      onTap: () async {
+                        context.pushNamed(LegalModule.policyName);
+                      },
+                      child: const Text(
+                        'Privacy Policy',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),

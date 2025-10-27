@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../notifiaction/notification_module.dart';
+import '../../../profile_management/bloc/profile_bloc.dart';
 
 class GreetingWidget extends StatelessWidget {
   const GreetingWidget({super.key});
@@ -17,18 +21,34 @@ class GreetingWidget extends StatelessWidget {
         children: [
           SizedBox(
             width: AppHelpers.getScreenWidth(context) * 0.8,
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Morning, Raghunath',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.white),
-                ),
-                Text(
+                BlocConsumer<ProfileBloc, ProfileState>(
+                    listener: (context, state) {
+                  log('State is ::: $state', name: 'GreetingWidget');
+                  if (state is ProfileError) {
+                    log(state.message, name: 'GreetingWidget');
+                  }
+                }, builder: (context, state) {
+                  return state is ProfileLoaded
+                      ? Text(
+                          'Morning, ${state.profileData.firstName}',
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.white),
+                        )
+                      : const Text(
+                          'Morning, Guest',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.white),
+                        );
+                }),
+                const Text(
                   'Let’s Explore \nWorld With Us !',
                   style: TextStyle(
                     fontSize: 28,

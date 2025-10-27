@@ -23,7 +23,7 @@ class EditProfileApi {
       EditProfileRequest request) async {
     final userId = await StorageService.getUserData('id');
     return _client.putRequest<EditProfileResponse>(
-      endPoint: '${EndPoints.updateProfile}/$userId',
+      endPoint: '${EndPoints.profile}/$userId',
       reqModel: request.toJson(),
       fromJson: (json) => EditProfileResponse.fromJson(json),
     );
@@ -32,7 +32,7 @@ class EditProfileApi {
   Future<ApiResponse<EditProfileResponse>> updateProfileWithImage(
       EditProfileRequest request, File? imageFile) {
     return _client.uploadImage<EditProfileResponse>(
-      endPoint: EndPoints.updateProfile,
+      endPoint: EndPoints.profile,
       reqModel: request.toJson(),
       imageFile: imageFile,
       imageFieldName: "profile_image",
