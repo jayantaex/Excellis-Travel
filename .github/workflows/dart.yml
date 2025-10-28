@@ -2,7 +2,7 @@ name: Flutter Dev Build & Firebase Distribution
 
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "dev" ]
   pull_request:
     branches: [ "main" ]
 
