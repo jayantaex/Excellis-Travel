@@ -64,8 +64,7 @@ dependencies:
   webview_flutter: ^4.10.0
   # Network logger
   pretty_dio_logger: ^1.4.0
-  # Package info
-  package_info_plus: ^9.0.0
+
   
   # Image Picker
   dotted_border: ^2.1.0
