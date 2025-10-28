@@ -98,23 +98,24 @@ class FlightDetailsFeatureCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                    height: 45,
-                    width: AppHelpers.getScreenWidth(context) * 0.3,
-                    child: TextButton(
-                        onPressed: () {},
-                        child: const Text('Lock In',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600)))),
+                  height: 45,
+                  width: AppHelpers.getScreenWidth(context) * 0.3,
+                  // child: TextButton(
+                  //     onPressed: () {},
+                  //     child: const Text('Lock In',
+                  //         style: TextStyle(
+                  //             fontSize: 14, fontWeight: FontWeight.w400))),
+                ),
                 SizedBox(
                     height: 45,
-                    width: AppHelpers.getScreenWidth(context) * 0.3,
+                    width: AppHelpers.getScreenWidth(context) * 0.35,
                     child: AppPrimaryButton(
                         onPressed: () {
                           context.pushNamed(
                               FlightBookingModule.passengerDetailsNewName);
                         },
                         style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                            fontSize: 14, fontWeight: FontWeight.w400),
                         title: 'Book now',
                         isLoading: false))
               ],

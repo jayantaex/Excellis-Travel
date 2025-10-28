@@ -16,22 +16,6 @@ class BookingPolicyCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ListTile(
-            contentPadding: const EdgeInsets.all(0),
-            title: const Text('Baggage Allowance',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                )),
-            trailing: InkWell(
-              onTap: () {},
-              child: const Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 16,
-                color: AppColors.secondary,
-              ),
-            ),
-          ),
           const SizedBox(height: 10),
           ListTile(
             contentPadding: const EdgeInsets.all(0),

@@ -45,6 +45,7 @@ List<String> citizenshipData = [
   "UAE",
   "Yemen",
 ];
+List<String> genderData = ["Male", "Female", "Other"];
 
 class PasengerDetailsScreen extends StatelessWidget {
   const PasengerDetailsScreen({super.key});
