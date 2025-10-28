@@ -128,9 +128,6 @@ class AppTheme {
         labelSmall: AppTextStyles.caption,
       ),
 
-      // Scaffold Background
-      scaffoldBackgroundColor: Colors.transparent,
-
       // Divider Theme
       dividerTheme: const DividerThemeData(
         color: AppColors.divider,
