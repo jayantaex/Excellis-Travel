@@ -23,6 +23,7 @@ class SearchDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
+      
       dropdownColor: Theme.of(context).scaffoldBackgroundColor,
       style: const TextStyle(
           fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.black),

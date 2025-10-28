@@ -60,8 +60,8 @@ class _LoginSheetState extends State<LoginSheet> {
           topRight: Radius.circular(30),
         ),
       ),
-      padding: EdgeInsets.only(top: 20),
-      height: AppHelpers.getScreenHeight(context) * 0.62,
+      padding: const EdgeInsets.only(top: 8),
+      height: AppHelpers.getScreenHeight(context) * 0.7,
       width: AppHelpers.getScreenWidth(context),
       child: SingleChildScrollView(
         child: Column(
@@ -81,15 +81,11 @@ class _LoginSheetState extends State<LoginSheet> {
                     margin: const EdgeInsets.only(right: 16),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
                     child: const Text(
                       'Skip >>',
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.primary,
+                        color: AppColors.grey,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -97,6 +93,8 @@ class _LoginSheetState extends State<LoginSheet> {
                 ),
               ),
             ),
+
+            const SizedBox(height: 8),
             const Text(
               'Welcome back!',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
