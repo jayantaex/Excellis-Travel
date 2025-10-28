@@ -23,12 +23,13 @@ class FlightDetailsFeatureCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           width: 1,
-          color: AppColors.grey.withOpacity(0.2),
+          color: AppColors.grey.withOpacity(0.1),
         ),
       ),
       child: Column(
@@ -98,23 +99,24 @@ class FlightDetailsFeatureCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                    height: 45,
-                    width: AppHelpers.getScreenWidth(context) * 0.3,
-                    child: TextButton(
-                        onPressed: () {},
-                        child: const Text('Lock In',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600)))),
+                  height: 45,
+                  width: AppHelpers.getScreenWidth(context) * 0.3,
+                  // child: TextButton(
+                  //     onPressed: () {},
+                  //     child: const Text('Lock In',
+                  //         style: TextStyle(
+                  //             fontSize: 14, fontWeight: FontWeight.w400))),
+                ),
                 SizedBox(
                     height: 45,
-                    width: AppHelpers.getScreenWidth(context) * 0.3,
+                    width: AppHelpers.getScreenWidth(context) * 0.35,
                     child: AppPrimaryButton(
                         onPressed: () {
                           context.pushNamed(
                               FlightBookingModule.passengerDetailsNewName);
                         },
                         style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                            fontSize: 14, fontWeight: FontWeight.w400),
                         title: 'Book now',
                         isLoading: false))
               ],

@@ -25,6 +25,7 @@ class _WishListScreenState extends State<WishListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: TransWhiteBgWidget(
         child: SafeArea(
           child: Column(

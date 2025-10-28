@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../data/search_data.dart';
-import 'flight_details_feature_card.dart';
+import '../widgets/flight_details_feature_card.dart';
 
 class FlightDetailsScreen extends StatefulWidget {
   const FlightDetailsScreen({super.key});
@@ -46,10 +46,13 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                 const SizedBox(height: 12),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.only(top: 20),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
+                    decoration: const BoxDecoration(
                       color: AppColors.white,
-                      borderRadius: BorderRadius.circular(32),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(32),
+                        topRight: Radius.circular(32),
+                      ),
                     ),
                     child: SingleChildScrollView(
                       child: Column(
@@ -222,58 +225,45 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                ...classList.map((e) => InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          seletedTab = e;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12),
-                                        height: 45,
-                                        width: width / classList.length - 20,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
+                                ...classList.map(
+                                  (e) => InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        seletedTab = e;
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12),
+                                      height: 45,
+                                      width: width / classList.length - 20,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: seletedTab == e
+                                            ? AppColors.black
+                                            : null,
+                                        borderRadius: BorderRadius.circular(32),
+                                      ),
+                                      child: Text(
+                                        e,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
                                           color: seletedTab == e
-                                              ? AppColors.black
-                                              : null,
-                                          borderRadius:
-                                              BorderRadius.circular(32),
-                                        ),
-                                        child: Text(
-                                          e,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: seletedTab == e
-                                                ? AppColors.white
-                                                : AppColors.black,
-                                            fontSize: 14,
-                                            fontWeight: seletedTab == e
-                                                ? FontWeight.w500
-                                                : FontWeight.w300,
-                                          ),
+                                              ? AppColors.white
+                                              : AppColors.black,
+                                          fontSize: 14,
+                                          fontWeight: seletedTab == e
+                                              ? FontWeight.w500
+                                              : FontWeight.w300,
                                         ),
                                       ),
-                                    )),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: FlightDetailsFeatureCard(),
-                          ),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: FlightDetailsFeatureCard(),
-                          ),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: FlightDetailsFeatureCard(),
-                          ),
-                          const SizedBox(height: 45),
+                          FlightDetailsFeatureCard(),
                         ],
                       ),
                     ),
