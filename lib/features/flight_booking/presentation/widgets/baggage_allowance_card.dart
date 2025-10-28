@@ -24,7 +24,6 @@ class _BaggageAllowanceCardState extends State<BaggageAllowanceCard> {
       ),
       child: Column(
         children: [
-          const SizedBox(height: 10),
           ListTile(
             contentPadding: const EdgeInsets.all(0),
             leading: CircleAvatar(

@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:excellistravel/features/flight_booking/presentation/widgets/fare_breakdown_card.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -251,6 +252,23 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             child: BaggageAllowanceCard(),
+                          ),
+                          const SizedBox(height: 45),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text('Fare breakdown',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: FareBreakdownCard(),
                           ),
                           const SizedBox(height: 45),
                         ],

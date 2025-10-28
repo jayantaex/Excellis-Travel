@@ -127,6 +127,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     super.dispose();
   }
 
+  _swapAirports() {
+    String temp = _depurtureController.text;
+    _depurtureController.text = _arrivalController.text;
+    _arrivalController.text = temp;
+  }
+
   @override
   Widget build(BuildContext context) {
     return TransWhiteBgWidget(
@@ -255,6 +261,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       Transform.scale(
                                         scale: 0.6,
                                         child: CupertinoSwitch(
+                                            activeColor: AppColors.primary,
                                             value: isRoundTrip,
                                             onChanged: (value) {
                                               setState(() {
@@ -429,7 +436,9 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                           right: 30,
                           top: 55,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              _swapAirports();
+                            },
                             child: CircleAvatar(
                               radius: 24,
                               backgroundColor: AppColors.primary,
