@@ -67,21 +67,25 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                               title: const Text(
                                 'Indigo',
                                 style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w600),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                               subtitle: const Text(
                                 '6E2119 | Airbus A321-200',
                                 style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.grey),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.grey,
+                                ),
                               ),
                               trailing: const Text(
                                 'Economy | Eco value',
                                 style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.black),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black,
+                                ),
                               ),
                             ),
                           ),
@@ -107,24 +111,27 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text('06.15',
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w600)),
+                                        const Text(
+                                          '06.15',
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
                                         Text(
                                           AppHelpers.formatDateTime(
                                               DateTime.now(),
                                               pattern: 'dd MMM, yyyy'),
                                           style: const TextStyle(
                                               fontSize: 11,
-                                              fontWeight: FontWeight.w500,
+                                              fontWeight: FontWeight.w400,
                                               color: AppColors.grey),
                                         ),
                                         const Text(
                                           'Kolkata (CCU)',
                                           style: TextStyle(
                                               fontSize: 11,
-                                              fontWeight: FontWeight.w500,
+                                              fontWeight: FontWeight.w400,
                                               color: AppColors.grey),
                                         ),
                                       ],
@@ -139,7 +146,7 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                                           getDuration(min: data.duration!),
                                           style: const TextStyle(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.w400),
+                                              fontWeight: FontWeight.w500),
                                         ),
                                       ],
                                     )),
@@ -160,14 +167,14 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                                             pattern: 'dd MMM, yyyy'),
                                         style: const TextStyle(
                                             fontSize: 11,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w400,
                                             color: AppColors.grey),
                                       ),
                                       const Text(
                                         'Delhi (DEL)',
                                         style: TextStyle(
                                             fontSize: 11,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w400,
                                             color: AppColors.grey),
                                       ),
                                     ],
@@ -189,7 +196,7 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                             subtitle: const Text(
                               'Netaji Subhash Chandra Bose International Airport (CCU)',
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.grey),
                             ),
@@ -207,7 +214,7 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                             subtitle: const Text(
                               'Indira Gandhi International Airport (DEL)',
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.grey),
                             ),
@@ -220,7 +227,7 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                               child: Text('Passenger Details',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                   )),
                             ),
                           ),
@@ -237,7 +244,7 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                               child: Text('Baggage Allowance Details',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                   )),
                             ),
                           ),

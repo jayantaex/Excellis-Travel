@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import 'extra_baggage_sheet.dart';
 
-class BookingPolicyCard extends StatelessWidget {
+class BookingPolicyCard extends StatefulWidget {
   const BookingPolicyCard({super.key});
+
+  @override
+  State<BookingPolicyCard> createState() => _BookingPolicyCardState();
+}
+
+class _BookingPolicyCardState extends State<BookingPolicyCard> {
+  Map _baggageData = {};
+  bool isBaggageAdded = false;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.grey.withOpacity(0.1),
+        color: AppColors.grey.withOpacity(0.05),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -20,20 +28,28 @@ class BookingPolicyCard extends StatelessWidget {
           ListTile(
             contentPadding: const EdgeInsets.all(0),
             leading: CircleAvatar(
-                radius: 16,
-                backgroundColor: AppColors.grey.withOpacity(0.1),
-                child: AppHelpers.svgAsset(
-                    assetName: 'baggage', isIcon: true, height: 20, width: 20)),
-            title: const Text('Cabin',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                )),
+              radius: 16,
+              backgroundColor: AppColors.grey.withOpacity(0.1),
+              child: AppHelpers.svgAsset(
+                assetName: 'baggage',
+                isIcon: true,
+                height: 20,
+                width: 20,
+              ),
+            ),
+            title: const Text(
+              'Cabin',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             subtitle: const Text(
               '7Kg(1 bag only)/Adult',
               style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: AppColors.grey,
               ),
             ),
           ),
@@ -44,16 +60,19 @@ class BookingPolicyCard extends StatelessWidget {
                 backgroundColor: AppColors.grey.withOpacity(0.1),
                 child: AppHelpers.svgAsset(
                     assetName: 'baggage', isIcon: true, height: 20, width: 20)),
-            title: const Text('Check-in',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                )),
+            title: const Text(
+              'Check-in',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             subtitle: const Text(
               '15Kg(1 bag only)/Adult',
               style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: AppColors.grey,
               ),
             ),
           ),
@@ -64,38 +83,95 @@ class BookingPolicyCard extends StatelessWidget {
                 backgroundColor: AppColors.grey.withOpacity(0.1),
                 child: AppHelpers.svgAsset(
                     assetName: 'baggage', isIcon: true, height: 20, width: 20)),
-            title: const Text(' Add extra check-in baggage',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                )),
+            title: const Text(
+              ' Add extra check-in baggage',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             subtitle: const Text(
               'allowance starting from 1,800/ 3KG',
               style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: AppColors.grey,
               ),
             ),
-            trailing: const CircleAvatar(
-                child: Icon(Icons.add, color: AppColors.secondary)),
+            trailing: InkWell(
+              onTap: () async {
+                isBaggageAdded
+                    ? {
+                        _baggageData = {},
+                        isBaggageAdded = false,
+                        setState(() {})
+                      }
+                    : await addExtraBaggageSheet(
+                        context: context,
+                        onDone: (data) {
+                          _baggageData = data;
+                          isBaggageAdded = true;
+                          setState(() {});
+                        });
+              },
+              child: Text(
+                isBaggageAdded ? 'CLEAR ALL' : 'ADD',
+                style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.secondary),
+              ),
+            ),
           ),
+          _baggageData['items'] != null
+              ? Column(
+                  children: List.generate(
+                      _baggageData['items'].length,
+                      (index) => ListTile(
+                            contentPadding: const EdgeInsets.all(0),
+                            leading: CircleAvatar(
+                                radius: 16,
+                                backgroundColor:
+                                    AppColors.grey.withOpacity(0.1),
+                                child: AppHelpers.svgAsset(
+                                    assetName: 'baggage',
+                                    isIcon: true,
+                                    height: 20,
+                                    width: 20)),
+                            title:
+                                Text('${_baggageData['items'][index]['title']}',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                            subtitle:
+                                Text('${_baggageData['items'][index]['price']}',
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                          )),
+                )
+              : const SizedBox(),
           const SizedBox(height: 12),
           const Divider(),
           const SizedBox(height: 12),
           ListTile(
             contentPadding: const EdgeInsets.all(0),
-            title: const Text('Cancellation refund & date change',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                )),
-            subtitle: const Text(
-              'Get refund for cancellations and date changes up to 24 hours before departure',
+            title: const Text(
+              'Cancellation refund & date change',
               style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.grey),
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
             ),
+            subtitle: const Text(
+                'Get refund for cancellations and date changes up to 24 hours before departure',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.grey,
+                )),
             trailing: InkWell(
               onTap: () {},
               child: const Icon(

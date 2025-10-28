@@ -11,6 +11,7 @@ class TicketScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: TransWhiteBgWidget(
         child: SafeArea(
           child: Column(

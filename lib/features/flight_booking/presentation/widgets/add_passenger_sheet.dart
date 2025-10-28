@@ -3,10 +3,17 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
+import '../../models/passenger_model.dart';
 import '../screens/pasenger_details_screen.dart';
 import 'search_drop_down.dart';
 
-Future<void> showAddPassengerSheet({required BuildContext context}) async {
+Future<void> showAddPassengerSheet(
+    {required BuildContext context,
+    required Function(PassengerModel passenger) onDone}) async {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  String _selectedGender = 'Male';
+  String _cityzenship = 'India';
   await showModalBottomSheet(
     backgroundColor: AppColors.white,
     isScrollControlled: true,
@@ -27,20 +34,24 @@ Future<void> showAddPassengerSheet({required BuildContext context}) async {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
             ),
             const SizedBox(height: 16),
-            const AppPrimaryInput(
+            AppPrimaryInput(
+              controller: _firstNameController,
               hint: 'Enter your first name',
               label: 'First Name',
               maxCharacters: 30,
             ),
             const SizedBox(height: 16),
-            const AppPrimaryInput(
+            AppPrimaryInput(
+              controller: _lastNameController,
               hint: 'Enter your last name',
               label: 'Last Name',
               maxCharacters: 30,
             ),
             const SizedBox(height: 16),
             SearchDropDown(
-              onChanged: (p0) {},
+              onChanged: (p0) {
+                _selectedGender = p0!;
+              },
               label: 'Gender',
               title: 'Select Gender',
               value: 'Male',
@@ -55,7 +66,9 @@ Future<void> showAddPassengerSheet({required BuildContext context}) async {
             ),
             const SizedBox(height: 16),
             SearchDropDown(
-              onChanged: (p0) {},
+              onChanged: (p0) {
+                _cityzenship = p0!;
+              },
               label: 'Citizenship',
               title: 'Select Citizenship',
               value: 'India',
@@ -73,7 +86,15 @@ Future<void> showAddPassengerSheet({required BuildContext context}) async {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: AppPrimaryButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.pop(context);
+                    onDone(
+                      PassengerModel(
+                        name:
+                            '${_firstNameController.text} ${_lastNameController.text}',
+                        citizenship: _cityzenship,
+                        gender: _selectedGender,
+                      ),
+                    );
                   },
                   title: 'Confirm',
                   isLoading: false),
