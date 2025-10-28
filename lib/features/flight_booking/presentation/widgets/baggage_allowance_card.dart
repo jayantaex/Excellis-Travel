@@ -3,14 +3,14 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import 'extra_baggage_sheet.dart';
 
-class BookingPolicyCard extends StatefulWidget {
-  const BookingPolicyCard({super.key});
+class BaggageAllowanceCard extends StatefulWidget {
+  const BaggageAllowanceCard({super.key});
 
   @override
-  State<BookingPolicyCard> createState() => _BookingPolicyCardState();
+  State<BaggageAllowanceCard> createState() => _BaggageAllowanceCardState();
 }
 
-class _BookingPolicyCardState extends State<BookingPolicyCard> {
+class _BaggageAllowanceCardState extends State<BaggageAllowanceCard> {
   Map _baggageData = {};
   bool isBaggageAdded = false;
 

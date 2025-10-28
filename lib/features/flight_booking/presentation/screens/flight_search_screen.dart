@@ -19,7 +19,7 @@ import '../../flight_booking_module.dart';
 import '../../models/air_port_model.dart';
 import '../widgets/greeting_widget.dart';
 import '../widgets/passenger_selection_sheet.dart';
-import '../widgets/search_drop_down.dart';
+import '../widgets/app_drop_down.dart';
 
 class FlightSearchScreen extends StatefulWidget {
   const FlightSearchScreen({super.key});
@@ -270,7 +270,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   if (context.mounted) {
                                     FocusScope.of(context).unfocus();
                                   }
-                                  DateTime? date = await _pickDate(context);
+                                  await _pickDate(context);
                                   if (context.mounted) {
                                     FocusScope.of(context).unfocus();
                                   }
@@ -341,7 +341,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       width:
                                           AppHelpers.getScreenWidth(context) *
                                               0.4,
-                                      child: SearchDropDown(
+                                      child: AppDropDown(
                                         label: 'Cabin Class',
                                         prefixIconName: 'seat',
                                         title: 'Cabin Class',
@@ -368,7 +368,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       width:
                                           AppHelpers.getScreenWidth(context) *
                                               0.4,
-                                      child: SearchDropDown(
+                                      child: AppDropDown(
                                         label: 'Fare Type',
                                         prefixIconName: 'users',
                                         title: 'Select A Fare Type',
@@ -386,7 +386,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       width:
                                           AppHelpers.getScreenWidth(context) *
                                               0.4,
-                                      child: SearchDropDown(
+                                      child: AppDropDown(
                                         label: 'Trending Search',
                                         prefixIconName: 'seat',
                                         title: 'Trending Search',

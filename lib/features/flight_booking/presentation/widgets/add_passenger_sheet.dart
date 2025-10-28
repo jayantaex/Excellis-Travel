@@ -5,7 +5,7 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../models/passenger_model.dart';
 import '../screens/pasenger_details_screen.dart';
-import 'search_drop_down.dart';
+import 'app_drop_down.dart';
 
 Future<void> showAddPassengerSheet(
     {required BuildContext context,
@@ -48,7 +48,7 @@ Future<void> showAddPassengerSheet(
               maxCharacters: 30,
             ),
             const SizedBox(height: 16),
-            SearchDropDown(
+            AppDropDown(
               onChanged: (p0) {
                 _selectedGender = p0!;
               },
@@ -65,7 +65,7 @@ Future<void> showAddPassengerSheet(
                   .toList(),
             ),
             const SizedBox(height: 16),
-            SearchDropDown(
+            AppDropDown(
               onChanged: (p0) {
                 _cityzenship = p0!;
               },

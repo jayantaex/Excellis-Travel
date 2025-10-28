@@ -6,12 +6,12 @@ import 'package:ticket_widget/ticket_widget.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../widgets/launge_access_widget.dart';
-import '../widgets/nav_bar.dart';
 
 class PassDownloadScreen extends StatefulWidget {
   const PassDownloadScreen({super.key});
@@ -57,27 +57,11 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
               child: Column(
                 children: [
                   //nav Controller
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Navbar(
-                      onBcakClicked: () {
-                        Navigator.pop(context);
-                      },
-                      onMoreClicked: () {},
-                      centerTitle: 'E-Boarding Pass',
-                      trailing: CircleAvatar(
-                        backgroundColor: AppColors.black.withOpacity(0.1),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.share_rounded,
-                            size: 16,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: AppCustomAppbar(
+                        centerTitle: 'E-Boarding Pass',
+                      )),
 
                   const SizedBox(height: 16),
                   Padding(

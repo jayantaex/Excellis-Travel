@@ -11,7 +11,7 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../../flight_booking_module.dart';
-import '../widgets/booking_policy_card.dart';
+import '../widgets/baggage_allowance_card.dart';
 import '../widgets/passenger_details_card.dart';
 
 class PassengetDetailsNew extends StatefulWidget {
@@ -250,7 +250,7 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                           ),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: BookingPolicyCard(),
+                            child: BaggageAllowanceCard(),
                           ),
                           const SizedBox(height: 45),
                         ],
