@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/loading_widget.dart';
@@ -13,26 +12,80 @@ class BottomNavigationLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: AppGradientBg(
-          child: TransWhiteBgWidget(
-              child: SizedBox(
-        height: AppHelpers.getScreenHeight(context),
-        width: AppHelpers.getScreenWidth(context),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(),
-                LoadingEffect(
-                  height: 19,
-                  width: 140,
-                )
-              ],
+        child: TransWhiteBgWidget(
+          child: SizedBox(
+            height: AppHelpers.getScreenHeight(context),
+            width: AppHelpers.getScreenWidth(context),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: AppHelpers.getScreenWidth(context),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: AppHelpers.getScreenWidth(context) * 0.8,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                LoadingEffect(
+                                  height: 19,
+                                  width: 140,
+                                ),
+                                const SizedBox(height: 8),
+                                LoadingEffect(
+                                  height: 25,
+                                  width: 140,
+                                )
+                              ],
+                            ),
+                          ),
+                          LoadingEffect(
+                            height: 45,
+                            width: 45,
+                            radius: 45,
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    LoadingEffect(
+                      radius: 24,
+                      height: AppHelpers.getScreenHeight(context) * 0.5,
+                      width: AppHelpers.getScreenWidth(context),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        LoadingEffect(
+                          height: 20,
+                          width: 120,
+                        ),
+                        LoadingEffect(
+                          height: 20,
+                          width: 50,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    LoadingEffect(
+                      height: AppHelpers.getScreenHeight(context) * 0.17,
+                      width: AppHelpers.getScreenWidth(context),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
-      ))),
+      ),
     );
   }
 }

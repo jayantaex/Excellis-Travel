@@ -6,7 +6,9 @@ import '../constants/app_styles.dart';
 class LoadingEffect extends StatelessWidget {
   final double? height;
   final double? width;
-  LoadingEffect({super.key, required this.height, required this.width});
+  final double? radius;
+  LoadingEffect(
+      {super.key, required this.height, required this.width, this.radius});
 
   final Color _baseColor = AppColors.white.withOpacity(0.3);
   final Color _highlightColor = AppColors.white.withOpacity(0.8);
@@ -18,7 +20,7 @@ class LoadingEffect extends StatelessWidget {
       highlightColor: _highlightColor,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(radius ?? 12),
           color: Colors.red,
         ),
         height: height ?? 6,

@@ -21,13 +21,8 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _currentIndex = 0;
-  bool isLoading = false;
-  final List<Widget> _screens = [
-    const FlightSearchScreen(),
-    TicketScreen(),
-    const WishListScreen(),
-    MyProfileScreen()
-  ];
+  bool isLoading = true;
+  List<Widget> _screens = [];
 
   @override
   void initState() {
@@ -43,6 +38,15 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             }
           }
         }
+        _screens = [
+          const FlightSearchScreen(),
+          TicketScreen(),
+          const WishListScreen(),
+          MyProfileScreen()
+        ];
+        setState(() {
+          isLoading = false;
+        });
       }
     });
     super.initState();
