@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/app_helpers.dart';
 import 'search_filter_widget.dart';
 
-class ClassFilerWidget extends StatefulWidget {
+class ClassFilterWidget extends StatefulWidget {
   final List<String> filters;
-  const ClassFilerWidget({super.key, required this.filters});
+  const ClassFilterWidget({super.key, required this.filters});
 
   @override
-  State<ClassFilerWidget> createState() => _ClassFilerWidgetState();
+  State<ClassFilterWidget> createState() => _ClassFilterWidgetState();
 }
 
-class _ClassFilerWidgetState extends State<ClassFilerWidget> {
+class _ClassFilterWidgetState extends State<ClassFilterWidget> {
   String selectedFilter = 'All';
   @override
   Widget build(BuildContext context) {

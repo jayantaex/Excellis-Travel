@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../flight_booking_module.dart';
 import '../widgets/launge_access_widget.dart';
-import '../widgets/nav_bar.dart';
-import '../widgets/search_drop_down.dart';
+import '../widgets/app_drop_down.dart';
 
 List<String> citizenshipData = [
   "Afghanistan",
@@ -61,14 +61,12 @@ class PasengerDetailsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   //nav Controller
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Navbar(
-                        onBcakClicked: () {
-                          Navigator.pop(context);
-                        },
-                        onMoreClicked: () {}),
-                  ),
+             const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: AppCustomAppbar(
+                        start: 'CCU',
+                        end: 'HDO',
+                      )),
 
                   Expanded(
                     child: Container(
@@ -122,7 +120,7 @@ class PasengerDetailsScreen extends StatelessWidget {
                               keyboardType: TextInputType.phone,
                             ),
                             const SizedBox(height: 16),
-                            SearchDropDown(
+                            AppDropDown(
                               onChanged: (p0) {},
                               label: 'Citizenship',
                               title: 'Select Citizenship',

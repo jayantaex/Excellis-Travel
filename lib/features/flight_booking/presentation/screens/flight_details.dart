@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../data/search_data.dart';
-import '../widgets/flight_details_feature_card.dart';
+import '../widgets/ticket_card_widget.dart';
 
 class FlightDetailsScreen extends StatefulWidget {
   const FlightDetailsScreen({super.key});
@@ -263,7 +263,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               ],
                             ),
                           ),
-                          FlightDetailsFeatureCard(),
+                          TicketCardWidget(),
                         ],
                       ),
                     ),

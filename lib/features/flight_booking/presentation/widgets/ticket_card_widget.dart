@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../flight_booking_module.dart';
 
-class FlightDetailsFeatureCard extends StatelessWidget {
-  FlightDetailsFeatureCard({super.key});
+class TicketCardWidget extends StatelessWidget {
+  TicketCardWidget({super.key});
 
   final List<Map> _listOfFeatures = [
     {

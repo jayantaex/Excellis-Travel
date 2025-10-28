@@ -153,7 +153,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                 );
                               }
 
-                              return Center(
+                              return const Center(
                                 child: Text("Something went wrong"),
                               );
                             },

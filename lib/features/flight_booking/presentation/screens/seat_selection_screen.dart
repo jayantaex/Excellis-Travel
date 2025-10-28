@@ -3,14 +3,14 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../../flight_booking_module.dart';
 import '../widgets/date_filter_widget.dart';
-import '../widgets/nav_bar.dart';
 import '../widgets/search_filter_widget.dart';
-import '../widgets/seat_widget.dart';
+import '../widgets/seat_check_box_widget.dart';
 
 class SeatSelection extends StatefulWidget {
   const SeatSelection({super.key});
@@ -25,12 +25,10 @@ class _SeatSelectionState extends State<SeatSelection> {
   ];
   SearchData searchData = SearchData();
   List<String> filters = [
-    'All',
     'Economy',
+    'Premium Economy',
     'Business',
-    'First',
-    'Last',
-    'Non stop',
+    'First Class',
   ];
   int dateDuration = 20; //days
   String selectedFilter = 'All';
@@ -38,7 +36,7 @@ class _SeatSelectionState extends State<SeatSelection> {
 
   //seat management
 
-  int row = 8;
+  int row = 30;
 
   @override
   void initState() {
@@ -67,54 +65,54 @@ class _SeatSelectionState extends State<SeatSelection> {
               child: Column(
                 children: [
                   //nav Controller
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Navbar(
-                        onBcakClicked: () {
-                          Navigator.pop(context);
-                        },
-                        onMoreClicked: () {}),
-                  ),
+                  const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: AppCustomAppbar(
+                        start: 'CCU',
+                        end: 'HDO',
+                      )),
                   const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: DateFilterWidget(
-                      dates: dates,
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 16),
+                  //   child: DateFilterWidget(
+                  //     dates: dates,
+                  //   ),
+                  // ),
                   const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: SizedBox(
-                      height: 40,
-                      width: AppHelpers.getScreenWidth(context),
-                      child: ListView.builder(
-                        itemBuilder: (context, index) => SearchFilterWidget(
-                          onTap: () {
-                            setState(() {
-                              selectedFilter = filters[index];
-                            });
-                          },
-                          isSelected: selectedFilter == filters[index],
-                          title: filters[index],
-                        ),
-                        itemCount: filters.length,
-                        scrollDirection: Axis.horizontal,
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 16),
+                  //   child: SizedBox(
+                  //     height: 40,
+                  //     width: AppHelpers.getScreenWidth(context),
+                  //     child: ListView.builder(
+                  //       itemBuilder: (context, index) => SearchFilterWidget(
+                  //         onTap: () {
+                  //           setState(() {
+                  //             selectedFilter = filters[index];
+                  //           });
+                  //         },
+                  //         isSelected: selectedFilter == filters[index],
+                  //         title: filters[index],
+                  //       ),
+                  //       itemCount: filters.length,
+                  //       scrollDirection: Axis.horizontal,
+                  //     ),
+                  //   ),
+                  // ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(24),
                       ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    margin: const EdgeInsets.only(top: 16),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    height: AppHelpers.getScreenHeight(context) * 0.52,
-                    child: ListView.builder(
-                      itemCount: row,
-                      itemBuilder: (context, index) => SeatArrangemnt(
-                        row: index,
+                      margin: const EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      height: AppHelpers.getScreenHeight(context) * 0.6,
+                      child: ListView.builder(
+                        itemCount: row,
+                        itemBuilder: (context, index) => SeatArrangemnt(
+                          row: index,
+                        ),
                       ),
                     ),
                   )
@@ -127,9 +125,9 @@ class _SeatSelectionState extends State<SeatSelection> {
       bottomNavigationBar: Container(
         color: AppColors.white,
         height: AppHelpers.getScreenHeight(context) * 0.16,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
               height: 50,
@@ -232,7 +230,8 @@ class _SeatArrangemntState extends State<SeatArrangemnt> {
     'r-1-2',
     'r-2-2',
   ];
-
+  List<String> leftCloumName = ['A', 'B', 'C'];
+  List<String> rightCloumName = ['D', 'E', 'F'];
   int cloumnInLeft = 3;
 
   int cloumnInRight = 3;
@@ -240,6 +239,7 @@ class _SeatArrangemntState extends State<SeatArrangemnt> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: AppHelpers.getScreenWidth(context),
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,29 +248,52 @@ class _SeatArrangemntState extends State<SeatArrangemnt> {
             cloumnInLeft,
             (index) => Container(
               margin: const EdgeInsets.symmetric(horizontal: 8),
-              child: SeatWidget(
-                id: 'l-$index-${widget.row}',
-                isSelected: selectedSeats.contains('l-$index-${widget.row}'),
-                isBooked: bookedSeats.contains('l-$index-${widget.row}'),
-                onLeft: true,
-                onTap: (id) {
-                  if (selectedSeats.contains(id)) {
-                    setState(() {
-                      selectedSeats.remove(id);
-                    });
-                  } else {
-                    setState(() {
-                      selectedSeats.add(id);
-                    });
-                  }
-                },
-              ),
+              child: widget.row == 0
+                  ? Column(
+                      children: [
+                        Text(leftCloumName[index]),
+                        SeatCheckBoxWidget(
+                          id: 'l-$index-${widget.row}',
+                          isSelected:
+                              selectedSeats.contains('l-$index-${widget.row}'),
+                          isBooked:
+                              bookedSeats.contains('l-$index-${widget.row}'),
+                          onLeft: true,
+                          onTap: (id) {
+                            if (selectedSeats.contains(id)) {
+                              setState(() {
+                                selectedSeats.remove(id);
+                              });
+                            } else {
+                              setState(() {
+                                selectedSeats.add(id);
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    )
+                  : SeatCheckBoxWidget(
+                      id: 'l-$index-${widget.row}',
+                      isSelected:
+                          selectedSeats.contains('l-$index-${widget.row}'),
+                      isBooked: bookedSeats.contains('l-$index-${widget.row}'),
+                      onLeft: true,
+                      onTap: (id) {
+                        if (selectedSeats.contains(id)) {
+                          setState(() {
+                            selectedSeats.remove(id);
+                          });
+                        } else {
+                          setState(() {
+                            selectedSeats.add(id);
+                          });
+                        }
+                      },
+                    ),
             ),
           ),
-          Text(
-              widget.row.toString().length < 2
-                  ? '0${widget.row}'
-                  : '${widget.row}',
+          Text('${widget.row + 1}',
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -278,25 +301,33 @@ class _SeatArrangemntState extends State<SeatArrangemnt> {
               )),
           ...List.generate(
             cloumnInRight,
-            (index) => Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              child: SeatWidget(
-                isSelected: selectedSeats.contains('r-$index-${widget.row}'),
-                isBooked: bookedSeats.contains('r-$index-${widget.row}'),
-                onLeft: false,
-                id: 'r-$index-${widget.row}',
-                onTap: (id) {
-                  if (selectedSeats.contains(id)) {
-                    setState(() {
-                      selectedSeats.remove(id);
-                    });
-                  } else {
-                    setState(() {
-                      selectedSeats.add(id);
-                    });
-                  }
-                },
-              ),
+            (index) => Column(
+              children: [
+                widget.row == 0
+                    ? Text(rightCloumName[index])
+                    : const SizedBox(),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  child: SeatCheckBoxWidget(
+                    isSelected:
+                        selectedSeats.contains('r-$index-${widget.row}'),
+                    isBooked: bookedSeats.contains('r-$index-${widget.row}'),
+                    onLeft: false,
+                    id: 'r-$index-${widget.row}',
+                    onTap: (id) {
+                      if (selectedSeats.contains(id)) {
+                        setState(() {
+                          selectedSeats.remove(id);
+                        });
+                      } else {
+                        setState(() {
+                          selectedSeats.add(id);
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           )
         ],

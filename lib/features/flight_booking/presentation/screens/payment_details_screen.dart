@@ -4,12 +4,12 @@ import 'package:ticket_widget/ticket_widget.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../../flight_booking_module.dart';
-import '../widgets/nav_bar.dart';
 
 class PaymentDetailsScreen extends StatelessWidget {
   PaymentDetailsScreen({super.key});
@@ -35,27 +35,11 @@ class PaymentDetailsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   //nav Controller
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Navbar(
-                      onBcakClicked: () {
-                        Navigator.pop(context);
-                      },
-                      onMoreClicked: () {},
-                      centerTitle: 'Payment Details',
-                      trailing: CircleAvatar(
-                        backgroundColor: AppColors.black.withOpacity(0.1),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.share_rounded,
-                            size: 16,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: AppCustomAppbar(
+                        centerTitle: 'Payment Details',
+                      )),
 
                   const SizedBox(height: 16),
                   Expanded(
@@ -298,7 +282,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                                               margin: const EdgeInsets.only(
                                                   bottom: 8),
                                               child: const PassenderInfo()))
-                                          .toList(),
+                                          ,
                                       const Spacer(),
                                       const BaggageInfo()
                                     ],

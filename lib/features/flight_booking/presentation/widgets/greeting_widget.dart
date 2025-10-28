@@ -27,22 +27,21 @@ class GreetingWidget extends StatelessWidget {
               children: [
                 BlocConsumer<ProfileBloc, ProfileState>(
                     listener: (context, state) {
-                  log('State is ::: $state', name: 'GreetingWidget');
                   if (state is ProfileError) {
                     log(state.message, name: 'GreetingWidget');
                   }
                 }, builder: (context, state) {
                   return state is ProfileLoaded
                       ? Text(
-                          'Morning, ${state.profileData.firstName}',
+                          '${getDayTime()}, ${state.profileData.firstName}',
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: AppColors.white),
                         )
-                      : const Text(
-                          'Morning, Guest',
-                          style: TextStyle(
+                      : Text(
+                          '${getDayTime()}, Guest',
+                          style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: AppColors.white),
@@ -73,5 +72,17 @@ class GreetingWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+String getDayTime() {
+  final DateTime now = DateTime.now();
+  final int hour = now.hour;
+  if (hour < 12) {
+    return 'Good Morning';
+  } else if (hour < 17) {
+    return 'Good Afternoon';
+  } else {
+    return 'Good Evening';
   }
 }
