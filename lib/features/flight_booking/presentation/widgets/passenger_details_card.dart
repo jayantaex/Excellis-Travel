@@ -35,7 +35,6 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
       ),
       child: Column(
         children: [
-          const SizedBox(height: 10),
           // Adult
           PassengerTypeCard(
             allowedPassenger: _allowedAdult,
