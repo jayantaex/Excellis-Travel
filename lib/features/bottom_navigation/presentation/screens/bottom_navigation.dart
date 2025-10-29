@@ -1,13 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/app_exit_sheet.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../flight_booking/presentation/screens/flight_search_screen.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../../profile_management/presentation/screens/my_profile_screen.dart';
+import '../../../ticket/bloc/ticket_bloc.dart';
 import '../../../ticket/presentation/screens/ticket_screen.dart';
 import '../../../wish_list/presentation/screens/wish_list_screen.dart';
 import '../widgets/app_button_nav.dart';
@@ -36,6 +36,10 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
               context
                   .read<ProfileBloc>()
                   .add(LoadProfileEvent(token: accessToken));
+
+              context
+                  .read<TicketBloc>()
+                  .add(FetchTickets(accessToken: accessToken));
             }
           }
         }
