@@ -30,6 +30,8 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       );
 
       if (resp.data != null) {
+        log('Airport loaded', name: 'FLIGHT BLOC');
+        log('${resp.data.length}', name: 'FLIGHT BLOC');
         emit(AirportLoaded(airports: resp.data));
         return;
       }

@@ -1,4 +1,3 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -34,38 +33,29 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(top: 40),
-                margin: EdgeInsets.only(
-                    //onkey board
-                    top: AppHelpers.getScreenHeight(context) * 0.1),
+              child: Align(
                 alignment: Alignment.bottomCenter,
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                child: BlocConsumer<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    if (state is AuthError) {
-                      AppErrorWidget.show(
-                          type: WidghetType.snackBar,
-                          context: context,
-                          message: state.message,
-                          onOk: () {});
-                    }
+                child: SizedBox(
+                  child: BlocConsumer<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthError) {
+                        AppErrorWidget.show(
+                            type: WidghetType.snackBar,
+                            context: context,
+                            message: state.message,
+                            onOk: () {});
+                      }
 
-                    if (state is Authenticated) {
-                      context.goNamed(BottomNavModule.name);
-                    }
-                  },
-                  builder: (context, state) {
-                    return LoginSheet(
-                      isLoading: state is AuthLoading,
-                    );
-                  },
+                      if (state is Authenticated) {
+                        context.goNamed(BottomNavModule.name);
+                      }
+                    },
+                    builder: (context, state) {
+                      return LoginSheet(
+                        isLoading: state is AuthLoading,
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

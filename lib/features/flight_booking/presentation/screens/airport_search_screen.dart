@@ -1,8 +1,6 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
@@ -52,6 +50,12 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
   }
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AppGradientBg(
@@ -80,24 +84,18 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                         children: [
                           AppPrimaryInput(
                             onChange: (String query) {
-                              log(query);
                               AppHelpers.debounce(
+                                delay: const Duration(milliseconds: 300),
                                 () {
-                                  setState(() {
-                                    // airports =
-                                    //     _data.searchAirports(query: query);
-
-                                    context.read<FlightBloc>().add(
-                                          SearchAirportEvent(
-                                            countryCode: 'IN',
-                                            keyword: query,
-                                            subType: 'CITY,AIRPORT',
-                                          ),
-                                        );
-                                  });
+                                  context.read<FlightBloc>().add(
+                                        SearchAirportEvent(
+                                          countryCode: 'IN',
+                                          keyword: query,
+                                          subType: 'CITY,AIRPORT',
+                                        ),
+                                      );
                                 },
                               );
-                              log('${airports.length}');
                             },
                             label: widget.type ?? 'Departure',
                             hint: 'Enter airport name or city',
@@ -109,11 +107,17 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                               child: BlocConsumer<FlightBloc, FlightState>(
                             listener: (context, state) {
                               log(state.toString());
+                              if (state is AirportLoaded) {
+                                airports = state.airports;
+                              }
                             },
                             builder: (context, state) {
                               if (state is AirportSearching) {
                                 return const Center(
-                                    child: CircularProgressIndicator());
+                                  child: CircularProgressIndicator.adaptive(
+                                    backgroundColor: AppColors.primary,
+                                  ),
+                                );
                               }
 
                               if (state is AirportLoaded) {
@@ -153,7 +157,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                 );
                               }
 
-                              return Center(
+                              return const Center(
                                 child: Text("Something went wrong"),
                               );
                             },

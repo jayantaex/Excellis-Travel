@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,9 +8,8 @@ import '../../../../core/widgets/compact_ticket_card.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../../flight_booking_module.dart';
-import '../widgets/class_filer_widget.dart';
+import '../widgets/class_filter_widget.dart';
 import '../widgets/date_filter_widget.dart';
-import '../widgets/nav_bar.dart';
 
 class FlightSearchResultScreen extends StatefulWidget {
   const FlightSearchResultScreen({super.key});
@@ -61,14 +61,12 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
               child: Column(
                 children: [
                   //nav Controller
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Navbar(
-                        onBcakClicked: () {
-                          Navigator.pop(context);
-                        },
-                        onMoreClicked: () {}),
-                  ),
+                  const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: AppCustomAppbar(
+                        start: 'CCU',
+                        end: 'HDO',
+                      )),
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
@@ -79,7 +77,7 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                   const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.only(left: 16),
-                    child: ClassFilerWidget(
+                    child: ClassFilterWidget(
                       filters: filters,
                     ),
                   ),

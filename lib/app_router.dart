@@ -87,9 +87,14 @@ class AppRouter {
 
       //ticket
       GoRoute(
-        path: TicketModule.routePath,
-        name: TicketModule.routeName,
-        builder: (context, state) => TicketModule.builder(),
+        path: TicketModule.ticketsRoute,
+        name: TicketModule.tickets,
+        builder: (context, state) => TicketModule.ticketBuilder(),
+      ),
+      GoRoute(
+        path: TicketModule.ticketDetailsRoute,
+        name: TicketModule.ticketDetails,
+        builder: (context, state) => TicketModule.ticketDetailsBuilder(state),
       ),
 
       //Flight Booking
@@ -125,6 +130,22 @@ class AppRouter {
         name: FlightBookingModule.airportSearchName,
         builder: (context, state) =>
             FlightBookingModule.airportSearchBuilder(context, state),
+      ),
+      GoRoute(
+        path: FlightBookingModule.passengerDetailsNew,
+        name: FlightBookingModule.passengerDetailsNewName,
+        builder: (context, state) =>
+            FlightBookingModule.passengerDetailsNewBuilder(),
+      ),
+      GoRoute(
+        path: FlightBookingModule.flightDetails,
+        name: FlightBookingModule.flightDetailsName,
+        builder: (context, state) => FlightBookingModule.flightDetailsBuilder(),
+      ),
+      GoRoute(
+        path: FlightBookingModule.bookingPolicy,
+        name: FlightBookingModule.bookingPolicyName,
+        builder: (context, state) => FlightBookingModule.bookingPolicyBuilder(),
       ),
 
       //Profile Management

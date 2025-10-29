@@ -14,7 +14,7 @@ class AppTheme {
       appBarTheme: const AppBarTheme(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.transparent,
         foregroundColor: AppColors.white,
         titleTextStyle: TextStyle(
           fontSize: 20,
@@ -128,9 +128,6 @@ class AppTheme {
         labelSmall: AppTextStyles.caption,
       ),
 
-      // Scaffold Background
-      scaffoldBackgroundColor: AppColors.scaffoldBackground,
-
       // Divider Theme
       dividerTheme: const DividerThemeData(
         color: AppColors.divider,
@@ -140,7 +137,7 @@ class AppTheme {
 
       // Progress Indicator Theme
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.primary,
+        color: AppColors.white,
       ),
 
       // Snack Bar Theme

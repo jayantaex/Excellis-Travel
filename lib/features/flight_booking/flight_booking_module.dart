@@ -5,9 +5,12 @@ import 'bloc/flight_bloc.dart';
 import 'data/flight_booking_repository.dart';
 import 'models/air_port_model.dart';
 import 'presentation/screens/airport_search_screen.dart';
+import 'presentation/screens/booking_policy.dart';
+import 'presentation/screens/flight_details.dart';
 import 'presentation/screens/flight_search_result_screen.dart';
 import 'presentation/screens/pasenger_details_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
+import 'presentation/screens/passenger_details_new.dart';
 import 'presentation/screens/payment_details_screen.dart';
 import 'presentation/screens/seat_selection_screen.dart';
 import 'src/flight_booking_remote_data_src.dart';
@@ -70,4 +73,20 @@ class FlightBookingModule {
   static const String passDownload = '/pass-download';
   static const String passDownloadName = 'passDownload';
   static Widget passDownloadBuilder() => const PassDownloadScreen();
+
+  //flight Details
+  static const String flightDetails = '/flight-details';
+  static const String flightDetailsName = 'flightDetails';
+  static Widget flightDetailsBuilder() => const FlightDetailsScreen();
+
+  //passenger Details new
+  static const String passengerDetailsNew = '/passenger-details-new';
+  static const String passengerDetailsNewName = 'passengerDetailsNew';
+  static Widget passengerDetailsNewBuilder() => const PassengetDetailsNew();
+
+  //booking policy
+  static const String bookingPolicy = '/booking-policy';
+  static const String bookingPolicyName = 'bookingPolicy';
+  static Widget bookingPolicyBuilder() => const BookingPolicy();
+
 }

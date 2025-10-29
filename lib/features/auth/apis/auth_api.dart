@@ -16,7 +16,8 @@ class AuthApi {
       "username": username,
       "password": password,
       "fcmToken": fcmToken,
-      "userType": userType
+      "userType": userType,
+      "expiresInMins": 1
     };
     return await apiClient.postRequest(
       endPoint: EndPoints.login,

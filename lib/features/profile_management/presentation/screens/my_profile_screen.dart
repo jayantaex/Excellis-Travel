@@ -1,6 +1,4 @@
-import 'dart:developer';
 
-import 'package:excellistravel/core/utils/storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,7 +7,6 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../../auth/auth_module.dart';
 import '../../../legal/legal_module.dart';
 import '../../../settings/settings_module.dart';
 import '../../bloc/profile_bloc.dart';
@@ -19,6 +16,8 @@ import '../widgets/user_content_widget.dart';
 
 class MyProfileScreen extends StatelessWidget {
   MyProfileScreen({super.key});
+  String dummyImage =
+      'https://media.licdn.com/dms/image/v2/C4D03AQEeEyYzNtDq7g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1524234561685?e=2147483647&v=beta&t=uHzeaBv3V2z6Tp6wvhzGABlTs9HR-SP-tEX1UbYNn4Q';
 
   final List<Map<String, dynamic>> options = [
     {
@@ -51,10 +50,9 @@ class MyProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.transparent,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         centerTitle: false,
-        backgroundColor: AppColors.transparent,
         title: const Text(
           'Profile',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
@@ -70,14 +68,8 @@ class MyProfileScreen extends StatelessWidget {
         ],
       ),
       body: TransWhiteBgWidget(
-        child: BlocConsumer<ProfileBloc, ProfileState>(
-          listener: (context, state) {},
+        child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            log('Profile states :::: $state');
-
-            if (state is ProfileInitial) {
-              options.removeLast();
-            }
             return Column(
               children: [
                 //profile components
@@ -87,9 +79,11 @@ class MyProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       UserContentWidget(
-                        userImage: '${AppConstants.assetImageUrl}user.jpg',
+                        userImage: state is ProfileLoaded
+                            ? state.profileData.image ?? dummyImage
+                            : dummyImage,
                         userName: state is ProfileLoaded
-                            ? state.profileData.firstName ?? 'No-Name'
+                            ? state.profileData.firstName ?? 'Guest'
                             : 'Guest',
                       ),
                       IconButton(
@@ -116,8 +110,7 @@ class MyProfileScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         const SizedBox(height: 20),
-                        ...options.map(
-                          (option) => ListTile(
+                        ...options.map((option) => ListTile(
                             leading: SvgPicture.asset(
                               option['iconPath'],
                               height: 17,
@@ -134,18 +127,9 @@ class MyProfileScreen extends StatelessWidget {
                                 showLogoutSheet(context: context);
                               }
                               if (option['routeName'] != '') {
-                                if (state is ProfileInitial) {
-                                  if (option['title'] == 'Terms & Conditions' ||
-                                      option['title'] == 'Privacy Policy') {
-                                    context.pushNamed(option['routeName']);
-                                  } else {
-                                    context.pushNamed(AuthModule.loginName);
-                                  }
-                                }
+                                context.pushNamed(option['routeName']);
                               }
-                            },
-                          ),
-                        )
+                            }))
                       ],
                     ),
                   ),

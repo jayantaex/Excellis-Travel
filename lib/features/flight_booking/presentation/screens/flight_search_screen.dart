@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
@@ -19,7 +20,7 @@ import '../../flight_booking_module.dart';
 import '../../models/air_port_model.dart';
 import '../widgets/greeting_widget.dart';
 import '../widgets/passenger_selection_sheet.dart';
-import '../widgets/search_drop_down.dart';
+import '../widgets/app_drop_down.dart';
 
 class FlightSearchScreen extends StatefulWidget {
   const FlightSearchScreen({super.key});
@@ -81,7 +82,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     ),
     const DropdownMenuItem<String>(
       value: 'Armed Forces',
-      child: Text('Student'),
+      child: Text('Armed Forces'),
     ),
   ];
 
@@ -127,18 +128,23 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     super.dispose();
   }
 
+  _swapAirports() {
+    String temp = _depurtureController.text;
+    _depurtureController.text = _arrivalController.text;
+    _arrivalController.text = temp;
+  }
+
   @override
   Widget build(BuildContext context) {
     return TransWhiteBgWidget(
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
+          child: SafeArea(
             child: Column(
               children: [
                 //greeting part
                 BlocBuilder<ProfileBloc, ProfileState>(
-                  
                   builder: (context, state) {
                     return const GreetingWidget();
                   },
@@ -187,6 +193,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         'onAirportSelected':
                                             (AirportModel airport) {
                                           log('Departure Airport ${airport.name}');
+                                          _depurtureController.text =
+                                              '${airport.code}(${airport.city})\n${airport.name}';
                                         },
                                       });
                                 },
@@ -218,7 +226,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         'onAirportSelected':
                                             (AirportModel airport) {
                                           log('Arrival Airport ${airport.name}');
-                                          setState(() {});
+                                          _arrivalController.text =
+                                              '${airport.code}(${airport.city})\n${airport.name}';
                                         },
                                       });
                                 },
@@ -256,6 +265,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       Transform.scale(
                                         scale: 0.6,
                                         child: CupertinoSwitch(
+                                            activeColor: AppColors.primary,
                                             value: isRoundTrip,
                                             onChanged: (value) {
                                               setState(() {
@@ -271,7 +281,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   if (context.mounted) {
                                     FocusScope.of(context).unfocus();
                                   }
-                                  DateTime? date = await _pickDate(context);
+                                  await _pickDate(context);
                                   if (context.mounted) {
                                     FocusScope.of(context).unfocus();
                                   }
@@ -342,7 +352,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       width:
                                           AppHelpers.getScreenWidth(context) *
                                               0.4,
-                                      child: SearchDropDown(
+                                      child: AppDropDown(
+                                        
                                         label: 'Cabin Class',
                                         prefixIconName: 'seat',
                                         title: 'Cabin Class',
@@ -369,7 +380,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       width:
                                           AppHelpers.getScreenWidth(context) *
                                               0.4,
-                                      child: SearchDropDown(
+                                      child: AppDropDown(
                                         label: 'Fare Type',
                                         prefixIconName: 'users',
                                         title: 'Select A Fare Type',
@@ -387,7 +398,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       width:
                                           AppHelpers.getScreenWidth(context) *
                                               0.4,
-                                      child: SearchDropDown(
+                                      child: AppDropDown(
                                         label: 'Trending Search',
                                         prefixIconName: 'seat',
                                         title: 'Trending Search',
@@ -406,6 +417,21 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               const SizedBox(height: 16),
                               AppPrimaryButton(
                                   onPressed: () {
+                                    if (_arrivalController.text.isEmpty ||
+                                        _depurtureController.text.isEmpty) {
+                                      showToast(
+                                          message:
+                                              'Please enter both arrival and depurture');
+                                      return;
+                                    }
+
+                                    if (_arrivalController.text ==
+                                        _depurtureController.text) {
+                                      showToast(
+                                          message:
+                                              'Please enter different arrival and depurture');
+                                      return;
+                                    }
                                     if (_arrivalController.text.isNotEmpty &&
                                         _depurtureController.text.isNotEmpty) {
                                       context.pushNamed(
@@ -430,7 +456,9 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                           right: 30,
                           top: 55,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              _swapAirports();
+                            },
                             child: CircleAvatar(
                               radius: 24,
                               backgroundColor: AppColors.primary,
@@ -487,7 +515,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 AppHelpers.getScreenWidth(context) * 0.2,
                             onTap: () {
                               context.pushNamed(
-                                  FlightBookingModule.seatSelectionName);
+                                  FlightBookingModule.flightDetailsName);
                             },
                             data: searchData.ticketData[index],
                           ));

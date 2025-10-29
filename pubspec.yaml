@@ -57,13 +57,18 @@ dependencies:
   flutter_local_notifications: ^19.4.2
   # Barcode - generator
   barcode: ^2.2.9
+  # image picker
+  image_picker: ^1.1.2
   path_provider: ^2.1.4
   # Web view
   webview_flutter: ^4.10.0
   # Network logger
   pretty_dio_logger: ^1.4.0
-  # Package info
-  package_info_plus: ^9.0.0
+
+  #toaster
+  fluttertoast: ^8.2.14
+  # Image Picker
+  dotted_border: ^2.1.0
   
   
 

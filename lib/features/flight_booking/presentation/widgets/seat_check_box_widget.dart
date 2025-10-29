@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 
-class SeatWidget extends StatelessWidget {
+class SeatCheckBoxWidget extends StatelessWidget {
   final bool isSelected;
   final bool isBooked;
   final bool onLeft;
   final Function onTap;
   final String? tag;
   final String? id;
-  const SeatWidget(
+  const SeatCheckBoxWidget(
       {super.key,
       required this.isSelected,
       required this.isBooked,

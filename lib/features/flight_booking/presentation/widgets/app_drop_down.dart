@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 
-class SearchDropDown extends StatelessWidget {
+class AppDropDown extends StatelessWidget {
   final String title;
   final String value;
   final String label;
@@ -11,7 +11,7 @@ class SearchDropDown extends StatelessWidget {
   final List<DropdownMenuItem<String>> items;
   final void Function(String?)? onChanged;
 
-  const SearchDropDown(
+  const AppDropDown(
       {super.key,
       required this.title,
       required this.value,
@@ -23,7 +23,7 @@ class SearchDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
-      dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+      dropdownColor: AppColors.white,
       style: const TextStyle(
           fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.black),
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),

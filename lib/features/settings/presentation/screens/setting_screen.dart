@@ -2,7 +2,6 @@ import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../widgets/faq_sheet.dart';
@@ -16,20 +15,8 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  PackageInfo? packageInfo;
   String appVersion = '1.0.0';
   bool notificationOn = false;
-
-  @override
-  void initState() {
-    Future.delayed(Duration.zero, () async {
-      packageInfo = await PackageInfo.fromPlatform();
-      setState(() {
-        appVersion = packageInfo!.version;
-      });
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,7 @@ class UserContentWidget extends StatelessWidget {
             radius: 45,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(300),
-              child: Image.asset(
+              child: Image.network(
                 userImage,
                 fit: BoxFit.contain,
               ),
