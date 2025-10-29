@@ -1,6 +1,4 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/core/models/ticket_model.dart';
-import 'package:excellistravel/features/flight_booking/presentation/widgets/fare_breakdown_card.dart';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,13 +9,14 @@ import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../flight_booking_module.dart';
-import '../widgets/baggage_allowance_card.dart';
-import '../widgets/passenger_details_card.dart';
+import '../../../flight_booking/flight_booking_module.dart';
+import '../../../flight_booking/presentation/widgets/baggage_allowance_card.dart';
+import '../../../flight_booking/presentation/widgets/fare_breakdown_card.dart';
+import '../../../flight_booking/presentation/widgets/passenger_details_card.dart';
 
 class TicketDetailsScreen extends StatefulWidget {
-  final TicketDataModel data;
-  const TicketDetailsScreen({super.key, required this.data});
+  final int ticketIndex;
+  const TicketDetailsScreen({super.key, required this.ticketIndex});
 
   @override
   State<TicketDetailsScreen> createState() => _TicketDetailsScreenState();
@@ -290,18 +289,18 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
             SizedBox(
               width: AppHelpers.getScreenWidth(context) * 0.4,
               height: 60,
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '₹${widget.data.fareBreakdown?.total ?? 0.0}',
-                    style: const TextStyle(
+                    '₹12500',
+                    style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                         color: AppColors.black),
                   ),
-                  const Text(
+                  Text(
                     'Total Price',
                     style: TextStyle(
                         fontSize: 12,

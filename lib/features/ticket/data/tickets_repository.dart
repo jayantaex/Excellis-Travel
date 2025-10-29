@@ -1,6 +1,6 @@
 import '../../../core/network/api_response.dart';
 import '../api/ticket_api.dart';
-import '../../../core/models/ticket_model.dart';
+import '../models/ticket_model.dart';
 
 class TicketsRepository {
   final TicketApi ticketApi;
