@@ -1,8 +1,6 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
@@ -12,7 +10,6 @@ import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../data/search_data.dart';
 import '../../models/air_port_model.dart';
-import '../widgets/loading/airport_card_loading_widget.dart';
 
 class AirportSearchScreen extends StatefulWidget {
   final String? selectedAirport;
@@ -88,6 +85,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                           AppPrimaryInput(
                             onChange: (String query) {
                               AppHelpers.debounce(
+                                delay: const Duration(milliseconds: 300),
                                 () {
                                   context.read<FlightBloc>().add(
                                         SearchAirportEvent(

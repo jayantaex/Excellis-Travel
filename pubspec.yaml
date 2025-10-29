@@ -65,7 +65,8 @@ dependencies:
   # Network logger
   pretty_dio_logger: ^1.4.0
 
-  
+  #toaster
+  fluttertoast: ^8.2.14
   # Image Picker
   dotted_border: ^2.1.0
   

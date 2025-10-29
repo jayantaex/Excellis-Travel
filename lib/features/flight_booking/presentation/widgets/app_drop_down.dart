@@ -23,8 +23,7 @@ class AppDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
-      
-      dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+      dropdownColor: AppColors.white,
       style: const TextStyle(
           fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.black),
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
