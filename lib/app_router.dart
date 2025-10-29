@@ -11,7 +11,7 @@ import 'features/settings/settings_module.dart';
 import 'features/splash/screens/splash_screen.dart';
 import 'features/splash/splash_module.dart';
 import 'features/ticket/ticket_module.dart';
-import 'features/todo/todo_module.dart';
+
 import 'features/wallet_management/presentation/screens/wallet_payment_failed_screen.dart';
 import 'features/wallet_management/presentation/screens/wallet_payment_success_screen.dart';
 import 'features/wallet_management/wallet_module.dart';
@@ -21,15 +21,7 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: SplashModule.splashRoute,
     routes: [
-      GoRoute(
-        path: TodoModule.addTodoPath,
-        name: TodoModule.addTodoName,
-        builder: (context, state) => TodoModule.addTodoBuilder(
-          userId: state.pathParameters != null
-              ? int.parse(state.pathParameters['userId']!)
-              : 0,
-        ),
-      ),
+   
 
       //Splash
       GoRoute(

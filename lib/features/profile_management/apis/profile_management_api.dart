@@ -10,14 +10,33 @@ class ProfileManagementApi {
   final ApiClient apiClient;
   ProfileManagementApi({required this.apiClient});
 
-  Future<Future<ApiResponse<ProfileModel>>> fetchUserProfile(
-      String token) async {
+  Future<ApiResponse<ProfileModel>> fetchUserProfile(String token) async {
     return apiClient.getRequest(
       endPoint: EndPoints.profile,
       fromJson: (jsonData) {
         log('json data $jsonData');
         return ProfileModel.fromJson(jsonData['data']);
       },
+    );
+  }
+
+  Future<ApiResponse<void>> updateProfile({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phone,
+    required String address,
+  }) async {
+    Map<String, dynamic> body = {
+      "first_name": firstName,
+      "last_name": lastName,
+      "email": email,
+      "phone": phone,
+      "address": address
+    };
+    return apiClient.putRequest(
+      endPoint: EndPoints.profile,
+      fromJson: (jsonData) {},
     );
   }
 }
