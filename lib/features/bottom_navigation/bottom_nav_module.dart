@@ -4,6 +4,9 @@ import '../../core/network/api_client.dart';
 import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
 import '../profile_management/data/profile_management_repository.dart';
+import '../ticket/api/ticket_api.dart';
+import '../ticket/bloc/ticket_bloc.dart';
+import '../ticket/data/tickets_repository.dart';
 import '../todo/api/todo_api.dart';
 import '../todo/bloc/bloc/todo_bloc.dart';
 import '../todo/data/todo_repository.dart';
@@ -19,6 +22,8 @@ class BottomNavModule {
         ProfileManagementRepository(profileManagementApi: profileApi);
     final todoApi = TodoApi(apiClient);
     final todoRepo = TodoRepository(api: todoApi);
+    final ticketApi = TicketApi(apiClient: apiClient);
+    final ticketRepository = TicketsRepository(ticketApi: ticketApi);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -27,6 +32,7 @@ class BottomNavModule {
         BlocProvider(
           create: (_) => TodoBloc(todoRepo),
         ),
+        BlocProvider(create: (_) => TicketBloc(repository: ticketRepository)),
       ],
       child: const BottomNavigationScreen(),
     );

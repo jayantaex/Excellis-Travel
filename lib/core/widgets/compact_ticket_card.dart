@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 import '../../features/flight_booking/models/ticket_data_model.dart';
+import '../../features/ticket/data/ticket_model.dart';
 import '../constants/app_styles.dart';
 import '../utils/app_helpers.dart';
 
 class CompactTicketCard extends StatelessWidget {
   final TicketModel data;
+  final TicketDataModel? ticketData;
   final bool? isOnWishList;
   final double? customWidth;
   final bool? isFavIconRequired;
@@ -14,6 +16,7 @@ class CompactTicketCard extends StatelessWidget {
   const CompactTicketCard(
       {super.key,
       required this.data,
+      this.ticketData,
       this.isFavIconRequired,
       this.isOnWishList,
       this.onWishListTap,
@@ -24,6 +27,10 @@ class CompactTicketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = AppHelpers.getScreenWidth(context);
     return InkWell(
+      focusColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       onTap: onTap,
       child: TicketWidget(
         height: 200,
@@ -89,7 +96,7 @@ class CompactTicketCard extends StatelessWidget {
                                 ),
                               ),
                             )
-                          : SizedBox()
+                          : const SizedBox()
                     ],
                   ),
                 ],
@@ -108,11 +115,18 @@ class CompactTicketCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(data.start!,
+                          Text(
+                              ticketData == null
+                                  ? data.start!
+                                  : ticketData?.departure?.airportCode ?? '',
                               style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600)),
                           Text(
-                            AppHelpers.formatDateTime(DateTime.now(),
+                            AppHelpers.formatDateTime(
+                                ticketData == null
+                                    ? DateTime.now()
+                                    : DateTime.parse(
+                                        ticketData?.departure?.dateTime ?? ''),
                                 pattern: 'dd MMM, yyyy'),
                             style: const TextStyle(
                                 fontSize: 11,
@@ -127,7 +141,15 @@ class CompactTicketCard extends StatelessWidget {
                         children: [
                           AppHelpers.svgAsset(assetName: 'flight', width: 100),
                           Text(
-                            getDuration(min: data.duration!),
+                            getDuration(
+                              min: ticketData == null
+                                  ? data.duration!
+                                  : DateTime.parse(
+                                          ticketData?.departure?.dateTime ?? '')
+                                      .difference(DateTime.parse(
+                                          ticketData?.aparture?.dateTime ?? ''))
+                                      .inMinutes,
+                            ),
                             style: const TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.w400),
                           ),
@@ -140,11 +162,18 @@ class CompactTicketCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(data.end!,
+                        Text(
+                            ticketData == null
+                                ? data.end!
+                                : ticketData?.aparture?.airportCode ?? '',
                             style: const TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w600)),
                         Text(
-                          AppHelpers.formatDateTime(DateTime.now(),
+                          AppHelpers.formatDateTime(
+                              ticketData == null
+                                  ? DateTime.now()
+                                  : DateTime.parse(
+                                      ticketData?.aparture?.dateTime ?? ''),
                               pattern: 'dd MMM, yyyy'),
                           style: const TextStyle(
                               fontSize: 11,
@@ -164,7 +193,7 @@ class CompactTicketCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Seat Class',
+                    'Cabin Class',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
@@ -182,18 +211,24 @@ class CompactTicketCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Business Class',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    ticketData == null
+                        ? 'Business'
+                        : ticketData?.cabinClass ?? '',
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    '\$500',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    ticketData == null
+                        ? '₹500'
+                        : '₹${ticketData?.fareBreakdown?.total}',
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
