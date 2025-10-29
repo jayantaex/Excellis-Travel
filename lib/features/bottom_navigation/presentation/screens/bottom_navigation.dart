@@ -23,6 +23,7 @@ class BottomNavigationScreen extends StatefulWidget {
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _currentIndex = 0;
   bool isLoading = true;
+
   List<Widget> _screens = [];
 
   @override

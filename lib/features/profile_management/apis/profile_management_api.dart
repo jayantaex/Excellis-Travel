@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:excellistravel/core/network/api_urls.dart';
 
 import '../../../core/models/profile_data_model.dart';
@@ -8,12 +10,13 @@ class ProfileManagementApi {
   final ApiClient apiClient;
   ProfileManagementApi({required this.apiClient});
 
-  Future<Future<ApiResponse<ProfileDataModel>>> fetchUserProfile(
+  Future<Future<ApiResponse<ProfileModel>>> fetchUserProfile(
       String token) async {
     return apiClient.getRequest(
       endPoint: EndPoints.profile,
       fromJson: (jsonData) {
-        return ProfileDataModel.fromJson(jsonData);
+        log('json data $jsonData');
+        return ProfileModel.fromJson(jsonData['data']);
       },
     );
   }

@@ -6,7 +6,7 @@ class ProfileManagementRepository {
   final ProfileManagementApi profileManagementApi;
   ProfileManagementRepository({required this.profileManagementApi});
 
-  Future<ApiResponse<ProfileDataModel>> getUserProfile(String token) async {
+  Future<ApiResponse<ProfileModel>> getUserProfile(String token) async {
     return await profileManagementApi.fetchUserProfile(token);
   }
 }

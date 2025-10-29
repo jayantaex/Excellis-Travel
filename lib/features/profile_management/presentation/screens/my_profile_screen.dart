@@ -78,9 +78,8 @@ class MyProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       UserContentWidget(
-                        userImage: state is ProfileLoaded
-                            ? state.profileData.image ?? dummyImage
-                            : dummyImage,
+                        userImage:
+                            state is ProfileLoaded ? dummyImage : dummyImage,
                         userName: state is ProfileLoaded
                             ? state.profileData.firstName ?? 'Guest'
                             : 'Guest',

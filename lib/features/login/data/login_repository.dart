@@ -6,8 +6,7 @@ class LoginRepository {
   final LoginApi api;
   LoginRepository(this.api);
 
-  Future<ApiResponse<LoginResponse>> login(
-      String username, String password) {
+  Future<ApiResponse<LoginResponse>> login(String username, String password) {
     return api.login(username, password);
   }
 }

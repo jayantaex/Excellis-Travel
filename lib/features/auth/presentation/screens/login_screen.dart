@@ -40,10 +40,11 @@ class LoginScreen extends StatelessWidget {
                     listener: (context, state) {
                       if (state is AuthError) {
                         AppErrorWidget.show(
-                            type: WidghetType.snackBar,
-                            context: context,
-                            message: state.message,
-                            onOk: () {});
+                          type: WidghetType.snackBar,
+                          context: context,
+                          message: state.message,
+                          onOk: () {},
+                        );
                       }
 
                       if (state is Authenticated) {

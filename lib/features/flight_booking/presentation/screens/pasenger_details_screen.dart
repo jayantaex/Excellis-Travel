@@ -61,7 +61,7 @@ class PasengerDetailsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   //nav Controller
-             const Padding(
+                  const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: AppCustomAppbar(
                         start: 'CCU',

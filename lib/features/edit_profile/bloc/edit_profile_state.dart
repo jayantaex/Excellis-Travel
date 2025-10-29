@@ -1,7 +1,3 @@
-
-
-
-
 import '../model/edit_profile_response.dart';
 
 abstract class EditProfileState {}

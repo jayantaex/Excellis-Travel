@@ -1,40 +1,98 @@
-class ProfileDataModel {
+// ignore_for_file: unnecessary_new
+
+class ProfileModel {
   int? id;
-  String? username;
-  String? email;
   String? firstName;
   String? lastName;
-  String? gender;
-  String? image;
+  String? email;
+  String? role;
+  String? status;
+  String? emailStatus;
+  String? lastLoginAt;
+  String? phone;
+  String? address;
+  String? commissionRate;
+  bool? isDirectBooking;
+  String? createdAt;
+  String? updatedAt;
+  UserRole? userRole;
+  int? hierarchyLevel;
 
-  ProfileDataModel(
+  ProfileModel(
       {this.id,
-      this.username,
-      this.email,
       this.firstName,
       this.lastName,
-      this.gender,
-      this.image});
+      this.email,
+      this.role,
+      this.status,
+      this.emailStatus,
+      this.lastLoginAt,
+      this.phone,
+      this.address,
+      this.commissionRate,
+      this.isDirectBooking,
+      this.createdAt,
+      this.updatedAt,
+      this.userRole,
+      this.hierarchyLevel});
 
-  ProfileDataModel.fromJson(Map<String, dynamic> json) {
+  ProfileModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    username = json['username'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
     email = json['email'];
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    gender = json['gender'];
-    image = json['image'];
+    role = json['role'];
+    status = json['status'];
+    emailStatus = json['emailStatus'];
+    lastLoginAt = json['lastLoginAt'];
+    phone = json['phone'];
+    address = json['address'];
+    commissionRate = json['commissionRate'];
+    isDirectBooking = json['isDirectBooking'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    userRole = json['userRole'] != null
+        ? new UserRole.fromJson(json['userRole'])
+        : null;
+    hierarchyLevel = json['hierarchy_level'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['username'] = username;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
     data['email'] = email;
-    data['firstName'] = firstName;
-    data['lastName'] = lastName;
-    data['gender'] = gender;
-    data['image'] = image;
+    data['role'] = role;
+    data['status'] = status;
+    data['emailStatus'] = emailStatus;
+    data['lastLoginAt'] = lastLoginAt;
+    data['phone'] = phone;
+    data['address'] = address;
+    data['commissionRate'] = commissionRate;
+    data['isDirectBooking'] = isDirectBooking;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (userRole != null) {
+      data['userRole'] = userRole!.toJson();
+    }
+    data['hierarchy_level'] = hierarchyLevel;
+    return data;
+  }
+}
+
+class UserRole {
+  int? hierarchyLevel;
+
+  UserRole({this.hierarchyLevel});
+
+  UserRole.fromJson(Map<String, dynamic> json) {
+    hierarchyLevel = json['hierarchy_level'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['hierarchy_level'] = hierarchyLevel;
     return data;
   }
 }

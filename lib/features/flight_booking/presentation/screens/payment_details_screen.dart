@@ -277,12 +277,10 @@ class PaymentDetailsScreen extends StatelessWidget {
                                         ),
                                       ),
                                       const Spacer(),
-                                      ...[1, 2]
-                                          .map((e) => Container(
-                                              margin: const EdgeInsets.only(
-                                                  bottom: 8),
-                                              child: const PassenderInfo()))
-                                          ,
+                                      ...[1, 2].map((e) => Container(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 8),
+                                          child: const PassenderInfo())),
                                       const Spacer(),
                                       const BaggageInfo()
                                     ],

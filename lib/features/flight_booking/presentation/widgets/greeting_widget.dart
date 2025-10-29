@@ -33,7 +33,7 @@ class GreetingWidget extends StatelessWidget {
                 }, builder: (context, state) {
                   return state is ProfileLoaded
                       ? Text(
-                          '${getDayTime()}, ${state.profileData.firstName}',
+                          '${getDayTime()}, ${state.profileData.firstName ?? ''}',
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,

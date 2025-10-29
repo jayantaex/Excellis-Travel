@@ -146,6 +146,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                 //greeting part
                 BlocBuilder<ProfileBloc, ProfileState>(
                   builder: (context, state) {
+                    log(state.toString());
                     return const GreetingWidget();
                   },
                 ),
@@ -353,7 +354,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           AppHelpers.getScreenWidth(context) *
                                               0.4,
                                       child: AppDropDown(
-                                        
                                         label: 'Cabin Class',
                                         prefixIconName: 'seat',
                                         title: 'Cabin Class',
