@@ -7,7 +7,7 @@ class MainUrl {
     if (env == "production") {
       return AppConstants.baseUrl;
     } else {
-      return 'https://dummyjson.com';
+      return 'https://api.excellistravel.com';
     }
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class AppConstants {
   // API
-  static const String baseUrl = 'https://dummyjson.com';
+  static const String baseUrl = 'https://api.excellistravel.com';
   static const int connectTimeout = 30000;
   static const int receiveTimeout = 30000;
 

@@ -3,7 +3,7 @@ import 'package:excellistravel/core/network/mock_res.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../data/ticket_mock_data.dart';
-import '../../../core/models/ticket_model.dart';
+import '../models/ticket_model.dart';
 
 class TicketApi {
   final ApiClient apiClient;

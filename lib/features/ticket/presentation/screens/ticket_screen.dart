@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:excellistravel/features/ticket/ticket_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -110,7 +111,13 @@ class TicketScreen extends StatelessWidget {
                                               const EdgeInsets.only(bottom: 10),
                                           child: CompactTicketCard(
                                             ticketData: state.tickets[index],
-                                            onTap: () {},
+                                            onTap: () {
+                                              context.pushNamed(
+                                                  TicketModule.ticketDetails,
+                                                  extra: {
+                                                    'ticketIndex': index
+                                                  });
+                                            },
                                             isFavIconRequired: true,
                                             isOnWishList: false,
                                             onWishListTap: () {},
