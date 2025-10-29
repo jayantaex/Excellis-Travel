@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../flight_booking_module.dart';
 import 'extra_baggage_sheet.dart';
 
 class BaggageAllowanceCard extends StatefulWidget {
@@ -172,7 +174,9 @@ class _BaggageAllowanceCardState extends State<BaggageAllowanceCard> {
                   color: AppColors.grey,
                 )),
             trailing: InkWell(
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(FlightBookingModule.bookingPolicyName);
+              },
               child: const Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 16,

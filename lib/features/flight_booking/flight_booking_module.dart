@@ -5,6 +5,7 @@ import 'bloc/flight_bloc.dart';
 import 'data/flight_booking_repository.dart';
 import 'models/air_port_model.dart';
 import 'presentation/screens/airport_search_screen.dart';
+import 'presentation/screens/booking_policy.dart';
 import 'presentation/screens/flight_details.dart';
 import 'presentation/screens/flight_search_result_screen.dart';
 import 'presentation/screens/pasenger_details_screen.dart';
@@ -82,4 +83,9 @@ class FlightBookingModule {
   static const String passengerDetailsNew = '/passenger-details-new';
   static const String passengerDetailsNewName = 'passengerDetailsNew';
   static Widget passengerDetailsNewBuilder() => const PassengetDetailsNew();
+
+  //booking policy
+  static const String bookingPolicy = '/booking-policy';
+  static const String bookingPolicyName = 'bookingPolicy';
+  static Widget bookingPolicyBuilder() => const BookingPolicy();
 }
