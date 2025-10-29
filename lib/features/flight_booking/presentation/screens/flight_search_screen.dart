@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
@@ -81,7 +82,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     ),
     const DropdownMenuItem<String>(
       value: 'Armed Forces',
-      child: Text('Student'),
+      child: Text('Armed Forces'),
     ),
   ];
 
@@ -192,6 +193,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         'onAirportSelected':
                                             (AirportModel airport) {
                                           log('Departure Airport ${airport.name}');
+                                          _depurtureController.text =
+                                              '${airport.code}(${airport.city})\n${airport.name}';
                                         },
                                       });
                                 },
@@ -223,7 +226,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         'onAirportSelected':
                                             (AirportModel airport) {
                                           log('Arrival Airport ${airport.name}');
-                                          setState(() {});
+                                          _arrivalController.text =
+                                              '${airport.code}(${airport.city})\n${airport.name}';
                                         },
                                       });
                                 },
@@ -349,6 +353,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           AppHelpers.getScreenWidth(context) *
                                               0.4,
                                       child: AppDropDown(
+                                        
                                         label: 'Cabin Class',
                                         prefixIconName: 'seat',
                                         title: 'Cabin Class',
@@ -412,6 +417,21 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               const SizedBox(height: 16),
                               AppPrimaryButton(
                                   onPressed: () {
+                                    if (_arrivalController.text.isEmpty ||
+                                        _depurtureController.text.isEmpty) {
+                                      showToast(
+                                          message:
+                                              'Please enter both arrival and depurture');
+                                      return;
+                                    }
+
+                                    if (_arrivalController.text ==
+                                        _depurtureController.text) {
+                                      showToast(
+                                          message:
+                                              'Please enter different arrival and depurture');
+                                      return;
+                                    }
                                     if (_arrivalController.text.isNotEmpty &&
                                         _depurtureController.text.isNotEmpty) {
                                       context.pushNamed(
