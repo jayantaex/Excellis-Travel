@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:excellistravel/core/models/ticket_model.dart';
 import 'package:excellistravel/features/flight_booking/presentation/widgets/fare_breakdown_card.dart';
 
 import 'package:flutter/material.dart';
@@ -15,8 +16,8 @@ import '../widgets/baggage_allowance_card.dart';
 import '../widgets/passenger_details_card.dart';
 
 class TicketDetailsScreen extends StatefulWidget {
-  final Ticket
-  const TicketDetailsScreen({super.key});
+  final TicketDataModel data;
+  const TicketDetailsScreen({super.key, required this.data});
 
   @override
   State<TicketDetailsScreen> createState() => _TicketDetailsScreenState();
@@ -140,9 +141,9 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                       children: [
                                         AppHelpers.svgAsset(
                                             assetName: 'flight', width: 100),
-                                        Text(
+                                        const Text(
                                           '',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500),
                                         ),
@@ -294,7 +295,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '₹${data.price}',
+                    '₹${widget.data.fareBreakdown?.total ?? 0.0}',
                     style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
