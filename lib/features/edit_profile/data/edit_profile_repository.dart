@@ -6,7 +6,6 @@ import '../api/edit_profile_api.dart';
 import '../model/edit_profile_request.dart';
 import '../model/edit_profile_response.dart';
 
-
 class EditProfileRepository {
   final EditProfileApi _api;
   EditProfileRepository(this._api);
@@ -15,7 +14,8 @@ class EditProfileRepository {
       _api.fetchProfile();
 
   Future<ApiResponse<EditProfileResponse>> updateProfile(
-          EditProfileRequest request, {File? imageFile}) =>
+          EditProfileRequest request,
+          {File? imageFile}) =>
       imageFile != null
           ? _api.updateProfileWithImage(request, imageFile)
           : _api.updateProfile(request);

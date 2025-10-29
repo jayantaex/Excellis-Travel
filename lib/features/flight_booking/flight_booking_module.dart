@@ -88,5 +88,4 @@ class FlightBookingModule {
   static const String bookingPolicy = '/booking-policy';
   static const String bookingPolicyName = 'bookingPolicy';
   static Widget bookingPolicyBuilder() => const BookingPolicy();
-
 }

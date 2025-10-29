@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import '../../core/network/api_client.dart';
 import 'api/wallet_api.dart';
 import 'bloc/wallet_bloc.dart';

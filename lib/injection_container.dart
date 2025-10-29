@@ -3,10 +3,5 @@ class ServiceLocator {
   factory ServiceLocator() => _instance;
   ServiceLocator._internal();
 
-void init() {
-  
-}
-
-
-  
+  void init() {}
 }

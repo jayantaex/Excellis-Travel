@@ -6,7 +6,6 @@ import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
 
-
 class WalletPaymentSuccessScreen extends StatelessWidget {
   final String paymentId;
   const WalletPaymentSuccessScreen({super.key, required this.paymentId});

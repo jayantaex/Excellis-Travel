@@ -36,8 +36,8 @@ class _LoginSheetState extends State<LoginSheet> {
   void initState() {
     kDebugMode
         ? {
-            _userNameController.text = 'emilys',
-            _passwordController.text = 'emilyspass'
+            _userNameController.text = 'superadmin@reiselab.com',
+            _passwordController.text = 'SuperAdmin123!'
           }
         : null;
     super.initState();
@@ -106,7 +106,7 @@ class _LoginSheetState extends State<LoginSheet> {
             const SizedBox(height: 33),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: UserTypeSelection(
+              child: AuthDropdownWidget(
                 items: _items,
                 onChanged: (value) {
                   usertype = value ?? 'retailer';

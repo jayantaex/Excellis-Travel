@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 
-
 class AppButtonNav extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;

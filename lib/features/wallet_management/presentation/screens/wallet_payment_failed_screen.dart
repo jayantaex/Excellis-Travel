@@ -4,7 +4,6 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 
-
 class WalletPaymentFailedScreen extends StatelessWidget {
   final String errMsg;
   const WalletPaymentFailedScreen({super.key, required this.errMsg});

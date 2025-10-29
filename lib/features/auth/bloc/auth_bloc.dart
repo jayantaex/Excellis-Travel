@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:excellistravel/core/network/api_response.dart';
 import 'package:excellistravel/core/utils/storage_service.dart';
 import '../../../core/utils/validators.dart';
 import '../data/auth_repository.dart';
@@ -52,21 +54,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       }
 
-      final user = await authRepository.login(
+      final res = await authRepository.login(
         username: event.userName,
         password: event.password,
         fcmToken: event.fcmToken,
         userType: event.userType,
       );
-      if (user.errorMessage != null) {
-        emit(AuthError(message: user.errorMessage!));
+      if (res.errorMessage != null) {
+        emit(AuthError(message: res.errorMessage!));
         return;
       }
       //save token into local
       await StorageService.saveTokens(
-          user.data?.accessToken ?? '', user.data?.refreshToken ?? '');
+          res.data?.data?.token ?? '', res.data?.data?.token ?? '');
       emit(Authenticated());
-      log("Authenticated");
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
@@ -98,7 +99,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (errMessage != null) {
         emit(RegistrationFailure(message: errMessage));
       } else {
-        emit(RegistrationSuccess());
+        ApiResponse res = await authRepository.register(
+            firstName: event.firstName,
+            lastName: event.lastName,
+            email: event.emailId,
+            phone: event.phoneNumber,
+            role: event.userType,
+            officeAddress: event.officeAddress,
+            pinCode: event.pinCode,
+            state: event.state,
+            city: event.city,
+            nearByAirport: event.nearByAirport,
+            gstNumber: event.gstNumber,
+            aadhaarNumber: event.aadhaarNumber,
+            password: event.password,
+            commissionRate: 5,
+            isDirectBooking: true);
+
+        if (res.errorMessage != null) {
+          emit(RegistrationFailure(message: res.errorMessage!));
+        } else {
+          emit(RegistrationSuccess());
+        }
       }
     } catch (e) {
       emit(RegistrationFailure(message: e.toString()));
@@ -156,10 +178,6 @@ String? validateRegisTration(
       return 'Last name must be at least 3 characters long';
     }
 
-    if (panNumber.isEmpty || panNumber.length < 10) {
-      return 'PAN number must be at least 10 characters long';
-    }
-
     if (emailId.isEmpty || !emailId.contains('@')) {
       return 'Please enter a valid email address';
     }
@@ -168,32 +186,16 @@ String? validateRegisTration(
       return 'Phone number must be at least 10 characters long';
     }
 
-    if (officeAddress.isEmpty || officeAddress.length < 3) {
-      return 'Office address must be at least 3 characters long';
+    if (password.isEmpty || password.length < 8) {
+      return 'Password must be at least 8 characters long';
     }
 
-    if (pinCode.isEmpty || pinCode.length < 6) {
-      return 'Pin code must be at least 6 characters long';
+    if (confirmPassword.isEmpty || confirmPassword.length < 8) {
+      return 'Confirm password must be at least 8 characters long';
     }
 
-    if (state.isEmpty || state.length < 3) {
-      return 'State must be at least 3 characters long';
-    }
-
-    if (city.isEmpty || city.length < 3) {
-      return 'City must be at least 3 characters long';
-    }
-
-    if (nearByAirport.isEmpty || nearByAirport.length < 3) {
-      return 'Nearby airport must be at least 3 characters long';
-    }
-
-    if (gstNumber.isEmpty || gstNumber.length < 15) {
-      return 'GST number must be at least 15 characters long';
-    }
-
-    if (aadhaarNumber.isEmpty || aadhaarNumber.length < 12) {
-      return 'Aadhaar number must be at least 12 characters long';
+    if (password != confirmPassword) {
+      return 'Passwords do not match';
     }
   } else {
     if (firstName.isEmpty || firstName.length < 3) {
