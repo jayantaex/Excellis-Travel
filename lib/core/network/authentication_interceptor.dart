@@ -18,6 +18,7 @@ class AuthenticationInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
       String? refreshToken = await StorageService.getRefreshToken();
+      log("$refreshToken", name: "REFRESH TOKEN");
       if (refreshToken == null || refreshToken.isEmpty) {
         await StorageService.clearTokens();
         return handler.next(err);
