@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 class AppConstants {
   // API
   static const String baseUrl = 'https://api.excellistravel.com';
+  static const String amaduesUrl = 'https://api.amadeus.com';
   static const int connectTimeout = 30000;
   static const int receiveTimeout = 30000;
 
@@ -11,6 +12,7 @@ class AppConstants {
   static const String refreshTokenKey = 'refresh_token';
   static const String userDataKey = 'user_data';
   static const String isFirstTimeKey = 'is_first_time';
+  static const String amadeusKey = 'amadeus_key';
 
   // App Info
   static const String appName = 'Flutter Starter';
@@ -24,6 +26,10 @@ class AppConstants {
   static const String razorpayKey = kDebugMode ? 'rzp_test_1DP5mmOlF5G5ag' : '';
   static const String razorpaySecret = kDebugMode ? '12345678' : '';
   static const String razorpayUserName = 'Excellis Travel';
+
+  //amadues api credentials
+  static const String amadeusClientId = 'an0lZ3ODCbziRyhA4D3x2KnPbJ301mHp';
+  static const String amadeusSecret = 'u6WaWZ0rR0Gt8tFx';
 
   //assetUrl
   static const String assetImageUrl = 'assets/images/';

@@ -90,8 +90,16 @@ class StorageService {
     await setSecureString(AppConstants.refreshTokenKey, refreshToken);
   }
 
+  static Future<void> saveAmadeusToken(String amadeusToken) async {
+    await setSecureString(AppConstants.amadeusKey, amadeusToken);
+  }
+
   static Future<String?> getAccessToken() async {
     return await getSecureString(AppConstants.accessTokenKey);
+  }
+
+  static Future<String?> getAmadeusToken() async {
+    return await getSecureString(AppConstants.amadeusKey);
   }
 
   static Future<String?> getRefreshToken() async {

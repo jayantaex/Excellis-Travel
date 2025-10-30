@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../core/network/api_client.dart';
+import '../../core/network/amadeus_client.dart';
+import 'api/flight_booking_api.dart';
 import 'bloc/flight_bloc.dart';
 import 'data/flight_booking_repository.dart';
 import 'models/air_port_model.dart';
@@ -13,7 +14,6 @@ import 'presentation/screens/pass_download_screen.dart';
 import 'presentation/screens/passenger_details_new.dart';
 import 'presentation/screens/payment_details_screen.dart';
 import 'presentation/screens/seat_selection_screen.dart';
-import 'src/flight_booking_remote_data_src.dart';
 
 class FlightBookingModule {
   static const String searchroute = '/flight-search';
@@ -31,16 +31,13 @@ class FlightBookingModule {
     final airportType = extra?['type'] as String?;
     final selectedAirport = extra?['selectedAirport'] as String?;
 
-    final apiClient = ApiClient();
-    final remoteSrc = FlightBookingRemoteDataSrc(
-      apiClient: apiClient,
-    );
-    final repository = FlightBookingRepository(remoteSc: remoteSrc);
+    // final apiClient = ApiClient();
+    final AmadeusClient amadeusClient = AmadeusClient();
+    final remoteSrc = FlightBookingApi(amadeusClient);
+    final repository = FlightBookingRepository(api: remoteSrc);
 
     return BlocProvider(
-      create: (context) => FlightBloc(
-        repository: repository,
-      ),
+      create: (context) => FlightBloc(repository: repository),
       child: AirportSearchScreen(
         type: airportType,
         selectedAirport: selectedAirport,
@@ -54,7 +51,7 @@ class FlightBookingModule {
   static const String searchResultName = 'flightSearchResult';
   static Widget searchBuilder() => const FlightSearchResultScreen();
 
-  //seata selection
+  //seat selection
   static const String seatSelection = '/seat-selection';
   static const String seatSelectionName = 'seatSelection';
   static Widget seatSelectionBuilder() => const SeatSelection();

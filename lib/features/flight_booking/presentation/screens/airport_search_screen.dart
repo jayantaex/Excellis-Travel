@@ -8,7 +8,6 @@ import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
-import '../../data/search_data.dart';
 import '../../models/air_port_model.dart';
 
 class AirportSearchScreen extends StatefulWidget {
@@ -27,25 +26,19 @@ class AirportSearchScreen extends StatefulWidget {
 }
 
 class _AirportSearchScreenState extends State<AirportSearchScreen> {
-  final SearchData _data = SearchData();
-  List<AirportModel> airports = [];
-  String _selectedAirport = '';
+  // List<AirportModel> airports = [];
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
-    airports = _data.airports;
-    _selectedAirport = widget.selectedAirport?.split('\n')[1] ?? '';
-    _searchController.text = _selectedAirport;
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<FlightBloc>().add(
-            SearchAirportEvent(
-              countryCode: 'IN',
-              keyword: _selectedAirport,
-              subType: 'CITY,AIRPORT',
-            ),
-          );
-    });
+    if (widget.selectedAirport != null && widget.selectedAirport!.isNotEmpty) {
+      _searchController.text = widget.selectedAirport!;
+      context.read<FlightBloc>().add(SearchAirportEvent(
+            keyword: widget.selectedAirport!,
+            countryCode: 'IN',
+            subType: 'AIRPORT',
+          ));
+    }
     super.initState();
   }
 
@@ -85,7 +78,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                           AppPrimaryInput(
                             onChange: (String query) {
                               AppHelpers.debounce(
-                                delay: const Duration(milliseconds: 300),
+                                delay: const Duration(milliseconds: 400),
                                 () {
                                   context.read<FlightBloc>().add(
                                         SearchAirportEvent(
@@ -98,70 +91,73 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                               );
                             },
                             label: widget.type ?? 'Departure',
-                            hint: 'Enter airport name or city',
-                            maxCharacters: 50,
+                            hint: 'Enter city name here or airport code',
+                            maxCharacters: 20,
                             controller: _searchController,
                           ),
                           const SizedBox(height: 20),
                           Expanded(
-                              child: BlocConsumer<FlightBloc, FlightState>(
-                            listener: (context, state) {
-                              log(state.toString());
-                              if (state is AirportLoaded) {
-                                airports = state.airports;
-                              }
-                            },
-                            builder: (context, state) {
-                              if (state is AirportSearching) {
-                                return const Center(
-                                  child: CircularProgressIndicator.adaptive(
-                                    backgroundColor: AppColors.primary,
-                                  ),
-                                );
-                              }
+                            child: BlocConsumer<FlightBloc, FlightState>(
+                              listener: (context, state) {
+                                log('STATE-> $state', name: 'AIRPORT-SEARCH');
+                              },
+                              builder: (context, state) {
+                                if (state is AirportSearching) {
+                                  return const Center(
+                                    child: CircularProgressIndicator.adaptive(
+                                      backgroundColor: AppColors.primary,
+                                    ),
+                                  );
+                                }
 
-                              if (state is AirportLoaded) {
-                                return ListView.builder(
-                                  itemCount: airports.length,
-                                  itemBuilder: (context, index) => ListTile(
-                                      leading: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 4),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primary,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: Text(
-                                          airports[index].code ?? 'NO-CODE',
-                                          style: const TextStyle(
-                                              color: AppColors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      title: Text(
-                                          airports[index].name ?? 'NO-NAME'),
-                                      subtitle: Text(
-                                          airports[index].city ?? 'NO-CITY'),
-                                      onTap: () {
-                                        widget.onAirportSelected!(
-                                            airports[index]);
-                                        Navigator.pop(context);
-                                      }),
-                                );
-                              }
-                              if (state is AirportSearchingError) {
-                                return Center(
-                                  child: Text(state.message),
-                                );
-                              }
+                                if (state is AirportLoaded) {
+                                  if (state.airports.isEmpty) {
+                                    return const NoAirPortFound();
+                                  }
 
-                              return const Center(
-                                child: Text("Something went wrong"),
-                              );
-                            },
-                          ))
+                                  return ListView.builder(
+                                    itemCount: state.airports.length,
+                                    itemBuilder: (context, index) => ListTile(
+                                        leading: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 4),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primary,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: Text(
+                                            state.airports[index].iataCode ??
+                                                'NO-CODE',
+                                            style: const TextStyle(
+                                                color: AppColors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        title: Text(
+                                            state.airports[index].name ??
+                                                'NO-NAME'),
+                                        subtitle: Text(state.airports[index]
+                                                .address?.cityName ??
+                                            'NO-CITY'),
+                                        onTap: () {
+                                          widget.onAirportSelected!(
+                                              state.airports[index]);
+                                          Navigator.pop(context);
+                                        }),
+                                  );
+                                }
+                                if (state is AirportSearchingError) {
+                                  return Center(
+                                    child: Text(state.message),
+                                  );
+                                }
+
+                                return const NoAirPortFound();
+                              },
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -172,6 +168,24 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class NoAirPortFound extends StatelessWidget {
+  const NoAirPortFound({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text("No Airport Found",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+            color: AppColors.grey,
+          )),
     );
   }
 }

@@ -186,7 +186,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: AuthInputWidget(
                         isPassword: false,
-                        maxCharacters: 20,
+                        maxCharacters: 100,
                         controller: _emailController,
                         label: 'Email ID*',
                         hint: 'Enter your Email ID'),
@@ -344,7 +344,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: AuthInputWidget(
                         isPassword: true,
-                        maxCharacters: 8,
+                        maxCharacters: 20,
                         controller: _passwordController,
                         label: 'Password',
                         hint: 'Enter your Password'),
@@ -354,7 +354,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: AuthInputWidget(
                         isPassword: true,
-                        maxCharacters: 8,
+                        maxCharacters: 20,
                         controller: _conPasswordController,
                         label: 'Confirm Password',
                         hint: 'Re-Enter your Password'),
