@@ -14,17 +14,14 @@ class MainUrl {
 
 class EndPoints {
   static var baseUrl = MainUrl().getUrl();
-  static const userLogin = '/auth/login';
-  static const register = "/auth/register";
-
-  //todo
-  static const todos = "/todos";
-  static const addTodo = "/todos/add";
-
   // Authentication
   static const login = '/auth/login';
   static const registration = "/auth/register";
   static const refreshToken = "/auth/refresh-token";
+
+  //location - state
+  static const state = "/location/states?limit=1000";
+  static const cities = "/location/cities?limit=1000000";
   //wish -list
   static const wishList = "/wish-list";
   //Profile

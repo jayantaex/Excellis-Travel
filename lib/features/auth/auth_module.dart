@@ -1,6 +1,10 @@
+import 'package:excellistravel/core/common/bloc/cities/city_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/common/api/location_api.dart';
+import '../../core/common/bloc/states/location_bloc.dart';
+import '../../core/common/data/location_repository.dart';
 import '../../core/network/api_client.dart';
 import 'apis/auth_api.dart';
 import 'bloc/auth_bloc.dart';
@@ -30,12 +34,20 @@ class AuthModule {
   static Widget registerBuilder() {
     ApiClient apiClient = ApiClient();
     AuthApi api = AuthApi(apiClient: apiClient);
+    LocationApi statesApi = LocationApi(apiClient: apiClient);
     final AuthRepository authRepository = AuthRepository(authApi: api);
-    return BlocProvider(
-      create: (_) => AuthBloc(authRepository: authRepository),
-      child: Builder(builder: (context) {
-        return const RegistrationScreen();
-      }),
-    );
+    final LocationRepository stateRepository =
+        LocationRepository(statesApi: statesApi);
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (_) => AuthBloc(authRepository: authRepository),
+      ),
+      BlocProvider(
+        create: (_) => LocationBloc(repository: stateRepository),
+      ),
+      BlocProvider(
+        create: (_) => CityBloc(repository: stateRepository),
+      )
+    ], child: const RegistrationScreen());
   }
 }

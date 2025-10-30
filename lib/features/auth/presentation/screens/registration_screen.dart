@@ -38,7 +38,7 @@ class RegistrationScreen extends StatelessWidget {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: AgencyRegistrationSheet(),
+                child: const AgencyRegistrationSheet(),
               ),
             ),
           ],

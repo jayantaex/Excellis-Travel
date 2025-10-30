@@ -1,6 +1,10 @@
+import 'package:excellistravel/core/common/bloc/cities/city_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/common/api/location_api.dart';
+import '../../core/common/bloc/states/location_bloc.dart';
+import '../../core/common/data/location_repository.dart';
 import '../../core/network/api_client.dart';
 import 'apis/profile_management_api.dart';
 import 'bloc/profile_bloc.dart';
@@ -9,18 +13,22 @@ import 'presentation/screens/edit_profile_screen.dart';
 import 'presentation/screens/my_profile_screen.dart';
 
 class ProfileManagementModule {
-  static final ProfileManagementRepository _repository =
+  static final ApiClient _apiClient = ApiClient();
+  static final ProfileManagementRepository _profileRepository =
       ProfileManagementRepository(
     profileManagementApi: ProfileManagementApi(
-      apiClient: ApiClient(),
+      apiClient: _apiClient,
     ),
   );
+
+  static final LocationRepository _sateRepository =
+      LocationRepository(statesApi: LocationApi(apiClient: _apiClient));
   //my profile
   static String myProfileName = 'my_profile';
   static String myProfilePath = '/my_profile';
   static Widget myProfileBuilder() {
     return BlocProvider(
-      create: (_) => ProfileBloc(profileRepository: _repository),
+      create: (_) => ProfileBloc(profileRepository: _profileRepository),
       child: MyProfileScreen(),
     );
   }
@@ -30,11 +38,21 @@ class ProfileManagementModule {
   static String editProfileName = 'edit_profile';
 
   static Widget editProfileBuilder() {
-    return BlocProvider(
-      create: (_) => ProfileBloc(
-        profileRepository: _repository,
-      ),
-      child: EditProfileScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => ProfileBloc(
+            profileRepository: _profileRepository,
+          ),
+        ),
+        BlocProvider(
+          create: (_) => LocationBloc(repository: _sateRepository),
+        ),
+        BlocProvider(
+          create: (_) => CityBloc(repository: _sateRepository),
+        )
+      ],
+      child: const EditProfileScreen(),
     );
   }
 }

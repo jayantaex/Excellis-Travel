@@ -16,15 +16,13 @@ class UserContentWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            radius: 45,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(300),
-              child: Image.network(
-                userImage,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
+              radius: 45,
+              child: Text(userName.substring(0, 1),
+                  style: const TextStyle(
+                    color: AppColors.black,
+                    fontSize: 45,
+                    fontWeight: FontWeight.w600,
+                  ))),
           const SizedBox(height: 6),
           Text(
             userName,

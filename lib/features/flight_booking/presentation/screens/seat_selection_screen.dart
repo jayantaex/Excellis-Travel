@@ -8,8 +8,6 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
 import '../../flight_booking_module.dart';
-import '../widgets/date_filter_widget.dart';
-import '../widgets/search_filter_widget.dart';
 import '../widgets/seat_check_box_widget.dart';
 
 class SeatSelection extends StatefulWidget {

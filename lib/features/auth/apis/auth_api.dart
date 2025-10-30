@@ -57,7 +57,8 @@ class AuthApi {
       "password": password,
       "role": role == 'retailer' ? "sales_executive" : 'sales_executive',
       "phone": phone,
-      "address": officeAddress,
+      "address":
+          '${officeAddress.trim()}, ${city.trim().trim()}, ${state.trim()}, ${pinCode.trim()}',
       "commissionRate": commissionRate,
       "isDirectBooking": isDirectBooking
     };
