@@ -118,7 +118,7 @@ class _LoginSheetState extends State<LoginSheet> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: AuthInputWidget(
                   isPassword: false,
-                  maxCharacters: 20,
+                  maxCharacters: 100,
                   controller: _userNameController,
                   label: 'Email or Username',
                   hint: 'Enter your Email or Username'),
@@ -128,7 +128,7 @@ class _LoginSheetState extends State<LoginSheet> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: AuthInputWidget(
                   isPassword: true,
-                  maxCharacters: 8,
+                  maxCharacters: 20,
                   controller: _passwordController,
                   label: 'Password',
                   hint: 'Enter your Password'),

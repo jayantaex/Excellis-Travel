@@ -1,19 +1,15 @@
-import '../../../core/network/api_response.dart';
+import '../api/flight_booking_api.dart';
 import '../models/air_port_model.dart';
-import '../src/flight_booking_remote_data_src.dart';
 
 class FlightBookingRepository {
-  final FlightBookingRemoteDataSrc remoteSc;
+  final FlightBookingApi api;
 
-  FlightBookingRepository({required this.remoteSc});
+  FlightBookingRepository({required this.api});
   //search airports
 
-  Future<ApiResponse<List<AirportModel>>> getAirport({
-    required String countryCode,
-    required String subType,
+  Future<List<AirportModel>> getAirport({
     required String keyword,
   }) async {
-    return await remoteSc.getAirport(
-        countryCode: countryCode, subType: subType, keyword: keyword);
+    return await api.getAirport(keyword: keyword);
   }
 }

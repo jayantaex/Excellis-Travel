@@ -10,10 +10,19 @@ class MainUrl {
       return 'https://api.excellistravel.com';
     }
   }
+
+  String getAmaduesUrl() {
+    if (env == "production") {
+      return AppConstants.amaduesUrl;
+    } else {
+      return 'https://test.api.amadeus.com';
+    }
+  }
 }
 
 class EndPoints {
   static var baseUrl = MainUrl().getUrl();
+  static var amaduesBaseUrl = MainUrl().getAmaduesUrl();
   // Authentication
   static const login = '/auth/login';
   static const registration = "/auth/register";
@@ -26,6 +35,9 @@ class EndPoints {
   static const wishList = "/wish-list";
   //Profile
   static const profile = "/auth/profile";
-  //airport
-  static const airportSearch = "/v1/reference-data/locations";
+
+  //amadues
+  static const amaduesAccessToken = "/v1/security/oauth2/token";
+  static const airportSearchByKeyword = "/v1/reference-data/locations";
 }
+//https://test.api.amadeus.com/v1/reference-data/locations?subType=CITY,AIRPORT&keyword=MUC&countryCode=DE

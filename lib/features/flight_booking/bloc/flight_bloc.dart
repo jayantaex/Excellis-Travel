@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:excellistravel/core/network/api_response.dart';
 
 import '../data/flight_booking_repository.dart';
 import '../models/air_port_model.dart';
@@ -23,24 +20,9 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       SearchAirportEvent event, Emitter<FlightState> emit) async {
     try {
       emit(AirportSearching());
-      ApiResponse resp = await repository.getAirport(
-        countryCode: event.countryCode,
-        subType: event.subType,
-        keyword: event.keyword,
-      );
-
-      if (resp.data != null) {
-        log('Airport loaded', name: 'FLIGHT BLOC');
-        log('${resp.data.length}', name: 'FLIGHT BLOC');
-        emit(AirportLoaded(airports: resp.data));
-        return;
-      }
-      log('${resp.errorMessage}, ${resp.statusCode}',
-          name: 'FLIGHT BLOC: Error');
-
-      emit(AirportSearchingError(
-        message: resp.errorMessage ?? 'Something went wrong',
-      ));
+      List<AirportModel> airportList =
+          await repository.getAirport(keyword: event.keyword);
+      emit(AirportLoaded(airports: airportList));
     } catch (e) {
       emit(AirportSearchingError(
         message: "$e",

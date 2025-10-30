@@ -60,7 +60,7 @@ class _SearchAutoCompleteInputState extends State<SearchAutoCompleteInput> {
       child: Autocomplete<AirportModel>(
         optionsViewOpenDirection: OptionsViewOpenDirection.down,
         displayStringForOption: (option) {
-          return '${option.code}(${option.city}) \n${option.name}';
+          return '${option.iataCode}(${option.address?.cityName}) \n${option.name}';
         },
         optionsViewBuilder: (context, onSelected, options) {
           return Align(
@@ -143,7 +143,7 @@ class ResultCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
-          data.code ?? 'NO-CODE',
+          data.iataCode ?? 'NO-CODE',
           style: const TextStyle(
               color: AppColors.white,
               fontSize: 12,
@@ -151,7 +151,7 @@ class ResultCard extends StatelessWidget {
         ),
       ),
       title: Text(data.name ?? 'NO-NAME'),
-      subtitle: Text(data.city ?? 'NO-CITY'),
+      subtitle: Text(data.address?.cityName ?? 'NO-CITY'),
       onTap: () => onSelected(data),
     );
   }

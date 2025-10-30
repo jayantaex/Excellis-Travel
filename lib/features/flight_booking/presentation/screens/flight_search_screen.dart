@@ -34,12 +34,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   final TextEditingController _travellerController =
       TextEditingController(text: '1');
 
-  final TextEditingController _depurtureController = TextEditingController(
-    text: 'DEL (Delhi)\nIndira Gandhi International Airport',
-  );
-  final TextEditingController _arrivalController = TextEditingController(
-    text: 'DXB (Dubai)\nDubai International Airport',
-  );
+  final TextEditingController _depurtureController = TextEditingController();
+  final TextEditingController _arrivalController = TextEditingController();
+  String departureCode = '';
+  String departureCity = '';
+  String arrivalCode = '';
+  String arrivalCity = '';
   //mock data
   SearchData searchData = SearchData();
   String _selectedSeatType = 'Economy';
@@ -189,13 +189,16 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       FlightBookingModule.airportSearchName,
                                       extra: {
                                         'type': 'Departure',
-                                        'selectedAirport':
-                                            _depurtureController.text.trim(),
+                                        'selectedAirport': departureCity.trim(),
                                         'onAirportSelected':
                                             (AirportModel airport) {
+                                          departureCity =
+                                              airport.address?.cityName ?? '';
+                                          departureCode =
+                                              airport.iataCode ?? '';
                                           log('Departure Airport ${airport.name}');
                                           _depurtureController.text =
-                                              '${airport.code}(${airport.city})\n${airport.name}';
+                                              '${airport.iataCode}(${airport.address!.cityName})\n${airport.name}';
                                         },
                                       });
                                 },
@@ -222,13 +225,15 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       FlightBookingModule.airportSearchName,
                                       extra: {
                                         'type': 'Arrival',
-                                        'selectedAirport':
-                                            _arrivalController.text,
+                                        'selectedAirport': arrivalCity.trim(),
                                         'onAirportSelected':
                                             (AirportModel airport) {
+                                          arrivalCity =
+                                              airport.address?.cityName ?? '';
+                                          arrivalCode = airport.iataCode ?? '';
                                           log('Arrival Airport ${airport.name}');
                                           _arrivalController.text =
-                                              '${airport.code}(${airport.city})\n${airport.name}';
+                                              '${airport.iataCode}(${airport.address?.cityName})\n${airport.name}';
                                         },
                                       });
                                 },
@@ -417,6 +422,9 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               const SizedBox(height: 16),
                               AppPrimaryButton(
                                   onPressed: () {
+                                    log('arrival code $arrivalCode depurture code $departureCode',
+                                        name: 'Flight Search');
+
                                     if (_arrivalController.text.isEmpty ||
                                         _depurtureController.text.isEmpty) {
                                       showToast(
