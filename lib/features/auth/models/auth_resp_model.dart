@@ -62,7 +62,6 @@ class User {
   String? status;
   String? emailStatus;
   String? lastLoginAt;
-  Null? parentId;
   String? phone;
   String? address;
   String? commissionRate;
@@ -79,7 +78,6 @@ class User {
       this.status,
       this.emailStatus,
       this.lastLoginAt,
-      this.parentId,
       this.phone,
       this.address,
       this.commissionRate,
@@ -96,7 +94,6 @@ class User {
     status = json['status'];
     emailStatus = json['emailStatus'];
     lastLoginAt = json['lastLoginAt'];
-    parentId = json['parentId'];
     phone = json['phone'];
     address = json['address'];
     commissionRate = json['commissionRate'];
@@ -115,7 +112,6 @@ class User {
     data['status'] = status;
     data['emailStatus'] = emailStatus;
     data['lastLoginAt'] = lastLoginAt;
-    data['parentId'] = parentId;
     data['phone'] = phone;
     data['address'] = address;
     data['commissionRate'] = commissionRate;

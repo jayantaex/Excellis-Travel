@@ -1,12 +1,13 @@
 import 'dart:developer';
-
-import 'package:excellistravel/core/utils/app_toast.dart';
+import 'package:excellistravel/core/common/bloc/cities/city_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/common/bloc/states/location_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../legal/legal_module.dart';
 import '../../auth_module.dart';
@@ -14,85 +15,84 @@ import '../../bloc/auth_bloc.dart';
 import 'auth_dropdown_widget.dart';
 import 'auth_input_widget.dart';
 
-class AgencyRegistrationSheet extends StatelessWidget {
-  AgencyRegistrationSheet({super.key});
+class AgencyRegistrationSheet extends StatefulWidget {
+  const AgencyRegistrationSheet({super.key});
 
+  @override
+  State<AgencyRegistrationSheet> createState() =>
+      _AgencyRegistrationSheetState();
+}
+
+class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
   final TextEditingController _companyNameController = TextEditingController();
+
   final TextEditingController _firstNameController = TextEditingController();
+
   final TextEditingController _lastNameController = TextEditingController();
+
   final TextEditingController _panNoController = TextEditingController();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _phoneController = TextEditingController();
+
   final TextEditingController _officeAddressController =
       TextEditingController();
+
   final TextEditingController _pinController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
+
   final TextEditingController _nearbyAirportController =
       TextEditingController();
+
   final TextEditingController _gstNoController = TextEditingController();
+
   final TextEditingController _aadhaarNoController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _conPasswordController = TextEditingController();
+
   String usertype = 'retailer';
+
+  String selectedCity = 'Vijayawada';
   String selectedState = 'Andhra Pradesh';
+  String selectedStatCode = '';
+  int selectedStateId = 0;
+
   final List<DropdownMenuItem<String>> _items = <DropdownMenuItem<String>>[
     const DropdownMenuItem(value: 'retailer', child: Text('Become a Retailer')),
     const DropdownMenuItem(value: 'user', child: Text('Become a User')),
   ];
 
-  final List<DropdownMenuItem<String>> _states = <DropdownMenuItem<String>>[
-    // --- Indian States ---
-    const DropdownMenuItem(
-        value: 'Andhra Pradesh', child: Text('Andhra Pradesh')),
-    const DropdownMenuItem(
-        value: 'Arunachal Pradesh', child: Text('Arunachal Pradesh')),
-    const DropdownMenuItem(value: 'Assam', child: Text('Assam')),
-    const DropdownMenuItem(value: 'Bihar', child: Text('Bihar')),
-    const DropdownMenuItem(value: 'Chhattisgarh', child: Text('Chhattisgarh')),
-    const DropdownMenuItem(value: 'Goa', child: Text('Goa')),
-    const DropdownMenuItem(value: 'Gujarat', child: Text('Gujarat')),
-    const DropdownMenuItem(value: 'Haryana', child: Text('Haryana')),
-    const DropdownMenuItem(
-        value: 'Himachal Pradesh', child: Text('Himachal Pradesh')),
-    const DropdownMenuItem(value: 'Jharkhand', child: Text('Jharkhand')),
-    const DropdownMenuItem(value: 'Karnataka', child: Text('Karnataka')),
-    const DropdownMenuItem(value: 'Kerala', child: Text('Kerala')),
-    const DropdownMenuItem(
-        value: 'Madhya Pradesh', child: Text('Madhya Pradesh')),
-    const DropdownMenuItem(value: 'Maharashtra', child: Text('Maharashtra')),
-    const DropdownMenuItem(value: 'Manipur', child: Text('Manipur')),
-    const DropdownMenuItem(value: 'Meghalaya', child: Text('Meghalaya')),
-    const DropdownMenuItem(value: 'Mizoram', child: Text('Mizoram')),
-    const DropdownMenuItem(value: 'Nagaland', child: Text('Nagaland')),
-    const DropdownMenuItem(value: 'Odisha', child: Text('Odisha')),
-    const DropdownMenuItem(value: 'Punjab', child: Text('Punjab')),
-    const DropdownMenuItem(value: 'Rajasthan', child: Text('Rajasthan')),
-    const DropdownMenuItem(value: 'Sikkim', child: Text('Sikkim')),
-    const DropdownMenuItem(value: 'Tamil Nadu', child: Text('Tamil Nadu')),
-    const DropdownMenuItem(value: 'Telangana', child: Text('Telangana')),
-    const DropdownMenuItem(value: 'Tripura', child: Text('Tripura')),
-    const DropdownMenuItem(
-        value: 'Uttar Pradesh', child: Text('Uttar Pradesh')),
-    const DropdownMenuItem(value: 'Uttarakhand', child: Text('Uttarakhand')),
-    const DropdownMenuItem(value: 'West Bengal', child: Text('West Bengal')),
-
-    // --- Union Territories ---
-    const DropdownMenuItem(
-        value: 'Andaman and Nicobar Islands',
-        child: Text('Andaman and Nicobar Islands')),
-    const DropdownMenuItem(value: 'Chandigarh', child: Text('Chandigarh')),
-    const DropdownMenuItem(
-        value: 'Dadra and Nagar Haveli and Daman and Diu',
-        child: Text('Dadra and Nagar Haveli and Daman and Diu')),
-    const DropdownMenuItem(value: 'Delhi', child: Text('Delhi')),
-    const DropdownMenuItem(
-        value: 'Jammu and Kashmir', child: Text('Jammu and Kashmir')),
-    const DropdownMenuItem(value: 'Ladakh', child: Text('Ladakh')),
-    const DropdownMenuItem(value: 'Lakshadweep', child: Text('Lakshadweep')),
-    const DropdownMenuItem(value: 'Puducherry', child: Text('Puducherry')),
-  ];
+  final List<DropdownMenuItem<String>> _states = <DropdownMenuItem<String>>[];
+  final List<DropdownMenuItem<String>> _cities = <DropdownMenuItem<String>>[];
 
   final String errMsg = '';
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      context.read<LocationBloc>().add(GetStatesEvent());
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _companyNameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _panNoController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _officeAddressController.dispose();
+    _pinController.dispose();
+    _nearbyAirportController.dispose();
+    _gstNoController.dispose();
+    _aadhaarNoController.dispose();
+    _passwordController.dispose();
+    _conPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -224,24 +224,89 @@ class AgencyRegistrationSheet extends StatelessWidget {
                         hint: 'Enter your Pin Code'),
                   ),
                   const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: AuthDropdownWidget(
-                      items: _states,
-                      onChanged: (value) {
-                        selectedState = value ?? 'Andhra Pradesh';
-                      },
-                    ),
+                  BlocConsumer<LocationBloc, LocationState>(
+                    listener: (context, state) {
+                      if (state is StatesLoaded) {
+                        selectedState =
+                            state.states.first.name?.trim() ?? 'Andhra Pradesh';
+                        state.states.forEach((element) {
+                          _states.add(
+                            DropdownMenuItem(
+                              value: element.name,
+                              child: Text(element.name ?? ''),
+                            ),
+                          );
+                        });
+                        selectedStatCode = state.states.first.code ?? 'AP';
+                        selectedStateId = state.states.first.id ?? 1;
+                        context.read<CityBloc>().add(
+                              GetCityEvent(
+                                  stateId: selectedStateId,
+                                  stateCode: selectedStatCode),
+                            );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is StatesLoaded) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: AuthDropdownWidget(
+                            items: _states,
+                            onChanged: (value) {
+                              selectedState = value ?? 'Andhra Pradesh';
+                              selectedStatCode = state.states
+                                      .firstWhere(
+                                          (element) => element.name == value)
+                                      .code ??
+                                  'AP';
+                              selectedStateId = state.states
+                                      .firstWhere(
+                                          (element) => element.name == value)
+                                      .id ??
+                                  1;
+                              context.read<CityBloc>().add(
+                                    GetCityEvent(
+                                        stateId: selectedStateId,
+                                        stateCode: selectedStatCode),
+                                  );
+                            },
+                          ),
+                        );
+                      }
+                      return const SizedBox();
+                    },
                   ),
                   const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: AuthInputWidget(
-                        isPassword: false,
-                        maxCharacters: 30,
-                        controller: _cityController,
-                        label: 'City',
-                        hint: 'Enter your City'),
+                  BlocConsumer<CityBloc, CityState>(
+                    listener: (context, state) {
+                      if (state is CityLoaded) {
+                        selectedCity =
+                            state.cities.first.name ?? 'Visakhapatnam';
+                        _cities.clear();
+                        for (var element in state.cities) {
+                          _cities.add(
+                            DropdownMenuItem(
+                              value: element.name,
+                              child: Text(element.name ?? ''),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is CityLoaded) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: AuthDropdownWidget(
+                            items: _cities,
+                            onChanged: (value) {
+                              selectedCity = value ?? 'Visakhapatnam';
+                            },
+                          ),
+                        );
+                      }
+                      return const SizedBox();
+                    },
                   ),
                   const SizedBox(height: 12),
                   Padding(
@@ -332,7 +397,7 @@ class AgencyRegistrationSheet extends StatelessWidget {
                                 phoneNumber: _phoneController.text,
                                 officeAddress: _officeAddressController.text,
                                 pinCode: _pinController.text,
-                                city: _cityController.text,
+                                city: selectedCity,
                                 state: selectedState,
                                 gstNumber: _gstNoController.text,
                                 aadhaarNumber: _aadhaarNoController.text,

@@ -8,9 +8,10 @@ sealed class ProfileEvent extends Equatable {
 }
 
 final class LoadProfileEvent extends ProfileEvent {
-  final String token;
-  const LoadProfileEvent({required this.token});
+  const LoadProfileEvent();
+}
 
-  @override
-  List<Object> get props => [token];
+final class UpdateProfileEvent extends ProfileEvent {
+  final Map<String, dynamic> data;
+  const UpdateProfileEvent({required this.data});
 }

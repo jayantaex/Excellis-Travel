@@ -34,9 +34,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         if (context.mounted) {
           if (accessToken != null && accessToken.isNotEmpty) {
             if (context.mounted) {
-              context
-                  .read<ProfileBloc>()
-                  .add(LoadProfileEvent(token: accessToken));
+              context.read<ProfileBloc>().add(const LoadProfileEvent());
 
               context
                   .read<TicketBloc>()
