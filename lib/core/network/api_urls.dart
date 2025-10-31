@@ -39,5 +39,6 @@ class EndPoints {
   //amadues
   static const amaduesAccessToken = "/v1/security/oauth2/token";
   static const airportSearchByKeyword = "/v1/reference-data/locations";
+  static const flightSearch = "/v2/shopping/flight-offers";
 }
 //https://test.api.amadeus.com/v1/reference-data/locations?subType=CITY,AIRPORT&keyword=MUC&countryCode=DE

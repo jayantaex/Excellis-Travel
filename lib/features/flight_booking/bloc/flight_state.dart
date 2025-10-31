@@ -30,7 +30,13 @@ final class AirportSearchingError extends FlightState {
 
 final class FlightSearching extends FlightState {}
 
-final class FlightLoaded extends FlightState {}
+final class FlightLoaded extends FlightState {
+  final FlightsDataModel data;
+
+  const FlightLoaded({
+    required this.data,
+  });
+}
 
 final class FlightSearchingError extends FlightState {
   final String message;

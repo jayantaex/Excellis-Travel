@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/network/amadeus_client.dart';
@@ -16,28 +18,23 @@ import 'presentation/screens/payment_details_screen.dart';
 import 'presentation/screens/seat_selection_screen.dart';
 
 class FlightBookingModule {
-  static const String searchroute = '/flight-search';
-  static const String searchName = 'flightSearch';
+  static final AmadeusClient _amadeusClient = AmadeusClient();
+  static final _remoteSrc = FlightBookingApi(_amadeusClient);
+  static final _repository = FlightBookingRepository(api: _remoteSrc);
 
   //airport search
   static const String airportSearch = '/airport-search';
   static const String airportSearchName = 'airportSearch';
   static Widget airportSearchBuilder(context, state) {
     final extra = state.extra as Map<String, dynamic>?;
-
     final onAirportSelected =
         extra?['onAirportSelected'] as void Function(AirportModel airport)?;
 
     final airportType = extra?['type'] as String?;
     final selectedAirport = extra?['selectedAirport'] as String?;
 
-    // final apiClient = ApiClient();
-    final AmadeusClient amadeusClient = AmadeusClient();
-    final remoteSrc = FlightBookingApi(amadeusClient);
-    final repository = FlightBookingRepository(api: remoteSrc);
-
     return BlocProvider(
-      create: (context) => FlightBloc(repository: repository),
+      create: (context) => FlightBloc(repository: _repository),
       child: AirportSearchScreen(
         type: airportType,
         selectedAirport: selectedAirport,
@@ -47,9 +44,15 @@ class FlightBookingModule {
   }
 
   // search -result
-  static const String searchResult = '/search-result';
-  static const String searchResultName = 'flightSearchResult';
-  static Widget searchBuilder() => const FlightSearchResultScreen();
+  static const String flightSearchResult = '/search-result';
+  static const String flightSearchResultName = 'flightSearchResult';
+  static Widget searchBuilder(context, state) {
+    final extra = state.extra as Map<String, dynamic>?;
+    return BlocProvider(
+      create: (context) => FlightBloc(repository: _repository),
+      child: FlightSearchResultScreen(data: extra ?? {}),
+    );
+  }
 
   //seat selection
   static const String seatSelection = '/seat-selection';
@@ -74,7 +77,15 @@ class FlightBookingModule {
   //flight Details
   static const String flightDetails = '/flight-details';
   static const String flightDetailsName = 'flightDetails';
-  static Widget flightDetailsBuilder() => const FlightDetailsScreen();
+  static Widget flightDetailsBuilder(context, state) {
+    final extra = state.extra;
+    return BlocProvider(
+      create: (context) => FlightBloc(repository: _repository),
+      child: FlightDetailsScreen(
+        data: extra ?? {},
+      ),
+    );
+  }
 
   //passenger Details new
   static const String passengerDetailsNew = '/passenger-details-new';

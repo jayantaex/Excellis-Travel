@@ -21,8 +21,6 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: SplashModule.splashRoute,
     routes: [
-   
-
       //Splash
       GoRoute(
         path: SplashModule.splashRoute,
@@ -91,9 +89,10 @@ class AppRouter {
 
       //Flight Booking
       GoRoute(
-        path: FlightBookingModule.searchResult,
-        name: FlightBookingModule.searchName,
-        builder: (context, state) => FlightBookingModule.searchBuilder(),
+        path: FlightBookingModule.flightSearchResult,
+        name: FlightBookingModule.flightSearchResultName,
+        builder: (context, state) =>
+            FlightBookingModule.searchBuilder(context, state),
       ),
       GoRoute(
         path: FlightBookingModule.seatSelection,
@@ -132,7 +131,8 @@ class AppRouter {
       GoRoute(
         path: FlightBookingModule.flightDetails,
         name: FlightBookingModule.flightDetailsName,
-        builder: (context, state) => FlightBookingModule.flightDetailsBuilder(),
+        builder: (context, state) =>
+            FlightBookingModule.flightDetailsBuilder(context, state),
       ),
       GoRoute(
         path: FlightBookingModule.bookingPolicy,
