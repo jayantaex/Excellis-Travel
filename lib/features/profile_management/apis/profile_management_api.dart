@@ -1,4 +1,3 @@
-
 import 'package:excellistravel/core/network/api_urls.dart';
 
 import '../../../core/common/models/profile_data_model.dart';
@@ -10,7 +9,7 @@ class ProfileManagementApi {
   ProfileManagementApi({required this.apiClient});
 
   Future<ApiResponse<ProfileModel>> fetchUserProfile() async {
-    return apiClient.getRequest(
+    return await apiClient.getRequest(
       endPoint: EndPoints.profile,
       fromJson: (jsonData) {
         return ProfileModel.fromJson(jsonData['data']);
@@ -20,7 +19,7 @@ class ProfileManagementApi {
 
   Future<ApiResponse<ProfileModel>> updateProfile(
       {required Map<String, dynamic> body}) async {
-    return apiClient.putRequest(
+    return await apiClient.putRequest(
       endPoint: EndPoints.profile,
       reqModel: body,
       fromJson: (jsonData) {
