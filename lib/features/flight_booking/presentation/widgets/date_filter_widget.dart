@@ -1,12 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 
 class DateFilterWidget extends StatefulWidget {
-  final List<DateTime> dates;
+  final String startDate;
+  final Function(DateTime date)? onDateSelected;
 
-  const DateFilterWidget({super.key, required this.dates});
+  const DateFilterWidget(
+      {super.key, required this.startDate, this.onDateSelected});
 
   @override
   State<DateFilterWidget> createState() => _DateFilterWidgetState();
@@ -14,6 +18,26 @@ class DateFilterWidget extends StatefulWidget {
 
 class _DateFilterWidgetState extends State<DateFilterWidget> {
   int selectedIndex = 0;
+  DateTime startDate = DateTime.now();
+  List<DateTime> dates = [];
+  int limit = 30; //days
+
+  @override
+  void initState() {
+    log('widget.startDate ${widget.startDate}', name: 'DateFilterWidget');
+    startDate = DateTime.parse(widget.startDate);
+    for (var i = 0; i < limit; i++) {
+      dates.add(startDate.add(Duration(days: i)));
+    }
+    setState(() {});
+
+    // startDate = DateTime.parse(widget.startDate);
+    // for (var i = 0; i < limit; i++) {
+    //   dates.add(startDate.add(Duration(days: i)));
+    // }
+    setState(() {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +45,12 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
       height: 70,
       width: AppHelpers.percenWidth(context: context),
       child: ListView.builder(
-          itemCount: widget.dates.length,
+          itemCount: dates.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {
+                widget.onDateSelected!(dates[index]);
                 setState(() {
                   selectedIndex = index;
                 });
@@ -47,7 +72,7 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
                   children: [
                     Text(
                       AppHelpers.formatDate(
-                        widget.dates[index],
+                        dates[index],
                         pattern: 'MMM',
                       ),
                       style: TextStyle(
@@ -60,7 +85,7 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
                     ),
                     Text(
                       AppHelpers.formatDate(
-                        widget.dates[index],
+                        dates[index],
                         pattern: 'dd',
                       ),
                       style: TextStyle(

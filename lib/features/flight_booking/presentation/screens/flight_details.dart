@@ -1,35 +1,49 @@
+import 'dart:developer';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
 import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';
+import 'package:excellistravel/features/flight_booking/models/flights_data_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../data/airline.dart';
 import '../../data/search_data.dart';
 import '../widgets/ticket_card_widget.dart';
 
 class FlightDetailsScreen extends StatefulWidget {
-  const FlightDetailsScreen({super.key});
+  final Datam data;
+  const FlightDetailsScreen({super.key, required this.data});
 
   @override
   State<FlightDetailsScreen> createState() => _FlightDetailsScreenState();
 }
 
 class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
-  final SearchData _searchData = SearchData();
-  String seletedTab = 'Economy';
+  String seletedTab = 'ECONOMY';
+  List<FareDetailsBySegment> filteredSegment = [];
   List<String> classList = [
-    'Economy',
-    'Business',
-    'First Class',
+    'ECONOMY',
+    'BUSINESS CLASS',
+    'FIRST CLASS',
   ];
+
+  @override
+  void initState() {
+    filteredSegment = filterSegment(
+      cabin: seletedTab,
+      fullList: widget.data.travelerPricings!.first.fareDetailsBySegment!,
+    );
+    setState(() {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     double width = AppHelpers.getScreenWidth(context);
 
-    final data = _searchData.ticketData[0];
     return Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
@@ -68,9 +82,11 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                             child: ListTile(
                               leading: AppHelpers.assetImage(
                                   assetName: 'indigo', ext: 'png'),
-                              title: const Text(
-                                'Indigo',
-                                style: TextStyle(
+                              title: Text(
+                                getAirlineByCode(
+                                    code: widget.data
+                                        .validatingAirlineCodes![0])['airline'],
+                                style: const TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.w600),
                               ),
                               subtitle: const Text(
@@ -79,6 +95,14 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     fontSize: 10,
                                     fontWeight: FontWeight.w400,
                                     color: AppColors.grey),
+                              ),
+                              trailing: Text(
+                                '${widget.data.numberOfBookableSeats} seats available',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black,
+                                ),
                               ),
                             ),
                           ),
@@ -104,26 +128,48 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text('06.15',
-                                            style: TextStyle(
+                                        Text(
+                                            AppHelpers.formatDateTime(
+                                              widget
+                                                      .data
+                                                      .itineraries
+                                                      ?.first
+                                                      .segments
+                                                      ?.first
+                                                      .departure
+                                                      ?.at ??
+                                                  DateTime.now(),
+                                              pattern: 'hh:MM',
+                                            ),
+                                            style: const TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.w600)),
                                         Text(
                                           AppHelpers.formatDateTime(
-                                              DateTime.now(),
-                                              pattern: 'dd MMM, yyyy'),
+                                            widget
+                                                    .data
+                                                    .itineraries
+                                                    ?.first
+                                                    .segments
+                                                    ?.last
+                                                    .arrival
+                                                    ?.at ??
+                                                DateTime.now(),
+                                            pattern: 'dd MMM, yyyy',
+                                          ),
                                           style: const TextStyle(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.grey),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.black,
+                                          ),
                                         ),
-                                        const Text(
-                                          'Kolkata (CCU)',
-                                          style: TextStyle(
-                                              fontSize: 11,
+                                        Text(
+                                          '${widget.data.itineraries?.first.segments?.first.departure?.iataCode} (${widget.data.itineraries?.first.segments?.first.departure?.terminal ?? 'T1'})',
+                                          style: const TextStyle(
+                                              fontSize: 12,
                                               fontWeight: FontWeight.w500,
-                                              color: AppColors.grey),
-                                        ),
+                                              color: AppColors.black),
+                                        )
                                       ],
                                     )),
                                 SizedBox(
@@ -132,11 +178,36 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       children: [
                                         AppHelpers.svgAsset(
                                             assetName: 'flight', width: 100),
-                                        Text(
-                                          getDuration(min: data.duration!),
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              getDuration(
+                                                  duration: widget
+                                                          .data
+                                                          .itineraries
+                                                          ?.first
+                                                          .duration ??
+                                                      ''),
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            Divider(
+                                              thickness: 0.5,
+                                              color: AppColors.primary
+                                                  .withOpacity(0.3),
+                                            ),
+                                            Text(
+                                              widget.data.itineraries?.first
+                                                          .segments?.length ==
+                                                      1
+                                                  ? 'Non-Stop'
+                                                  : '${(widget.data.itineraries!.first.segments!.length - 1)} Stop(s)',
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     )),
@@ -147,8 +218,20 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      const Text('09.40',
-                                          style: TextStyle(
+                                      Text(
+                                          AppHelpers.formatDateTime(
+                                            widget
+                                                    .data
+                                                    .itineraries
+                                                    ?.first
+                                                    .segments
+                                                    ?.last
+                                                    .arrival
+                                                    ?.at ??
+                                                DateTime.now(),
+                                            pattern: 'hh:MM',
+                                          ),
+                                          style: const TextStyle(
                                               fontSize: 24,
                                               fontWeight: FontWeight.w600)),
                                       Text(
@@ -160,12 +243,12 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                             fontWeight: FontWeight.w500,
                                             color: AppColors.grey),
                                       ),
-                                      const Text(
-                                        'Delhi (DEL)',
-                                        style: TextStyle(
-                                            fontSize: 11,
+                                      Text(
+                                        '${widget.data.itineraries?.first.segments?.last.arrival?.iataCode} ',
+                                        style: const TextStyle(
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w500,
-                                            color: AppColors.grey),
+                                            color: AppColors.black),
                                       ),
                                     ],
                                   ),
@@ -173,42 +256,29 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               ],
                             ),
                           ),
-                          ListTile(
-                            leading: AppHelpers.svgAsset(
-                                assetName: 'from', isIcon: true),
-                            title: const Text(
-                              'Apparture Airport',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            subtitle: const Text(
-                              'Netaji Subhash Chandra Bose International Airport (CCU)',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.grey),
-                            ),
-                          ),
-                          ListTile(
-                            leading: AppHelpers.svgAsset(
-                                assetName: 'to', isIcon: true),
-                            title: const Text(
-                              'Departure Airport',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            subtitle: const Text(
-                              'Indira Gandhi International Airport (DEL)',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.grey),
-                            ),
-                          ),
+                          ...widget.data.itineraries!.first.segments!
+                              .map((e) => AirportCard(
+                                    airportType:  'start',
+                                    title: e.departure?.iataCode ?? '',
+                                  )),
+                          // ListTile(
+                          //   leading: AppHelpers.svgAsset(
+                          //       assetName: 'to', isIcon: true),
+                          //   title: const Text(
+                          //     'Departure Airport',
+                          //     style: TextStyle(
+                          //       fontSize: 14,
+                          //       fontWeight: FontWeight.w600,
+                          //     ),
+                          //   ),
+                          //   subtitle: const Text(
+                          //     'Indira Gandhi International Airport (DEL)',
+                          //     style: TextStyle(
+                          //         fontSize: 12,
+                          //         fontWeight: FontWeight.w400,
+                          //         color: AppColors.grey),
+                          //   ),
+                          // ),
                           Container(
                             margin: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 8),
@@ -230,12 +300,20 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     onTap: () {
                                       setState(() {
                                         seletedTab = e;
+                                        filteredSegment = filterSegment(
+                                            fullList: widget
+                                                    .data
+                                                    .travelerPricings!
+                                                    .first
+                                                    .fareDetailsBySegment ??
+                                                [],
+                                            cabin: seletedTab);
                                       });
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 12),
-                                      height: 45,
+                                      height: 40,
                                       width: width / classList.length - 20,
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
@@ -251,10 +329,10 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                           color: seletedTab == e
                                               ? AppColors.white
                                               : AppColors.black,
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontWeight: seletedTab == e
-                                              ? FontWeight.w500
-                                              : FontWeight.w300,
+                                              ? FontWeight.w600
+                                              : FontWeight.w400,
                                         ),
                                       ),
                                     ),
@@ -263,7 +341,26 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               ],
                             ),
                           ),
-                          TicketCardWidget(),
+                          ...filteredSegment.map(
+                            (FareDetailsBySegment? e) => TicketCardWidget(
+                              data: e!,
+                            ),
+                          ),
+                          filteredSegment.isEmpty
+                              ? const SizedBox(
+                                  height: 250,
+                                  child: Center(
+                                    child: Text(
+                                      'No segement found for this cabin class',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(),
                         ],
                       ),
                     ),
@@ -278,8 +375,59 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   }
 }
 
-getDuration({required int min}) {
-  String hours = (min / 60).floor().toString();
-  String minutes = (min % 60).toString();
-  return '${hours}h ${minutes}m';
+getDuration({required String duration}) {
+  //input PT6H35M
+  duration = duration.replaceAll('PT', '');
+  String hr = duration.split('H')[0].trim();
+  String mn = duration.split('H')[1].split('M')[0].trim();
+
+  return '${hr}H ${mn}M';
+}
+
+List<FareDetailsBySegment> filterSegment(
+    {required List<FareDetailsBySegment> fullList, required String cabin}) {
+  List<FareDetailsBySegment> result = [];
+
+  for (var element in fullList) {
+    if (element.cabin == cabin) {
+      result.add(element);
+    }
+  }
+
+  return result;
+}
+
+class AirportCard extends StatelessWidget {
+  final String title;
+
+  /// start|end|stop
+  final String airportType;
+  const AirportCard(
+      {super.key, required this.title, required this.airportType});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: AppHelpers.svgAsset(
+        assetName: airportType == 'start'
+            ? 'from'
+            : airportType == 'to'
+                ? 'to'
+                : 'stop',
+        isIcon: true,
+      ),
+      title: const Text(
+        'Apparture Airport',
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      subtitle: const Text(
+        'Netaji Subhash Chandra Bose International Airport (CCU)',
+        style: TextStyle(
+            fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.grey),
+      ),
+    );
+  }
 }

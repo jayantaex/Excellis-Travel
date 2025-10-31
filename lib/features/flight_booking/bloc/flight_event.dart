@@ -22,17 +22,6 @@ class SearchAirportEvent extends FlightEvent {
 //search flights
 
 class SearchFlightsEvent extends FlightEvent {
-  final String originLocationCode;
-  final String destinationLocationCode;
-  final String departureDate;
-  final String returnDate;
-  final String adult;
-  final String max;
-  const SearchFlightsEvent(
-      {required this.originLocationCode,
-      required this.destinationLocationCode,
-      required this.departureDate,
-      required this.returnDate,
-      required this.adult,
-      required this.max});
+  final Map<String, dynamic> body;
+  const SearchFlightsEvent({required this.body});
 }

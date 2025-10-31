@@ -30,7 +30,8 @@ class FlightSearchScreen extends StatefulWidget {
 }
 
 class _FlightSearchScreenState extends State<FlightSearchScreen> {
-  DateTime? selectedDate;
+  DateTime? departureDate;
+  DateTime? roundTripDate;
   final TextEditingController _travellerController =
       TextEditingController(text: '1');
 
@@ -105,18 +106,19 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     color: AppColors.black,
   );
 
-  Future<DateTime?> _pickDate(BuildContext context) async {
-    selectedDate = await showDatePicker(
+  Future<DateTime?> _pickDate({
+    required BuildContext context,
+    required DateTime initialDate,
+    required DateTime firstDate,
+  }) async {
+    return await showDatePicker(
       context: context,
-      firstDate: DateTime.now(),
+      firstDate: firstDate,
       lastDate: DateTime.now().add(
         const Duration(days: 365),
       ),
-      initialDate: DateTime.now(),
+      initialDate: initialDate,
     );
-    setState(() {});
-
-    return selectedDate;
   }
 
   @override
@@ -242,7 +244,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               AppPrimaryInput(
                                 controller: TextEditingController(
                                   text: AppHelpers.formatDate(
-                                      selectedDate ?? DateTime.now(),
+                                      departureDate ?? DateTime.now(),
                                       pattern: 'E, dd MMM yyyy'),
                                 ),
                                 enable: true,
@@ -287,15 +289,66 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   if (context.mounted) {
                                     FocusScope.of(context).unfocus();
                                   }
-                                  await _pickDate(context);
-                                  if (context.mounted) {
-                                    FocusScope.of(context).unfocus();
-                                  }
+                                  departureDate = await _pickDate(
+                                    context: context,
+                                    firstDate: DateTime.now(),
+                                    initialDate: DateTime.now(),
+                                  );
+                                  setState(() {});
 
                                   //hide keyboard
                                 },
                               ),
                               const SizedBox(height: 16),
+                              isRoundTrip
+                                  ? AppPrimaryInput(
+                                      controller: TextEditingController(
+                                        text: AppHelpers.formatDate(
+                                            departureDate?.add(
+                                                    const Duration(days: 5)) ??
+                                                DateTime.now().add(
+                                                    const Duration(days: 5)),
+                                            pattern: 'E, dd MMM yyyy'),
+                                      ),
+                                      enable: true,
+                                      maxCharacters: 10,
+                                      hint: 'Pick your return date',
+                                      label: 'Return',
+                                      prefixIcon: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: SvgPicture.asset(
+                                          '${AppConstants.assetIcontUrl}calender.svg',
+                                        ),
+                                      ),
+                                      style: _defaultTextStyple,
+                                      onTap: () async {
+                                        if (context.mounted) {
+                                          FocusScope.of(context).unfocus();
+                                        }
+                                        roundTripDate = await _pickDate(
+                                          context: context,
+                                          firstDate: departureDate?.add(
+                                                const Duration(days: 1),
+                                              ) ??
+                                              DateTime.now().add(
+                                                const Duration(days: 1),
+                                              ),
+                                          initialDate: departureDate?.add(
+                                                const Duration(days: 5),
+                                              ) ??
+                                              DateTime.now().add(
+                                                const Duration(days: 5),
+                                              ),
+                                        );
+                                        if (context.mounted) {
+                                          FocusScope.of(context).unfocus();
+                                        }
+
+                                        //hide keyboard
+                                      },
+                                    )
+                                  : const SizedBox(),
+                              SizedBox(height: isRoundTrip ? 16 : 0),
                               SizedBox(
                                 width: AppHelpers.getScreenWidth(context),
                                 child: Row(
@@ -442,8 +495,36 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     }
                                     if (_arrivalController.text.isNotEmpty &&
                                         _depurtureController.text.isNotEmpty) {
+                                      Map<String, dynamic> data = {
+                                        'depurture': departureCode,
+                                        'arrival': arrivalCode,
+                                        'isRoundTrip': isRoundTrip,
+                                        'depurtureDate': AppHelpers.formatDate(
+                                          departureDate ?? DateTime.now(),
+                                          pattern: 'yyyy-MM-dd',
+                                        ),
+                                        'returnDate': isRoundTrip
+                                            ? AppHelpers.formatDate(
+                                                roundTripDate ??
+                                                    DateTime.now().add(
+                                                        const Duration(
+                                                            days: 1)),
+                                                pattern: 'yyyy-MM-dd',
+                                              )
+                                            : null,
+                                        'travellers': {
+                                          'adult': _adultCount,
+                                          'child': _childCount,
+                                          'infant': _infantCount
+                                        },
+                                        'fareType': _selectedFareType,
+                                        'cabinClass': _selectedSeatType,
+                                      };
+
                                       context.pushNamed(
-                                          FlightBookingModule.searchName);
+                                          FlightBookingModule
+                                              .flightSearchResultName,
+                                          extra: data);
                                     }
                                   },
                                   style: const TextStyle(
