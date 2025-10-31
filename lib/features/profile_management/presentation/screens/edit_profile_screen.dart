@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/common/bloc/cities/city_bloc.dart';
-import '../../../../core/common/bloc/states/location_bloc.dart';
+import '../../../../core/common/bloc/states/states_bloc.dart';
 import '../../../../core/common/models/city_model.dart';
 import '../../../../core/common/models/state_model.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -52,7 +52,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     Future.delayed(Duration.zero, () async {
       if (context.mounted) {
         context.read<ProfileBloc>().add(const LoadProfileEvent());
-        context.read<LocationBloc>().add(GetStatesEvent());
+        context.read<StatesBloc>().add(GetStatesEvent());
       }
     });
     super.initState();
@@ -287,7 +287,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     },
                                   ),
                                   const SizedBox(height: 16),
-                                  BlocConsumer<LocationBloc, LocationState>(
+                                  BlocConsumer<StatesBloc, StatesState>(
                                     listener: (context, state) {
                                       if (state is StatesLoaded) {
                                         if (_selectedState.isEmpty) {
