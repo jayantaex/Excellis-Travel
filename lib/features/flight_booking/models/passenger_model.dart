@@ -1,24 +1,36 @@
 class PassengerModel {
-  String? name;
-  String? citizenship;
+  DateTime? dateOfBirth;
+  String? firstName;
+  String? lastName;
+  String? emailAddress;
   String? gender;
-  String? birthDate;
+  String? number;
 
-  PassengerModel({this.name, this.citizenship, this.gender, this.birthDate});
+  PassengerModel(
+      {this.dateOfBirth,
+      this.firstName,
+      this.lastName,
+      this.emailAddress,
+      this.gender,
+      this.number});
 
   PassengerModel.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    citizenship = json['citizenship'];
+    dateOfBirth = json['dateOfBirth'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    emailAddress = json['emailAddress'];
     gender = json['gender'];
-    birthDate = json['birthDate'];
+    number = json['number'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    data['citizenship'] = citizenship;
+    data['dateOfBirth'] = dateOfBirth;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['emailAddress'] = emailAddress;
     data['gender'] = gender;
-    data['birthDate'] = birthDate;
+    data['number'] = number;
     return data;
   }
 }

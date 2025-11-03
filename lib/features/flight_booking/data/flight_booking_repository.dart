@@ -18,6 +18,6 @@ class FlightBookingRepository {
   Future<ApiResponse<FlightsDataModel>> searchFlight({
     required Map<String, dynamic> body,
   }) async {
-    return await api.searchAirport(body: body);
+    return await api.searchFlight(body: body);
   }
 }

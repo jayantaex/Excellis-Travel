@@ -1,14 +1,18 @@
 class FlightsDataModel {
   final Meta? meta;
   final List<Datam>? datam;
+  final FlightDictionary? dictionaries;
 
-  FlightsDataModel({this.meta, this.datam});
+  FlightsDataModel({this.meta, this.datam, this.dictionaries});
 
   factory FlightsDataModel.fromJson(Map<String, dynamic> json) =>
       FlightsDataModel(
         meta: json['meta'] != null ? Meta.fromJson(json['meta']) : null,
         datam: json['data'] != null
             ? List<Datam>.from(json['data'].map((x) => Datam.fromJson(x)))
+            : null,
+        dictionaries: json['dictionaries'] != null
+            ? FlightDictionary.fromJson(json['dictionaries'])
             : null,
       );
 
@@ -491,4 +495,40 @@ class AmenityProvider {
       );
 
   Map<String, dynamic> toJson() => {'name': name};
+}
+
+class FlightDictionary {
+  final Dictionaries dictionaries;
+  FlightDictionary({required this.dictionaries});
+  factory FlightDictionary.fromJson(Map<String, dynamic> json) {
+    return FlightDictionary(
+      dictionaries: Dictionaries.fromJson(json),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'dictionaries': dictionaries.toJson(),
+      };
+}
+
+class Dictionaries {
+  final Map<String, String> aircraft;
+  final Map<String, String> carriers;
+
+  Dictionaries({
+    required this.aircraft,
+    required this.carriers,
+  });
+
+  factory Dictionaries.fromJson(Map<String, dynamic> json) {
+    return Dictionaries(
+      aircraft: Map<String, String>.from(json['aircraft']),
+      carriers: Map<String, String>.from(json['carriers']),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'aircraft': aircraft,
+        'carriers': carriers,
+      };
 }

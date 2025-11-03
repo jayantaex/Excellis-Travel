@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:excellistravel/core/utils/app_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +10,6 @@ import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
-import '../../data/search_data.dart';
 import '../../flight_booking_module.dart';
 import '../widgets/class_filter_widget.dart';
 import '../widgets/compact_flight_card.dart';
@@ -31,7 +28,6 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
   List<DateTime> dates = [
     DateTime.now(),
   ];
-  SearchData searchData = SearchData();
   List<String> filters = [
     'All',
     'Cheapest',
@@ -150,10 +146,15 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                                 onTap: () {
                                   context.pushNamed(
                                     FlightBookingModule.flightDetailsName,
-                                    extra: state.data.datam![index],
+                                    extra: {
+                                      'data': state.data.datam![index],
+                                      'flightDictionary':
+                                          state.data.dictionaries
+                                    },
                                   );
                                 },
                                 data: state.data.datam![index],
+                                dictionaries: state.data.dictionaries,
                               ),
                             ),
                           ),
@@ -214,13 +215,11 @@ Map<String, dynamic> getBody({
       },
       if (isRoundTrip)
         {
-          {
-            "id": "2",
-            "originLocationCode": arrival,
-            "destinationLocationCode": depurture,
-            "departureDateTimeRange": {
-              "date": returnDate,
-            }
+          "id": "2",
+          "originLocationCode": arrival,
+          "destinationLocationCode": depurture,
+          "departureDateTimeRange": {
+            "date": returnDate,
           }
         }
     ],
