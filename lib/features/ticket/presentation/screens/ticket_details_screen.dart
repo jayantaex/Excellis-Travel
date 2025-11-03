@@ -229,9 +229,12 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                   )),
                             ),
                           ),
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: PassengerDetailsCard(),
+                            child: PassengerDetailsCard(
+                              onAddPassenger: (_) {},
+                              travelerPricing: [],
+                            ),
                           ),
                           const SizedBox(height: 8),
                           const Padding(

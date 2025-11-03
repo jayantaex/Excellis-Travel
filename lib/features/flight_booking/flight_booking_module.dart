@@ -67,7 +67,16 @@ class FlightBookingModule {
   //payment details
   static const String paymentDetails = '/payment-details';
   static const String paymentDetailsName = 'paymentDetails';
-  static Widget paymentDetailsBuilder() => PaymentDetailsScreen();
+  static Widget paymentDetailsBuilder(context, state) {
+    final extra = state.extra;
+    return BlocProvider(
+      create: (context) => FlightBloc(repository: _repository),
+      child: PaymentDetailsScreen(
+        data: extra['data'],
+        selectedPlan: extra['selectedPlan'],
+      ),
+    );
+  }
 
   //pass download
   static const String passDownload = '/pass-download';
@@ -82,7 +91,8 @@ class FlightBookingModule {
     return BlocProvider(
       create: (context) => FlightBloc(repository: _repository),
       child: FlightDetailsScreen(
-        data: extra ?? {},
+        flightDictionary: extra['flightDictionary'] ?? {},
+        data: extra['data'] ?? {},
       ),
     );
   }
@@ -90,7 +100,16 @@ class FlightBookingModule {
   //passenger Details new
   static const String passengerDetailsNew = '/passenger-details-new';
   static const String passengerDetailsNewName = 'passengerDetailsNew';
-  static Widget passengerDetailsNewBuilder() => const PassengetDetailsNew();
+  static Widget passengerDetailsNewBuilder(context, state) {
+    return BlocProvider(
+      create: (context) => FlightBloc(repository: _repository),
+      child: PassengetDetailsNew(
+        flightDictionary: state.extra['flightDictionary'],
+        data: state.extra['data'],
+        selectedPlan: state.extra['selectedPlan'],
+      ),
+    );
+  }
 
   //booking policy
   static const String bookingPolicy = '/booking-policy';

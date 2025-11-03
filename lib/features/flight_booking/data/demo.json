@@ -1,0 +1,763 @@
+{
+    "flightOffers": [
+      {
+        "id": "1",
+        "source": "GDS",
+        "instantTicketingRequired": false,
+        "nonHomogeneous": false,
+        "oneWay": false,
+        "isUpsellOffer": false,
+        "lastTicketingDate": "2025-11-03",
+        "lastTicketingDateTime": "2025-11-03",
+        "numberOfBookableSeats": 9,
+        "itineraries": [
+          {
+            "duration": "PT10H45M",
+            "segments": [
+              {
+                "departure": {
+                  "iataCode": "CCU",
+                  "at": "2025-11-03T20:30:00"
+                },
+                "arrival": {
+                  "iataCode": "DEL",
+                  "terminal": "3",
+                  "at": "2025-11-03T22:55:00"
+                },
+                "carrierCode": "AI",
+                "number": "2708",
+                "aircraft": {
+                  "code": "321"
+                },
+                "operating": {
+                  "carrierCode": "AI"
+                },
+                "duration": "PT2H25M",
+                "id": "1",
+                "numberOfStops": 0,
+                "blacklistedInEU": false
+              },
+              {
+                "departure": {
+                  "iataCode": "DEL",
+                  "terminal": "3",
+                  "at": "2025-11-04T05:35:00"
+                },
+                "arrival": {
+                  "iataCode": "IDR",
+                  "at": "2025-11-04T07:15:00"
+                },
+                "carrierCode": "AI",
+                "number": "2913",
+                "aircraft": {
+                  "code": "32N"
+                },
+                "operating": {
+                  "carrierCode": "AI"
+                },
+                "duration": "PT1H40M",
+                "id": "2",
+                "numberOfStops": 0,
+                "blacklistedInEU": false
+              }
+            ]
+          }
+        ],
+        "price": {
+          "currency": "INR",
+          "total": "17466.00",
+          "base": "14056.00",
+          "fees": [
+            {
+              "amount": "0.00",
+              "type": "SUPPLIER"
+            },
+            {
+              "amount": "0.00",
+              "type": "TICKETING"
+            }
+          ],
+          "grandTotal": "17466.00"
+        },
+        "pricingOptions": {
+          "fareType": [
+            "PUBLISHED"
+          ],
+          "includedCheckedBagsOnly": false
+        },
+        "validatingAirlineCodes": [
+          "AI"
+        ],
+        "travelerPricings": [
+          {
+            "travelerId": "1",
+            "fareOption": "STANDARD",
+            "travelerType": "ADULT",
+            "price": {
+              "currency": "INR",
+              "total": "9474.00",
+              "base": "7734.00"
+            },
+            "fareDetailsBySegment": [
+              {
+                "segmentId": "1",
+                "cabin": "ECONOMY",
+                "fareBasis": "GU1YXEII",
+                "brandedFare": "ECOVALU",
+                "brandedFareLabel": "ECO VALUE",
+                "class": "G",
+                "includedCheckedBags": {
+                  "weight": 15,
+                  "weightUnit": "KG"
+                },
+                "includedCabinBags": {
+                  "weight": 7,
+                  "weightUnit": "KG"
+                },
+                "amenities": [
+                  {
+                    "description": "PRE RESERVED SEAT ASSIGNMENT",
+                    "isChargeable": false,
+                    "amenityType": "PRE_RESERVED_SEAT",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "MEAL SERVICES",
+                    "isChargeable": false,
+                    "amenityType": "MEAL",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "REFUNDABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "CHANGEABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "UPGRADE",
+                    "isChargeable": true,
+                    "amenityType": "UPGRADES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "FREE CHECKED BAGGAGE ALLOWANCE",
+                    "isChargeable": false,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  }
+                ]
+              },
+              {
+                "segmentId": "2",
+                "cabin": "ECONOMY",
+                "fareBasis": "GU1YXEII",
+                "brandedFare": "ECOVALU",
+                "brandedFareLabel": "ECO VALUE",
+                "class": "G",
+                "includedCheckedBags": {
+                  "weight": 15,
+                  "weightUnit": "KG"
+                },
+                "includedCabinBags": {
+                  "weight": 7,
+                  "weightUnit": "KG"
+                },
+                "amenities": [
+                  {
+                    "description": "PRE RESERVED SEAT ASSIGNMENT",
+                    "isChargeable": false,
+                    "amenityType": "PRE_RESERVED_SEAT",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "MEAL SERVICES",
+                    "isChargeable": false,
+                    "amenityType": "MEAL",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "REFUNDABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "CHANGEABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "UPGRADE",
+                    "isChargeable": true,
+                    "amenityType": "UPGRADES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "FREE CHECKED BAGGAGE ALLOWANCE",
+                    "isChargeable": false,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "travelerId": "2",
+            "fareOption": "STANDARD",
+            "travelerType": "CHILD",
+            "price": {
+              "currency": "INR",
+              "total": "7992.00",
+              "base": "6322.00"
+            },
+            "fareDetailsBySegment": [
+              {
+                "segmentId": "1",
+                "cabin": "ECONOMY",
+                "fareBasis": "GU1YXEII",
+                "brandedFare": "ECOVALU",
+                "brandedFareLabel": "ECO VALUE",
+                "class": "G",
+                "amenities": [
+                  {
+                    "description": "PRE RESERVED SEAT ASSIGNMENT",
+                    "isChargeable": false,
+                    "amenityType": "PRE_RESERVED_SEAT",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "MEAL SERVICES",
+                    "isChargeable": false,
+                    "amenityType": "MEAL",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "REFUNDABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "CHANGEABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "UPGRADE",
+                    "isChargeable": true,
+                    "amenityType": "UPGRADES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "FREE CHECKED BAGGAGE ALLOWANCE",
+                    "isChargeable": false,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  }
+                ]
+              },
+              {
+                "segmentId": "2",
+                "cabin": "ECONOMY",
+                "fareBasis": "GU1YXEII",
+                "brandedFare": "ECOVALU",
+                "brandedFareLabel": "ECO VALUE",
+                "class": "G",
+                "amenities": [
+                  {
+                    "description": "PRE RESERVED SEAT ASSIGNMENT",
+                    "isChargeable": false,
+                    "amenityType": "PRE_RESERVED_SEAT",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "MEAL SERVICES",
+                    "isChargeable": false,
+                    "amenityType": "MEAL",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "REFUNDABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "CHANGEABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "UPGRADE",
+                    "isChargeable": true,
+                    "amenityType": "UPGRADES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "FREE CHECKED BAGGAGE ALLOWANCE",
+                    "isChargeable": false,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "source": "GDS",
+        "instantTicketingRequired": false,
+        "nonHomogeneous": false,
+        "oneWay": false,
+        "isUpsellOffer": false,
+        "lastTicketingDate": "2025-11-03",
+        "lastTicketingDateTime": "2025-11-03",
+        "numberOfBookableSeats": 9,
+        "itineraries": [
+          {
+            "duration": "PT10H55M",
+            "segments": [
+              {
+                "departure": {
+                  "iataCode": "CCU",
+                  "at": "2025-11-03T22:15:00"
+                },
+                "arrival": {
+                  "iataCode": "BOM",
+                  "terminal": "2",
+                  "at": "2025-11-04T01:10:00"
+                },
+                "carrierCode": "AI",
+                "number": "2410",
+                "aircraft": {
+                  "code": "32N"
+                },
+                "operating": {
+                  "carrierCode": "AI"
+                },
+                "duration": "PT2H55M",
+                "id": "3",
+                "numberOfStops": 0,
+                "blacklistedInEU": false
+              },
+              {
+                "departure": {
+                  "iataCode": "BOM",
+                  "terminal": "2",
+                  "at": "2025-11-04T07:40:00"
+                },
+                "arrival": {
+                  "iataCode": "IDR",
+                  "at": "2025-11-04T09:10:00"
+                },
+                "carrierCode": "AI",
+                "number": "2591",
+                "aircraft": {
+                  "code": "32N"
+                },
+                "operating": {
+                  "carrierCode": "AI"
+                },
+                "duration": "PT1H30M",
+                "id": "4",
+                "numberOfStops": 0,
+                "blacklistedInEU": false
+              }
+            ]
+          }
+        ],
+        "price": {
+          "currency": "INR",
+          "total": "19188.00",
+          "base": "15697.00",
+          "fees": [
+            {
+              "amount": "0.00",
+              "type": "SUPPLIER"
+            },
+            {
+              "amount": "0.00",
+              "type": "TICKETING"
+            }
+          ],
+          "grandTotal": "19188.00"
+        },
+        "pricingOptions": {
+          "fareType": [
+            "PUBLISHED"
+          ],
+          "includedCheckedBagsOnly": false
+        },
+        "validatingAirlineCodes": [
+          "AI"
+        ],
+        "travelerPricings": [
+          {
+            "travelerId": "1",
+            "fareOption": "STANDARD",
+            "travelerType": "ADULT",
+            "price": {
+              "currency": "INR",
+              "total": "10381.00",
+              "base": "8598.00"
+            },
+            "fareDetailsBySegment": [
+              {
+                "segmentId": "3",
+                "cabin": "ECONOMY",
+                "fareBasis": "SU1YXR2I",
+                "brandedFare": "ECOVALU",
+                "brandedFareLabel": "ECO VALUE",
+                "class": "S",
+                "includedCheckedBags": {
+                  "weight": 15,
+                  "weightUnit": "KG"
+                },
+                "includedCabinBags": {
+                  "weight": 7,
+                  "weightUnit": "KG"
+                },
+                "amenities": [
+                  {
+                    "description": "PRE RESERVED SEAT ASSIGNMENT",
+                    "isChargeable": false,
+                    "amenityType": "PRE_RESERVED_SEAT",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "MEAL SERVICES",
+                    "isChargeable": false,
+                    "amenityType": "MEAL",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "REFUNDABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "CHANGEABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "UPGRADE",
+                    "isChargeable": true,
+                    "amenityType": "UPGRADES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "FREE CHECKED BAGGAGE ALLOWANCE",
+                    "isChargeable": false,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  }
+                ]
+              },
+              {
+                "segmentId": "4",
+                "cabin": "ECONOMY",
+                "fareBasis": "SU1YXRII",
+                "brandedFare": "ECOVALU",
+                "brandedFareLabel": "ECO VALUE",
+                "class": "S",
+                "includedCheckedBags": {
+                  "weight": 15,
+                  "weightUnit": "KG"
+                },
+                "includedCabinBags": {
+                  "weight": 7,
+                  "weightUnit": "KG"
+                },
+                "amenities": [
+                  {
+                    "description": "PRE RESERVED SEAT ASSIGNMENT",
+                    "isChargeable": false,
+                    "amenityType": "PRE_RESERVED_SEAT",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "MEAL SERVICES",
+                    "isChargeable": false,
+                    "amenityType": "MEAL",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "REFUNDABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "CHANGEABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "UPGRADE",
+                    "isChargeable": true,
+                    "amenityType": "UPGRADES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "FREE CHECKED BAGGAGE ALLOWANCE",
+                    "isChargeable": false,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "travelerId": "2",
+            "fareOption": "STANDARD",
+            "travelerType": "CHILD",
+            "price": {
+              "currency": "INR",
+              "total": "8807.00",
+              "base": "7099.00"
+            },
+            "fareDetailsBySegment": [
+              {
+                "segmentId": "3",
+                "cabin": "ECONOMY",
+                "fareBasis": "SU1YXR2I",
+                "brandedFare": "ECOVALU",
+                "brandedFareLabel": "ECO VALUE",
+                "class": "S",
+                "amenities": [
+                  {
+                    "description": "PRE RESERVED SEAT ASSIGNMENT",
+                    "isChargeable": false,
+                    "amenityType": "PRE_RESERVED_SEAT",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "MEAL SERVICES",
+                    "isChargeable": false,
+                    "amenityType": "MEAL",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "REFUNDABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "CHANGEABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "UPGRADE",
+                    "isChargeable": true,
+                    "amenityType": "UPGRADES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "FREE CHECKED BAGGAGE ALLOWANCE",
+                    "isChargeable": false,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  }
+                ]
+              },
+              {
+                "segmentId": "4",
+                "cabin": "ECONOMY",
+                "fareBasis": "SU1YXRII",
+                "brandedFare": "ECOVALU",
+                "brandedFareLabel": "ECO VALUE",
+                "class": "S",
+                "amenities": [
+                  {
+                    "description": "PRE RESERVED SEAT ASSIGNMENT",
+                    "isChargeable": false,
+                    "amenityType": "PRE_RESERVED_SEAT",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "MEAL SERVICES",
+                    "isChargeable": false,
+                    "amenityType": "MEAL",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "REFUNDABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "CHANGEABLE TICKET",
+                    "isChargeable": true,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "UPGRADE",
+                    "isChargeable": true,
+                    "amenityType": "UPGRADES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  },
+                  {
+                    "description": "FREE CHECKED BAGGAGE ALLOWANCE",
+                    "isChargeable": false,
+                    "amenityType": "BRANDED_FARES",
+                    "amenityProvider": {
+                      "name": "BrandedFare"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "dictionaries": {
+      "locations": {
+        "BOM": {
+          "cityCode": "BOM",
+          "countryCode": "IN"
+        },
+        "CCU": {
+          "cityCode": "CCU",
+          "countryCode": "IN"
+        },
+        "IDR": {
+          "cityCode": "IDR",
+          "countryCode": "IN"
+        },
+        "DEL": {
+          "cityCode": "DEL",
+          "countryCode": "IN"
+        }
+      },
+      "aircraft": {
+        "321": "AIRBUS A321",
+        "32N": "AIRBUS A320NEO"
+      },
+      "currencies": {
+        "INR": "INDIAN RUPEE"
+      },
+      "carriers": {
+        "AI": "AIR INDIA"
+      }
+    },
+    "meta": {
+      "count": 2
+    }
+  }

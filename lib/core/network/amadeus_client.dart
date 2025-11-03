@@ -98,6 +98,7 @@ class AmadeusClient {
       required T Function(Map<String, dynamic>) fromJson}) async {
     try {
       final response = await _dio.post(endPoint, data: reqModel);
+
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {

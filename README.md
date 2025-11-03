@@ -26,3 +26,12 @@ Generate SHA Key - Release :
 
 ``` keytool -list -v -keystore android/app/release-key.jks -alias ALIAS_NAME ```
 
+
+
+ "SQ": "SINGAPORE AIRLINES",
+  "LH": "LUFTHANSA",
+  "BA": "BRITISH AIRWAYS",
+  "CX": "CATHAY PACIFIC",
+  "DL": "DELTA AIR LINES",
+  "UA": "UNITED AIRLINES",
+  "AF": "AIR FRANCE"

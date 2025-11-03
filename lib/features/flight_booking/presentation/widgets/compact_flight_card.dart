@@ -1,4 +1,3 @@
-import 'package:excellistravel/features/flight_booking/data/airline.dart';
 import 'package:flutter/material.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 
@@ -8,6 +7,7 @@ import '../../models/flights_data_model.dart';
 
 class CompactFlightCard extends StatelessWidget {
   final Datam data;
+  final FlightDictionary? dictionaries;
   final bool? isOnWishList;
   final double? customWidth;
   final bool? isFavIconRequired;
@@ -19,6 +19,7 @@ class CompactFlightCard extends StatelessWidget {
       this.isFavIconRequired,
       this.isOnWishList,
       this.onWishListTap,
+      this.dictionaries,
       required this.onTap,
       this.customWidth});
 
@@ -51,19 +52,16 @@ class CompactFlightCard extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8),
                       child: Row(
                         children: [
-                          Container(
-                            margin: const EdgeInsets.only(right: 8),
-                            height: 35,
-                            width: 35,
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
+                          CircleAvatar(
+                            radius: 15,
+                            backgroundImage: AssetImage(
+                                'assets/images/airlines/${data.itineraries?.first.segments?.first.carrierCode}.png'),
                           ),
+                          const SizedBox(width: 5),
                           Text(
-                            getAirlineByCode(
-                                code:
-                                    data.validatingAirlineCodes![0])['airline'],
+                            dictionaries?.dictionaries.carriers[
+                                    '${data.itineraries?.first.segments?.first.carrierCode}'] ??
+                                'NO-NAME',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -221,12 +219,12 @@ class CompactFlightCard extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Cabin Class',
                     style: TextStyle(
                       fontSize: 12,
@@ -235,8 +233,8 @@ class CompactFlightCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Price',
-                    style: TextStyle(
+                    'Price | ${data.itineraries!.length > 1 ? 'Round Trip' : 'One Way'}',
+                    style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: AppColors.grey,

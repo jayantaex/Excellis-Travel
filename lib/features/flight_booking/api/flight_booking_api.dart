@@ -33,16 +33,19 @@ class FlightBookingApi {
     }
   }
 
-  Future<ApiResponse<FlightsDataModel>> searchAirport(
+  Future<ApiResponse<FlightsDataModel>> searchFlight(
       {required Map<String, dynamic> body}) async {
     try {
-      log('body $body', name: 'FLIGHT BLOC');
-      return await client.postRequest(
-          reqModel: body,
-          endPoint: EndPoints.flightSearch,
-          fromJson: (jsonData) {
-            return FlightsDataModel.fromJson(jsonData);
-          });
+      ApiResponse<FlightsDataModel> response = await client.postRequest(
+        reqModel: body,
+        endPoint: EndPoints.flightSearch,
+        fromJson: (jsonData) {
+          log('$jsonData', name: 'FLIGHT SAERCH BLOC [API]');
+          return FlightsDataModel.fromJson(jsonData);
+        },
+      );
+
+      return response;
     } catch (e) {
       log('$e', name: 'FLIGHT SAERCH BLOC [API]');
       return ApiResponse(

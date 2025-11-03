@@ -109,7 +109,7 @@ class AppRouter {
         path: FlightBookingModule.paymentDetails,
         name: FlightBookingModule.paymentDetailsName,
         builder: (context, state) =>
-            FlightBookingModule.paymentDetailsBuilder(),
+            FlightBookingModule.paymentDetailsBuilder(context, state),
       ),
       GoRoute(
         path: FlightBookingModule.passDownload,
@@ -126,7 +126,7 @@ class AppRouter {
         path: FlightBookingModule.passengerDetailsNew,
         name: FlightBookingModule.passengerDetailsNewName,
         builder: (context, state) =>
-            FlightBookingModule.passengerDetailsNewBuilder(),
+            FlightBookingModule.passengerDetailsNewBuilder(context, state),
       ),
       GoRoute(
         path: FlightBookingModule.flightDetails,

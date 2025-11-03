@@ -24,7 +24,6 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
 
   @override
   void initState() {
-    log('widget.startDate ${widget.startDate}', name: 'DateFilterWidget');
     startDate = DateTime.parse(widget.startDate);
     for (var i = 0; i < limit; i++) {
       dates.add(startDate.add(Duration(days: i)));
