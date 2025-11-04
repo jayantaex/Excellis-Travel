@@ -46,8 +46,8 @@ class Datam {
   final bool? nonHomogeneous;
   final bool? oneWay;
   final bool? isUpsellOffer;
-  final DateTime? lastTicketingDate;
-  final DateTime? lastTicketingDateTime;
+  final String? lastTicketingDate;
+  final String? lastTicketingDateTime;
   final int? numberOfBookableSeats;
   final List<Itinerary>? itineraries;
   final DatamPrice? price;
@@ -81,12 +81,8 @@ class Datam {
         nonHomogeneous: json['nonHomogeneous'],
         oneWay: json['oneWay'],
         isUpsellOffer: json['isUpsellOffer'],
-        lastTicketingDate: json['lastTicketingDate'] != null
-            ? DateTime.parse(json['lastTicketingDate'])
-            : null,
-        lastTicketingDateTime: json['lastTicketingDateTime'] != null
-            ? DateTime.parse(json['lastTicketingDateTime'])
-            : null,
+        lastTicketingDate: json['lastTicketingDate'] ?? '',
+        lastTicketingDateTime: json['lastTicketingDateTime'] ?? '',
         numberOfBookableSeats: json['numberOfBookableSeats'],
         itineraries: json['itineraries'] != null
             ? List<Itinerary>.from(
@@ -114,8 +110,8 @@ class Datam {
         'nonHomogeneous': nonHomogeneous,
         'oneWay': oneWay,
         'isUpsellOffer': isUpsellOffer,
-        'lastTicketingDate': lastTicketingDate?.toIso8601String(),
-        'lastTicketingDateTime': lastTicketingDateTime?.toIso8601String(),
+        'lastTicketingDate': lastTicketingDate,
+        'lastTicketingDateTime': lastTicketingDateTime,
         'numberOfBookableSeats': numberOfBookableSeats,
         'itineraries': itineraries != null
             ? List<dynamic>.from(itineraries!.map((x) => x.toJson()))
@@ -213,37 +209,44 @@ class Segment {
 class Departure {
   final String? iataCode;
   final String? terminal;
-  final DateTime? at;
+  final String? at;
 
   Departure({this.iataCode, this.terminal, this.at});
 
   factory Departure.fromJson(Map<String, dynamic> json) => Departure(
         iataCode: json['iataCode'],
         terminal: json['terminal'],
-        at: json['at'] != null ? DateTime.parse(json['at']) : null,
+        at: json['at'],
       );
 
   Map<String, dynamic> toJson() => {
         'iataCode': iataCode,
         'terminal': terminal,
-        'at': at?.toIso8601String(),
+        'at': at,
       };
 }
 
 class Arrival {
   final String? iataCode;
-  final DateTime? at;
+  final String? terminal;
+  final String? at;
 
-  Arrival({this.iataCode, this.at});
+  Arrival({
+    this.iataCode,
+    this.at,
+    this.terminal,
+  });
 
   factory Arrival.fromJson(Map<String, dynamic> json) => Arrival(
+        terminal: json['terminal'],
         iataCode: json['iataCode'],
-        at: json['at'] != null ? DateTime.parse(json['at']) : null,
+        at: json['at'],
       );
 
   Map<String, dynamic> toJson() => {
         'iataCode': iataCode,
-        'at': at?.toIso8601String(),
+        'at': at,
+        'terminal': terminal,
       };
 }
 
@@ -415,7 +418,7 @@ class FareDetailsBySegment {
         fareBasis: json['fareBasis'],
         brandedFare: json['brandedFare'],
         brandedFareLabel: json['brandedFareLabel'],
-        fareDetailsBySegmentClass: json['fareDetailsBySegmentClass'],
+        fareDetailsBySegmentClass: json['class'],
         includedCheckedBags: json['includedCheckedBags'] != null
             ? IncludedCBags.fromJson(json['includedCheckedBags'])
             : null,
@@ -434,7 +437,7 @@ class FareDetailsBySegment {
         'fareBasis': fareBasis,
         'brandedFare': brandedFare,
         'brandedFareLabel': brandedFareLabel,
-        'fareDetailsBySegmentClass': fareDetailsBySegmentClass,
+        'class': fareDetailsBySegmentClass,
         'includedCheckedBags': includedCheckedBags?.toJson(),
         'includedCabinBags': includedCabinBags?.toJson(),
         'amenities': amenities != null

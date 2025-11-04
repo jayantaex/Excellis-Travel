@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
-import '../../models/flights_data_model.dart';
+import '../../models/flight_offer_price_model.dart';
+import '../../models/flights_data_model.dart' show FlightDictionary;
 
 class SegmentCard extends StatelessWidget {
   final Segment data;
-  const SegmentCard({super.key, required this.data});
+  final FlightDictionary flightDictionary;
+
+  const SegmentCard(
+      {super.key, required this.data, required this.flightDictionary});
 
   @override
   Widget build(BuildContext context) {
@@ -15,70 +19,119 @@ class SegmentCard extends StatelessWidget {
         ExpansionTile(
           initiallyExpanded: false,
           shape: const Border(),
-          title: Text(
-            '${data.departure?.iataCode} (T${data.departure?.terminal ?? '1'}) - ${data.arrival?.iataCode}',
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+          leading: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: Image.asset(
+                'assets/images/airlines/${data.carrierCode}.png',
+                fit: BoxFit.fill,
+              ),
             ),
+          ),
+          title: Text(
+            flightDictionary.dictionaries.carriers['${data.carrierCode}'] ??
+                'NO-NAME',
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+          ),
+          subtitle: Text(
+            '${flightDictionary.dictionaries.aircraft[data.aircraft?.code ?? '']} | '
+            '${data.number ?? ''}',
+            style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: AppColors.grey),
           ),
           collapsedIconColor: AppColors.grey,
           iconColor: AppColors.primary,
           children: [
             //departure
+            Column(
+              children: [
+                // ListTile(
+                //   contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                //   leading: ClipRRect(
+                //     borderRadius: BorderRadius.circular(8),
+                //     child: SizedBox(
+                //       height: 40,
+                //       width: 40,
+                //       child: Image.asset(
+                //         'assets/images/airlines/${data.carrierCode}.png',
+                //         fit: BoxFit.fill,
+                //       ),
+                //     ),
+                //   ),
+                //   title: Text(
+                //     flightDictionary
+                //             .dictionaries.carriers['${data.carrierCode}'] ??
+                //         'NO-NAME',
+                //     style: const TextStyle(
+                //         fontSize: 14, fontWeight: FontWeight.w600),
+                //   ),
+                //   subtitle: Text(
+                //     '${flightDictionary.dictionaries.aircraft[data.aircraft?.code ?? '']} | '
+                //     '${data.number ?? ''}',
+                //     style: const TextStyle(
+                //         fontSize: 10,
+                //         fontWeight: FontWeight.w400,
+                //         color: AppColors.grey),
+                //   ),
+                //   trailing: Text(getDuration(duration: data.duration ?? ''),
+                //       style: const TextStyle(
+                //           fontSize: 12,
+                //           fontWeight: FontWeight.w600,
+                //           color: AppColors.black)),
+                // ),
+                ListTile(
+                  leading: AppHelpers.svgAsset(assetName: 'from', isIcon: true),
+                  title: Text(
+                    '${data.departure?.iataCode} (T${data.departure?.terminal ?? '1'})',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  subtitle: Text(
+                    '${AppHelpers.formatDateTime(
+                      DateTime.parse(
+                          data.departure?.at ?? DateTime.now().toString()),
+                      pattern: 'dd MMM, yyyy',
+                    )} | ${AppHelpers.formatTime(
+                      DateTime.parse(
+                          data.departure?.at ?? DateTime.now().toString()),
+                      pattern: 'hh:MM aa',
+                    )}',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            //arriaval
             ListTile(
-              leading: const Icon(
-                Icons.connecting_airports_outlined,
-                size: 18,
-                color: AppColors.black,
-              ),
+              leading: AppHelpers.svgAsset(assetName: 'to', isIcon: true),
               title: Text(
-                '${data.departure?.iataCode} (T${data.departure?.terminal ?? '1'})',
+                '${data.arrival?.iataCode}',
                 style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               subtitle: Text(
                 '${AppHelpers.formatDateTime(
-                  data.departure?.at ?? DateTime.now(),
+                  DateTime.parse(data.arrival?.at ?? DateTime.now().toString()),
                   pattern: 'dd MMM, yyyy',
                 )} | ${AppHelpers.formatTime(
-                  data.departure?.at ?? DateTime.now(),
+                  DateTime.parse(data.arrival?.at ?? DateTime.now().toString()),
                   pattern: 'hh:MM aa',
                 )}',
                 style: const TextStyle(
                   fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black,
-                ),
-              ),
-            ),
-            //arriaval
-            ListTile(
-              leading: const Icon(
-                Icons.connecting_airports_outlined,
-                size: 18,
-                color: AppColors.black,
-              ),
-              title: Text(
-                '${data.arrival?.iataCode}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              subtitle: Text(
-                '${AppHelpers.formatDateTime(
-                  data.arrival?.at ?? DateTime.now(),
-                  pattern: 'dd MMM, yyyy',
-                )} | ${AppHelpers.formatTime(
-                  data.arrival?.at ?? DateTime.now(),
-                  pattern: 'hh:MMaa',
-                )}',
-                style: const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   color: AppColors.black,
                 ),
               ),
@@ -88,4 +141,13 @@ class SegmentCard extends StatelessWidget {
       ],
     );
   }
+}
+
+getDuration({required String duration}) {
+  //input PT6H35M
+  duration = duration.replaceAll('PT', '');
+  String hr = duration.split('H')[0].trim();
+  String mn = duration.split('H')[1].split('M')[0].trim();
+
+  return '${hr}H ${mn}M';
 }

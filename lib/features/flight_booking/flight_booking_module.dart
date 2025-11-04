@@ -3,6 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/network/amadeus_client.dart';
+import '../../core/network/api_client.dart';
+import '../profile_management/apis/profile_management_api.dart';
+import '../profile_management/bloc/profile_bloc.dart';
+import '../profile_management/data/profile_management_repository.dart';
 import 'api/flight_booking_api.dart';
 import 'bloc/flight_bloc.dart';
 import 'data/flight_booking_repository.dart';
@@ -19,8 +23,12 @@ import 'presentation/screens/seat_selection_screen.dart';
 
 class FlightBookingModule {
   static final AmadeusClient _amadeusClient = AmadeusClient();
+  static final _apiClient = ApiClient();
   static final _remoteSrc = FlightBookingApi(_amadeusClient);
   static final _repository = FlightBookingRepository(api: _remoteSrc);
+  static final _profileApi = ProfileManagementApi(apiClient: _apiClient);
+  static final _profileRepo =
+      ProfileManagementRepository(profileManagementApi: _profileApi);
 
   //airport search
   static const String airportSearch = '/airport-search';
@@ -88,8 +96,15 @@ class FlightBookingModule {
   static const String flightDetailsName = 'flightDetails';
   static Widget flightDetailsBuilder(context, state) {
     final extra = state.extra;
-    return BlocProvider.value(
-      value: BlocProvider.of<FlightBloc>(context),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => FlightBloc(repository: _repository),
+        ),
+        BlocProvider(
+          create: (context) => ProfileBloc(profileRepository: _profileRepo),
+        ),
+      ],
       child: FlightDetailsScreen(
         flightDictionary: extra['flightDictionary'] ?? {},
         data: extra['data'] ?? {},

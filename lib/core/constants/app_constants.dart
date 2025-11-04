@@ -23,8 +23,10 @@ class AppConstants {
   static const int maxPageSize = 100;
 
   // payment gateway credentials [razorpay]
-  static const String razorpayKey = kDebugMode ? 'rzp_test_1DP5mmOlF5G5ag' : '';
-  static const String razorpaySecret = kDebugMode ? '12345678' : '';
+  static const String razorpayKey =
+      kDebugMode ? 'rzp_test_BMpADBZwVaESnu' : 'rzp_test_BMpADBZwVaESnu';
+  static const String razorpaySecret =
+      kDebugMode ? 'pRy84OpHvEyA7m862Dr7b3F7' : 'pRy84OpHvEyA7m862Dr7b3F7';
   static const String razorpayUserName = 'Excellis Travel';
 
   //amadues api credentials
