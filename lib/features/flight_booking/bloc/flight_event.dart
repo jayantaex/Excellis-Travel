@@ -25,3 +25,8 @@ class SearchFlightsEvent extends FlightEvent {
   final Map<String, dynamic> body;
   const SearchFlightsEvent({required this.body});
 }
+
+class GetFlightsOfferPriceEvent extends FlightEvent {
+  final Map<String, dynamic> offerData;
+  const GetFlightsOfferPriceEvent({required this.offerData});
+}

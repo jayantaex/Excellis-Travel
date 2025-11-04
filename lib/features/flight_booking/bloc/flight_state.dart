@@ -43,3 +43,9 @@ final class FlightSearchingError extends FlightState {
 
   const FlightSearchingError({required this.message});
 }
+
+
+//flight offer price
+final class FlightOfferPriceLoading extends FlightState {}
+final class FlightOfferPriceLoaded extends FlightState {}
+final class FlightOfferPriceError extends FlightState {}

@@ -88,8 +88,8 @@ class FlightBookingModule {
   static const String flightDetailsName = 'flightDetails';
   static Widget flightDetailsBuilder(context, state) {
     final extra = state.extra;
-    return BlocProvider(
-      create: (context) => FlightBloc(repository: _repository),
+    return BlocProvider.value(
+      value: BlocProvider.of<FlightBloc>(context),
       child: FlightDetailsScreen(
         flightDictionary: extra['flightDictionary'] ?? {},
         data: extra['data'] ?? {},

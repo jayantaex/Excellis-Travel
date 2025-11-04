@@ -1,4 +1,6 @@
+import 'package:excellistravel/features/bottom_navigation/bottom_nav_module.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
@@ -7,6 +9,7 @@ import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
 import '../../models/flights_data_model.dart';
 import '../widgets/fare_type_widget.dart';
@@ -47,7 +50,10 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     double width = AppHelpers.getScreenWidth(context);
-
+    final state = context.watch<FlightBloc>().state;
+    if (state is FlightLoaded) {
+      //call the api to get the flight offer price
+    }
     return Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
