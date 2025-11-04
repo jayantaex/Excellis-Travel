@@ -58,12 +58,17 @@ class FlightBookingApi {
   Future<ApiResponse<FlightOfferPriceDataModel>> getFlightOfferPrice(
       {required Map<String, dynamic> body}) async {
     try {
+      Map<String, dynamic> data = {
+        "data": {
+          "type": "flight-offers-pricing",
+          "flightOffers": [body]
+        }
+      };
       ApiResponse<FlightOfferPriceDataModel> response =
           await client.postRequest(
-              reqModel: body,
+              reqModel: data,
               endPoint: EndPoints.flightOfferPrice,
               fromJson: (jsonData) {
-                log('$jsonData', name: 'FLIGHT SAERCH BLOC [API]');
                 return FlightOfferPriceDataModel.fromJson(jsonData);
               });
       return response;

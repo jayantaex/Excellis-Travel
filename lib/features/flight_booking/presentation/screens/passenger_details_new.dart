@@ -10,7 +10,6 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../models/flights_data_model.dart';
 import '../../models/passenger_model.dart';
-import '../widgets/itinerary_card_widget.dart';
 import '../widgets/passenger_details_card.dart';
 
 class PassengetDetailsNew extends StatefulWidget {
@@ -34,8 +33,6 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
 
   @override
   Widget build(BuildContext context) {
-    double width = AppHelpers.getScreenWidth(context);
-
     return Scaffold(
         body: AppGradientBg(
           child: TransWhiteBgWidget(
@@ -59,14 +56,14 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            ...widget.data.itineraries!.map(
-                              (e) => ItineraryCard(
-                                isSegmentRequired: false,
-                                width: width,
-                                data: e,
-                                flightDictionary: widget.flightDictionary,
-                              ),
-                            ),
+                            // ...s.data.itineraries!.map(
+                            //   (e) => ItineraryCard(
+                            //     isSegmentRequired: false,
+                            //     width: width,
+                            //     data: e,
+                            //     flightDictionary: widget.flightDictionary,
+                            //   ),
+                            // ),
                             const SizedBox(height: 8),
                             const Padding(
                               padding: EdgeInsets.symmetric(
@@ -182,18 +179,19 @@ class _PassengetDetailsNewState extends State<PassengetDetailsNew> {
                 height: 45,
                 width: AppHelpers.getScreenWidth(context) * 0.25,
                 child: AppPrimaryButton(
-                    onPressed: () {
-                      for (var i = 1; i < passengers.length; i++) {
-                        Map<String, dynamic> data =
-                            getTravellerData(passenger: passengers[i], id: i);
+                  onPressed: () {
+                    for (var i = 1; i < passengers.length; i++) {
+                      Map<String, dynamic> data =
+                          getTravellerData(passenger: passengers[i], id: i);
 
-                        travellers.add(data);
-                      }
-                    },
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w400),
-                    title: 'Book now',
-                    isLoading: false,),
+                      travellers.add(data);
+                    }
+                  },
+                  style: const TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.w400),
+                  title: 'Book now',
+                  isLoading: false,
+                ),
               ),
             ],
           ),

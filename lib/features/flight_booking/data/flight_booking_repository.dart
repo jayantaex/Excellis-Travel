@@ -1,3 +1,5 @@
+import 'package:excellistravel/features/flight_booking/models/flight_offer_price_model.dart';
+
 import '../../../core/network/api_response.dart';
 import '../api/flight_booking_api.dart';
 import '../models/air_port_model.dart';
@@ -19,5 +21,11 @@ class FlightBookingRepository {
     required Map<String, dynamic> body,
   }) async {
     return await api.searchFlight(body: body);
+  }
+
+Future<ApiResponse<FlightOfferPriceDataModel>> getFlightOfferPrice({
+    required Map<String, dynamic> body,
+  }) async {
+    return await api.getFlightOfferPrice(body: body);
   }
 }

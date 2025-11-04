@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
-import '../../models/flights_data_model.dart';
+
+import '../../models/flight_offer_price_model.dart';
+import '../../models/flights_data_model.dart' show FlightDictionary;
 import '../screens/segement_card_widget.dart';
 
 class ItineraryCard extends StatelessWidget {
@@ -23,33 +25,6 @@ class ItineraryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: SizedBox(
-              height: 40,
-              width: 40,
-              child: Image.asset(
-                'assets/images/airlines/${data.segments?.first.carrierCode}.png',
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
-          title: Text(
-            flightDictionary.dictionaries
-                    .carriers['${data.segments?.first.carrierCode}'] ??
-                'NO-NAME',
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-          subtitle: Text(
-            '${flightDictionary.dictionaries.aircraft[data.segments?.first.aircraft?.code ?? '']} ',
-            style: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: AppColors.grey),
-          ),
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
@@ -64,14 +39,15 @@ class ItineraryCard extends StatelessWidget {
                   children: [
                     Text(
                         AppHelpers.formatDateTime(
-                          data.segments?.first.departure?.at ?? DateTime.now(),
-                          pattern: 'hh:MM',
-                        ),
+                            DateTime.parse(
+                                data.segments?.first.departure?.at ?? ''),
+                            pattern: 'hh:mm'),
                         style: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w600)),
                     Text(
                       AppHelpers.formatDateTime(
-                        data.segments?.last.arrival?.at ?? DateTime.now(),
+                        DateTime.parse(
+                            data.segments?.first.departure?.at ?? ''),
                         pattern: 'dd MMM, yyyy',
                       ),
                       style: const TextStyle(
@@ -81,7 +57,7 @@ class ItineraryCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${data.segments?.first.departure?.iataCode} (${data.segments?.first.departure?.terminal ?? 'T1'})',
+                      '${data.segments?.first.departure?.iataCode} (T${data.segments?.first.departure?.terminal ?? '1'})',
                       style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
@@ -98,7 +74,8 @@ class ItineraryCard extends StatelessWidget {
                       Column(
                         children: [
                           Text(
-                            getDuration(duration: data.duration ?? ''),
+                            getDuration(
+                                duration: data.segments?.first.duration ?? ''),
                             style: const TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.w400),
                           ),
@@ -126,9 +103,10 @@ class ItineraryCard extends StatelessWidget {
                   children: [
                     Text(
                         AppHelpers.formatDateTime(
-                          data.segments?.last.arrival?.at ?? DateTime.now(),
-                          pattern: 'hh:MM',
-                        ),
+                            DateTime.parse(
+                                data.segments?.last.arrival?.at.toString() ??
+                                    ''),
+                            pattern: 'hh:mm'),
                         style: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.w600)),
                     Text(
@@ -140,7 +118,7 @@ class ItineraryCard extends StatelessWidget {
                           color: AppColors.grey),
                     ),
                     Text(
-                      '${data.segments?.last.arrival?.iataCode} ',
+                      '${data.segments?.last.arrival?.iataCode} (T${data.segments?.last.arrival?.terminal ?? '1'})',
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -165,6 +143,7 @@ class ItineraryCard extends StatelessWidget {
                 ? [
                     ...data.segments!.map(
                       (e) => SegmentCard(
+                        flightDictionary: flightDictionary,
                         data: e,
                       ),
                     )

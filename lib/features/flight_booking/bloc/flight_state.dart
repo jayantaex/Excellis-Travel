@@ -44,8 +44,29 @@ final class FlightSearchingError extends FlightState {
   const FlightSearchingError({required this.message});
 }
 
-
 //flight offer price
 final class FlightOfferPriceLoading extends FlightState {}
-final class FlightOfferPriceLoaded extends FlightState {}
-final class FlightOfferPriceError extends FlightState {}
+
+final class FlightOfferPriceLoaded extends FlightState {
+  final FlightOfferPriceDataModel data;
+
+  const FlightOfferPriceLoaded({required this.data});
+}
+
+final class FlightOfferPriceError extends FlightState {
+  final String message;
+  const FlightOfferPriceError({required this.message});
+}
+
+final class TravelerTypeChanged extends FlightState {
+  final List<TravelerPricing> travelerPricing;
+  final String selectedTravellerType;
+
+  const TravelerTypeChanged(
+      {required this.travelerPricing, required this.selectedTravellerType});
+}
+
+final class TravelerTypeChangingError extends FlightState {
+  final String error;
+  const TravelerTypeChangingError({required this.error});
+}

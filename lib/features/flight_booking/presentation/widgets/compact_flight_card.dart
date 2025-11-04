@@ -121,9 +121,11 @@ class CompactFlightCard extends StatelessWidget {
                                   fontSize: 24, fontWeight: FontWeight.w600)),
                           Text(
                             AppHelpers.formatDateTime(
-                              data.itineraries?.first.segments?.first.departure
-                                      ?.at ??
-                                  DateTime.now(),
+                              DateTime.parse(
+                                data.itineraries?.first.segments?.first
+                                        .departure?.at ??
+                                    DateTime.now().toString(),
+                              ),
                               pattern: 'dd MMM, yyyy',
                             ),
                             style: const TextStyle(
@@ -134,11 +136,12 @@ class CompactFlightCard extends StatelessWidget {
                           //time
                           Text(
                             AppHelpers.formatDateTime(
-                              data.itineraries?.first.segments?.first.departure
-                                      ?.at ??
-                                  DateTime.now(),
-                              pattern: 'hh:mm:aa',
-                            ),
+                                DateTime.parse(
+                                  data.itineraries?.first.segments?.first
+                                          .departure?.at ??
+                                      DateTime.now().toString(),
+                                ),
+                                pattern: 'hh:mm:aa'),
                             style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w500,
@@ -190,9 +193,11 @@ class CompactFlightCard extends StatelessWidget {
                                 fontSize: 24, fontWeight: FontWeight.w600)),
                         Text(
                           AppHelpers.formatDateTime(
-                            data.itineraries?.first.segments?.last.arrival
-                                    ?.at ??
-                                DateTime.now(),
+                            DateTime.parse(
+                              data.itineraries?.first.segments?.last.arrival
+                                      ?.at ??
+                                  DateTime.now().toString(),
+                            ),
                             pattern: 'dd MMM, yyyy',
                           ),
                           style: const TextStyle(
@@ -201,17 +206,18 @@ class CompactFlightCard extends StatelessWidget {
                               color: AppColors.grey),
                         ),
                         Text(
-                          AppHelpers.formatDateTime(
-                            data.itineraries?.first.segments?.last.arrival
-                                    ?.at ??
-                                DateTime.now(),
-                            pattern: 'hh:mm:aa',
-                          ),
+                          AppHelpers.formatTime(
+                              DateTime.parse(
+                                data.itineraries?.first.segments?.last.arrival
+                                        ?.at ??
+                                    DateTime.now().toString(),
+                              ),
+                              pattern: 'hh:mm:aa'),
                           style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w500,
                               color: AppColors.grey),
-                        )
+                        ),
                       ],
                     ),
                   ),
