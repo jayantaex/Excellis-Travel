@@ -1,4 +1,4 @@
-import 'package:excellistravel/core/network/api_response.dart';
+import 'api_response.dart';
 
 Future<ApiResponse<T>> mockSuccess<T>({required T data}) async {
   await Future.delayed(const Duration(seconds: 1), () {});

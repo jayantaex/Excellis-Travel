@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../models/flight_offer_price_model.dart';
-import '../../models/flights_data_model.dart' show FlightDictionary;
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/app_helpers.dart';
+import '../../../models/flight_offer_price_model.dart';
+import '../../../models/flights_data_model.dart' show FlightDictionary;
 
 class SegmentCard extends StatelessWidget {
   final Segment data;
@@ -49,40 +49,6 @@ class SegmentCard extends StatelessWidget {
             //departure
             Column(
               children: [
-                // ListTile(
-                //   contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                //   leading: ClipRRect(
-                //     borderRadius: BorderRadius.circular(8),
-                //     child: SizedBox(
-                //       height: 40,
-                //       width: 40,
-                //       child: Image.asset(
-                //         'assets/images/airlines/${data.carrierCode}.png',
-                //         fit: BoxFit.fill,
-                //       ),
-                //     ),
-                //   ),
-                //   title: Text(
-                //     flightDictionary
-                //             .dictionaries.carriers['${data.carrierCode}'] ??
-                //         'NO-NAME',
-                //     style: const TextStyle(
-                //         fontSize: 14, fontWeight: FontWeight.w600),
-                //   ),
-                //   subtitle: Text(
-                //     '${flightDictionary.dictionaries.aircraft[data.aircraft?.code ?? '']} | '
-                //     '${data.number ?? ''}',
-                //     style: const TextStyle(
-                //         fontSize: 10,
-                //         fontWeight: FontWeight.w400,
-                //         color: AppColors.grey),
-                //   ),
-                //   trailing: Text(getDuration(duration: data.duration ?? ''),
-                //       style: const TextStyle(
-                //           fontSize: 12,
-                //           fontWeight: FontWeight.w600,
-                //           color: AppColors.black)),
-                // ),
                 ListTile(
                   leading: AppHelpers.svgAsset(assetName: 'from', isIcon: true),
                   title: Text(

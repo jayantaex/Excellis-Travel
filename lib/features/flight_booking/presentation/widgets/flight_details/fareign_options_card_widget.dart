@@ -1,11 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
-import '../../../bloc/flight_bloc.dart';
 import '../../../models/flight_offer_price_model.dart';
 import 'fare_type_widget.dart';
 

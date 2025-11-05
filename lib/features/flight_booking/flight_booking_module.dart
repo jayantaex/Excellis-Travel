@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/network/amadeus_client.dart';
@@ -15,9 +13,7 @@ import 'presentation/screens/airport_search_screen.dart';
 import 'presentation/screens/booking_policy.dart';
 import 'presentation/screens/flight_details.dart';
 import 'presentation/screens/flight_search_result_screen.dart';
-import 'presentation/screens/pasenger_details_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
-import 'presentation/screens/passenger_details_new.dart';
 import 'presentation/screens/payment_details_screen.dart';
 import 'presentation/screens/seat_selection_screen.dart';
 
@@ -67,10 +63,10 @@ class FlightBookingModule {
   static const String seatSelectionName = 'seatSelection';
   static Widget seatSelectionBuilder() => const SeatSelection();
 
-  // passenger details
-  static const String passengerDetails = '/passenger-details';
-  static const String passengerDetailsName = 'passengerDetails';
-  static Widget passengerDetailsBuilder() => const PasengerDetailsScreen();
+  // // passenger details
+  // static const String passengerDetails = '/passenger-details';
+  // static const String passengerDetailsName = 'passengerDetails';
+  // static Widget passengerDetailsBuilder() => const PasengerDetailsScreen();
 
   //payment details
   static const String paymentDetails = '/payment-details';
@@ -113,18 +109,18 @@ class FlightBookingModule {
   }
 
   //passenger Details new
-  static const String passengerDetailsNew = '/passenger-details-new';
-  static const String passengerDetailsNewName = 'passengerDetailsNew';
-  static Widget passengerDetailsNewBuilder(context, state) {
-    return BlocProvider(
-      create: (context) => FlightBloc(repository: _repository),
-      child: PassengetDetailsNew(
-        flightDictionary: state.extra['flightDictionary'],
-        data: state.extra['data'],
-        selectedPlan: state.extra['selectedPlan'],
-      ),
-    );
-  }
+  // static const String passengerDetailsNew = '/passenger-details-new';
+  // static const String passengerDetailsNewName = 'passengerDetailsNew';
+  // static Widget passengerDetailsNewBuilder(context, state) {
+  //   return BlocProvider(
+  //     create: (context) => FlightBloc(repository: _repository),
+  //     child: PassengetDetailsNew(
+  //       flightDictionary: state.extra['flightDictionary'],
+  //       data: state.extra['data'],
+  //       selectedPlan: state.extra['selectedPlan'],
+  //     ),
+  //   );
+  // }
 
   //booking policy
   static const String bookingPolicy = '/booking-policy';

@@ -1,10 +1,9 @@
-import 'dart:developer';
-
-import 'package:excellistravel/features/flight_booking/models/flight_offer_price_model.dart';
 import '../../../core/network/amadeus_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
 import '../models/air_port_model.dart';
+import '../models/flight_offer_price_model.dart';
+import '../models/flight_order_model.dart';
 import '../models/flights_data_model.dart';
 
 class FlightBookingApi {
@@ -30,7 +29,6 @@ class FlightBookingApi {
           });
       return airportList;
     } catch (e) {
-      log('$e', name: 'FLIGHT BLOC');
       return [];
     }
   }
@@ -42,14 +40,12 @@ class FlightBookingApi {
         reqModel: body,
         endPoint: EndPoints.flightSearch,
         fromJson: (jsonData) {
-          log('$jsonData', name: 'FLIGHT SAERCH BLOC [API]');
           return FlightsDataModel.fromJson(jsonData);
         },
       );
 
       return response;
     } catch (e) {
-      log('$e', name: 'FLIGHT SAERCH BLOC [API]');
       return ApiResponse(
           errorMessage: e.toString(), data: null, statusCode: 400);
     }
@@ -73,7 +69,22 @@ class FlightBookingApi {
               });
       return response;
     } catch (e) {
-      log('$e', name: 'FLIGHT SAERCH BLOC [API]');
+      return ApiResponse(
+          errorMessage: e.toString(), data: null, statusCode: 400);
+    }
+  }
+
+  Future<ApiResponse<FlightOrderModel>> createOrder(
+      {required Map<String, dynamic> body}) async {
+    try {
+      ApiResponse<FlightOrderModel> response = await client.postRequest(
+          reqModel: body,
+          endPoint: EndPoints.createOrder,
+          fromJson: (jsonData) {
+            return FlightOrderModel.fromJson(jsonData['data']);
+          });
+      return response;
+    } catch (e) {
       return ApiResponse(
           errorMessage: e.toString(), data: null, statusCode: 400);
     }

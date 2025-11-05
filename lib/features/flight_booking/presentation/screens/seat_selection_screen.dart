@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
-import '../../flight_booking_module.dart';
 import '../widgets/seat_check_box_widget.dart';
 
 class SeatSelection extends StatefulWidget {
@@ -151,7 +150,7 @@ class _SeatSelectionState extends State<SeatSelection> {
               height: 50,
               child: AppPrimaryButton(
                 onPressed: () {
-                  context.pushNamed(FlightBookingModule.passengerDetailsName);
+                  // context.pushNamed(FlightBookingModule.passengerDetailsName);
                 },
                 title: 'Done',
                 isLoading: false,

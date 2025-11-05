@@ -99,12 +99,12 @@ class AppRouter {
         name: FlightBookingModule.seatSelectionName,
         builder: (context, state) => FlightBookingModule.seatSelectionBuilder(),
       ),
-      GoRoute(
-        path: FlightBookingModule.passengerDetails,
-        name: FlightBookingModule.passengerDetailsName,
-        builder: (context, state) =>
-            FlightBookingModule.passengerDetailsBuilder(),
-      ),
+      // GoRoute(
+      //   path: FlightBookingModule.passengerDetails,
+      //   name: FlightBookingModule.passengerDetailsName,
+      //   builder: (context, state) =>
+      //       FlightBookingModule.passengerDetailsBuilder(),
+      // ),
       GoRoute(
         path: FlightBookingModule.paymentDetails,
         name: FlightBookingModule.paymentDetailsName,
@@ -122,12 +122,12 @@ class AppRouter {
         builder: (context, state) =>
             FlightBookingModule.airportSearchBuilder(context, state),
       ),
-      GoRoute(
-        path: FlightBookingModule.passengerDetailsNew,
-        name: FlightBookingModule.passengerDetailsNewName,
-        builder: (context, state) =>
-            FlightBookingModule.passengerDetailsNewBuilder(context, state),
-      ),
+      // GoRoute(
+      //   path: FlightBookingModule.passengerDetailsNew,
+      //   name: FlightBookingModule.passengerDetailsNewName,
+      //   builder: (context, state) =>
+      //       FlightBookingModule.passengerDetailsNewBuilder(context, state),
+      // ),
       GoRoute(
         path: FlightBookingModule.flightDetails,
         name: FlightBookingModule.flightDetailsName,

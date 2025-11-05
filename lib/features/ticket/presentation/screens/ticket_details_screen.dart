@@ -12,7 +12,6 @@ import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../flight_booking/flight_booking_module.dart';
 import '../../../flight_booking/presentation/widgets/baggage_allowance_card.dart';
 import '../../../flight_booking/presentation/widgets/fare_breakdown_card.dart';
-import '../../../flight_booking/presentation/widgets/passenger_details_card.dart';
 
 class TicketDetailsScreen extends StatefulWidget {
   final int ticketIndex;
@@ -229,13 +228,13 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                   )),
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: PassengerDetailsCard(
-                              onAddPassenger: (_) {},
-                              travelerPricing: [],
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.symmetric(horizontal: 16),
+                          //   child: PassengerDetailsCard(
+                          //     onAddPassenger: (_) {},
+                          //     travelerPricing: [],
+                          //   ),
+                          // ),
                           const SizedBox(height: 8),
                           const Padding(
                             padding: EdgeInsets.symmetric(

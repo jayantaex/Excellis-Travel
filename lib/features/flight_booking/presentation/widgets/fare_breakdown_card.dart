@@ -1,8 +1,8 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
-import 'package:excellistravel/features/flight_booking/models/flights_data_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../models/flights_data_model.dart';
 
 class FareBreakdownCard extends StatelessWidget {
   final DatamPrice? data;

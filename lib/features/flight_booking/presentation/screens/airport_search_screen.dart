@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -9,47 +8,27 @@ import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../models/air_port_model.dart';
+import '../widgets/airport_search/airport_card.dart';
+import '../widgets/loading/airport_card_loading_widget.dart';
 
-class AirportSearchScreen extends StatefulWidget {
+class AirportSearchScreen extends StatelessWidget {
   final String? selectedAirport;
   final String? type;
   final void Function(AirportModel airport)? onAirportSelected;
-  const AirportSearchScreen({
-    super.key,
-    this.selectedAirport,
-    this.onAirportSelected,
-    this.type,
-  });
-
-  @override
-  State<AirportSearchScreen> createState() => _AirportSearchScreenState();
-}
-
-class _AirportSearchScreenState extends State<AirportSearchScreen> {
-  // List<AirportModel> airports = [];
+  AirportSearchScreen(
+      {super.key, this.selectedAirport, this.type, this.onAirportSelected});
   final TextEditingController _searchController = TextEditingController();
 
   @override
-  void initState() {
-    if (widget.selectedAirport != null && widget.selectedAirport!.isNotEmpty) {
-      _searchController.text = widget.selectedAirport!;
+  Widget build(BuildContext context) {
+    if (selectedAirport != null && selectedAirport!.isNotEmpty) {
+      _searchController.text = selectedAirport!;
       context.read<FlightBloc>().add(SearchAirportEvent(
-            keyword: widget.selectedAirport!,
+            keyword: selectedAirport!,
             countryCode: 'IN',
             subType: 'AIRPORT',
           ));
     }
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
@@ -90,7 +69,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                 },
                               );
                             },
-                            label: widget.type ?? 'Departure',
+                            label: type ?? 'Airport',
                             hint: 'Enter city name here or airport code',
                             maxCharacters: 20,
                             controller: _searchController,
@@ -98,15 +77,13 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                           const SizedBox(height: 20),
                           Expanded(
                             child: BlocConsumer<FlightBloc, FlightState>(
-                              listener: (context, state) {
-                                log('STATE-> $state', name: 'AIRPORT-SEARCH');
-                              },
+                              listener: (context, state) {},
                               builder: (context, state) {
                                 if (state is AirportSearching) {
-                                  return const Center(
-                                    child: CircularProgressIndicator.adaptive(
-                                      backgroundColor: AppColors.primary,
-                                    ),
+                                  return ListView.builder(
+                                    itemCount: 15,
+                                    itemBuilder: (context, index) =>
+                                        const AirportCardLoadingWidget(),
                                   );
                                 }
 
@@ -117,35 +94,20 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
 
                                   return ListView.builder(
                                     itemCount: state.airports.length,
-                                    itemBuilder: (context, index) => ListTile(
-                                        leading: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8, vertical: 4),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primary,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Text(
-                                            state.airports[index].iataCode ??
-                                                'NO-CODE',
-                                            style: const TextStyle(
-                                                color: AppColors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        title: Text(
-                                            state.airports[index].name ??
-                                                'NO-NAME'),
-                                        subtitle: Text(state.airports[index]
-                                                .address?.cityName ??
-                                            'NO-CITY'),
-                                        onTap: () {
-                                          widget.onAirportSelected!(
-                                              state.airports[index]);
-                                          Navigator.pop(context);
-                                        }),
+                                    itemBuilder: (context, index) =>
+                                        AirportCard(
+                                      airportCode:
+                                          state.airports[index].iataCode ?? '',
+                                      city: state.airports[index].address
+                                              ?.cityName ??
+                                          '',
+                                      airportName:
+                                          state.airports[index].name ?? '',
+                                      onAirportSelected: () {
+                                        onAirportSelected!(
+                                            state.airports[index]);
+                                      },
+                                    ),
                                   );
                                 }
                                 if (state is AirportSearchingError) {

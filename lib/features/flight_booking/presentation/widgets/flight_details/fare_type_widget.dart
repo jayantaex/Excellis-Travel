@@ -1,6 +1,6 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/flight_offer_price_model.dart';
 import 'fare_breakdown_card.dart';
 
