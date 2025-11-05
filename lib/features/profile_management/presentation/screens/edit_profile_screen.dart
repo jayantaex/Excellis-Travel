@@ -47,6 +47,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _selectedStateCode = '';
   final List<DropdownMenuItem<String>> _states = [];
 
+  void onCityChange(CityModel city) {
+    setState(() {
+      _cityController.text = city.name ?? '';
+    });
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -279,10 +285,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                               )
                                               .toList(),
                                           title: 'Select State',
-                                          onChanged: (state) {
-                                            setState(() {
-                                              _selectedState = state ?? '';
-                                            });
+                                          onChanged: (stateName) {
+                                            for (var element in state.states) {
+                                              if (element.name == stateName) {
+                                                _selectedState =
+                                                    element.name ?? '';
+                                                _selectedStateCode =
+                                                    element.code ?? '';
+                                                _selectedStateId =
+                                                    element.id ?? 0;
+                                              }
+                                            }
+                                            setState(() {});
                                           },
                                         );
                                       }
@@ -301,7 +315,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           extra: {
                                             'stateCode': _selectedStateCode,
                                             'stateName': _selectedState,
-                                            'stateId': _selectedStateId
+                                            'stateId': _selectedStateId,
+                                            'onSelected': onCityChange
                                           });
                                     },
                                     maxCharacters: 6,

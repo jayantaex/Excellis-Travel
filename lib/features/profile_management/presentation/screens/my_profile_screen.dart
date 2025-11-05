@@ -1,3 +1,5 @@
+import 'package:excellistravel/core/utils/storage_service.dart';
+import 'package:excellistravel/features/auth/auth_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,8 +17,6 @@ import '../widgets/user_content_widget.dart';
 
 class MyProfileScreen extends StatelessWidget {
   MyProfileScreen({super.key});
-  String dummyImage =
-      'https://media.licdn.com/dms/image/v2/C4D03AQEeEyYzNtDq7g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1524234561685?e=2147483647&v=beta&t=uHzeaBv3V2z6Tp6wvhzGABlTs9HR-SP-tEX1UbYNn4Q';
 
   final List<Map<String, dynamic>> options = [
     {
@@ -45,9 +45,12 @@ class MyProfileScreen extends StatelessWidget {
       'routeName': ''
     }
   ];
-
+  String? token;
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () async {
+      token = await StorageService.getAccessToken();
+    });
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -78,8 +81,7 @@ class MyProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       UserContentWidget(
-                        userImage:
-                            state is ProfileLoaded ? dummyImage : dummyImage,
+                        userImage: '',
                         userName: state is ProfileLoaded
                             ? state.profileData.firstName ?? 'Guest'
                             : 'Guest',
@@ -114,12 +116,30 @@ class MyProfileScreen extends StatelessWidget {
                               height: 17,
                               width: 17,
                             ),
-                            title: Text(
-                              option['title'],
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w400),
-                            ),
+                            title: option['title'] == 'Sign Out' &&
+                                        token == null ||
+                                    token == ''
+                                ? const Text(
+                                    'Log In',
+                                  )
+                                : Text(
+                                    option['title'],
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400),
+                                  ),
                             onTap: () async {
+                              String? token =
+                                  await StorageService.getAccessToken();
+                              if ((token == null || token.isEmpty) &&
+                                  (option['routeName'] == 'edit_profile')) {
+                                return;
+                              }
+                              if ((token == null || token.isEmpty) &&
+                                  (option['routeName'] == '')) {
+                                context.goNamed(AuthModule.loginName);
+                                return;
+                              }
                               if (option['routeName'] == '' &&
                                   option['title'] == 'Sign Out') {
                                 showLogoutSheet(context: context);
