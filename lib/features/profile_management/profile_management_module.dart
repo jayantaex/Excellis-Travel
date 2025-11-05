@@ -9,6 +9,7 @@ import '../../core/network/api_client.dart';
 import 'apis/profile_management_api.dart';
 import 'bloc/profile_bloc.dart';
 import 'data/profile_management_repository.dart';
+import 'presentation/screens/city_search.dart';
 import 'presentation/screens/edit_profile_screen.dart';
 import 'presentation/screens/my_profile_screen.dart';
 
@@ -53,6 +54,20 @@ class ProfileManagementModule {
         )
       ],
       child: const EditProfileScreen(),
+    );
+  }
+
+  static String citySearchName = 'city_search';
+  static String citySeacrRoute = '/city-search';
+  static Widget citySearchBuilder(contex, state) {
+    String stateCode = state.extra['stateCode'];
+    String stateName = state.extra['stateName'];
+    int stateId = state.extra['stateId'];
+
+    return CitySearch(
+      stateCode: stateCode,
+      stateName: stateName,
+      stateId: stateId,
     );
   }
 }

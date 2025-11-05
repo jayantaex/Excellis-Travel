@@ -17,6 +17,7 @@ import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../flight_booking/flight_booking_module.dart';
 import '../../../flight_booking/presentation/widgets/app_drop_down.dart';
 import '../../bloc/profile_bloc.dart';
+import '../../profile_management_module.dart';
 import '../widgets/delete_account_sheet.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -40,12 +41,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       TextEditingController();
   final TextEditingController _gstNoController = TextEditingController();
   final TextEditingController _aadhaarNoController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
   String _selectedState = '';
-  String _selectedCity = '';
   int _selectedStateId = 0;
   String _selectedStateCode = '';
   final List<DropdownMenuItem<String>> _states = [];
-  final List<DropdownMenuItem<String>> _cities = <DropdownMenuItem<String>>[];
 
   @override
   void initState() {
@@ -94,8 +94,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   if (addressList.isNotEmpty && addressList.length > 3) {
                     _pinController.text = addressList.last;
                     _selectedState = addressList[addressList.length - 2].trim();
-                    _selectedCity = 'Raghunathpur';
-                    // _selectedCity = addressList[addressList.length - 3];
+                    _cityController.text =
+                        addressList[addressList.length - 3].trim();
                   }
 
                   _companyNameController.text = '';
@@ -143,25 +143,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       const SizedBox(height: 20),
                       Badge(
                         isLabelVisible: false,
-                        // offset: const Offset(-10, -30),
-                        // backgroundColor: AppColors.white,
-                        // padding: const EdgeInsets.all(0),
-                        // alignment: Alignment.bottomRight,
-                        // label: InkWell(
-                        //   onTap: () async {
-                        //     XFile? image =
-                        //         await _appImagePicker.pickFromGallery();
-                        //     await showPhotoPreview(
-                        //         context: context, url: image!.path);
-                        //   },
-                        //   child: const Padding(
-                        //     padding: EdgeInsets.all(6.0),
-                        //     child: Icon(
-                        //       Icons.camera_alt_rounded,
-                        //       size: 20,
-                        //     ),
-                        //   ),
-                        // ),
                         child: CircleAvatar(
                           radius: 60,
                           child: Text(
@@ -255,37 +236,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     isMultiline: false,
                                   ),
                                   const SizedBox(height: 16),
-                                  BlocConsumer<CityBloc, CityState>(
-                                    listener: (context, state) {
-                                      if (state is CityLoaded) {
-                                        _cities.clear();
-                                        for (var element in state.cities) {
-                                          _cities.add(
-                                            DropdownMenuItem(
-                                              value: element.name,
-                                              child: Text(element.name ?? ''),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    },
-                                    builder: (context, state) {
-                                      if (state is CityLoaded) {
-                                        return AppDropDown(
-                                          label: 'City',
-                                          value: _selectedCity,
-                                          items: _cities,
-                                          title: 'Select City',
-                                          onChanged: (city) {
-                                            setState(() {
-                                              _selectedCity = city ?? '';
-                                            });
-                                          },
-                                        );
-                                      }
-                                      return const SizedBox();
-                                    },
-                                  ),
                                   const SizedBox(height: 16),
                                   BlocConsumer<LocationBloc, LocationState>(
                                     listener: (context, state) {
@@ -341,6 +291,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   ),
                                   const SizedBox(height: 16),
                                   AppPrimaryInput(
+                                    controller: _cityController,
+                                    label: 'City*',
+                                    enable: _selectedStateCode.isNotEmpty,
+                                    onTap: () {
+                                      context.pushNamed(
+                                          ProfileManagementModule
+                                              .citySearchName,
+                                          extra: {
+                                            'stateCode': _selectedStateCode,
+                                            'stateName': _selectedState,
+                                            'stateId': _selectedStateId
+                                          });
+                                    },
+                                    maxCharacters: 6,
+                                    isMultiline: false,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  AppPrimaryInput(
                                     controller: _pinController,
                                     label: 'Pincode',
                                     maxCharacters: 6,
@@ -377,7 +345,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             "phone":
                                                 _phoneController.text.trim(),
                                             "address":
-                                                '${_addressController.text.trim().split(',').first}, ${_selectedCity.trim()}, $_selectedState, ${_pinController.text.trim()}',
+                                                '${_addressController.text.trim().split(',').first}, ${_cityController.text.trim()}, $_selectedState, ${_pinController.text.trim()}',
                                           };
                                           context.read<ProfileBloc>().add(
                                               UpdateProfileEvent(data: data));

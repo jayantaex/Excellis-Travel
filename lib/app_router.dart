@@ -21,8 +21,6 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: SplashModule.splashRoute,
     routes: [
-   
-
       //Splash
       GoRoute(
         path: SplashModule.splashRoute,
@@ -146,6 +144,12 @@ class AppRouter {
         name: ProfileManagementModule.editProfileName,
         builder: (context, state) =>
             ProfileManagementModule.editProfileBuilder(),
+      ),
+      GoRoute(
+        path: ProfileManagementModule.citySeacrRoute,
+        name: ProfileManagementModule.citySearchName,
+        builder: (context, state) =>
+            ProfileManagementModule.citySearchBuilder(context, state),
       ),
 
       //legal
