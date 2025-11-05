@@ -9,6 +9,7 @@ import '../../core/network/api_client.dart';
 import 'apis/profile_management_api.dart';
 import 'bloc/profile_bloc.dart';
 import 'data/profile_management_repository.dart';
+import 'presentation/screens/city_search.dart';
 import 'presentation/screens/edit_profile_screen.dart';
 import 'presentation/screens/my_profile_screen.dart';
 
@@ -21,7 +22,7 @@ class ProfileManagementModule {
     ),
   );
 
-  static final LocationRepository _sateRepository =
+  static final LocationRepository _locationRepository =
       LocationRepository(statesApi: LocationApi(apiClient: _apiClient));
   //my profile
   static String myProfileName = 'my_profile';
@@ -46,13 +47,31 @@ class ProfileManagementModule {
           ),
         ),
         BlocProvider(
-          create: (_) => StatesBloc(repository: _sateRepository),
+          create: (_) => StatesBloc(repository: _locationRepository),
         ),
         BlocProvider(
-          create: (_) => CityBloc(repository: _sateRepository),
+          create: (_) => CityBloc(repository: _locationRepository),
         )
       ],
       child: const EditProfileScreen(),
+    );
+  }
+
+  static String citySearchName = 'city_search';
+  static String citySeacrRoute = '/city-search';
+  static Widget citySearchBuilder(contex, state) {
+    String stateCode = state.extra['stateCode'];
+    String stateName = state.extra['stateName'];
+    int stateId = state.extra['stateId'];
+
+    return BlocProvider(
+      create: (context) => CityBloc(repository: _locationRepository),
+      child: CitySearch(
+        onSelected: state.extra['onSelected'],
+        stateCode: stateCode,
+        stateName: stateName,
+        stateId: stateId,
+      ),
     );
   }
 }
