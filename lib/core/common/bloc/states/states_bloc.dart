@@ -3,21 +3,21 @@ import 'package:equatable/equatable.dart';
 import '../../../network/api_response.dart';
 import '../../data/location_repository.dart';
 import '../../models/state_model.dart';
-part 'location_event.dart';
-part 'location_state.dart';
+part 'states_event.dart';
+part 'states_state.dart';
 
-class LocationBloc extends Bloc<LocationEvent, LocationState> {
+class StatesBloc extends Bloc<StatesEvent, StatesState> {
   final LocationRepository repository;
-  LocationBloc({
+  StatesBloc({
     required this.repository,
   }) : super(LocationInitial()) {
-    on<LocationEvent>((event, emit) {});
+    on<StatesEvent>((event, emit) {});
 
     on<GetStatesEvent>(_handleGetStates);
   }
 
   Future _handleGetStates(
-      GetStatesEvent event, Emitter<LocationState> emit) async {
+      GetStatesEvent event, Emitter<StatesState> emit) async {
     try {
       emit(GetStateLoading());
       List<StateModel> states = [];

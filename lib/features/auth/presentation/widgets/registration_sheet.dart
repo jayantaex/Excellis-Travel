@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/common/bloc/states/location_bloc.dart';
+import '../../../../core/common/bloc/states/states_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/utils/app_toast.dart';
@@ -71,7 +71,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      context.read<LocationBloc>().add(GetStatesEvent());
+      context.read<StatesBloc>().add(GetStatesEvent());
     });
     super.initState();
   }
@@ -186,7 +186,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: AuthInputWidget(
                         isPassword: false,
-                        maxCharacters: 20,
+                        maxCharacters: 100,
                         controller: _emailController,
                         label: 'Email ID*',
                         hint: 'Enter your Email ID'),
@@ -224,7 +224,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                         hint: 'Enter your Pin Code'),
                   ),
                   const SizedBox(height: 12),
-                  BlocConsumer<LocationBloc, LocationState>(
+                  BlocConsumer<StatesBloc, StatesState>(
                     listener: (context, state) {
                       if (state is StatesLoaded) {
                         selectedState =
@@ -344,7 +344,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: AuthInputWidget(
                         isPassword: true,
-                        maxCharacters: 8,
+                        maxCharacters: 20,
                         controller: _passwordController,
                         label: 'Password',
                         hint: 'Enter your Password'),
@@ -354,7 +354,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: AuthInputWidget(
                         isPassword: true,
-                        maxCharacters: 8,
+                        maxCharacters: 20,
                         controller: _conPasswordController,
                         label: 'Confirm Password',
                         hint: 'Re-Enter your Password'),

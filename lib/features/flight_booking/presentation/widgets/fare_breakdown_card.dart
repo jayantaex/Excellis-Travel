@@ -1,18 +1,18 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../models/flights_data_model.dart';
 
 class FareBreakdownCard extends StatelessWidget {
-  FareBreakdownCard({super.key});
+  final DatamPrice? data;
+  FareBreakdownCard({super.key, this.data});
 
   final List<Map<String, dynamic>> fareData = [
     {
       'name': 'Base Fare',
       'price': 500.564562,
-      'data': [
-        {'name': 'Adult', 'count': 1, 'price': 500.52}
-      ],
+      'data': [],
     },
     {
       'name': 'Taxes & Fees',
@@ -40,18 +40,29 @@ class FareBreakdownCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ...fareData.map(
-            (e) => ItemCard(data: e),
+          PriceCol(titile: 'Base Fare', value: '${data!.base ?? 0.00}'),
+          const PriceCol(titile: 'Fees', value: ''),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Column(
+              children: [
+                ...data!.fees!.map((e) => PriceCol(
+                      titile: e.type ?? '',
+                      value: e.amount ?? '',
+                    )),
+              ],
+            ),
           ),
+          PriceCol(titile: 'Total', value: '${data!.total ?? 0.00}'),
           const Divider(),
           ListTile(
             contentPadding: const EdgeInsets.all(0),
             title: const Text(
-              'Total',
+              'Grand Total',
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             trailing: Text(
-              '${fareData.map((e) => e['price']).reduce((a, b) => a + b).toStringAsFixed(2)}',
+              '${data!.grandTotal ?? 0.00}',
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
           )
@@ -61,69 +72,75 @@ class FareBreakdownCard extends StatelessWidget {
   }
 }
 
-class ItemCard extends StatelessWidget {
-  final Map data;
-  const ItemCard({super.key, required this.data});
+// class ItemCard extends StatelessWidget {
+//   final Map data;
+//   const ItemCard({super.key, required this.data});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       width: AppHelpers.getScreenWidth(context),
+//       height: 60,
+//       child: Column(
+//         children: [
+//           SizedBox(
+//             width: AppHelpers.getScreenWidth(context),
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 SizedBox(
+//                   width: 130,
+//                   height: 25,
+//                   child: Text(
+//                     data['name'],
+//                     style: const TextStyle(
+//                         fontSize: 14, fontWeight: FontWeight.w600),
+//                   ),
+//                 ),
+//                 SizedBox(
+//                   height: 25,
+//                   child: Text(
+//                     data['price'].toStringAsFixed(2),
+//                     style: const TextStyle(
+//                         fontSize: 14, fontWeight: FontWeight.w600),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+class PriceCol extends StatelessWidget {
+  final String titile;
+  final String value;
+  const PriceCol({super.key, required this.titile, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.only(left: 8),
       width: AppHelpers.getScreenWidth(context),
-      height: 60,
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: AppHelpers.getScreenWidth(context),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 130,
-                  height: 25,
-                  child: Text(
-                    data['name'],
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600),
-                  ),
-                ),
-                SizedBox(
-                  height: 25,
-                  child: Text(
-                    data['price'].toStringAsFixed(2),
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ],
+            height: 25,
+            child: Text(
+              titile,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
             ),
           ),
-          ...data['data'].map((e) {
-            return Container(
-              padding: const EdgeInsets.only(left: 8),
-              width: AppHelpers.getScreenWidth(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    height: 25,
-                    child: Text(
-                      e['name'],
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 25,
-                    child: Text(
-                      e['price'].toStringAsFixed(2),
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w600),
-                    ),
-                  )
-                ],
-              ),
-            );
-          })
+          SizedBox(
+            height: 25,
+            child: Text(
+              value,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            ),
+          )
         ],
       ),
     );

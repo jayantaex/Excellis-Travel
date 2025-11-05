@@ -1,12 +1,19 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_styles.dart';
-import '../../models/passenger_model.dart';
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/app_helpers.dart';
+import '../../../models/flights_data_model.dart';
+import '../../../models/passenger_model.dart';
 import 'add_passenger_sheet.dart';
 
 class PassengerDetailsCard extends StatefulWidget {
-  const PassengerDetailsCard({super.key});
+  final Function(PassengerModel passenger) onAddPassenger;
+  final Function(PassengerModel passenger) onPassengerRemove;
+  final List<TravelerPricing> travelerPricing;
+  const PassengerDetailsCard(
+      {super.key,
+      required this.travelerPricing,
+      required this.onAddPassenger,
+      required this.onPassengerRemove});
 
   @override
   State<PassengerDetailsCard> createState() => _PassengerDetailsCardState();
@@ -14,16 +21,31 @@ class PassengerDetailsCard extends StatefulWidget {
 
 class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
   final List<PassengerModel> _adultPassengers = <PassengerModel>[];
-
   final List<PassengerModel> _childPassengers = <PassengerModel>[];
-
   final List<PassengerModel> _infantPassengers = <PassengerModel>[];
 
-  final int _allowedAdult = 2;
+  int _allowedAdult = 0;
 
-  final int _allowedChild = 0;
+  int _allowedChild = 0;
 
-  final int _allowedInfant = 0;
+  int _allowedInfant = 0;
+
+  @override
+  void initState() {
+    for (var e in widget.travelerPricing) {
+      if (e.travelerType == 'ADULT') {
+        _allowedAdult = _allowedAdult + 1;
+      }
+      if (e.travelerType == 'CHILD') {
+        _allowedChild = _allowedChild + 1;
+      }
+      if (e.travelerType == 'INFANT') {
+        _allowedInfant = _allowedInfant + 1;
+      }
+    }
+    setState(() {});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +64,13 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
             passengerType: 'Adult',
             onDone: (passenger) {
               _adultPassengers.add(passenger);
+              widget.onAddPassenger(passenger);
               setState(() {});
             },
           ),
           ..._adultPassengers.map((e) => PassengerCard(
                 passenger: e,
                 onDelete: () {
-                  log('Passenger deleted');
                   _adultPassengers.remove(e);
                   setState(() {});
                 },
@@ -64,6 +86,7 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                   passengerType: 'Child',
                   onDone: (passenger) {
                     _childPassengers.add(passenger);
+                    widget.onAddPassenger(passenger);
                     setState(() {});
                   },
                 ),
@@ -85,6 +108,7 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                   passengerType: 'Infant',
                   onDone: (passenger) {
                     _infantPassengers.add(passenger);
+                    widget.onAddPassenger(passenger);
                     setState(() {});
                   },
                 ),
@@ -93,6 +117,7 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                 onDelete: () {
                   _infantPassengers.remove(e);
                   setState(() {});
+                  widget.onPassengerRemove(e);
                 },
               )),
           const SizedBox(height: 10),
@@ -136,10 +161,11 @@ class PassengerTypeCard extends StatelessWidget {
           )),
       trailing: allowedPassenger > currentPassenger
           ? InkWell(
-              onTap: () {
-                showAddPassengerSheet(
+              onTap: () async {
+                await showAddPassengerSheet(
                   context: context,
                   onDone: onDone,
+                  travellerType: passengerType,
                 );
               },
               child: const CircleAvatar(
@@ -163,21 +189,30 @@ class PassengerCard extends StatelessWidget {
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       leading: CircleAvatar(
-          radius: 18,
-          backgroundColor: AppColors.grey.withOpacity(0.1),
-          child:
-              const Icon(Icons.person, color: AppColors.secondary, size: 20)),
-      title: Text(passenger.name ?? 'NO-NAME',
+        radius: 18,
+        backgroundColor: AppColors.grey.withOpacity(0.1),
+        child: Text(
+          '${passenger.firstName!.substring(0, 1)}${passenger.lastName!.substring(0, 1)}',
+          style: const TextStyle(
+            color: AppColors.secondary,
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+        ),
+      ),
+      title: Text('${passenger.firstName} ${passenger.lastName}',
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
           )),
-      subtitle: Text(passenger.gender ?? 'NO-GENDER',
-          style: const TextStyle(
-            fontSize: 12,
-            color: AppColors.grey,
-            fontWeight: FontWeight.w400,
-          )),
+      subtitle: Text(
+        '${passenger.gender} | ${AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now())}',
+        style: const TextStyle(
+          fontSize: 12,
+          color: AppColors.grey,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
       trailing: InkWell(
         onTap: () => onDelete(),
         child: const Icon(

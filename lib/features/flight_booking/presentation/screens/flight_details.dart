@@ -1,35 +1,65 @@
-import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/core/utils/app_helpers.dart';
-import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
-import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
-import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../data/search_data.dart';
-import '../widgets/ticket_card_widget.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
+import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../auth/auth_module.dart';
+import '../../../profile_management/bloc/profile_bloc.dart';
+import '../../bloc/flight_bloc.dart';
+import '../../models/flights_data_model.dart' show FlightDictionary, Datam;
+import '../../models/passenger_model.dart';
+import '../widgets/flight_details/err_widget.dart';
+import '../widgets/flight_details/fareign_options_card_widget.dart';
+import '../widgets/loading/flight_details_loading_widet.dart';
+import '../widgets/flight_details/pricing_bottom_bar.dart';
+import '../widgets/flight_details/itinerary_card_widget.dart';
+import '../widgets/flight_details/passenger_details_card.dart';
 
 class FlightDetailsScreen extends StatefulWidget {
-  const FlightDetailsScreen({super.key});
+  final Datam data;
+  final FlightDictionary flightDictionary;
+  const FlightDetailsScreen({
+    super.key,
+    required this.data,
+    required this.flightDictionary,
+  });
 
   @override
   State<FlightDetailsScreen> createState() => _FlightDetailsScreenState();
 }
 
 class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
-  final SearchData _searchData = SearchData();
-  String seletedTab = 'Economy';
-  List<String> classList = [
-    'Economy',
-    'Business',
-    'First Class',
+  String seletedTab = 'ADULT';
+  List<String> userType = [
+    'ADULT',
+    'CHILD',
+    'INFANT',
   ];
+  List<PassengerModel> passengers = [];
+
+  Map<String, dynamic> offerData = {};
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      offerData = widget.data.toJson();
+
+      context
+          .read<FlightBloc>()
+          .add(GetFlightsOfferPriceEvent(offerData: offerData));
+      context.read<ProfileBloc>().add(const LoadProfileEvent());
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     double width = AppHelpers.getScreenWidth(context);
 
-    final data = _searchData.ticketData[0];
     return Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
@@ -55,216 +85,160 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                       ),
                     ),
                     child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          DottedBorder(
-                            dashPattern: const [8, 4],
-                            customPath: (size) => Path()
-                              ..moveTo(0, size.height)
-                              ..relativeLineTo(size.width, 0),
-                            color: AppColors.grey,
-                            strokeWidth: 0.5,
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: ListTile(
-                              leading: AppHelpers.assetImage(
-                                  assetName: 'indigo', ext: 'png'),
-                              title: const Text(
-                                'Indigo',
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w600),
-                              ),
-                              subtitle: const Text(
-                                '6E2119 | Airbus A321-200',
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.grey),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          DottedBorder(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 10),
-                            dashPattern: const [8, 4],
-                            customPath: (size) => Path()
-                              ..moveTo(0, size.height)
-                              ..relativeLineTo(size.width, 0),
-                            color: AppColors.grey,
-                            strokeWidth: 0.5,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: BlocConsumer<FlightBloc, FlightState>(
+                        listener: (context, state) {},
+                        builder: (context, state) {
+                          if (state is FlightOfferPriceLoading) {
+                            return const FlightDetailsLoadingWidet();
+                          }
+                          if (state is FlightOfferPriceError) {
+                            return ErrWidget(message: state.message);
+                          }
+
+                          if (state is FlightOfferPriceLoaded) {
+                            return Column(
                               children: [
-                                SizedBox(
-                                    height: 90,
-                                    width: width * 0.25,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('06.15',
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w600)),
-                                        Text(
-                                          AppHelpers.formatDateTime(
-                                              DateTime.now(),
-                                              pattern: 'dd MMM, yyyy'),
-                                          style: const TextStyle(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.grey),
-                                        ),
-                                        const Text(
-                                          'Kolkata (CCU)',
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.grey),
-                                        ),
-                                      ],
-                                    )),
-                                SizedBox(
-                                    width: width * 0.25,
-                                    child: Column(
-                                      children: [
-                                        AppHelpers.svgAsset(
-                                            assetName: 'flight', width: 100),
-                                        Text(
-                                          getDuration(min: data.duration!),
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ],
-                                    )),
-                                SizedBox(
-                                  height: 90,
-                                  width: width * 0.25,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      const Text('09.40',
-                                          style: TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w600)),
-                                      Text(
-                                        AppHelpers.formatDateTime(
-                                            DateTime.now(),
-                                            pattern: 'dd MMM, yyyy'),
-                                        style: const TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w500,
-                                            color: AppColors.grey),
-                                      ),
-                                      const Text(
-                                        'Delhi (DEL)',
-                                        style: TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w500,
-                                            color: AppColors.grey),
-                                      ),
-                                    ],
+                                const SizedBox(height: 8),
+                                ...state
+                                    .data.data!.flightOffers!.first.itineraries!
+                                    .map(
+                                  (e) => ItineraryCard(
+                                    width: width,
+                                    flightDictionary: widget.flightDictionary,
+                                    data: e,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          ListTile(
-                            leading: AppHelpers.svgAsset(
-                                assetName: 'from', isIcon: true),
-                            title: const Text(
-                              'Apparture Airport',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            subtitle: const Text(
-                              'Netaji Subhash Chandra Bose International Airport (CCU)',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.grey),
-                            ),
-                          ),
-                          ListTile(
-                            leading: AppHelpers.svgAsset(
-                                assetName: 'to', isIcon: true),
-                            title: const Text(
-                              'Departure Airport',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            subtitle: const Text(
-                              'Indira Gandhi International Airport (DEL)',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.grey),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            height: 45,
-                            decoration: BoxDecoration(
-                              color: AppColors.background,
-                              borderRadius: BorderRadius.circular(32),
-                              border: Border.all(
-                                width: 1,
-                                color: AppColors.grey.withOpacity(0.2),
-                              ),
-                            ),
-                            width: AppHelpers.getScreenWidth(context),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ...classList.map(
-                                  (e) => InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        seletedTab = e;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12),
-                                      height: 45,
-                                      width: width / classList.length - 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: seletedTab == e
-                                            ? AppColors.black
-                                            : null,
-                                        borderRadius: BorderRadius.circular(32),
-                                      ),
-                                      child: Text(
-                                        e,
-                                        textAlign: TextAlign.center,
+                                const SizedBox(height: 12),
+                                FareignOptionsCardWidget(
+                                  allTravelerPricings: state.data.data!
+                                      .flightOffers!.first.travelerPricings!,
+                                ),
+                                const SizedBox(height: 8),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 12),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text('Travellers Details',
                                         style: TextStyle(
-                                          color: seletedTab == e
-                                              ? AppColors.white
-                                              : AppColors.black,
                                           fontSize: 14,
-                                          fontWeight: seletedTab == e
-                                              ? FontWeight.w500
-                                              : FontWeight.w300,
-                                        ),
-                                      ),
-                                    ),
+                                          fontWeight: FontWeight.w600,
+                                        )),
                                   ),
                                 ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: PassengerDetailsCard(
+                                    onAddPassenger: (passenger) {
+                                      passengers.add(passenger);
+                                    },
+                                    onPassengerRemove: (passenger) {
+                                      passengers.remove(passenger);
+                                    },
+                                    travelerPricing:
+                                        widget.data.travelerPricings ?? [],
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                BlocBuilder<ProfileBloc, ProfileState>(
+                                  builder: (context, state) {
+                                    if (state is ProfileLoaded) {
+                                      return const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 12),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text('Billing Details',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                              )),
+                                        ),
+                                      );
+                                    }
+                                    return const SizedBox();
+                                  },
+                                ),
+                                BlocConsumer<ProfileBloc, ProfileState>(
+                                  listener: (context, state) {
+                                    if (state is ProfileError) {}
+                                  },
+                                  builder: (context, state) {
+                                    if (state is ProfileLoaded) {
+                                      // to change the billing or conatct details
+                                      // company name
+                                      // first name
+                                      // last name
+                                      // phone
+                                      // email
+                                      // cityName
+                                      //country code
+                                      //postal code
+                                      //address line [address, address, address]
+                                      return ListTile(
+                                        leading: CircleAvatar(
+                                          child: Text(
+                                              state.profileData.firstName![0]),
+                                        ),
+                                        title: Text(
+                                            '${state.profileData.firstName} ${state.profileData.lastName}'),
+                                        subtitle:
+                                            Text('${state.profileData.email}'),
+                                        trailing: const Text('Change'),
+                                      );
+                                    }
+
+                                    if (state is ProfileError) {
+                                      return SizedBox(
+                                        height: 300,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              'It seems you are not logged in \n please login to continue',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppColors.grey,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            InkWell(
+                                              onTap: () {
+                                                context.pushNamed(
+                                                    AuthModule.loginName);
+                                              },
+                                              child: const Text(
+                                                'LOGIN',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: AppColors.primary,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    decorationColor:
+                                                        AppColors.primary),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                    return const Text('Loading...');
+                                  },
+                                )
                               ],
-                            ),
-                          ),
-                          TicketCardWidget(),
-                        ],
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
                       ),
                     ),
                   ),
@@ -274,12 +248,30 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: BlocBuilder<FlightBloc, FlightState>(
+        builder: (context, flightState) {
+          if (flightState is FlightOfferPriceLoaded) {
+            return BlocBuilder<ProfileBloc, ProfileState>(
+              builder: (context, profileState) {
+                if (profileState is ProfileLoaded) {
+                  return PricingBottomBar(
+                    travellersCount: flightState.data.data!.flightOffers!.first
+                        .travelerPricings!.length,
+                    passengers: passengers,
+                    flightOfferData:
+                        flightState.data.data!.flightOffers!.first.toJson(),
+                    grandTotal: flightState
+                        .data.data!.flightOffers!.first.price!.grandTotal!,
+                    profile: profileState.profileData,
+                  );
+                }
+                return const SizedBox();
+              },
+            );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
-}
-
-getDuration({required int min}) {
-  String hours = (min / 60).floor().toString();
-  String minutes = (min % 60).toString();
-  return '${hours}h ${minutes}m';
 }

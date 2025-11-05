@@ -1,17 +1,35 @@
-import 'package:excellistravel/core/constants/app_styles.dart';
 import 'package:excellistravel/core/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../core/constants/app_styles.dart';
 
 class AirportCardLoadingWidget extends StatelessWidget {
   const AirportCardLoadingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      tileColor: AppColors.grey,
-      title: LoadingEffect(height: 20, width: 80),
-      leading: LoadingEffect(height: 40, width: 40),
-      subtitle: LoadingEffect(height: 20, width: 120),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 6),
+      child: ListTile(
+        title: LoadingEffect(
+          baseColor: AppColors.grey.withOpacity(0.05),
+          heighLightColor: AppColors.white,
+          height: 15,
+          width: 120,
+        ),
+        leading: LoadingEffect(
+          height: 20,
+          width: 40,
+          baseColor: AppColors.grey.withOpacity(0.05),
+          heighLightColor: AppColors.white,
+        ),
+        subtitle: LoadingEffect(
+          height: 15,
+          width: 80,
+          baseColor: AppColors.grey.withOpacity(0.05),
+          heighLightColor: AppColors.white,
+        ),
+      ),
     );
   }
 }

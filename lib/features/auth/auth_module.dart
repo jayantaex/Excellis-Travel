@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/common/api/location_api.dart';
-import '../../core/common/bloc/states/location_bloc.dart';
+import '../../core/common/bloc/states/states_bloc.dart';
 import '../../core/common/data/location_repository.dart';
 import '../../core/network/api_client.dart';
 import 'apis/auth_api.dart';
@@ -43,7 +43,7 @@ class AuthModule {
         create: (_) => AuthBloc(authRepository: authRepository),
       ),
       BlocProvider(
-        create: (_) => LocationBloc(repository: stateRepository),
+        create: (_) => StatesBloc(repository: stateRepository),
       ),
       BlocProvider(
         create: (_) => CityBloc(repository: stateRepository),

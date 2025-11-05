@@ -1,24 +1,110 @@
 class AirportModel {
+  String? type;
+  String? subType;
   String? name;
-  String? code;
-  String? city;
-  String? country;
+  String? detailedName;
+  String? id;
+  String? timeZoneOffset;
+  String? iataCode;
+  GeoCode? geoCode;
+  Address? address;
 
-  AirportModel({this.name, this.code, this.city, this.country});
+  AirportModel(
+      {this.type,
+      this.subType,
+      this.name,
+      this.detailedName,
+      this.id,
+      this.timeZoneOffset,
+      this.iataCode,
+      this.geoCode,
+      this.address});
 
   AirportModel.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    subType = json['subType'];
     name = json['name'];
-    code = json['code'];
-    city = json['city'];
-    country = json['country'];
+    detailedName = json['detailedName'];
+    id = json['id'];
+    timeZoneOffset = json['timeZoneOffset'];
+    iataCode = json['iataCode'];
+    geoCode =
+        json['geoCode'] != null ? GeoCode.fromJson(json['geoCode']) : null;
+    address =
+        json['address'] != null ? Address.fromJson(json['address']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['type'] = type;
+    data['subType'] = subType;
     data['name'] = name;
-    data['code'] = code;
-    data['city'] = city;
-    data['country'] = country;
+    data['detailedName'] = detailedName;
+    data['id'] = id;
+    data['timeZoneOffset'] = timeZoneOffset;
+    data['iataCode'] = iataCode;
+    if (geoCode != null) {
+      data['geoCode'] = geoCode!.toJson();
+    }
+    if (address != null) {
+      data['address'] = address!.toJson();
+    }
+    return data;
+  }
+}
+
+class GeoCode {
+  double? latitude;
+  double? longitude;
+
+  GeoCode({this.latitude, this.longitude});
+
+  GeoCode.fromJson(Map<String, dynamic> json) {
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    return data;
+  }
+}
+
+class Address {
+  String? cityName;
+  String? cityCode;
+  String? countryName;
+  String? countryCode;
+  String? stateCode;
+  String? regionCode;
+
+  Address(
+      {this.cityName,
+      this.cityCode,
+      this.countryName,
+      this.countryCode,
+      this.stateCode,
+      this.regionCode});
+
+  Address.fromJson(Map<String, dynamic> json) {
+    cityName = json['cityName'];
+    cityCode = json['cityCode'];
+    countryName = json['countryName'];
+    countryCode = json['countryCode'];
+    stateCode = json['stateCode'];
+    regionCode = json['regionCode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cityName'] = cityName;
+    data['cityCode'] = cityCode;
+    data['countryName'] = countryName;
+    data['countryCode'] = countryCode;
+    data['stateCode'] = stateCode;
+    data['regionCode'] = regionCode;
     return data;
   }
 }
