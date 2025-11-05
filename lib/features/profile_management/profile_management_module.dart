@@ -22,7 +22,7 @@ class ProfileManagementModule {
     ),
   );
 
-  static final LocationRepository _sateRepository =
+  static final LocationRepository _locationRepository =
       LocationRepository(statesApi: LocationApi(apiClient: _apiClient));
   //my profile
   static String myProfileName = 'my_profile';
@@ -47,10 +47,10 @@ class ProfileManagementModule {
           ),
         ),
         BlocProvider(
-          create: (_) => StatesBloc(repository: _sateRepository),
+          create: (_) => StatesBloc(repository: _locationRepository),
         ),
         BlocProvider(
-          create: (_) => CityBloc(repository: _sateRepository),
+          create: (_) => CityBloc(repository: _locationRepository),
         )
       ],
       child: const EditProfileScreen(),
@@ -64,10 +64,14 @@ class ProfileManagementModule {
     String stateName = state.extra['stateName'];
     int stateId = state.extra['stateId'];
 
-    return CitySearch(
-      stateCode: stateCode,
-      stateName: stateName,
-      stateId: stateId,
+    return BlocProvider(
+      create: (context) => CityBloc(repository: _locationRepository),
+      child: CitySearch(
+        onSelected: state.extra['onSelected'],
+        stateCode: stateCode,
+        stateName: stateName,
+        stateId: stateId,
+      ),
     );
   }
 }

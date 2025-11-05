@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -22,6 +23,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoading());
     try {
       ApiResponse res = await profileRepository.getUserProfile();
+      log('res $res');
       final ProfileModel profileData = res.data;
       emit(ProfileLoaded(profileData: profileData));
     } catch (e) {

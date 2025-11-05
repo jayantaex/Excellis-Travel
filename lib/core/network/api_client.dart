@@ -25,23 +25,11 @@ class ApiClient {
       }
       return handler.next(options);
     }, onError: (DioException e, handler) {
-      if (e.response?.statusCode == 401) {}
+      if (e.response?.statusCode == 401) {
+        
+      }
       return handler.next(e);
     }));
-    // print request and response
-    // _dio.interceptors.add(
-    //   LogInterceptor(
-    //     requestBody: true,
-    //     responseBody: true,
-    //     requestHeader: false,
-    //     responseHeader: false,
-    //     error: true,
-    //     request: true,
-    //     logPrint: (obj) {
-    //       log(obj.toString());
-    //     },
-    //   ),
-    // );
 
     _dio.interceptors.add(PrettyDioLogger(
       requestHeader: true,
