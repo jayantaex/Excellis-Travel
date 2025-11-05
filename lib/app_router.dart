@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import 'features/auth/auth_module.dart';
 import 'features/bottom_navigation/bottom_nav_module.dart';
 import 'features/flight_booking/flight_booking_module.dart';
 import 'features/legal/legal_module.dart';
 import 'features/notifiaction/notification_module.dart';
+import 'features/payment/payment_module.dart';
 import 'features/profile_management/profile_management_module.dart';
 import 'features/settings/settings_module.dart';
 import 'features/splash/screens/splash_screen.dart';
 import 'features/splash/splash_module.dart';
 import 'features/ticket/ticket_module.dart';
-
-import 'features/wallet_management/presentation/screens/wallet_payment_failed_screen.dart';
-import 'features/wallet_management/presentation/screens/wallet_payment_success_screen.dart';
 import 'features/wallet_management/wallet_module.dart';
 import 'features/wish_list/wish_list_module.dart';
 
@@ -54,18 +51,15 @@ class AppRouter {
         builder: (context, state) => WalletModule.myWalletBuilder(),
       ),
       GoRoute(
-        path: WalletModule.paymentSucessPath,
-        name: WalletModule.paymentSucessName,
-        builder: (context, state) => WalletPaymentSuccessScreen(
-          paymentId: state.pathParameters['paymentId'] ?? '',
-        ),
-      ),
+          path: PaymentModule.paymentSucessPath,
+          name: PaymentModule.paymentSucessName,
+          builder: (context, state) =>
+              PaymentModule.paymentSuccessBuilder(context, state)),
       GoRoute(
-        path: WalletModule.paymentFailedPath,
-        name: WalletModule.paymentFailedName,
-        builder: (context, state) => WalletPaymentFailedScreen(
-          errMsg: state.pathParameters['errorMsg'] ?? '',
-        ),
+        path: PaymentModule.paymentFailedPath,
+        name: PaymentModule.paymentFailedName,
+        builder: (context, state) =>
+            PaymentModule.paymentFailedBuilder(context, state),
       ),
 
       //Wish list

@@ -106,6 +106,7 @@ class AirportSearchScreen extends StatelessWidget {
                                       onAirportSelected: () {
                                         onAirportSelected!(
                                             state.airports[index]);
+                                        Navigator.pop(context);
                                       },
                                     ),
                                   );

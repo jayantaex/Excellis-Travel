@@ -8,6 +8,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../../core/services/razorpay.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../payment/payment_module.dart';
 import '../../bloc/wallet_bloc.dart';
 import '../../wallet_module.dart';
 
@@ -23,18 +24,24 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     log('Payment successful: ${response.paymentId}');
-    AppHelpers.debounce(() {
-      context.pushNamed(WalletModule.paymentSucessName,
-          pathParameters: {'paymentId': '${response.paymentId}'});
-    });
+    AppHelpers.debounce(
+      () {
+        context.pushNamed(PaymentModule.paymentSucessName,
+            pathParameters: {'paymentId': '${response.paymentId}'});
+      },
+      delay: const Duration(milliseconds: 200),
+    );
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     log('Payment error: ${response.code} - ${response.message}');
-    AppHelpers.debounce(() {
-      context.pushNamed(WalletModule.paymentFailedName,
-          pathParameters: {'errorMsg': '${response.message}'});
-    });
+    AppHelpers.debounce(
+      () {
+        context.pushNamed(PaymentModule.paymentFailedName,
+            pathParameters: {'errorMsg': '${response.message}'});
+      },
+      delay: const Duration(milliseconds: 200),
+    );
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {

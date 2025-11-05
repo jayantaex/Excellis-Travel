@@ -8,7 +8,7 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/services/razorpay.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
-import '../../../../wallet_management/wallet_module.dart';
+import '../../../../payment/payment_module.dart';
 import '../../../bloc/flight_bloc.dart';
 import '../../../models/passenger_model.dart';
 
@@ -42,7 +42,7 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
     return BlocConsumer<FlightBloc, FlightState>(
       listener: (context, state) {
         if (state is FlightOrderCreationError) {
-          context.pushNamed(WalletModule.paymentFailedName);
+          context.pushNamed(PaymentModule.paymentFailedName);
         }
       },
       builder: (context, state) {
@@ -147,12 +147,12 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
 
   Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
     context.read<FlightBloc>().add(CreateFlightOrder(body: createOrderBody));
-    context.pushNamed(WalletModule.paymentSucessName,
+    context.pushNamed(PaymentModule.paymentSucessName,
         pathParameters: {'paymentId': '${response.paymentId}'});
   }
 
   _handlePaymentError(PaymentFailureResponse response) {
-    context.pushNamed(WalletModule.paymentFailedName,
+    context.pushNamed(PaymentModule.paymentFailedName,
         pathParameters: {'errorMsg': '${response.message}'});
   }
 }

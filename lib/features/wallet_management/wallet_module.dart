@@ -13,10 +13,7 @@ class WalletModule {
   static String myWalletPath = '/my_wallet';
   static String transactionPath = '/transactions';
   static String transactionName = 'transactions';
-  static String paymentSucessName = 'payment_success';
-  static String paymentSucessPath = '/payment_success/:paymentId';
-  static String paymentFailedName = 'payment_failed';
-  static String paymentFailedPath = '/payment_failed/:errorMsg';
+
 
   static Widget myWalletBuilder() {
     final WalletRepository respository =
