@@ -31,9 +31,7 @@ class GetFlightsOfferPriceEvent extends FlightEvent {
   const GetFlightsOfferPriceEvent({required this.offerData});
 }
 
-class ChangeUserTypeEvent extends FlightEvent {
-  final String userType;
-  final List<TravelerPricing>? travelerPricings;
-  const ChangeUserTypeEvent(
-      {required this.userType, required this.travelerPricings});
+class CreateFlightOrder extends FlightEvent {
+  final Map<String, dynamic> body;
+  const CreateFlightOrder({required this.body});
 }

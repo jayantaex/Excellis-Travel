@@ -4,9 +4,9 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 
-class WalletPaymentFailedScreen extends StatelessWidget {
+class PaymentFailedScreen extends StatelessWidget {
   final String errMsg;
-  const WalletPaymentFailedScreen({super.key, required this.errMsg});
+  const PaymentFailedScreen({super.key, required this.errMsg});
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +43,21 @@ class WalletPaymentFailedScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: AppPrimaryButton(
-          title: 'Retry Payment',
-          isLoading: false,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+      bottomNavigationBar: SizedBox(
+        height: 120,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 70),
+          child: AppPrimaryButton(
+            title: 'Retry Payment',
+            style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: AppColors.white),
+            isLoading: false,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
         ),
       ),
     );

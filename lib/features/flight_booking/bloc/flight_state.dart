@@ -58,15 +58,19 @@ final class FlightOfferPriceError extends FlightState {
   const FlightOfferPriceError({required this.message});
 }
 
-final class TravelerTypeChanged extends FlightState {
-  final List<TravelerPricing> travelerPricing;
-  final String selectedTravellerType;
+final class FlightOrderCreated extends FlightState {
+  final FlightOrderModel order;
 
-  const TravelerTypeChanged(
-      {required this.travelerPricing, required this.selectedTravellerType});
+  const FlightOrderCreated({
+    required this.order,
+  });
 }
 
-final class TravelerTypeChangingError extends FlightState {
+final class FlightOrderLoading extends FlightState {
+  const FlightOrderLoading();
+}
+
+final class FlightOrderCreationError extends FlightState {
   final String error;
-  const TravelerTypeChangingError({required this.error});
+  const FlightOrderCreationError({required this.error});
 }

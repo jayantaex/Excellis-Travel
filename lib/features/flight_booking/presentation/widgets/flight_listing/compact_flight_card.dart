@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 
-import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../models/flights_data_model.dart';
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/app_helpers.dart';
+import '../../../models/flights_data_model.dart';
 
 class CompactFlightCard extends StatelessWidget {
   final Datam data;

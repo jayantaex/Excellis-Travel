@@ -42,5 +42,6 @@ class EndPoints {
   static const flightSearch = "/v2/shopping/flight-offers";
 
   static var flightOfferPrice = '/v1/shopping/flight-offers/pricing';
+  static var createOrder = '/v1/booking/flight-orders';
 }
 //https://test.api.amadeus.com/v1/reference-data/locations?subType=CITY,AIRPORT&keyword=MUC&countryCode=DE

@@ -15,7 +15,7 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../flight_booking/flight_booking_module.dart';
-import '../../../flight_booking/presentation/widgets/app_drop_down.dart';
+import '../../../flight_booking/presentation/widgets/flight_search/app_drop_down.dart';
 import '../../bloc/profile_bloc.dart';
 import '../widgets/delete_account_sheet.dart';
 

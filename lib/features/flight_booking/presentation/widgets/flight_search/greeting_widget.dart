@@ -1,13 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../../notifiaction/notification_module.dart';
-import '../../../profile_management/bloc/profile_bloc.dart';
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/app_helpers.dart';
+import '../../../../notifiaction/notification_module.dart';
+import '../../../../profile_management/bloc/profile_bloc.dart';
 
 class GreetingWidget extends StatelessWidget {
   const GreetingWidget({super.key});
@@ -27,9 +25,7 @@ class GreetingWidget extends StatelessWidget {
               children: [
                 BlocConsumer<ProfileBloc, ProfileState>(
                     listener: (context, state) {
-                  if (state is ProfileError) {
-                    log(state.message, name: 'GreetingWidget');
-                  }
+                  if (state is ProfileError) {}
                 }, builder: (context, state) {
                   return state is ProfileLoaded
                       ? Text(

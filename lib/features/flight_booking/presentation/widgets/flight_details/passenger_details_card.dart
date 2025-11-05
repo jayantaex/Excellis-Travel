@@ -1,15 +1,19 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_styles.dart';
-import '../../models/flights_data_model.dart';
-import '../../models/passenger_model.dart';
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/app_helpers.dart';
+import '../../../models/flights_data_model.dart';
+import '../../../models/passenger_model.dart';
 import 'add_passenger_sheet.dart';
 
 class PassengerDetailsCard extends StatefulWidget {
   final Function(PassengerModel passenger) onAddPassenger;
+  final Function(PassengerModel passenger) onPassengerRemove;
   final List<TravelerPricing> travelerPricing;
   const PassengerDetailsCard(
-      {super.key, required this.travelerPricing, required this.onAddPassenger});
+      {super.key,
+      required this.travelerPricing,
+      required this.onAddPassenger,
+      required this.onPassengerRemove});
 
   @override
   State<PassengerDetailsCard> createState() => _PassengerDetailsCardState();
@@ -113,6 +117,7 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                 onDelete: () {
                   _infantPassengers.remove(e);
                   setState(() {});
+                  widget.onPassengerRemove(e);
                 },
               )),
           const SizedBox(height: 10),
@@ -156,8 +161,8 @@ class PassengerTypeCard extends StatelessWidget {
           )),
       trailing: allowedPassenger > currentPassenger
           ? InkWell(
-              onTap: () {
-                showAddPassengerSheet(
+              onTap: () async {
+                await showAddPassengerSheet(
                   context: context,
                   onDone: onDone,
                   travellerType: passengerType,

@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
-import 'package:excellistravel/core/constants/app_constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import '../constants/app_constants.dart';
 import '../utils/storage_service.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
@@ -21,7 +19,6 @@ class AmadeusClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final token = await StorageService.getAmadeusToken() ?? '';
-          log(token, name: "AMADEUS ACCESS TOKEN");
           if (token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
@@ -103,7 +100,7 @@ class AmadeusClient {
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
       final statusCode = e.response?.statusCode ?? 0;
-      final errorMessage = e.response?.data['message'];
+      final errorMessage = e.response?.data['errors'][0]['detail'];
       return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
     }
   }
@@ -234,8 +231,6 @@ class AmadeusClient {
         await StorageService.saveAmadeusToken(accessToken);
       }
     } catch (e) {
-      log("Error whicle getting amadeus access token \n Error -> $e",
-          name: 'Amadeus Error');
       rethrow;
     }
   }
@@ -245,7 +240,8 @@ class AmadeusClient {
 
     String newToken = await StorageService.getAmadeusToken() ?? '';
     if (newToken.isEmpty) {
-      log('Access token is empty', name: 'Amadeus Error');
+      await _refreshAccessToken();
+      newToken = await StorageService.getAmadeusToken() ?? '';
     }
     updatedHeaders['Authorization'] = 'Bearer $newToken';
 

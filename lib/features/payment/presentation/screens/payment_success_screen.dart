@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
 
-class WalletPaymentSuccessScreen extends StatelessWidget {
+class PaymentSuccessScreen extends StatelessWidget {
   final String paymentId;
-  const WalletPaymentSuccessScreen({super.key, required this.paymentId});
+  const PaymentSuccessScreen({super.key, required this.paymentId});
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +41,21 @@ class WalletPaymentSuccessScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: AppPrimaryButton(
-          title: 'continue booking',
-          isLoading: false,
-          onPressed: () {
-            context.goNamed(BottomNavModule.name);
-          },
+      bottomNavigationBar: SizedBox(
+        height: 120,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 70),
+          child: AppPrimaryButton(
+            title: 'Retry Payment',
+            style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: AppColors.white),
+            isLoading: false,
+            onPressed: () {
+              context.goNamed(BottomNavModule.name);
+            },
+          ),
         ),
       ),
     );

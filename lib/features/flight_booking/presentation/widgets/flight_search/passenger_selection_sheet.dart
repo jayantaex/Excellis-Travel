@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../../../core/widgets/primary_button.dart';
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../core/widgets/primary_button.dart';
 
 Future<void> showPassengerSelectionSheet(
     {required BuildContext context,
@@ -167,15 +165,11 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
             trailing: InCrementDecrementButton(
               value: infant,
               onIncrement: () {
-                log('$adult');
                 if (infant < 9) {
                   if (infant < adult) {
-                    log('inc');
                     infant++;
                   }
                 }
-                log('sss');
-                log('new - $infant');
                 setState(() {});
               },
               onDecrement: () {

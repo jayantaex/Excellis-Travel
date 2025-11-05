@@ -1,13 +1,12 @@
-import 'package:excellistravel/core/utils/app_toast.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../../../core/widgets/primary_button.dart';
-import '../../../../core/widgets/primary_input.dart';
-import '../../models/passenger_model.dart';
-import '../screens/pasenger_details_screen.dart';
-import 'app_drop_down.dart';
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../core/utils/app_toast.dart';
+import '../../../../../core/widgets/primary_button.dart';
+import '../../../../../core/widgets/primary_input.dart';
+import '../../../models/passenger_model.dart';
+import '../flight_search/app_drop_down.dart';
 
 Future<void> showAddPassengerSheet(
     {required BuildContext context,
@@ -21,6 +20,7 @@ Future<void> showAddPassengerSheet(
   DateTime? dob;
   String selectedGender = 'Male';
   String cityzenship = 'India';
+  List<String> genderList = ['Male', 'Female'];
   DateTime firstDate = DateTime(2000);
   DateTime lastDate = DateTime.now();
   switch (travellerType) {
@@ -135,7 +135,7 @@ Future<void> showAddPassengerSheet(
               label: 'Gender',
               title: 'Select Gender',
               value: 'Male',
-              items: genderData
+              items: genderList
                   .map(
                     (String e) => DropdownMenuItem(
                       value: e,

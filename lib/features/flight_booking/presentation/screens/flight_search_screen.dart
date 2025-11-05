@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:excellistravel/core/widgets/compact_ticket_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +8,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/utils/app_toast.dart';
+import '../../../../core/widgets/compact_ticket_card.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
@@ -18,9 +16,9 @@ import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../data/search_data.dart';
 import '../../flight_booking_module.dart';
 import '../../models/air_port_model.dart';
-import '../widgets/greeting_widget.dart';
-import '../widgets/passenger_selection_sheet.dart';
-import '../widgets/app_drop_down.dart';
+import '../widgets/flight_search/greeting_widget.dart';
+import '../widgets/flight_search/passenger_selection_sheet.dart';
+import '../widgets/flight_search/app_drop_down.dart';
 
 class FlightSearchScreen extends StatefulWidget {
   const FlightSearchScreen({super.key});
@@ -49,6 +47,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   int _adultCount = 1;
   int _childCount = 0;
   int _infantCount = 0;
+  final DateTime _today = DateTime.now();
+  final Duration _fiveDay = const Duration(days: 5);
+  final Duration _oneDay = const Duration(days: 1);
+
   final List<DropdownMenuItem<String>> _cabinTypes = <DropdownMenuItem<String>>[
     const DropdownMenuItem<String>(
       value: 'Economy',
@@ -126,7 +128,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     _travellerController.dispose();
     _depurtureController.dispose();
     _arrivalController.dispose();
-
     super.dispose();
   }
 
@@ -148,7 +149,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                 //greeting part
                 BlocBuilder<ProfileBloc, ProfileState>(
                   builder: (context, state) {
-                    log(state.toString());
                     return const GreetingWidget();
                   },
                 ),
@@ -198,7 +198,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                               airport.address?.cityName ?? '';
                                           departureCode =
                                               airport.iataCode ?? '';
-                                          log('Departure Airport ${airport.name}');
                                           _depurtureController.text =
                                               '${airport.iataCode}(${airport.address!.cityName})\n${airport.name}';
                                         },
@@ -233,7 +232,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           arrivalCity =
                                               airport.address?.cityName ?? '';
                                           arrivalCode = airport.iataCode ?? '';
-                                          log('Arrival Airport ${airport.name}');
                                           _arrivalController.text =
                                               '${airport.iataCode}(${airport.address?.cityName})\n${airport.name}';
                                         },
@@ -286,13 +284,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 ),
                                 style: _defaultTextStyple,
                                 onTap: () async {
-                                  if (context.mounted) {
-                                    FocusScope.of(context).unfocus();
-                                  }
                                   departureDate = await _pickDate(
                                     context: context,
-                                    firstDate: DateTime.now(),
-                                    initialDate: DateTime.now(),
+                                    firstDate: _today,
+                                    initialDate: _today,
                                   );
                                   setState(() {});
 
@@ -304,10 +299,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   ? AppPrimaryInput(
                                       controller: TextEditingController(
                                         text: AppHelpers.formatDate(
-                                            departureDate?.add(
-                                                    const Duration(days: 5)) ??
-                                                DateTime.now().add(
-                                                    const Duration(days: 5)),
+                                            departureDate?.add(_fiveDay) ??
+                                                _today.add(_fiveDay),
                                             pattern: 'E, dd MMM yyyy'),
                                       ),
                                       enable: true,
@@ -327,18 +320,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         }
                                         roundTripDate = await _pickDate(
                                           context: context,
-                                          firstDate: departureDate?.add(
-                                                const Duration(days: 1),
-                                              ) ??
-                                              DateTime.now().add(
-                                                const Duration(days: 1),
-                                              ),
-                                          initialDate: departureDate?.add(
-                                                const Duration(days: 5),
-                                              ) ??
-                                              DateTime.now().add(
-                                                const Duration(days: 5),
-                                              ),
+                                          firstDate:
+                                              departureDate?.add(_oneDay) ??
+                                                  _today.add(_oneDay),
+                                          initialDate:
+                                              departureDate?.add(_fiveDay) ??
+                                                  _today.add(_fiveDay),
                                         );
                                         if (context.mounted) {
                                           FocusScope.of(context).unfocus();
@@ -374,18 +361,19 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         ),
                                         onTap: () {
                                           showPassengerSelectionSheet(
-                                              adult: _adultCount,
-                                              child: _childCount,
-                                              infant: _infantCount,
-                                              onDone: (adult, child, infant) {
-                                                _adultCount = adult;
-                                                _childCount = child;
-                                                _infantCount = infant;
-                                                _travellerController.text =
-                                                    '${adult + child + infant}';
-                                                setState(() {});
-                                              },
-                                              context: context);
+                                            adult: _adultCount,
+                                            child: _childCount,
+                                            infant: _infantCount,
+                                            onDone: (adult, child, infant) {
+                                              _adultCount = adult;
+                                              _childCount = child;
+                                              _infantCount = infant;
+                                              _travellerController.text =
+                                                  '${adult + child + infant}';
+                                              setState(() {});
+                                            },
+                                            context: context,
+                                          );
                                         },
                                         suffixIcon: Container(
                                           alignment: Alignment.centerLeft,
@@ -402,9 +390,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           ),
                                         ),
                                         style: _defaultTextStyple,
-                                        onChange: (p0) {
-                                          setState(() {});
-                                        },
+                                        onChange: (p0) {},
                                       ),
                                     ),
                                     SizedBox(
@@ -445,7 +431,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         items: _fareTipes,
                                         value: _selectedFareType,
                                         onChanged: (value) {
-                                          log('$value');
                                           setState(() {
                                             _selectedFareType = value ?? '';
                                           });
@@ -475,9 +460,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               const SizedBox(height: 16),
                               AppPrimaryButton(
                                   onPressed: () {
-                                    log('arrival code $arrivalCode depurture code $departureCode',
-                                        name: 'Flight Search');
-
                                     if (_arrivalController.text.isEmpty ||
                                         _depurtureController.text.isEmpty) {
                                       showToast(
@@ -500,15 +482,13 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         'arrival': arrivalCode,
                                         'isRoundTrip': isRoundTrip,
                                         'depurtureDate': AppHelpers.formatDate(
-                                          departureDate ?? DateTime.now(),
+                                          departureDate ?? _today,
                                           pattern: 'yyyy-MM-dd',
                                         ),
                                         'returnDate': isRoundTrip
                                             ? AppHelpers.formatDate(
                                                 roundTripDate ??
-                                                    DateTime.now().add(
-                                                        const Duration(
-                                                            days: 1)),
+                                                    _today.add(_fiveDay),
                                                 pattern: 'yyyy-MM-dd',
                                               )
                                             : null,

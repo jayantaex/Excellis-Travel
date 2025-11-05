@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
 import '../data/flight_booking_repository.dart';
 import '../models/air_port_model.dart';
-import '../models/flight_offer_price_model.dart'
-    show FlightOfferPriceDataModel, TravelerPricing;
+import '../models/flight_offer_price_model.dart' show FlightOfferPriceDataModel;
+import '../models/flight_order_model.dart';
 import '../models/flights_data_model.dart' show FlightsDataModel;
 part 'flight_event.dart';
 part 'flight_state.dart';
@@ -19,7 +17,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     on<SearchAirportEvent>(_handleAirportSearch);
     on<SearchFlightsEvent>(_handleFlightSearch);
     on<GetFlightsOfferPriceEvent>(_handleFlightOfferPrice);
-    on<ChangeUserTypeEvent>(_handleChangeuserTypeEvent);
+    on<CreateFlightOrder>(_handleCreateFlightOrder);
   }
 
   Future<void> _handleAirportSearch(
@@ -61,6 +59,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       emit(FlightOfferPriceLoading());
       ApiResponse res =
           await repository.getFlightOfferPrice(body: event.offerData);
+
       if (res.data == null) {
         emit(FlightOfferPriceError(
           message: "${res.errorMessage}",
@@ -75,26 +74,21 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     }
   }
 
-  void _handleChangeuserTypeEvent(
-      ChangeUserTypeEvent event, Emitter<FlightState> emit) {
+  Future<void> _handleCreateFlightOrder(
+      CreateFlightOrder event, Emitter<FlightState> emit) async {
     try {
-      log("called...........");
-      List<TravelerPricing> travelerPricings = event.travelerPricings ?? [];
-      List<TravelerPricing> filteredPricings = [];
-      String selectedTravellerType = event.userType;
+      emit(const FlightOrderLoading());
+      ApiResponse<FlightOrderModel> data =
+          await repository.createOrder(body: event.body);
 
-      filteredPricings = travelerPricings
-          .where((element) => element.travelerType == selectedTravellerType)
-          .toList();
-          
-      emit(TravelerTypeChanged(
-        selectedTravellerType: selectedTravellerType,
-        travelerPricing: filteredPricings,
-      ));
+      if (data.data == null) {
+        emit(FlightOrderCreationError(
+            error: data.errorMessage ?? 'Something went wrong'));
+        return;
+      }
+      emit(FlightOrderCreated(order: data.data ?? FlightOrderModel()));
     } catch (e) {
-      emit(TravelerTypeChangingError(
-        error: "$e",
-      ));
+      emit(FlightOrderCreationError(error: "$e"));
     }
   }
 }

@@ -1,4 +1,3 @@
-import 'package:excellistravel/core/utils/app_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,14 +5,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
-import '../widgets/class_filter_widget.dart';
-import '../widgets/compact_flight_card.dart';
-import '../widgets/date_filter_widget.dart';
+import '../widgets/flight_listing/class_filter_widget.dart';
+import '../widgets/flight_listing/compact_flight_card.dart';
+import '../widgets/flight_listing/date_filter_widget.dart';
+import '../widgets/loading/flight_list_loadding_widget.dart';
 
 class FlightSearchResultScreen extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -82,7 +83,7 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
               child: BlocBuilder<FlightBloc, FlightState>(
                 builder: (context, state) {
                   if (state is FlightSearching) {
-                    return const Center(child: CircularProgressIndicator());
+                    return FlightListLoaddingWidget();
                   }
 
                   if (state is FlightLoaded) {

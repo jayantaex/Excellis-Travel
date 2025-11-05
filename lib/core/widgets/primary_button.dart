@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/app_styles.dart';
 
 class AppPrimaryButton extends StatelessWidget {
-  final VoidCallback? onPressed;
+  final Function? onPressed;
   final String title;
   final bool isLoading;
   final Color? bgColor;
@@ -27,7 +27,11 @@ class AppPrimaryButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(90),
             ),
           )),
-      onPressed: isLoading ? null : onPressed,
+      onPressed: isLoading
+          ? null
+          : () {
+              onPressed!();
+            },
       child: isLoading
           ? CircularProgressIndicator.adaptive(
               strokeWidth: 2,
