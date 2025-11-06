@@ -523,7 +523,11 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                         //swap button
                         Positioned(
                           right: 30,
-                          top: 55,
+                          top: _depurtureController.text.isEmpty
+                              ? 40
+                              : _arrivalController.text.isEmpty
+                                  ? 60
+                                  : 55,
                           child: InkWell(
                             onTap: () {
                               _swapAirports();
