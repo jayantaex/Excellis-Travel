@@ -141,6 +141,12 @@ class AppRouter {
         builder: (context, state) =>
             ProfileManagementModule.editProfileBuilder(),
       ),
+      GoRoute(
+        path: ProfileManagementModule.citySeacrRoute,
+        name: ProfileManagementModule.citySearchName,
+        builder: (context, state) =>
+            ProfileManagementModule.citySearchBuilder(context, state),
+      ),
 
       //legal
       GoRoute(

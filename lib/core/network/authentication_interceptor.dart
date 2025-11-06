@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:excellistravel/core/constants/app_constants.dart';
 import '../utils/storage_service.dart';
 import 'api_client.dart';
 import 'api_urls.dart';
@@ -33,24 +34,26 @@ class AuthenticationInterceptor extends Interceptor {
         });
         return handler.resolve(await completer.future);
       }
+      try {
+        _isRefreshing = true;
+        final newAccessToken = await _refreshAccessToken(refreshToken);
+        _isRefreshing = false;
 
-      _isRefreshing = true;
-      final newAccessToken = await _refreshAccessToken(refreshToken);
-      _isRefreshing = false;
-
-      if (newAccessToken != null) {
-        await StorageService.saveTokens(newAccessToken, refreshToken);
-
-        // Retry queued requests
-        for (var callback in _tokenQueue) {
-          callback(newAccessToken);
+        if (newAccessToken != null) {
+          await StorageService.saveTokens(newAccessToken, refreshToken);
+          // Retry queued requests
+          for (var callback in _tokenQueue) {
+            callback(newAccessToken);
+          }
+          _tokenQueue.clear();
+          // Retry the original failed request
+          final response = await _retry(err.requestOptions, newAccessToken);
+          return handler.resolve(response);
+        } else {
+          await StorageService.clearTokens();
+          return handler.next(err);
         }
-        _tokenQueue.clear();
-
-        // Retry the original failed request
-        final response = await _retry(err.requestOptions, newAccessToken);
-        return handler.resolve(response);
-      } else {
+      } catch (e) {
         await StorageService.clearTokens();
         return handler.next(err);
       }
@@ -60,26 +63,19 @@ class AuthenticationInterceptor extends Interceptor {
   }
 
   Future<String?> _refreshAccessToken(String refreshToken) async {
-    final apiClient = ApiClient();
+    final Dio _dio = Dio();
 
     try {
-      final response = await apiClient.postRequest(
-        endPoint: EndPoints.refreshToken,
-        reqModel: {
+      final response = await _dio.post(
+        '${AppConstants.baseUrl}${EndPoints.refreshToken}',
+        data: {
           'refreshToken': refreshToken,
         },
-        fromJson: (data) => data['accessToken'] as String,
       );
-
-      if (response.errorMessage != null) {
-        log('${response.errorMessage}', name: 'Auth-Interceptor Error');
-        return null;
-      }
-
       return response.data;
     } catch (e) {
       log('$e', name: 'Auth-Interceptor Error');
-      return null;
+      rethrow;
     }
   }
 
