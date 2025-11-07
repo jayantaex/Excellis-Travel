@@ -4,15 +4,10 @@ import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/flight_offer_price_model.dart';
 import 'fare_breakdown_card.dart';
 
-class FareCard extends StatefulWidget {
+class FareCard extends StatelessWidget {
   final TravelerPricing data;
   const FareCard({super.key, required this.data});
 
-  @override
-  State<FareCard> createState() => _FareCardState();
-}
-
-class _FareCardState extends State<FareCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +26,7 @@ class _FareCardState extends State<FareCard> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '${widget.data.fareOption} ${widget.data.travelerType} (${widget.data.price?.currency})',
+              '${data.fareOption} ${data.travelerType} (${data.price?.currency})',
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -55,7 +50,7 @@ class _FareCardState extends State<FareCard> {
             thickness: 0.5,
           ),
           const SizedBox(height: 12),
-          ...widget.data.fareDetailsBySegment!.map(
+          ...data.fareDetailsBySegment!.map(
             (e) => Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
@@ -91,9 +86,7 @@ class _FareCardState extends State<FareCard> {
             ),
           ),
           const SizedBox(height: 12),
-          FareBreakdownCard(
-            data: widget.data.price,
-          ),
+          FareBreakdownCard(data: data.price),
           const SizedBox(height: 24),
         ],
       ),

@@ -1,9 +1,16 @@
+import 'dart:developer';
+
+import 'package:excellistravel/features/flight_booking/models/flights_data_model.dart';
+import 'package:excellistravel/features/flight_booking/models/hive/flight_hive_data_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive/hive.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/services/local_db.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/utils/app_toast.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
@@ -83,7 +90,7 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
               child: BlocBuilder<FlightBloc, FlightState>(
                 builder: (context, state) {
                   if (state is FlightSearching) {
-                    return FlightListLoaddingWidget();
+                    return const FlightListLoaddingWidget();
                   }
 
                   if (state is FlightLoaded) {
@@ -91,11 +98,12 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                       children: [
                         //nav Controller
                         Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: AppCustomAppbar(
-                              start: widget.data['depurture'],
-                              end: widget.data['arrival'],
-                            )),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: AppCustomAppbar(
+                            start: widget.data['depurture'],
+                            end: widget.data['arrival'],
+                          ),
+                        ),
                         const SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.only(left: 16),
@@ -144,7 +152,12 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                             itemBuilder: (context, index) => Container(
                               margin: const EdgeInsets.only(bottom: 16),
                               child: CompactFlightCard(
-                                onTap: () {
+                                onTap: () async {
+                                  Box<FlightHiveDataModel> flightBox =
+                                      await LocalDB().getFlightBox();
+
+                                  log(flightBox.values.toList().toString());
+
                                   context.pushNamed(
                                     FlightBookingModule.flightDetailsName,
                                     extra: {
@@ -227,7 +240,7 @@ Map<String, dynamic> getBody({
     "travelers": getTravellers(travellersArr: travellersArr),
     "sources": ["GDS"],
     "searchCriteria": {
-      "maxFlightOffers": kDebugMode ? 2 : 100,
+      "maxFlightOffers": kDebugMode ? 4 : 100,
       "flightFilters": {
         "cabinRestrictions": [
           {

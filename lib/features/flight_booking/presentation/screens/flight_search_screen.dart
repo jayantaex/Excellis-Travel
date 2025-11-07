@@ -19,6 +19,7 @@ import '../../models/air_port_model.dart';
 import '../widgets/flight_search/greeting_widget.dart';
 import '../widgets/flight_search/passenger_selection_sheet.dart';
 import '../widgets/flight_search/app_drop_down.dart';
+import '../widgets/flight_search/recent_search_widget.dart';
 
 class FlightSearchScreen extends StatefulWidget {
   const FlightSearchScreen({super.key});
@@ -545,59 +546,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 20,
-                  width: AppHelpers.getScreenWidth(context),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Recent Search',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.black,
-                        ),
-                      ),
-                      InkWell(
-                          child: Text(
-                        'Show more',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ))
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                SizedBox(
-                  height: 200,
-                  width: AppHelpers.getScreenWidth(context),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          child: CompactTicketCard(
-                            customWidth:
-                                AppHelpers.getScreenWidth(context) * 0.2,
-                            onTap: () {
-                              context.pushNamed(
-                                  FlightBookingModule.flightDetailsName);
-                            },
-                            data: searchData.ticketData[index],
-                          ));
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
+                const RecentSearchWidget(),
               ],
             ),
           ),

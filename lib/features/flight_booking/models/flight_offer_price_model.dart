@@ -309,16 +309,17 @@ class FlightOfferPrice {
   final String? base;
   final List<Fee>? fees;
   final String? grandTotal;
+  String? markup;
   final String? billingCurrency;
 
-  FlightOfferPrice({
-    this.currency,
-    this.total,
-    this.base,
-    this.fees,
-    this.grandTotal,
-    this.billingCurrency,
-  });
+  FlightOfferPrice(
+      {this.currency,
+      this.total,
+      this.base,
+      this.fees,
+      this.grandTotal,
+      this.billingCurrency,
+      this.markup});
 
   // Decoder
   factory FlightOfferPrice.fromJson(Map<String, dynamic> json) =>

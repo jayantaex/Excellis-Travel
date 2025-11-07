@@ -24,6 +24,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     log('Payment successful: ${response.paymentId}');
+    
     AppHelpers.debounce(
       () {
         context.pushNamed(PaymentModule.paymentSucessName,
@@ -81,7 +82,8 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
           isLoading: false,
           onPressed: () {
             _razorpayService.initatePayment(
-                amount: 12.0,
+                orderId: '',
+                amount: 1200,
                 description: 'testing razorpay',
                 mobile: '9064187130',
                 email: 'razorpay@gmail.com',

@@ -1,11 +1,13 @@
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:excellistravel/features/flight_booking/models/create_order_res.dart';
 import '../../../core/network/api_response.dart';
 import '../data/flight_booking_repository.dart';
 import '../models/air_port_model.dart';
 import '../models/flight_offer_price_model.dart' show FlightOfferPriceDataModel;
-import '../models/flight_order_model.dart';
 import '../models/flights_data_model.dart' show FlightsDataModel;
+import '../models/payment_verify_res_model.dart';
 part 'flight_event.dart';
 part 'flight_state.dart';
 
@@ -16,8 +18,10 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
   }) : super(FlightInitial()) {
     on<SearchAirportEvent>(_handleAirportSearch);
     on<SearchFlightsEvent>(_handleFlightSearch);
+    on<GetMarkupPrice>(_handleMarkupPrice);
     on<GetFlightsOfferPriceEvent>(_handleFlightOfferPrice);
     on<CreateFlightOrder>(_handleCreateFlightOrder);
+    on<VerifyPayment>(_handleVerifyPayment);
   }
 
   Future<void> _handleAirportSearch(
@@ -38,13 +42,22 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       SearchFlightsEvent event, Emitter<FlightState> emit) async {
     try {
       emit(FlightSearching());
-      ApiResponse res = await repository.searchFlight(body: event.body);
+      ApiResponse<FlightsDataModel> res =
+          await repository.searchFlight(body: event.body);
       if (res.data == null) {
         emit(FlightSearchingError(
           message: "${res.errorMessage}",
         ));
         return;
       }
+
+      for (var element in res.data!.datam!) {
+        ApiResponse<double> res = await repository.getMarkUpPrice(
+            basePrice: double.parse(element.price!.grandTotal!));
+        element.price?.markupPrice = res.data!.toStringAsFixed(2);
+        log(element.price?.markupPrice ?? 'No data');
+      }
+
       emit(FlightLoaded(data: res.data!));
     } catch (e) {
       emit(FlightSearchingError(
@@ -57,7 +70,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       GetFlightsOfferPriceEvent event, Emitter<FlightState> emit) async {
     try {
       emit(FlightOfferPriceLoading());
-      ApiResponse res =
+      ApiResponse<FlightOfferPriceDataModel> res =
           await repository.getFlightOfferPrice(body: event.offerData);
 
       if (res.data == null) {
@@ -66,6 +79,13 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         ));
         return;
       }
+      ApiResponse<double> markupRes = await repository.getMarkUpPrice(
+        basePrice: double.parse(
+            res.data!.data!.flightOffers!.first.price!.grandTotal!),
+      );
+
+      res.data!.data!.flightOffers!.first.price?.markup =
+          markupRes.data!.toStringAsFixed(2);
       emit(FlightOfferPriceLoaded(data: res.data!));
     } catch (e) {
       emit(FlightOfferPriceError(
@@ -78,17 +98,46 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       CreateFlightOrder event, Emitter<FlightState> emit) async {
     try {
       emit(const FlightOrderLoading());
-      ApiResponse<FlightOrderModel> data =
-          await repository.createOrder(body: event.body);
-
-      if (data.data == null) {
+      // ApiResponse<FlightOrderModel> data =
+      //     await repository.createOrder(body: event.body);
+      ApiResponse<OrderModel> res =
+          await repository.createPayment(body: event.body);
+      log('res ${res.data?.id}');
+      log('res ${res.data?.id}');
+      log('res ${res.data?.id}');
+      if (res.data == null) {
         emit(FlightOrderCreationError(
-            error: data.errorMessage ?? 'Something went wrong'));
+            error: res.errorMessage ?? 'Something went wrong'));
         return;
       }
-      emit(FlightOrderCreated(order: data.data ?? FlightOrderModel()));
+      log("******************");
+      emit(FlightOrderCreated(data: res.data!));
     } catch (e) {
       emit(FlightOrderCreationError(error: "$e"));
+    }
+  }
+
+  Future<void> _handleVerifyPayment(
+      VerifyPayment event, Emitter<FlightState> emit) async {
+    ApiResponse<PaymentVerifiedModel> res =
+        await repository.verifyPayment(body: event.body);
+
+    if (res.data == null) {
+      emit(FlightOrderCreationError(
+          error: res.errorMessage ?? 'Something went wrong'));
+      return;
+    }
+
+    emit(FlightPaymentVerified(data: res.data!));
+  }
+
+  Future<void> _handleMarkupPrice(
+      GetMarkupPrice event, Emitter<FlightState> emit) async {
+    try {
+      emit(FlightSearching());
+      await repository.getMarkUpPrice(basePrice: event.baseAmount);
+    } catch (e) {
+      emit(FlightSearchingError(message: "$e"));
     }
   }
 }

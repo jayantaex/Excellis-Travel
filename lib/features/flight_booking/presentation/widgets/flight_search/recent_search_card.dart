@@ -1,30 +1,13 @@
-import 'package:excellistravel/features/flight_booking/models/flights_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ticket_widget/ticket_widget.dart';
-import '../../features/flight_booking/models/ticket_data_model.dart';
-import '../../features/ticket/models/ticket_model.dart';
-import '../constants/app_styles.dart';
-import '../utils/app_helpers.dart';
 
-class CompactTicketCard extends StatelessWidget {
-  final TicketModel data;
-  final TicketDataModel? ticketData;
-  final bool? isOnWishList;
-  final double? customWidth;
-  final bool? isFavIconRequired;
-  final Function()? onWishListTap;
-  final Function() onTap;
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/app_helpers.dart';
+import '../../../models/flights_data_model.dart';
+
+class RecentSearchCard extends StatelessWidget {
   final FlightsDataModel? flightsData;
-  const CompactTicketCard(
-      {super.key,
-      required this.data,
-      this.ticketData,
-      this.isFavIconRequired,
-      this.isOnWishList,
-      this.onWishListTap,
-      required this.onTap,
-      this.customWidth,
-      this.flightsData});
+  const RecentSearchCard({super.key, this.flightsData});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +17,7 @@ class CompactTicketCard extends StatelessWidget {
       hoverColor: Colors.transparent,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: onTap,
+      onTap: () {},
       child: TicketWidget(
         height: 200,
         width: width * 0.85,
@@ -58,7 +41,7 @@ class CompactTicketCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      data.tag != null
+                      flightsData != null
                           ? Container(
                               margin: const EdgeInsets.only(right: 10),
                               height: 25,
@@ -67,39 +50,39 @@ class CompactTicketCard extends StatelessWidget {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                color: getColorByStatus(data.tag!)
+                                color: getColorByStatus('best value')
                                     .withOpacity(0.3),
                               ),
                               child: Text(
-                                data.tag!.toUpperCase(),
+                                'best value'.toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
-                                  color: getColorByStatus(data.tag!),
+                                  color: getColorByStatus('best value'),
                                 ),
                               ),
                             )
                           : const SizedBox(),
-                      isFavIconRequired ?? false
-                          ? InkWell(
-                              onTap: onWishListTap,
-                              child: CircleAvatar(
-                                backgroundColor:
-                                    AppColors.grey.withOpacity(0.1),
-                                radius: 18,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: isOnWishList ?? false
-                                      ? const Icon(Icons.favorite_rounded,
-                                          color: AppColors.error, size: 18)
-                                      : const Icon(
-                                          Icons.favorite_border_rounded,
-                                          color: AppColors.black,
-                                          size: 18),
-                                ),
-                              ),
-                            )
-                          : const SizedBox()
+                      // isFavIconRequired ?? false
+                      //     ? InkWell(
+                      //         onTap: onWishListTap,
+                      //         child: CircleAvatar(
+                      //           backgroundColor:
+                      //               AppColors.grey.withOpacity(0.1),
+                      //           radius: 18,
+                      //           child: Padding(
+                      //             padding: const EdgeInsets.all(8.0),
+                      //             child: isOnWishList ?? false
+                      //                 ? const Icon(Icons.favorite_rounded,
+                      //                     color: AppColors.error, size: 18)
+                      //                 : const Icon(
+                      //                     Icons.favorite_border_rounded,
+                      //                     color: AppColors.black,
+                      //                     size: 18),
+                      //           ),
+                      //         ),
+                      //       )
+                      //     : const SizedBox()
                     ],
                   ),
                 ],
@@ -113,23 +96,32 @@ class CompactTicketCard extends StatelessWidget {
                 children: [
                   SizedBox(
                       height: 60,
-                      width: customWidth ?? width * 0.25,
+                      width: width * 0.25,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              ticketData == null
-                                  ? data.start!
-                                  : ticketData?.departure?.airportCode ?? '',
-                              style: const TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w600)),
+                            flightsData?.datam?.first.itineraries?.first
+                                    .segments?.first.departure?.iataCode ??
+                                '',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                           Text(
                             AppHelpers.formatDateTime(
-                                ticketData == null
-                                    ? DateTime.now()
-                                    : DateTime.parse(
-                                        ticketData?.departure?.dateTime ?? ''),
+                                DateTime.parse(flightsData
+                                        ?.datam
+                                        ?.first
+                                        .itineraries
+                                        ?.first
+                                        .segments
+                                        ?.first
+                                        .departure
+                                        ?.at ??
+                                    ''),
                                 pattern: 'dd MMM, yyyy'),
                             style: const TextStyle(
                                 fontSize: 11,
@@ -139,20 +131,12 @@ class CompactTicketCard extends StatelessWidget {
                         ],
                       )),
                   SizedBox(
-                      width: customWidth ?? width * 0.25,
+                      width: width * 0.25,
                       child: Column(
                         children: [
                           AppHelpers.svgAsset(assetName: 'flight', width: 100),
                           Text(
-                            getDuration(
-                              min: ticketData == null
-                                  ? data.duration!
-                                  : DateTime.parse(
-                                          ticketData?.departure?.dateTime ?? '')
-                                      .difference(DateTime.parse(
-                                          ticketData?.aparture?.dateTime ?? ''))
-                                      .inMinutes,
-                            ),
+                            getDuration(min: 150),
                             style: const TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.w400),
                           ),
@@ -160,23 +144,29 @@ class CompactTicketCard extends StatelessWidget {
                       )),
                   SizedBox(
                     height: 60,
-                    width: customWidth ?? width * 0.25,
+                    width: width * 0.25,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                            ticketData == null
-                                ? data.end!
-                                : ticketData?.aparture?.airportCode ?? '',
+                            flightsData?.datam?.first.itineraries?.first
+                                    .segments?.first.arrival?.iataCode ??
+                                '',
                             style: const TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w600)),
                         Text(
                           AppHelpers.formatDateTime(
-                              ticketData == null
-                                  ? DateTime.now()
-                                  : DateTime.parse(
-                                      ticketData?.aparture?.dateTime ?? ''),
+                              DateTime.parse(flightsData
+                                      ?.datam
+                                      ?.first
+                                      .itineraries
+                                      ?.first
+                                      .segments
+                                      ?.first
+                                      .departure
+                                      ?.at ??
+                                  ''),
                               pattern: 'dd MMM, yyyy'),
                           style: const TextStyle(
                               fontSize: 11,
@@ -214,24 +204,18 @@ class CompactTicketCard extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 22),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    ticketData == null
-                        ? 'Business'
-                        : ticketData?.cabinClass ?? '',
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w500),
+                    'Business',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    ticketData == null
-                        ? '₹500'
-                        : '₹${ticketData?.fareBreakdown?.total}',
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w500),
+                    '₹500',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                 ],
               ),

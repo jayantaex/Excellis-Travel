@@ -116,7 +116,6 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                 passenger: e,
                 onDelete: () {
                   _infantPassengers.remove(e);
-                  setState(() {});
                   widget.onPassengerRemove(e);
                 },
               )),

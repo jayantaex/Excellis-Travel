@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:excellistravel/core/constants/app_constants.dart';
 import '../utils/storage_service.dart';
-import 'api_client.dart';
 import 'api_urls.dart';
 
 class AuthenticationInterceptor extends Interceptor {

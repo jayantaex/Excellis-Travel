@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/flight_offer_price_model.dart';
 
@@ -38,21 +39,24 @@ class FareBreakdownCard extends StatelessWidget {
         const Divider(),
         const SizedBox(height: 12),
         RichText(
-            text: TextSpan(children: [
-          const TextSpan(
-              text: 'Refundable Taxes: ',
-              style: TextStyle(
-                  color: Colors.green,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400)),
-          TextSpan(
-              text:
-                  ' ₹${double.parse(data!.refundableTaxes ?? '0.00').toStringAsFixed(2)}',
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400))
-        ]))
+          text: TextSpan(
+            children: [
+              const TextSpan(
+                  text: 'Refundable Taxes: ',
+                  style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400)),
+              TextSpan(
+                  text:
+                      ' ₹${double.parse(data!.refundableTaxes ?? '0.00').toStringAsFixed(2)}',
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400))
+            ],
+          ),
+        )
       ],
     );
   }
@@ -86,7 +90,10 @@ class PriceCol extends StatelessWidget {
                   : value == '0.00'
                       ? 'Free'
                       : '₹ $value',
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: value == '0.00' ? AppColors.success : Colors.black),
             ),
           )
         ],
