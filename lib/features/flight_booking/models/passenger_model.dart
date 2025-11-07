@@ -5,12 +5,14 @@ class PassengerModel {
   String? emailAddress;
   String? gender;
   String? number;
+  String? type;
 
   PassengerModel(
       {this.dateOfBirth,
       this.firstName,
       this.lastName,
       this.emailAddress,
+      this.type,
       this.gender,
       this.number});
 
@@ -21,6 +23,7 @@ class PassengerModel {
     emailAddress = json['emailAddress'];
     gender = json['gender'];
     number = json['number'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +34,7 @@ class PassengerModel {
     data['emailAddress'] = emailAddress;
     data['gender'] = gender;
     data['number'] = number;
+    data['type'] = type;
     return data;
   }
 }

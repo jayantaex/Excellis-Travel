@@ -278,9 +278,15 @@ class DatamPrice {
   final String? base;
   final List<Fee>? fees;
   final String? grandTotal;
+  String? markupPrice;
 
   DatamPrice(
-      {this.currency, this.total, this.base, this.fees, this.grandTotal});
+      {this.currency,
+      this.total,
+      this.base,
+      this.fees,
+      this.grandTotal,
+      this.markupPrice});
 
   factory DatamPrice.fromJson(Map<String, dynamic> json) => DatamPrice(
         currency: json['currency'],

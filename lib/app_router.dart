@@ -108,7 +108,8 @@ class AppRouter {
       GoRoute(
         path: FlightBookingModule.passDownload,
         name: FlightBookingModule.passDownloadName,
-        builder: (context, state) => FlightBookingModule.passDownloadBuilder(),
+        builder: (context, state) =>
+            FlightBookingModule.passDownloadBuilder(context, state),
       ),
       GoRoute(
         path: FlightBookingModule.airportSearch,

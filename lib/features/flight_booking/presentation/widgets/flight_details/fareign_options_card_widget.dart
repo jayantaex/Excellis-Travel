@@ -6,8 +6,9 @@ import 'fare_type_widget.dart';
 
 class FareignOptionsCardWidget extends StatefulWidget {
   final List<TravelerPricing> allTravelerPricings;
+  final double grandPrice;
   const FareignOptionsCardWidget(
-      {super.key, required this.allTravelerPricings});
+      {super.key, required this.allTravelerPricings, required this.grandPrice});
 
   @override
   State<FareignOptionsCardWidget> createState() =>
@@ -106,8 +107,9 @@ class _FareignOptionsCardWidgetState extends State<FareignOptionsCardWidget> {
                     )
                   : Column(
                       children: [
-                        ...filteredTravelerPricings
-                            .map((e) => FareCard(data: e))
+                        ...filteredTravelerPricings.map(
+                          (e) => FareCard(data: e),
+                        )
                       ],
                     )
             ],

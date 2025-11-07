@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'core/services/local_db.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/storage_service.dart';
 import 'app_router.dart';
@@ -8,7 +9,7 @@ void main() async {
   await StorageService.init();
   // await Firebase.initializeApp();
   // await FirebaseNotificationService.instance.initialize();
-
+  await LocalDB().initLocalDB();
   runApp(const MyApp());
 }
 

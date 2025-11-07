@@ -1,20 +1,23 @@
+import 'package:excellistravel/core/network/api_client.dart';
 import '../../../core/network/amadeus_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
 import '../models/air_port_model.dart';
+import '../models/create_order_res.dart';
 import '../models/flight_offer_price_model.dart';
 import '../models/flight_order_model.dart';
 import '../models/flights_data_model.dart';
+import '../models/payment_verify_res_model.dart';
 
 class FlightBookingApi {
-  final AmadeusClient client;
-
-  FlightBookingApi(this.client);
+  final AmadeusClient amadeusClient;
+  ApiClient? apiClient;
+  FlightBookingApi(this.amadeusClient, {this.apiClient});
 
   Future<List<AirportModel>> getAirport({required String keyword}) async {
     try {
       List<AirportModel> airportList = [];
-      await client.getRequest(
+      await amadeusClient.getRequest(
           endPoint: EndPoints.airportSearchByKeyword,
           queryParameters: {
             'subType': 'AIRPORT',
@@ -36,7 +39,7 @@ class FlightBookingApi {
   Future<ApiResponse<FlightsDataModel>> searchFlight(
       {required Map<String, dynamic> body}) async {
     try {
-      ApiResponse<FlightsDataModel> response = await client.postRequest(
+      ApiResponse<FlightsDataModel> response = await amadeusClient.postRequest(
         reqModel: body,
         endPoint: EndPoints.flightSearch,
         fromJson: (jsonData) {
@@ -61,7 +64,7 @@ class FlightBookingApi {
         }
       };
       ApiResponse<FlightOfferPriceDataModel> response =
-          await client.postRequest(
+          await amadeusClient.postRequest(
               reqModel: data,
               endPoint: EndPoints.flightOfferPrice,
               fromJson: (jsonData) {
@@ -77,7 +80,7 @@ class FlightBookingApi {
   Future<ApiResponse<FlightOrderModel>> createOrder(
       {required Map<String, dynamic> body}) async {
     try {
-      ApiResponse<FlightOrderModel> response = await client.postRequest(
+      ApiResponse<FlightOrderModel> response = await amadeusClient.postRequest(
           reqModel: body,
           endPoint: EndPoints.createOrder,
           fromJson: (jsonData) {
@@ -87,6 +90,56 @@ class FlightBookingApi {
     } catch (e) {
       return ApiResponse(
           errorMessage: e.toString(), data: null, statusCode: 400);
+    }
+  }
+
+  Future<ApiResponse<OrderModel>> createPayment(
+      {required Map<String, dynamic> body}) async {
+    try {
+      ApiResponse<OrderModel> resp = await apiClient!.postRequest(
+          reqModel: body,
+          endPoint: EndPoints.createPayment,
+          fromJson: (jsonData) {
+            return OrderModel.fromJson(jsonData['data']['order']);
+          });
+      return resp;
+    } catch (e) {
+      return ApiResponse(
+          errorMessage: e.toString(), data: null, statusCode: 400);
+    }
+  }
+
+  Future<ApiResponse<PaymentVerifiedModel>> verifyPayment(
+      {required Map<String, dynamic> body}) async {
+    try {
+      ApiResponse<PaymentVerifiedModel> response = await apiClient!.postRequest(
+          reqModel: body,
+          endPoint: EndPoints.verifyPayment,
+          fromJson: (jsonData) {
+            return PaymentVerifiedModel.fromJson(jsonData['data']);
+          });
+
+      return response;
+    } catch (e) {
+      return ApiResponse(
+          errorMessage: e.toString(), data: null, statusCode: 400);
+    }
+  }
+
+  Future<ApiResponse<double>> getMarkUpPrice(
+      {required double basePrice}) async {
+    try {
+      Map<String, dynamic> body = {"baseAmount": basePrice};
+      ApiResponse<double> resp = await apiClient!.postRequest(
+          reqModel: body,
+          endPoint: EndPoints.markupPricing,
+          fromJson: (jsonData) {
+            return double.parse(jsonData['data']['finalAmount'].toString()) ??
+                0.0;
+          });
+      return resp;
+    } catch (e) {
+      return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
   }
 }

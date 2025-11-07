@@ -33,5 +33,16 @@ class GetFlightsOfferPriceEvent extends FlightEvent {
 
 class CreateFlightOrder extends FlightEvent {
   final Map<String, dynamic> body;
+
   const CreateFlightOrder({required this.body});
+}
+
+class VerifyPayment extends FlightEvent {
+  final Map<String, dynamic> body;
+  const VerifyPayment({required this.body});
+}
+
+class GetMarkupPrice extends FlightEvent {
+  final double baseAmount;
+  const GetMarkupPrice({required this.baseAmount});
 }

@@ -1,12 +1,18 @@
+import 'dart:developer';
+
+import 'package:excellistravel/features/flight_booking/flight_booking_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/services/razorpay.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../auth/auth_module.dart';
+import '../../../payment/payment_module.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../models/flights_data_model.dart' show FlightDictionary, Datam;
@@ -41,6 +47,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   List<PassengerModel> passengers = [];
 
   Map<String, dynamic> offerData = {};
+  final RazorpayService _razorpayService = RazorpayService();
 
   @override
   void initState() {
@@ -86,13 +93,22 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                     ),
                     child: SingleChildScrollView(
                       child: BlocConsumer<FlightBloc, FlightState>(
-                        listener: (context, state) {},
+                        listener: (context, state) {
+                          log("************************************");
+                          log("************************************");
+                          log("state: $state");
+                          log("************************************");
+                          log("************************************");
+                        },
                         builder: (context, state) {
                           if (state is FlightOfferPriceLoading) {
                             return const FlightDetailsLoadingWidet();
                           }
                           if (state is FlightOfferPriceError) {
                             return ErrWidget(message: state.message);
+                          }
+                          if (state is FlightPaymentVerificationFailed) {
+                            return ErrWidget(message: state.error);
                           }
 
                           if (state is FlightOfferPriceLoaded) {
@@ -112,6 +128,14 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                 FareignOptionsCardWidget(
                                   allTravelerPricings: state.data.data!
                                       .flightOffers!.first.travelerPricings!,
+                                  grandPrice: double.parse(state
+                                          .data
+                                          .data!
+                                          .flightOffers!
+                                          .first
+                                          .price!
+                                          .grandTotal ??
+                                      "0.0"),
                                 ),
                                 const SizedBox(height: 8),
                                 const Padding(
@@ -134,7 +158,10 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       passengers.add(passenger);
                                     },
                                     onPassengerRemove: (passenger) {
-                                      passengers.remove(passenger);
+                                      setState(() {
+                                        passengers.remove(passenger);
+                                        log("Called");
+                                      });
                                     },
                                     travelerPricing:
                                         widget.data.travelerPricings ?? [],
@@ -235,6 +262,39 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                 )
                               ],
                             );
+                          }
+
+                          if (state is! FlightOrderLoading) {
+                            return const Center(
+                              child: SizedBox(
+                                height: 900,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 25,
+                                      height: 25,
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.primary,
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                    SizedBox(height: 12),
+                                    Text(
+                                      'Please allow us to process your booking',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.grey,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                  ],
+                                ),
+                              ),
+                            );
                           } else {
                             return const SizedBox();
                           }
@@ -248,18 +308,42 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BlocBuilder<FlightBloc, FlightState>(
+      bottomNavigationBar: BlocConsumer<FlightBloc, FlightState>(
+        listener: (context, state) async {
+          if (state is FlightOrderCreated) {
+            int amount = state.data.amount ?? 0;
+            String description =
+                'initiated this payment for booking no ${state.data..notes?.bookingId} and reference no ${state.data.notes?.bookingReference}';
+            String orderId = state.data.id ?? '';
+            String mobile = '';
+            String email = '';
+
+            await _razorpayService.initatePayment(
+                amount: amount,
+                description: description,
+                orderId: orderId,
+                mobile: mobile,
+                email: email,
+                onSuccess: _handlePaymentSuccess,
+                onError: _handlePaymentError);
+          }
+          if (state is FlightPaymentVerified) {
+            context.goNamed(FlightBookingModule.passDownloadName,
+                extra: {'data': state.data});
+          }
+        },
         builder: (context, flightState) {
           if (flightState is FlightOfferPriceLoaded) {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, profileState) {
                 if (profileState is ProfileLoaded) {
                   return PricingBottomBar(
+                    markup: flightState
+                        .data.data!.flightOffers!.first.price!.markup!,
                     travellersCount: flightState.data.data!.flightOffers!.first
                         .travelerPricings!.length,
                     passengers: passengers,
-                    flightOfferData:
-                        flightState.data.data!.flightOffers!.first.toJson(),
+                    flightOffer: flightState.data.data!.flightOffers!.first,
                     grandTotal: flightState
                         .data.data!.flightOffers!.first.price!.grandTotal!,
                     profile: profileState.profileData,
@@ -273,5 +357,23 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
         },
       ),
     );
+  }
+
+  Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    log('Pauyment successful : ${response.paymentId}', name: 'Payment ID');
+    log('Pauyment successful : ${response.signature}', name: 'Signature ID');
+    log('Pauyment successful : ${response.orderId}', name: 'Order ID');
+    Map<String, dynamic> verifyPaymentBody = {
+      'razorpay_order_id': response.orderId,
+      'razorpay_payment_id': response.paymentId,
+      'razorpay_signature': response.signature
+    };
+    context.read<FlightBloc>().add(VerifyPayment(body: verifyPaymentBody));
+  }
+
+  _handlePaymentError(PaymentFailureResponse response) {
+    log('Payment error: ${response.code} - ${response.message}');
+    context.pushNamed(PaymentModule.paymentFailedName,
+        pathParameters: {'errorMsg': '${response.message}'});
   }
 }

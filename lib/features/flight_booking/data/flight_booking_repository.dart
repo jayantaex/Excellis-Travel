@@ -1,9 +1,11 @@
 import '../../../core/network/api_response.dart';
 import '../api/flight_booking_api.dart';
 import '../models/air_port_model.dart';
+import '../models/create_order_res.dart';
 import '../models/flight_offer_price_model.dart';
 import '../models/flight_order_model.dart';
 import '../models/flights_data_model.dart';
+import '../models/payment_verify_res_model.dart';
 
 class FlightBookingRepository {
   final FlightBookingApi api;
@@ -32,5 +34,20 @@ class FlightBookingRepository {
   Future<ApiResponse<FlightOrderModel>> createOrder(
       {required Map<String, dynamic> body}) async {
     return await api.createOrder(body: body);
+  }
+
+  Future<ApiResponse<OrderModel>> createPayment(
+      {required Map<String, dynamic> body}) async {
+    return await api.createPayment(body: body);
+  }
+
+  Future<ApiResponse<PaymentVerifiedModel>> verifyPayment(
+      {required Map<String, dynamic> body}) async {
+    return await api.verifyPayment(body: body);
+  }
+
+  Future<ApiResponse<double>> getMarkUpPrice(
+      {required double basePrice}) async {
+    return await api.getMarkUpPrice(basePrice: basePrice);
   }
 }

@@ -5,7 +5,7 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/flights_data_model.dart';
 
-class CompactFlightCard extends StatelessWidget {
+class CompactFlightCard extends StatefulWidget {
   final Datam data;
   final FlightDictionary? dictionaries;
   final bool? isOnWishList;
@@ -24,6 +24,16 @@ class CompactFlightCard extends StatelessWidget {
       this.customWidth});
 
   @override
+  State<CompactFlightCard> createState() => _CompactFlightCardState();
+}
+
+class _CompactFlightCardState extends State<CompactFlightCard> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double width = AppHelpers.getScreenWidth(context);
     return InkWell(
@@ -31,7 +41,7 @@ class CompactFlightCard extends StatelessWidget {
       hoverColor: Colors.transparent,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: onTap,
+      onTap: widget.onTap,
       child: TicketWidget(
         height: 200,
         width: width * 0.85,
@@ -55,12 +65,12 @@ class CompactFlightCard extends StatelessWidget {
                           CircleAvatar(
                             radius: 15,
                             backgroundImage: AssetImage(
-                                'assets/images/airlines/${data.itineraries?.first.segments?.first.carrierCode}.png'),
+                                'assets/images/airlines/${widget.data.itineraries?.first.segments?.first.carrierCode}.png'),
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            dictionaries?.dictionaries.carriers[
-                                    '${data.itineraries?.first.segments?.first.carrierCode}'] ??
+                            widget.dictionaries?.dictionaries.carriers[
+                                    '${widget.data.itineraries?.first.segments?.first.carrierCode}'] ??
                                 'NO-NAME',
                             style: const TextStyle(
                               fontSize: 12,
@@ -86,7 +96,7 @@ class CompactFlightCard extends StatelessWidget {
                           color: getColorByStatus('fastest').withOpacity(0.3),
                         ),
                         child: Text(
-                          '${data.numberOfBookableSeats} seats available'
+                          '${widget.data.numberOfBookableSeats} seats available'
                               .toUpperCase(),
                           style: TextStyle(
                             fontSize: 10,
@@ -108,21 +118,21 @@ class CompactFlightCard extends StatelessWidget {
                 children: [
                   SizedBox(
                       height: 90,
-                      width: customWidth ?? width * 0.25,
+                      width: widget.customWidth ?? width * 0.25,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              data.itineraries?.first.segments?.first.departure
-                                      ?.iataCode ??
+                              widget.data.itineraries?.first.segments?.first
+                                      .departure?.iataCode ??
                                   'NO_CODE',
                               style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600)),
                           Text(
                             AppHelpers.formatDateTime(
                               DateTime.parse(
-                                data.itineraries?.first.segments?.first
+                                widget.data.itineraries?.first.segments?.first
                                         .departure?.at ??
                                     DateTime.now().toString(),
                               ),
@@ -137,7 +147,7 @@ class CompactFlightCard extends StatelessWidget {
                           Text(
                             AppHelpers.formatDateTime(
                                 DateTime.parse(
-                                  data.itineraries?.first.segments?.first
+                                  widget.data.itineraries?.first.segments?.first
                                           .departure?.at ??
                                       DateTime.now().toString(),
                                 ),
@@ -150,7 +160,7 @@ class CompactFlightCard extends StatelessWidget {
                         ],
                       )),
                   SizedBox(
-                      width: customWidth ?? width * 0.25,
+                      width: widget.customWidth ?? width * 0.25,
                       child: Column(
                         children: [
                           AppHelpers.svgAsset(assetName: 'flight', width: 100),
@@ -158,8 +168,9 @@ class CompactFlightCard extends StatelessWidget {
                             children: [
                               Text(
                                 getDuration(
-                                    duration:
-                                        data.itineraries?.first.duration ?? ''),
+                                    duration: widget
+                                            .data.itineraries?.first.duration ??
+                                        ''),
                                 style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w400),
                               ),
@@ -168,9 +179,11 @@ class CompactFlightCard extends StatelessWidget {
                                 color: AppColors.primary.withOpacity(0.3),
                               ),
                               Text(
-                                data.itineraries?.first.segments?.length == 1
+                                widget.data.itineraries?.first.segments
+                                            ?.length ==
+                                        1
                                     ? 'Non-Stop'
-                                    : '${(data.itineraries!.first.segments!.length - 1)} Stop(s)',
+                                    : '${(widget.data.itineraries!.first.segments!.length - 1)} Stop(s)',
                                 style: const TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.w400),
                               ),
@@ -180,22 +193,22 @@ class CompactFlightCard extends StatelessWidget {
                       )),
                   SizedBox(
                     height: 90,
-                    width: customWidth ?? width * 0.25,
+                    width: widget.customWidth ?? width * 0.25,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                            data.itineraries?.first.segments?.last.arrival
-                                    ?.iataCode ??
+                            widget.data.itineraries?.first.segments?.last
+                                    .arrival?.iataCode ??
                                 'NO_CODE',
                             style: const TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w600)),
                         Text(
                           AppHelpers.formatDateTime(
                             DateTime.parse(
-                              data.itineraries?.first.segments?.last.arrival
-                                      ?.at ??
+                              widget.data.itineraries?.first.segments?.last
+                                      .arrival?.at ??
                                   DateTime.now().toString(),
                             ),
                             pattern: 'dd MMM, yyyy',
@@ -208,8 +221,8 @@ class CompactFlightCard extends StatelessWidget {
                         Text(
                           AppHelpers.formatTime(
                               DateTime.parse(
-                                data.itineraries?.first.segments?.last.arrival
-                                        ?.at ??
+                                widget.data.itineraries?.first.segments?.last
+                                        .arrival?.at ??
                                     DateTime.now().toString(),
                               ),
                               pattern: 'hh:mm:aa'),
@@ -239,7 +252,7 @@ class CompactFlightCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Price | ${data.itineraries!.length > 1 ? 'Round Trip' : 'One Way'}',
+                    'Price | ${widget.data.itineraries!.length > 1 ? 'Round Trip' : 'One Way'}',
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
@@ -255,14 +268,14 @@ class CompactFlightCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    data.travelerPricings?.first.fareDetailsBySegment?.first
-                            .cabin ??
+                    widget.data.travelerPricings?.first.fareDetailsBySegment
+                            ?.first.cabin ??
                         'NO_CABIN',
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    '₹${data.price?.grandTotal ?? 0.00}',
+                    '₹${widget.data.price?.markupPrice ?? 0.00}',
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),

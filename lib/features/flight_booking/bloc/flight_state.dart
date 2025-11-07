@@ -59,10 +59,10 @@ final class FlightOfferPriceError extends FlightState {
 }
 
 final class FlightOrderCreated extends FlightState {
-  final FlightOrderModel order;
+  final OrderModel data;
 
   const FlightOrderCreated({
-    required this.order,
+    required this.data,
   });
 }
 
@@ -73,4 +73,18 @@ final class FlightOrderLoading extends FlightState {
 final class FlightOrderCreationError extends FlightState {
   final String error;
   const FlightOrderCreationError({required this.error});
+}
+
+final class FlightPaymentVerifing extends FlightState {
+  const FlightPaymentVerifing();
+}
+
+final class FlightPaymentVerified extends FlightState {
+  final PaymentVerifiedModel data;
+  const FlightPaymentVerified({required this.data});
+}
+
+final class FlightPaymentVerificationFailed extends FlightState {
+  final String error;
+  const FlightPaymentVerificationFailed({required this.error});
 }

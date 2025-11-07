@@ -57,7 +57,7 @@ class AirportSearchScreen extends StatelessWidget {
                           AppPrimaryInput(
                             onChange: (String query) {
                               AppHelpers.debounce(
-                                delay: const Duration(milliseconds: 400),
+                                delay: const Duration(milliseconds: 200),
                                 () {
                                   context.read<FlightBloc>().add(
                                         SearchAirportEvent(

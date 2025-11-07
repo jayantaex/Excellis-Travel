@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
@@ -12,10 +13,14 @@ Future<void> showAddPassengerSheet(
     {required BuildContext context,
     required String travellerType,
     required Function(PassengerModel passenger) onDone}) async {
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController mobileNumberController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController firstNameController =
+      TextEditingController(text: kDebugMode ? 'Jayanta' : '');
+  final TextEditingController lastNameController =
+      TextEditingController(text: kDebugMode ? 'Mahato' : '');
+  final TextEditingController mobileNumberController =
+      TextEditingController(text: kDebugMode ? '9064187130' : '');
+  final TextEditingController emailController =
+      TextEditingController(text: kDebugMode ? 'jayanta@gmail.com' : '');
   final TextEditingController dobController = TextEditingController();
   DateTime? dob;
   String selectedGender = 'Male';
@@ -182,6 +187,7 @@ Future<void> showAddPassengerSheet(
                         emailAddress: emailController.text,
                         number: mobileNumberController.text,
                         gender: selectedGender,
+                        type: travellerType,
                       ),
                     );
                   },
