@@ -31,10 +31,7 @@ class FlightBookingRepository {
     return await api.getFlightOfferPrice(body: body);
   }
 
-  Future<ApiResponse<FlightOrderModel>> createOrder(
-      {required Map<String, dynamic> body}) async {
-    return await api.createOrder(body: body);
-  }
+
 
   Future<ApiResponse<OrderModel>> createPayment(
       {required Map<String, dynamic> body}) async {

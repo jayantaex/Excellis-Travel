@@ -51,23 +51,27 @@ class FirebaseNotificationService {
   }
 
   Future<void> showNotification(RemoteMessage message) async {
-    int notificationId = DateTime.now().millisecondsSinceEpoch;
-    String title = message.notification?.title ?? '';
-    String body = message.notification?.body ?? '';
-    const AndroidNotificationDetails andriod = AndroidNotificationDetails(
-      'RL-NCH',
-      'RL-Notification',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
+    try {
+      int notificationId = message.notification?.hashCode ?? 0;
+      String title = message.notification?.title ?? '';
+      String body = message.notification?.body ?? '';
+      const AndroidNotificationDetails andriod = AndroidNotificationDetails(
+        'Excellis Travel Notification Channel',
+        'Excellis Travel Notification ',
+        importance: Importance.max,
+        priority: Priority.high,
+      );
 
-    const DarwinNotificationDetails ios = DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-    _localNotifications.show(notificationId, title, body,
-        const NotificationDetails(android: andriod, iOS: ios));
+      const DarwinNotificationDetails ios = DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+      _localNotifications.show(notificationId, title, body,
+          const NotificationDetails(android: andriod, iOS: ios));
+    } catch (e) {
+      log("Error: $e");
+    }
   }
 
   void _handleBackgroundMessage(RemoteMessage message) {

@@ -74,6 +74,9 @@ dependencies:
   hive: ^2.2.3
   #pdf generator
   pdf: ^3.11.3
+  #permission handler
+  permission_handler: ^11.2.0
+
   
 
 

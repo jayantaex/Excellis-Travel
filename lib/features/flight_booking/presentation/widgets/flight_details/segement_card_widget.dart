@@ -31,12 +31,12 @@ class SegmentCard extends StatelessWidget {
             ),
           ),
           title: Text(
-            flightDictionary.dictionaries.carriers['${data.carrierCode}'] ??
+            flightDictionary.dictionaries.carriers!['${data.carrierCode}'] ??
                 'NO-NAME',
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           ),
           subtitle: Text(
-            '${flightDictionary.dictionaries.aircraft[data.aircraft?.code ?? '']} | '
+            '${flightDictionary.dictionaries.aircraft![data.aircraft?.code ?? '']} | '
             '${data.number ?? ''}',
             style: const TextStyle(
                 fontSize: 10,

@@ -25,9 +25,7 @@ class ApiClient {
       }
       return handler.next(options);
     }, onError: (DioException e, handler) {
-      if (e.response?.statusCode == 401) {
-        
-      }
+      if (e.response?.statusCode == 401) {}
       return handler.next(e);
     }));
 
@@ -92,7 +90,8 @@ class ApiClient {
     } on DioException catch (e) {
       final statusCode = e.response?.statusCode ?? 0;
       final errorMessage = e.response?.data['message'];
-      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<T>(
+          statusCode: statusCode, errorMessage: _handleDioError(e, statusCode));
     }
   }
 

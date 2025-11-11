@@ -35,93 +35,149 @@ class CompactTicketCard extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       onTap: onTap,
-      child: TicketWidget(
-        height: 200,
-        width: width * 0.85,
-        isCornerRounded: true,
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 45,
-              width: width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 16),
-                    height: 16,
-                    width: 40,
-                    color: AppColors.grey,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      data.tag != null
-                          ? Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              height: 25,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: getColorByStatus(data.tag!)
-                                    .withOpacity(0.3),
-                              ),
-                              child: Text(
-                                data.tag!.toUpperCase(),
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w700,
-                                  color: getColorByStatus(data.tag!),
+      child: ClipPath(
+        clipper: TicketClipper(),
+        child: Container(
+          height: 200,
+          width: width * 0.85,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 45,
+                width: width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 16),
+                      height: 16,
+                      width: 40,
+                      color: AppColors.grey,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        data.tag != null
+                            ? Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                height: 25,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: getColorByStatus(data.tag!)
+                                      .withOpacity(0.3),
                                 ),
-                              ),
-                            )
-                          : const SizedBox(),
-                      isFavIconRequired ?? false
-                          ? InkWell(
-                              onTap: onWishListTap,
-                              child: CircleAvatar(
-                                backgroundColor:
-                                    AppColors.grey.withOpacity(0.1),
-                                radius: 18,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: isOnWishList ?? false
-                                      ? const Icon(Icons.favorite_rounded,
-                                          color: AppColors.error, size: 18)
-                                      : const Icon(
-                                          Icons.favorite_border_rounded,
-                                          color: AppColors.black,
-                                          size: 18),
+                                child: Text(
+                                  data.tag!.toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    color: getColorByStatus(data.tag!),
+                                  ),
                                 ),
-                              ),
-                            )
-                          : const SizedBox()
-                    ],
-                  ),
-                ],
+                              )
+                            : const SizedBox(),
+                        isFavIconRequired ?? false
+                            ? InkWell(
+                                onTap: onWishListTap,
+                                child: CircleAvatar(
+                                  backgroundColor:
+                                      AppColors.grey.withOpacity(0.1),
+                                  radius: 18,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: isOnWishList ?? false
+                                        ? const Icon(Icons.favorite_rounded,
+                                            color: AppColors.error, size: 18)
+                                        : const Icon(
+                                            Icons.favorite_border_rounded,
+                                            color: AppColors.black,
+                                            size: 18),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox()
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
+              const SizedBox(height: 4),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                        height: 60,
+                        width: customWidth ?? width * 0.25,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                ticketData == null
+                                    ? data.start!
+                                    : ticketData?.departure?.airportCode ?? '',
+                                style: const TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.w600)),
+                            Text(
+                              AppHelpers.formatDateTime(
+                                  ticketData == null
+                                      ? DateTime.now()
+                                      : DateTime.parse(
+                                          ticketData?.departure?.dateTime ??
+                                              ''),
+                                  pattern: 'dd MMM, yyyy'),
+                              style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.grey),
+                            ),
+                          ],
+                        )),
+                    SizedBox(
+                        width: customWidth ?? width * 0.25,
+                        child: Column(
+                          children: [
+                            AppHelpers.svgAsset(
+                                assetName: 'flight', width: 100),
+                            Text(
+                              getDuration(
+                                min: ticketData == null
+                                    ? data.duration!
+                                    : DateTime.parse(
+                                            ticketData?.departure?.dateTime ??
+                                                '')
+                                        .difference(DateTime.parse(
+                                            ticketData?.aparture?.dateTime ??
+                                                ''))
+                                        .inMinutes,
+                              ),
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        )),
+                    SizedBox(
                       height: 60,
                       width: customWidth ?? width * 0.25,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
                               ticketData == null
-                                  ? data.start!
-                                  : ticketData?.departure?.airportCode ?? '',
+                                  ? data.end!
+                                  : ticketData?.aparture?.airportCode ?? '',
                               style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600)),
                           Text(
@@ -129,7 +185,7 @@ class CompactTicketCard extends StatelessWidget {
                                 ticketData == null
                                     ? DateTime.now()
                                     : DateTime.parse(
-                                        ticketData?.departure?.dateTime ?? ''),
+                                        ticketData?.aparture?.dateTime ?? ''),
                                 pattern: 'dd MMM, yyyy'),
                             style: const TextStyle(
                                 fontSize: 11,
@@ -137,106 +193,60 @@ class CompactTicketCard extends StatelessWidget {
                                 color: AppColors.grey),
                           ),
                         ],
-                      )),
-                  SizedBox(
-                      width: customWidth ?? width * 0.25,
-                      child: Column(
-                        children: [
-                          AppHelpers.svgAsset(assetName: 'flight', width: 100),
-                          Text(
-                            getDuration(
-                              min: ticketData == null
-                                  ? data.duration!
-                                  : DateTime.parse(
-                                          ticketData?.departure?.dateTime ?? '')
-                                      .difference(DateTime.parse(
-                                          ticketData?.aparture?.dateTime ?? ''))
-                                      .inMinutes,
-                            ),
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      )),
-                  SizedBox(
-                    height: 60,
-                    width: customWidth ?? width * 0.25,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                            ticketData == null
-                                ? data.end!
-                                : ticketData?.aparture?.airportCode ?? '',
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w600)),
-                        Text(
-                          AppHelpers.formatDateTime(
-                              ticketData == null
-                                  ? DateTime.now()
-                                  : DateTime.parse(
-                                      ticketData?.aparture?.dateTime ?? ''),
-                              pattern: 'dd MMM, yyyy'),
-                          style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.grey),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const Spacer(),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 22),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Cabin Class',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.grey,
+              const Spacer(),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 22),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Cabin Class',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Cost',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.grey,
+                    Text(
+                      'Cost',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    ticketData == null
-                        ? 'Business'
-                        : ticketData?.cabinClass ?? '',
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w500),
-                  ),
-                  Text(
-                    ticketData == null
-                        ? '₹500'
-                        : '₹${ticketData?.fareBreakdown?.total}',
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w500),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      ticketData == null
+                          ? 'Business'
+                          : ticketData?.cabinClass ?? '',
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      ticketData == null
+                          ? '₹500'
+                          : '₹${ticketData?.fareBreakdown?.total}',
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -266,4 +276,25 @@ getDuration({required int min}) {
   String hours = (min / 60).floor().toString();
   String minutes = (min % 60).toString();
   return '${hours}h ${minutes}m';
+}
+
+class TicketClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+
+    path.lineTo(0.0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0.0);
+
+    path.addOval(
+        Rect.fromCircle(center: Offset(0.0, size.height / 2), radius: 20.0));
+    path.addOval(Rect.fromCircle(
+        center: Offset(size.width, size.height / 2), radius: 20.0));
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

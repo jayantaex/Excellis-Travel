@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class FlightsDataModel {
   final Meta? meta;
   final List<Datam>? datam;
@@ -114,7 +116,8 @@ class Datam {
         'lastTicketingDateTime': lastTicketingDateTime,
         'numberOfBookableSeats': numberOfBookableSeats,
         'itineraries': itineraries != null
-            ? List<dynamic>.from(itineraries!.map((x) => x.toJson()))
+            ? List<Map<String, dynamic>>.from(
+                itineraries!.map((Itinerary x) => x.toJson()))
             : null,
         'price': price?.toJson(),
         'pricingOptions': pricingOptions?.toJson(),
@@ -142,7 +145,7 @@ class Itinerary {
   Map<String, dynamic> toJson() => {
         'duration': duration,
         'segments': segments != null
-            ? List<dynamic>.from(segments!.map((x) => x.toJson()))
+            ? List<Map<String, dynamic>>.from(segments!.map((x) => x.toJson()))
             : null,
       };
 }
@@ -521,12 +524,12 @@ class FlightDictionary {
 }
 
 class Dictionaries {
-  final Map<String, String> aircraft;
-  final Map<String, String> carriers;
+  Map<String, String>? aircraft;
+  Map<String, String>? carriers;
 
   Dictionaries({
-    required this.aircraft,
-    required this.carriers,
+    this.aircraft,
+    this.carriers,
   });
 
   factory Dictionaries.fromJson(Map<String, dynamic> json) {
