@@ -8,7 +8,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/utils/app_toast.dart';
-import '../../../../core/widgets/compact_ticket_card.dart';
+import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
@@ -460,7 +460,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               ),
                               const SizedBox(height: 16),
                               AppPrimaryButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (_arrivalController.text.isEmpty ||
                                         _depurtureController.text.isEmpty) {
                                       showToast(
@@ -501,7 +501,13 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         'fareType': _selectedFareType,
                                         'cabinClass': _selectedSeatType,
                                       };
-
+                                      final token =
+                                          await StorageService.getAccessToken();
+                                      if (token == null || token.isEmpty) {
+                                        await AppHelpers.showSnackBar(
+                                            context, "Please login first");
+                                        return;
+                                      }
                                       context.pushNamed(
                                           FlightBookingModule
                                               .flightSearchResultName,

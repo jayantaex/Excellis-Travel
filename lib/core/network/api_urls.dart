@@ -38,14 +38,12 @@ class EndPoints {
   //payment verify
   static const createPayment = '/bookings/create-payment';
   static const verifyPayment = '/bookings/verify-payment';
+  //markup pricing
+  static const markupPricing = '/markups/calculate-markup';
 
   //amadues
   static const amaduesAccessToken = "/v1/security/oauth2/token";
   static const airportSearchByKeyword = "/v1/reference-data/locations";
   static const flightSearch = "/v2/shopping/flight-offers";
   static const flightOfferPrice = '/v1/shopping/flight-offers/pricing';
-  static const createOrder = '/v1/booking/flight-orders';
-  //markup pricing
-  static const markupPricing = '/markups/calculate-markup';
 }
-//https://test.api.amadeus.com/v1/reference-data/locations?subType=CITY,AIRPORT&keyword=MUC&countryCode=DE

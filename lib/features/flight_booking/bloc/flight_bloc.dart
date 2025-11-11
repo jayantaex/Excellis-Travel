@@ -135,7 +135,12 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       GetMarkupPrice event, Emitter<FlightState> emit) async {
     try {
       emit(FlightSearching());
-      await repository.getMarkUpPrice(basePrice: event.baseAmount);
+      ApiResponse<double> resp =
+          await repository.getMarkUpPrice(basePrice: event.baseAmount);
+      if (resp.data == null) {
+        log("resp ${resp.errorMessage}");
+        emit(FlightSearchingError(message: "${resp.errorMessage}"));
+      }
     } catch (e) {
       emit(FlightSearchingError(message: "$e"));
     }

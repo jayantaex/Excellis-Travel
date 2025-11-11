@@ -1,9 +1,12 @@
+import 'package:excellistravel/features/flight_booking/presentation/widgets/flight_listing/flight_card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/services/local_db.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/flights_data_model.dart';
-import 'recent_search_card.dart';
+import '../../../models/hive/flight_hive_data_model.dart';
 
 class RecentSearchWidget extends StatefulWidget {
   const RecentSearchWidget({super.key});
@@ -13,9 +16,15 @@ class RecentSearchWidget extends StatefulWidget {
 }
 
 class _RecentSearchWidgetState extends State<RecentSearchWidget> {
-  List<FlightsDataModel> recentSearches = [];
+  List<FlightHiveDataModel> recentSearches = [];
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      Box<FlightHiveDataModel> flightBox = await LocalDB().getFlightBox();
+      // recentSearches = flightBox.values.toList();
+      setState(() {});
+    });
+
     super.initState();
   }
 
@@ -51,17 +60,9 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.black,
+                        color: AppColors.white,
                       ),
                     ),
-                    InkWell(
-                        child: Text(
-                      'Show more',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ))
                   ],
                 ),
               ),
@@ -69,17 +70,22 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
         recentSearches.isEmpty
             ? const SizedBox()
             : SizedBox(
-                height: 200,
+                height: 250,
                 width: AppHelpers.getScreenWidth(context),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: recentSearches.length,
                   itemBuilder: (context, index) {
+                    Datam datam = Datam.fromJson(recentSearches[index].data);
+                    FlightDictionary flightDictionary =
+                        FlightDictionary.fromJson(
+                            recentSearches[index].dictionaries);
                     return Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: RecentSearchCard(
-                        flightsData: FlightsDataModel(),
-                      ),
+                      margin: const EdgeInsets.only(right: 11),
+                      child: FlightCardWidget(
+                          data: datam,
+                          dictionaries: flightDictionary,
+                          onTap: () {}),
                     );
                   },
                 ),

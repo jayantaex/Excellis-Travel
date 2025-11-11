@@ -111,18 +111,7 @@ class RecentSearchCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            AppHelpers.formatDateTime(
-                                DateTime.parse(flightsData
-                                        ?.datam
-                                        ?.first
-                                        .itineraries
-                                        ?.first
-                                        .segments
-                                        ?.first
-                                        .departure
-                                        ?.at ??
-                                    ''),
-                                pattern: 'dd MMM, yyyy'),
+                            '',
                             style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w500,
@@ -156,18 +145,7 @@ class RecentSearchCard extends StatelessWidget {
                             style: const TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w600)),
                         Text(
-                          AppHelpers.formatDateTime(
-                              DateTime.parse(flightsData
-                                      ?.datam
-                                      ?.first
-                                      .itineraries
-                                      ?.first
-                                      .segments
-                                      ?.first
-                                      .departure
-                                      ?.at ??
-                                  ''),
-                              pattern: 'dd MMM, yyyy'),
+                          '',
                           style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w500,

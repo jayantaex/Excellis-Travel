@@ -1,14 +1,10 @@
 import 'dart:developer';
-
-import 'package:excellistravel/features/flight_booking/models/flights_data_model.dart';
-import 'package:excellistravel/features/flight_booking/models/hive/flight_hive_data_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/local_db.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -18,8 +14,10 @@ import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
+import '../../models/flights_data_model.dart';
+import '../../models/hive/flight_hive_data_model.dart' show FlightHiveDataModel;
 import '../widgets/flight_listing/class_filter_widget.dart';
-import '../widgets/flight_listing/compact_flight_card.dart';
+import '../widgets/flight_listing/flight_card_widget.dart';
 import '../widgets/flight_listing/date_filter_widget.dart';
 import '../widgets/loading/flight_list_loadding_widget.dart';
 
@@ -151,12 +149,12 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                             itemCount: state.data.datam?.length,
                             itemBuilder: (context, index) => Container(
                               margin: const EdgeInsets.only(bottom: 16),
-                              child: CompactFlightCard(
+                              child: FlightCardWidget(
                                 onTap: () async {
-                                  Box<FlightHiveDataModel> flightBox =
-                                      await LocalDB().getFlightBox();
-
-                                  log(flightBox.values.toList().toString());
+                                  await _saveToLocal(
+                                    data: state.data.datam![index],
+                                    flightDictionary: state.data.dictionaries!,
+                                  );
 
                                   context.pushNamed(
                                     FlightBookingModule.flightDetailsName,
@@ -206,6 +204,32 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
         ),
       ),
     );
+  }
+}
+
+Future<bool> _saveToLocal(
+    {required Datam data, required FlightDictionary flightDictionary}) async {
+  try {
+    String key =
+        '${data.itineraries!.first.segments!.first.departure!.iataCode}_${data.itineraries!.first.segments!.last.arrival!.iataCode}_${data.itineraries?.first.segments?.first.departure?.at}_${data.itineraries?.first.segments?.last.arrival?.at}';
+    Box<FlightHiveDataModel> flightBox = await LocalDB().getFlightBox();
+
+    Map<String, dynamic> dictionaries = flightDictionary.toJson();
+    Map<String, dynamic> dataMap = data.toJson();
+    FlightHiveDataModel flightHiveDataModel =
+        FlightHiveDataModel(data: dataMap, dictionaries: dictionaries);
+
+    FlightHiveDataModel? existingData = flightBox.get(key);
+    if (existingData != null) {
+      flightBox.delete(key);
+    }
+
+    await flightBox.put(key, flightHiveDataModel);
+
+    return true;
+  } catch (e) {
+    log("Error while saving local DB $e");
+    return false;
   }
 }
 
