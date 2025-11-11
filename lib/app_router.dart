@@ -1,3 +1,4 @@
+import 'package:excellistravel/features/flight_booking/presentation/screens/seat_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/auth/auth_module.dart';
@@ -22,7 +23,7 @@ class AppRouter {
       GoRoute(
         path: SplashModule.splashRoute,
         name: SplashModule.spashName,
-        builder: (context, state) => const SplashScreen(),
+        builder: (context, state) => const SeatSelection(),
       ),
 
       //Auth

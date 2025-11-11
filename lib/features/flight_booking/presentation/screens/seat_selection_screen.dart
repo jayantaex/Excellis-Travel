@@ -1,5 +1,9 @@
 // import 'package:flutter/material.dart';
 
+import 'dart:developer';
+
+import 'package:excellistravel/features/flight_booking/data/seat_data_tmp.dart';
+import 'package:excellistravel/features/flight_booking/models/seat_map_data_model.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -17,6 +21,7 @@ class SeatSelection extends StatefulWidget {
 }
 
 class _SeatSelectionState extends State<SeatSelection> {
+  SeatMapDataModel? _seatData;
   List<DateTime> dates = [
     DateTime.now(),
   ];
@@ -34,11 +39,26 @@ class _SeatSelectionState extends State<SeatSelection> {
   //seat management
 
   int row = 30;
-
+  late final Map<String, dynamic> _coordinateMap;
   @override
   void initState() {
+    _coordinateMap = {};
+
     for (int i = 0; i < dateDuration; i++) {
       dates.add(DateTime.now().add(Duration(days: i)));
+    }
+    try {
+      _seatData = SeatMapDataModel.fromJson(seatData);
+      _seatData?.data[0].decks[0].seats.forEach((SeatElement element) {
+        _coordinateMap['${element.coordinates.x}-${element.coordinates.y}'] =
+            element;
+      });
+      _seatData?.data[0].decks[0].facilities.forEach((Facility element) {
+        _coordinateMap['${element.coordinates.x}-${element.coordinates.y}'] =
+            element;
+      });
+    } catch (e) {
+      log("Error while parsing seat data $e");
     }
     setState(() {});
     super.initState();
@@ -46,6 +66,8 @@ class _SeatSelectionState extends State<SeatSelection> {
 
   @override
   Widget build(BuildContext context) {
+    log("Flight Search Screen:::: ${_seatData?.data[0].decks[0].seats.length}");
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -62,40 +84,16 @@ class _SeatSelectionState extends State<SeatSelection> {
               child: Column(
                 children: [
                   //nav Controller
-                  const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: AppCustomAppbar(
-                        start: 'CCU',
-                        end: 'HDO',
+                        start: '${_seatData?.data.first.departure.iataCode}',
+                        end: '${_seatData?.data.first.arrival.iataCode}',
                       )),
                   const SizedBox(height: 16),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 16),
-                  //   child: DateFilterWidget(
-                  //     dates: dates,
-                  //   ),
-                  // ),
+
                   const SizedBox(height: 16),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 16),
-                  //   child: SizedBox(
-                  //     height: 40,
-                  //     width: AppHelpers.getScreenWidth(context),
-                  //     child: ListView.builder(
-                  //       itemBuilder: (context, index) => SearchFilterWidget(
-                  //         onTap: () {
-                  //           setState(() {
-                  //             selectedFilter = filters[index];
-                  //           });
-                  //         },
-                  //         isSelected: selectedFilter == filters[index],
-                  //         title: filters[index],
-                  //       ),
-                  //       itemCount: filters.length,
-                  //       scrollDirection: Axis.horizontal,
-                  //     ),
-                  //   ),
-                  // ),
+
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -106,9 +104,19 @@ class _SeatSelectionState extends State<SeatSelection> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       height: AppHelpers.getScreenHeight(context) * 0.6,
                       child: ListView.builder(
-                        itemCount: row,
+                        itemCount: _seatData?.data.first.decks[0]
+                                .deckConfiguration.length ??
+                            0,
                         itemBuilder: (context, index) => SeatArrangemnt(
-                          row: index,
+                          isWingsRow: index + 1 ==
+                              _seatData?.data.first.decks[0].deckConfiguration
+                                  .startWingsRow,
+                          isExitRow: _seatData?.data.first.decks[0]
+                                  .deckConfiguration.exitRowsX
+                                  .contains(index + 1) ??
+                              false,
+                          x: index,
+                          cordinateMap: _coordinateMap,
                         ),
                       ),
                     ),
@@ -210,8 +218,16 @@ class SeatSelectionInformation extends StatelessWidget {
 }
 
 class SeatArrangemnt extends StatefulWidget {
-  final int row;
-  const SeatArrangemnt({super.key, required this.row});
+  final int x;
+  final bool isWingsRow;
+  final bool isExitRow;
+  final Map<String, dynamic> cordinateMap;
+  const SeatArrangemnt(
+      {super.key,
+      required this.x,
+      required this.isWingsRow,
+      required this.isExitRow,
+      required this.cordinateMap});
 
   @override
   State<SeatArrangemnt> createState() => _SeatArrangemntState();
@@ -230,67 +246,101 @@ class _SeatArrangemntState extends State<SeatArrangemnt> {
   List<String> leftCloumName = ['A', 'B', 'C'];
   List<String> rightCloumName = ['D', 'E', 'F'];
   int cloumnInLeft = 3;
-
   int cloumnInRight = 3;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        color: widget.isExitRow
+            ? AppColors.primary.withOpacity(0.1)
+            : widget.isWingsRow
+                ? AppColors.primary.withOpacity(0.1)
+                : null,
+        borderRadius: BorderRadius.circular(12),
+      ),
       width: AppHelpers.getScreenWidth(context),
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.symmetric(
+        vertical: widget.isWingsRow || widget.isExitRow ? 18 : 2,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ...List.generate(
-            cloumnInLeft,
-            (index) => Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              child: widget.row == 0
-                  ? Column(
-                      children: [
-                        Text(leftCloumName[index]),
-                        SeatCheckBoxWidget(
-                          id: 'l-$index-${widget.row}',
-                          isSelected:
-                              selectedSeats.contains('l-$index-${widget.row}'),
-                          isBooked:
-                              bookedSeats.contains('l-$index-${widget.row}'),
-                          onLeft: true,
-                          onTap: (id) {
-                            if (selectedSeats.contains(id)) {
-                              setState(() {
-                                selectedSeats.remove(id);
-                              });
-                            } else {
-                              setState(() {
-                                selectedSeats.add(id);
-                              });
-                            }
-                          },
-                        ),
-                      ],
-                    )
-                  : SeatCheckBoxWidget(
-                      id: 'l-$index-${widget.row}',
-                      isSelected:
-                          selectedSeats.contains('l-$index-${widget.row}'),
-                      isBooked: bookedSeats.contains('l-$index-${widget.row}'),
-                      onLeft: true,
-                      onTap: (id) {
-                        if (selectedSeats.contains(id)) {
-                          setState(() {
-                            selectedSeats.remove(id);
-                          });
-                        } else {
-                          setState(() {
-                            selectedSeats.add(id);
-                          });
-                        }
-                      },
-                    ),
-            ),
-          ),
-          Text('${widget.row + 1}',
+          ...List.generate(cloumnInLeft, (index) {
+            String key = '${widget.x}-$index';
+            log('${widget.cordinateMap[key]}');
+            final item = widget.cordinateMap[key];
+            if (item is SeatElement) {
+              log('${widget.cordinateMap[key]}', name: 'item');
+              return Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 6,
+                ),
+                child: widget.x == 0
+                    ? Column(
+                        children: [
+                          Text(leftCloumName[index]),
+                          const SizedBox(height: 8),
+                          SeatCheckBoxWidget(
+                            id: 'l-$index-${widget.x}',
+                            isSelected:
+                                selectedSeats.contains('l-$index-${widget.x}'),
+                            isBooked:
+                                bookedSeats.contains('l-$index-${widget.x}'),
+                            onLeft: true,
+                            onTap: (id) {
+                              if (selectedSeats.contains(id)) {
+                                setState(() {
+                                  selectedSeats.remove(id);
+                                });
+                              } else {
+                                setState(() {
+                                  selectedSeats.add(id);
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      )
+                    : SeatCheckBoxWidget(
+                        id: 'l-$index-${widget.x}',
+                        isSelected:
+                            selectedSeats.contains('l-$index-${widget.x}'),
+                        isBooked: bookedSeats.contains('l-$index-${widget.x}'),
+                        onLeft: true,
+                        onTap: (id) {
+                          if (selectedSeats.contains(id)) {
+                            setState(() {
+                              selectedSeats.remove(id);
+                            });
+                          } else {
+                            setState(() {
+                              selectedSeats.add(id);
+                            });
+                          }
+                        },
+                      ),
+              );
+            }
+
+            if (item is Facility) {
+              return Container(
+                color: Colors.red,
+                alignment: Alignment.center,
+                height: AppHelpers.getScreenWidth(context) * 0.1,
+                width: AppHelpers.getScreenWidth(context) * 0.1,
+              );
+            }
+            return Container(
+              color: Colors.blue,
+              alignment: Alignment.center,
+              height: AppHelpers.getScreenWidth(context) * 0.1,
+              width: AppHelpers.getScreenWidth(context) * 0.1,
+            );
+          }),
+          Text('${widget.x + 1}',
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -300,17 +350,15 @@ class _SeatArrangemntState extends State<SeatArrangemnt> {
             cloumnInRight,
             (index) => Column(
               children: [
-                widget.row == 0
-                    ? Text(rightCloumName[index])
-                    : const SizedBox(),
+                widget.x == 0 ? Text(rightCloumName[index]) : const SizedBox(),
+                const SizedBox(height: 8),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   child: SeatCheckBoxWidget(
-                    isSelected:
-                        selectedSeats.contains('r-$index-${widget.row}'),
-                    isBooked: bookedSeats.contains('r-$index-${widget.row}'),
+                    isSelected: selectedSeats.contains('r-$index-${widget.x}'),
+                    isBooked: bookedSeats.contains('r-$index-${widget.x}'),
                     onLeft: false,
-                    id: 'r-$index-${widget.row}',
+                    id: 'r-$index-${widget.x}',
                     onTap: (id) {
                       if (selectedSeats.contains(id)) {
                         setState(() {

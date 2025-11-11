@@ -216,16 +216,14 @@ Future<bool> _saveToLocal(
 
     Map<String, dynamic> dictionaries = flightDictionary.toJson();
     Map<String, dynamic> dataMap = data.toJson();
-    FlightHiveDataModel flightHiveDataModel =
+    FlightHiveDataModel recentSearchedData =
         FlightHiveDataModel(data: dataMap, dictionaries: dictionaries);
 
     FlightHiveDataModel? existingData = flightBox.get(key);
     if (existingData != null) {
       flightBox.delete(key);
     }
-
-    await flightBox.put(key, flightHiveDataModel);
-
+    await flightBox.put(key, recentSearchedData);
     return true;
   } catch (e) {
     log("Error while saving local DB $e");

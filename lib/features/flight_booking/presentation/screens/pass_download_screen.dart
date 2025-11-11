@@ -36,9 +36,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
 
   @override
   void initState() {
-    log(':::: ${widget.data.booking?.bookingReference}');
-    log(':::: ${widget.data.booking}');
-    log(':::: ${widget.data.payment}');
+    log(':::: ${widget.data.toJson()}');
+
     Future.delayed(Duration.zero, () async {
       barCodeSvg = BarcodeService.buildBarcode(
         Barcode.code39(),
@@ -55,7 +54,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
   Widget build(BuildContext context) {
     double width = AppHelpers.getScreenWidth(context);
     return PopScope(
-      canPop: false,
+      canPop: true,
       child: Scaffold(
         body: AppGradientBg(
           child: TransWhiteBgWidget(
@@ -109,7 +108,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          ...widget.data.booking!.flightData!.itineraries!.map(
+                          ...?widget.data.booking?.flightData?.itineraries!.map(
                             (e) => Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -253,8 +252,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                             strokeWidth: 0.5,
                             child: Column(
                               children: [
-                                ...widget
-                                    .data.booking!.travellerDetails!.adults!
+                                ...?widget
+                                    .data.booking?.travellerDetails?.adults!
                                     .map(
                                   (e) => ListTile(
                                     contentPadding: const EdgeInsets.all(0),
@@ -280,8 +279,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                     ),
                                   ),
                                 ),
-                                ...widget
-                                    .data.booking!.travellerDetails!.children!
+                                ...?widget
+                                    .data.booking?.travellerDetails?.children!
                                     .map(
                                   (e) => ListTile(
                                     contentPadding: const EdgeInsets.all(0),
@@ -307,8 +306,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                     ),
                                   ),
                                 ),
-                                ...widget
-                                    .data.booking!.travellerDetails!.infants!
+                                ...?widget
+                                    .data.booking?.travellerDetails?.infants!
                                     .map(
                                   (e) => ListTile(
                                     contentPadding: const EdgeInsets.all(0),
@@ -412,9 +411,6 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                     String? path = await savePdfToMobileStorage(
                         ticket, '${widget.data.booking?.bookingReference}.pdf');
                     if (path != null) {
-                      FirebaseNotificationService instance =
-                          FirebaseNotificationService.instance;
-
                       AppHelpers.showSnackBar(
                           context, 'Ticket Downloaded to Download Ticket');
                       return;

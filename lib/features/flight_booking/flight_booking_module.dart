@@ -17,7 +17,6 @@ import 'presentation/screens/flight_search_result_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
 import 'presentation/screens/payment_details_screen.dart';
 import 'presentation/screens/seat_selection_screen.dart';
-import 'temp.dart';
 
 class FlightBookingModule {
   static final AmadeusClient _amadeusClient = AmadeusClient();
@@ -33,7 +32,11 @@ class FlightBookingModule {
   static const String airportSearch = '/airport-search';
   static const String airportSearchName = 'airportSearch';
   static Widget airportSearchBuilder(context, state) {
-    return Temp();
+    // PaymentVerifiedModel _data = PaymentVerifiedModel.fromJson(bookedData);
+    // return PassDownloadScreen(
+    //   data: _data,
+    // );
+
     final extra = state.extra as Map<String, dynamic>?;
     final onAirportSelected =
         extra?['onAirportSelected'] as void Function(AirportModel airport)?;

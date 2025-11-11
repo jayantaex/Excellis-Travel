@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,17 +36,21 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   final TextEditingController _travellerController =
       TextEditingController(text: '1');
 
-  final TextEditingController _depurtureController = TextEditingController();
-  final TextEditingController _arrivalController = TextEditingController();
-  String departureCode = '';
+  final TextEditingController _depurtureController = TextEditingController(
+    text: 'CCU(KOLKATA)\n SUBHASH CHANDRA BOSE INTL',
+  );
+  final TextEditingController _arrivalController = TextEditingController(
+    text: 'DEL(DELHI)\n INDRA GANDHI INTL',
+  );
+  String departureCode = 'CCU';
   String departureCity = '';
-  String arrivalCode = '';
+  String arrivalCode = 'DEL';
   String arrivalCity = '';
   //mock data
   SearchData searchData = SearchData();
   String _selectedSeatType = 'Economy';
   String _selectedFareType = 'Regular';
-  String _trendingSearch = 'CCU-AU';
+  String _trendingSearch = 'CCU-DEL';
   int _adultCount = 1;
   int _childCount = 0;
   int _infantCount = 0;
@@ -93,8 +99,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   final List<DropdownMenuItem<String>> _trendingSearches =
       <DropdownMenuItem<String>>[
     const DropdownMenuItem<String>(
-      value: 'CCU-AU',
-      child: Text('CCU-AU'),
+      value: 'CCU-DEL',
+      child: Text('CCU-DEL'),
     ),
     const DropdownMenuItem<String>(
       value: 'DBX-DEL',
@@ -300,7 +306,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   ? AppPrimaryInput(
                                       controller: TextEditingController(
                                         text: AppHelpers.formatDate(
-                                            departureDate?.add(_fiveDay) ??
+                                            roundTripDate ??
                                                 _today.add(_fiveDay),
                                             pattern: 'E, dd MMM yyyy'),
                                       ),
@@ -320,18 +326,15 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           FocusScope.of(context).unfocus();
                                         }
                                         roundTripDate = await _pickDate(
-                                          context: context,
-                                          firstDate:
-                                              departureDate?.add(_oneDay) ??
-                                                  _today.add(_oneDay),
-                                          initialDate:
-                                              departureDate?.add(_fiveDay) ??
-                                                  _today.add(_fiveDay),
-                                        );
-                                        if (context.mounted) {
-                                          FocusScope.of(context).unfocus();
-                                        }
-
+                                            context: context,
+                                            firstDate: departureDate?.add(
+                                                    const Duration(hours: 2)) ??
+                                                _today.add(_oneDay),
+                                            initialDate:
+                                                departureDate?.add(_fiveDay) ??
+                                                    _today.add(_fiveDay));
+                                        setState(() {});
+                                        log('roundTripDate $roundTripDate');
                                         //hide keyboard
                                       },
                                     )
