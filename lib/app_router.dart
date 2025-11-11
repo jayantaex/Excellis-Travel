@@ -23,7 +23,7 @@ class AppRouter {
       GoRoute(
         path: SplashModule.splashRoute,
         name: SplashModule.spashName,
-        builder: (context, state) => const SeatSelection(),
+        builder: (context, state) => const SplashScreen(),
       ),
 
       //Auth
