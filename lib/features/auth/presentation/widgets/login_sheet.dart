@@ -1,7 +1,4 @@
 import 'dart:developer';
-
-import 'package:excellistravel/features/bottom_navigation/bottom_nav_module.dart';
-import 'package:excellistravel/features/legal/legal_module.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../bottom_navigation/bottom_nav_module.dart';
+import '../../../legal/legal_module.dart';
 import '../../auth_module.dart';
 import '../../bloc/auth_bloc.dart';
 import 'auth_dropdown_widget.dart';

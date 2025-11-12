@@ -2,23 +2,20 @@ import 'dart:developer';
 
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
-import 'package:excellistravel/features/bottom_navigation/bottom_nav_module.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
-import '../../../../core/services/firebase_notification_service.dart';
 import '../../../../core/services/pdf_generator.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../data/search_data.dart';
+import '../../../bottom_navigation/bottom_nav_module.dart';
 import '../../models/payment_verify_res_model.dart';
 import '../widgets/launge_access_widget.dart';
 
@@ -31,7 +28,6 @@ class PassDownloadScreen extends StatefulWidget {
 }
 
 class _PassDownloadScreenState extends State<PassDownloadScreen> {
-  final SearchData searchData = SearchData();
   String barCodeSvg = '';
 
   @override
@@ -411,16 +407,22 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                     String? path = await savePdfToMobileStorage(
                         ticket, '${widget.data.booking?.bookingReference}.pdf');
                     if (path != null) {
-                      AppHelpers.showSnackBar(
-                          context, 'Ticket Downloaded to Download Ticket');
+                      if (context.mounted) {
+                        AppHelpers.showSnackBar(
+                            context, 'Ticket Downloaded to Download Ticket');
+                      }
                       return;
                     }
-                    AppHelpers.showSnackBar(
-                        context, 'Permission Denied to Download Ticket');
+                    if (context.mounted) {
+                      AppHelpers.showSnackBar(
+                          context, 'Permission Denied to Download Ticket');
+                    }
                   } catch (e) {
                     log('$e');
-                    AppHelpers.showSnackBar(
-                        context, 'Error Downloading Ticket');
+                    if (context.mounted) {
+                      AppHelpers.showSnackBar(
+                          context, 'Error Downloading Ticket');
+                    }
                   }
                 },
               ),

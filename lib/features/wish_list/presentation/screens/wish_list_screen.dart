@@ -1,10 +1,8 @@
-import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../../flight_booking/data/search_data.dart';
-import '../../../flight_booking/models/ticket_data_model.dart';
 
 class WishListScreen extends StatefulWidget {
   const WishListScreen({super.key});
@@ -14,7 +12,7 @@ class WishListScreen extends StatefulWidget {
 }
 
 class _WishListScreenState extends State<WishListScreen> {
-  List<TicketModel> wishList = [];
+  List wishList = [];
   @override
   void initState() {
     super.initState();
@@ -29,7 +27,7 @@ class _WishListScreenState extends State<WishListScreen> {
           child: Column(
             children: [
               //app bar
-              AppCustomAppbar(
+              const AppCustomAppbar(
                 isBackButtonRequired: false,
                 centerTitle: 'Wish List',
               ),

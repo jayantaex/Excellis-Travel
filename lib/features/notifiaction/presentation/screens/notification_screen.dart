@@ -1,9 +1,9 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
-import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
-import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
 import '../widgets/notification_details_sheet.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -108,11 +108,12 @@ class NotificationScreen extends StatelessWidget {
                         notifications[index]['details'],
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 12, color: AppColors.grey),
+                        style: const TextStyle(
+                            fontSize: 12, color: AppColors.grey),
                       ),
                       trailing: Text(
                         getDelay(createdAt: notifications[index]['createdAt']),
-                        style: TextStyle(fontSize: 12),
+                        style: const TextStyle(fontSize: 12),
                       ),
                     ),
                   ),

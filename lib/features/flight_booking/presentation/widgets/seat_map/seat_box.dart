@@ -5,9 +5,9 @@ import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/seat_map_data_model.dart';
 
 class SeatBox extends StatefulWidget {
-  SeatElement? data;
+  final SeatElement? data;
 
-  SeatBox({super.key, this.data});
+  const SeatBox({super.key, this.data});
 
   @override
   State<SeatBox> createState() => _SeatBoxState();

@@ -1,7 +1,7 @@
-import 'package:excellistravel/core/common/models/city_model.dart';
 
 import '../../network/api_response.dart';
 import '../api/location_api.dart';
+import '../models/city_model.dart';
 import '../models/state_model.dart';
 
 class LocationRepository {

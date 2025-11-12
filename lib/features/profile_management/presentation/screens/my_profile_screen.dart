@@ -1,5 +1,3 @@
-import 'package:excellistravel/core/utils/storage_service.dart';
-import 'package:excellistravel/features/auth/auth_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../auth/auth_module.dart';
 import '../../../legal/legal_module.dart';
 import '../../../settings/settings_module.dart';
 import '../../bloc/profile_bloc.dart';
@@ -137,15 +137,21 @@ class MyProfileScreen extends StatelessWidget {
                               }
                               if ((token == null || token.isEmpty) &&
                                   (option['routeName'] == '')) {
-                                context.goNamed(AuthModule.loginName);
+                                if (context.mounted) {
+                                  context.goNamed(AuthModule.loginName);
+                                }
                                 return;
                               }
                               if (option['routeName'] == '' &&
                                   option['title'] == 'Sign Out') {
-                                showLogoutSheet(context: context);
+                                if (context.mounted) {
+                                  showLogoutSheet(context: context);
+                                }
                               }
                               if (option['routeName'] != '') {
-                                context.pushNamed(option['routeName']);
+                                if (context.mounted) {
+                                  context.pushNamed(option['routeName']);
+                                }
                               }
                             }))
                       ],

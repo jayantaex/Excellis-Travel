@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:excellistravel/core/network/api_response.dart';
-import 'package:excellistravel/core/utils/storage_service.dart';
+
+import '../../../core/network/api_response.dart';
+import '../../../core/utils/storage_service.dart';
 import '../../../core/utils/validators.dart';
 import '../data/auth_repository.dart';
 part 'auth_event.dart';

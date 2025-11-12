@@ -1,8 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:barcode/barcode.dart';
-import 'package:excellistravel/core/services/barcode_service.dart';
-import 'package:excellistravel/core/utils/app_helpers.dart';
+
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -10,6 +9,9 @@ import 'package:pdf/widgets.dart' as pw;
 import '../../features/flight_booking/models/payment_verify_res_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../utils/app_helpers.dart';
+import 'barcode_service.dart';
 
 class PdfService {
   final pdf = pw.Document();
@@ -19,7 +21,6 @@ class PdfService {
     try {
       final img = await rootBundle.load('assets/images/dark_app_logo.png');
       final imageBytes = img.buffer.asUint8List();
-      pw.Image logo = pw.Image(pw.MemoryImage(imageBytes));
       String barCodeSvg = '';
       barCodeSvg = BarcodeService.buildBarcode(
         Barcode.code39(),
@@ -32,16 +33,6 @@ class PdfService {
         author: 'Excellis Travel',
       );
 
-      final headerStyle = pw.TextStyle(
-        fontWeight: pw.FontWeight.bold,
-        fontSize: 16,
-        color: PdfColors.orange600,
-      );
-      final subHeaderStyle = pw.TextStyle(
-        fontWeight: pw.FontWeight.bold,
-        fontSize: 12,
-        color: PdfColors.grey700,
-      );
       final sectionTitleStyle = pw.TextStyle(
         fontWeight: pw.FontWeight.bold,
         fontSize: 14,
@@ -213,9 +204,9 @@ pw.Widget _buildPassengerTable(
               'ADULT',
               AppHelpers.formatDate(DateTime.parse(p.dateOfBirth!),
                   pattern: 'dd-MM-yy'),
-              pnr ?? 'N/A',
-              ticketNo ?? 'N/A',
-              seat ?? 'N/A'
+              pnr,
+              ticketNo,
+              seat
             ])
         .toList(),
   );
@@ -368,7 +359,6 @@ Future<String?> savePdfToMobileStorage(
   }
 
   if (directory == null) {
-    print("Could not determine storage directory.");
     return null;
   }
 
@@ -384,10 +374,8 @@ Future<String?> savePdfToMobileStorage(
     // 4. Write the Uint8List bytes to the file
     await file.writeAsBytes(pdfBytes, flush: true);
 
-    print('PDF saved successfully to: ${file.path}');
     return file.path;
   } catch (e) {
-    print('Error saving PDF: $e');
     return null;
   }
 }

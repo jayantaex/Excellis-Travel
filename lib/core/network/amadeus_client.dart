@@ -210,8 +210,8 @@ class AmadeusClient {
   }
 
   Future<void> _refreshAccessToken() async {
-    final Dio _dio = Dio();
-    _dio.options.baseUrl = EndPoints.amaduesBaseUrl;
+    final Dio dio = Dio();
+    dio.options.baseUrl = EndPoints.amaduesBaseUrl;
     try {
       String clientId = AppConstants.amadeusClientId;
       String clientSecret = AppConstants.amadeusSecret;
@@ -220,7 +220,7 @@ class AmadeusClient {
         'client_secret': clientSecret,
         'grant_type': 'client_credentials'
       };
-      Response response = await _dio.post(EndPoints.amaduesAccessToken,
+      Response response = await dio.post(EndPoints.amaduesAccessToken,
           data: data,
           options: Options(
             contentType: Headers.formUrlEncodedContentType,

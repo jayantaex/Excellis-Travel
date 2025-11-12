@@ -1,4 +1,3 @@
-import 'package:excellistravel/features/flight_booking/presentation/screens/seat_selection_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/auth/auth_module.dart';
@@ -100,12 +99,12 @@ class AppRouter {
       //   builder: (context, state) =>
       //       FlightBookingModule.passengerDetailsBuilder(),
       // ),
-      GoRoute(
-        path: FlightBookingModule.paymentDetails,
-        name: FlightBookingModule.paymentDetailsName,
-        builder: (context, state) =>
-            FlightBookingModule.paymentDetailsBuilder(context, state),
-      ),
+      // GoRoute(
+      //   path: FlightBookingModule.paymentDetails,
+      //   name: FlightBookingModule.paymentDetailsName,
+      //   builder: (context, state) =>
+      //       FlightBookingModule.paymentDetailsBuilder(context, state),
+      // ),
       GoRoute(
         path: FlightBookingModule.passDownload,
         name: FlightBookingModule.passDownloadName,

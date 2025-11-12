@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-
 import '../../../../core/services/razorpay.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../payment/payment_module.dart';
 import '../../bloc/wallet_bloc.dart';
-import '../../wallet_module.dart';
 
 class MyWalletScreen extends StatefulWidget {
   const MyWalletScreen({super.key});
@@ -24,7 +22,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     log('Payment successful: ${response.paymentId}');
-    
+
     AppHelpers.debounce(
       () {
         context.pushNamed(PaymentModule.paymentSucessName,

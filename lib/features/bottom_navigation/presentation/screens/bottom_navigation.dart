@@ -7,7 +7,6 @@ import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../flight_booking/presentation/screens/flight_search_screen.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../../profile_management/presentation/screens/my_profile_screen.dart';
-import '../../../ticket/bloc/ticket_bloc.dart';
 import '../../../ticket/presentation/screens/ticket_screen.dart';
 import '../../../wish_list/presentation/screens/wish_list_screen.dart';
 import '../widgets/app_button_nav.dart';

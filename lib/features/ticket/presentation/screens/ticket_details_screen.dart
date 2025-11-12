@@ -1,15 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../../flight_booking/flight_booking_module.dart';
-import '../../../flight_booking/presentation/widgets/baggage_allowance_card.dart';
 import '../../models/ticket_model.dart';
 import '../widgets/billing_info_widget.dart';
 

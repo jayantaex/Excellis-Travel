@@ -36,7 +36,7 @@ class NotificationDetailsSheet extends StatelessWidget {
             children: [
               const SizedBox(width: 20),
               Text(
-                '$title',
+                title,
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
@@ -54,7 +54,7 @@ class NotificationDetailsSheet extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           Text(
-            '$body',
+            body,
           )
         ],
       ),

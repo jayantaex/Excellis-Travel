@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:excellistravel/core/network/api_response.dart';
-import 'package:excellistravel/features/ticket/data/tickets_repository.dart';
 
+import '../../../core/network/api_response.dart';
+import '../data/tickets_repository.dart';
 import '../models/ticket_model.dart';
 
 part 'ticket_event.dart';

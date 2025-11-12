@@ -81,7 +81,7 @@ class _TermsScreenState extends State<TermsScreen> {
                             child: CircularProgressIndicator.adaptive())
                         : ClipRRect(
                             borderRadius: const BorderRadius.all(
-                              const Radius.circular(24),
+                              Radius.circular(24),
                             ),
                             child: WebViewWidget(controller: controller!)),
                   ),

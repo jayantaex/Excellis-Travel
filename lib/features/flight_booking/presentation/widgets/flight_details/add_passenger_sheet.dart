@@ -24,7 +24,6 @@ Future<void> showAddPassengerSheet(
   final TextEditingController dobController = TextEditingController();
   DateTime? dob;
   String selectedGender = 'Male';
-  String cityzenship = 'India';
   List<String> genderList = ['Male', 'Female'];
   DateTime firstDate = DateTime(2000);
   DateTime lastDate = DateTime.now();

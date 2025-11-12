@@ -1,8 +1,8 @@
-import 'package:excellistravel/core/common/bloc/cities/city_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/common/api/location_api.dart';
+import '../../core/common/bloc/cities/city_bloc.dart';
 import '../../core/common/bloc/states/states_bloc.dart';
 import '../../core/common/data/location_repository.dart';
 import '../../core/network/api_client.dart';

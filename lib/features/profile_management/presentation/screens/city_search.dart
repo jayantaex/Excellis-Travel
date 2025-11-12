@@ -20,7 +20,7 @@ class CitySearch extends StatelessWidget {
       required this.stateName,
       required this.onSelected});
 
-  List<CityModel> cities = [];
+  final List<CityModel> cities = [];
 
   @override
   Widget build(BuildContext context) {

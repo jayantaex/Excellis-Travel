@@ -45,7 +45,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _selectedState = '';
   int _selectedStateId = 0;
   String _selectedStateCode = '';
-  final List<DropdownMenuItem<String>> _states = [];
 
   void onCityChange(CityModel city) {
     setState(() {

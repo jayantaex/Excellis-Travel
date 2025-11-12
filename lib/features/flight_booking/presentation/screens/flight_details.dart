@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:excellistravel/features/flight_booking/flight_booking_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +14,7 @@ import '../../../auth/auth_module.dart';
 import '../../../payment/payment_module.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/flight_bloc.dart';
+import '../../flight_booking_module.dart';
 import '../../models/flights_data_model.dart' show FlightDictionary, Datam;
 import '../../models/passenger_model.dart';
 import '../widgets/flight_details/err_widget.dart';
@@ -322,8 +322,10 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                 onError: _handlePaymentError);
           }
           if (state is FlightPaymentVerified) {
-            context.goNamed(FlightBookingModule.passDownloadName,
-                extra: {'data': state.data});
+            if (context.mounted) {
+              context.goNamed(FlightBookingModule.passDownloadName,
+                  extra: {'data': state.data});
+            }
           }
         },
         builder: (context, flightState) {

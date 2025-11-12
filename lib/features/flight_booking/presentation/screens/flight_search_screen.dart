@@ -15,7 +15,6 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
-import '../../data/search_data.dart';
 import '../../flight_booking_module.dart';
 import '../../models/air_port_model.dart';
 import '../widgets/flight_search/greeting_widget.dart';
@@ -47,7 +46,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   String arrivalCode = 'DEL';
   String arrivalCity = '';
   //mock data
-  SearchData searchData = SearchData();
   String _selectedSeatType = 'Economy';
   String _selectedFareType = 'Regular';
   String _trendingSearch = 'CCU-DEL';
@@ -507,14 +505,18 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       final token =
                                           await StorageService.getAccessToken();
                                       if (token == null || token.isEmpty) {
-                                        await AppHelpers.showSnackBar(
-                                            context, "Please login first");
+                                        if (context.mounted) {
+                                          await AppHelpers.showSnackBar(
+                                              context, "Please login first");
+                                        }
                                         return;
                                       }
-                                      context.pushNamed(
-                                          FlightBookingModule
-                                              .flightSearchResultName,
-                                          extra: data);
+                                      if (context.mounted) {
+                                        context.pushNamed(
+                                            FlightBookingModule
+                                                .flightSearchResultName,
+                                            extra: data);
+                                      }
                                     }
                                   },
                                   style: const TextStyle(

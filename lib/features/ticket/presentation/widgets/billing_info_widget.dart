@@ -1,14 +1,12 @@
-import 'package:excellistravel/features/ticket/data/ticket_mock_data.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
 import '../../models/ticket_model.dart';
 
 class BillingInfo extends StatelessWidget {
-  BillingAddress? billingAddress;
+  final BillingAddress? billingAddress;
   final ContactDetails? contactDetails;
-  BillingInfo({super.key, this.billingAddress, this.contactDetails});
+  const BillingInfo({super.key, this.billingAddress, this.contactDetails});
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +81,11 @@ class ItemRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '$title',
+            title,
             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
           ),
           Text(
-            '$value',
+            value,
             style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,

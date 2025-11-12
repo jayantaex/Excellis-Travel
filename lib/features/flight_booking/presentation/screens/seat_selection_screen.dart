@@ -1,16 +1,14 @@
 // import 'package:flutter/material.dart';
 
 import 'dart:developer';
-
-import 'package:excellistravel/features/flight_booking/data/seat_data_tmp.dart';
-import 'package:excellistravel/features/flight_booking/models/seat_map_data_model.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../data/search_data.dart';
+import '../../data/seat_data_tmp.dart';
+import '../../models/seat_map_data_model.dart';
 import '../widgets/seat_map/facility_box.dart';
 import '../widgets/seat_map/seat_box.dart';
 
@@ -26,7 +24,6 @@ class _SeatSelectionState extends State<SeatSelection> {
   List<DateTime> dates = [
     DateTime.now(),
   ];
-  SearchData searchData = SearchData();
   List<String> filters = [
     'Economy',
     'Premium Economy',

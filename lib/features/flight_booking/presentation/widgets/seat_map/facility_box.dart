@@ -1,6 +1,6 @@
-import 'package:excellistravel/core/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/seat_map_data_model.dart';
 

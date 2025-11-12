@@ -15,7 +15,6 @@ import 'presentation/screens/booking_policy.dart';
 import 'presentation/screens/flight_details.dart';
 import 'presentation/screens/flight_search_result_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
-import 'presentation/screens/payment_details_screen.dart';
 import 'presentation/screens/seat_selection_screen.dart';
 
 class FlightBookingModule {
@@ -80,18 +79,18 @@ class FlightBookingModule {
   // static Widget passengerDetailsBuilder() => const PasengerDetailsScreen();
 
   //payment details
-  static const String paymentDetails = '/payment-details';
-  static const String paymentDetailsName = 'paymentDetails';
-  static Widget paymentDetailsBuilder(context, state) {
-    final extra = state.extra;
-    return BlocProvider(
-      create: (context) => FlightBloc(repository: _repository),
-      child: PaymentDetailsScreen(
-        data: extra['data'],
-        selectedPlan: extra['selectedPlan'],
-      ),
-    );
-  }
+  // static const String paymentDetails = '/payment-details';
+  // static const String paymentDetailsName = 'paymentDetails';
+  // static Widget paymentDetailsBuilder(context, state) {
+  //   final extra = state.extra;
+  //   return BlocProvider(
+  //     create: (context) => FlightBloc(repository: _repository),
+  //     child: PaymentDetailsScreen(
+  //       data: extra['data'],
+  //       selectedPlan: extra['selectedPlan'],
+  //     ),
+  //   );
+  // }
 
   //pass download
   static const String passDownload = '/pass-download';

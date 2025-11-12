@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:excellistravel/core/constants/app_constants.dart';
+import '../constants/app_constants.dart';
 import '../utils/storage_service.dart';
 import 'api_urls.dart';
 
@@ -62,10 +62,10 @@ class AuthenticationInterceptor extends Interceptor {
   }
 
   Future<String?> _refreshAccessToken(String refreshToken) async {
-    final Dio _dio = Dio();
+    final Dio dio = Dio();
 
     try {
-      final response = await _dio.post(
+      final response = await dio.post(
         '${AppConstants.baseUrl}${EndPoints.refreshToken}',
         data: {
           'refreshToken': refreshToken,

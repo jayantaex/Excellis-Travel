@@ -18,9 +18,9 @@ class PriceDetailsSheet extends StatelessWidget {
   final FlightOffer flightOffer;
   PriceDetailsSheet({super.key, required this.flightOffer});
 
-  List<String> adult = [];
-  List<String> child = [];
-  List<String> infant = [];
+  final List<String> adult = [];
+  final List<String> child = [];
+  final List<String> infant = [];
 
   @override
   Widget build(BuildContext context) {

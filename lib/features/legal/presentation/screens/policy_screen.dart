@@ -72,7 +72,7 @@ class _PolicyScreenState extends State<PolicyScreen> {
                             child: CircularProgressIndicator.adaptive())
                         : ClipRRect(
                             borderRadius: const BorderRadius.all(
-                              const Radius.circular(24),
+                              Radius.circular(24),
                             ),
                             child: WebViewWidget(controller: controller!)),
                   ),

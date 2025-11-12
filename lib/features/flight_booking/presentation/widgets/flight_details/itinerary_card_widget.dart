@@ -10,13 +10,13 @@ import 'segement_card_widget.dart';
 class ItineraryCard extends StatelessWidget {
   final Itinerary data;
   final FlightDictionary flightDictionary;
-  bool? isSegmentRequired = true;
-  ItineraryCard(
+  final bool? isSegmentRequired;
+  const ItineraryCard(
       {super.key,
       required this.width,
       required this.data,
       required this.flightDictionary,
-      this.isSegmentRequired});
+      this.isSegmentRequired = true});
 
   final double width;
 

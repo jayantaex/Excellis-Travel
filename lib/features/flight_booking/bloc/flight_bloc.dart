@@ -1,10 +1,10 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:excellistravel/features/flight_booking/models/create_order_res.dart';
 import '../../../core/network/api_response.dart';
 import '../data/flight_booking_repository.dart';
 import '../models/air_port_model.dart';
+import '../models/create_order_res.dart';
 import '../models/flight_offer_price_model.dart' show FlightOfferPriceDataModel;
 import '../models/flights_data_model.dart' show FlightsDataModel;
 import '../models/payment_verify_res_model.dart';

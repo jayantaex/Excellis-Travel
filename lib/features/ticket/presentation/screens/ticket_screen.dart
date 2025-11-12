@@ -6,7 +6,6 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../../flight_booking/data/search_data.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/ticket_bloc.dart';
 import '../../models/ticket_model.dart';
@@ -20,7 +19,7 @@ class TicketScreen extends StatefulWidget {
 }
 
 class _TicketScreenState extends State<TicketScreen> {
-  final SearchData searchData = SearchData();
+  // final SearchData searchData = SearchData();
   int page = 1;
   int limit = 10;
   final ScrollController _scrollController = ScrollController();
@@ -84,7 +83,7 @@ class _TicketScreenState extends State<TicketScreen> {
 
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: searchData.ticketData.isEmpty
+                      child: tickets.isEmpty
                           ? const Center(
                               child: Text(
                                 'No Tickets Found',

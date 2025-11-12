@@ -1,7 +1,7 @@
-import 'package:excellistravel/core/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/widgets/loading_widget.dart';
 
 class AirportCardLoadingWidget extends StatelessWidget {
   const AirportCardLoadingWidget({super.key});

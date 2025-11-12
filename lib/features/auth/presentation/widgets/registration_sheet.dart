@@ -1,9 +1,9 @@
 import 'dart:developer';
-import 'package:excellistravel/core/common/bloc/cities/city_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/common/bloc/cities/city_bloc.dart';
 import '../../../../core/common/bloc/states/states_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -71,7 +71,9 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      context.read<StatesBloc>().add(GetStatesEvent());
+      if (context.mounted) {
+        context.read<StatesBloc>().add(GetStatesEvent());
+      }
     });
     super.initState();
   }
@@ -229,14 +231,14 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                       if (state is StatesLoaded) {
                         selectedState =
                             state.states.first.name?.trim() ?? 'Andhra Pradesh';
-                        state.states.forEach((element) {
+                        for (var element in state.states) {
                           _states.add(
                             DropdownMenuItem(
                               value: element.name,
                               child: Text(element.name ?? ''),
                             ),
                           );
-                        });
+                        }
                         selectedStatCode = state.states.first.code ?? 'AP';
                         selectedStateId = state.states.first.id ?? 1;
                         context.read<CityBloc>().add(
