@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ticket_widget/ticket_widget.dart';
-
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/flights_data_model.dart';
@@ -18,10 +16,10 @@ class RecentSearchCard extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       onTap: () {},
-      child: TicketWidget(
+      child: Container(
         height: 200,
         width: width * 0.85,
-        isCornerRounded: true,
+        color: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
         child: Column(
           children: [

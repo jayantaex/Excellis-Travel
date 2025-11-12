@@ -1,6 +1,5 @@
 import 'package:excellistravel/features/flight_booking/models/flights_data_model.dart';
 import 'package:flutter/material.dart';
-import 'package:ticket_widget/ticket_widget.dart';
 import '../../features/flight_booking/models/ticket_data_model.dart';
 import '../../features/ticket/models/ticket_model.dart';
 import '../constants/app_styles.dart';

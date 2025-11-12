@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ticket_widget/ticket_widget.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -45,8 +44,8 @@ class PaymentDetailsScreen extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: TicketWidget(
-                              isCornerRounded: true,
+                            child: Container(
+                              color: Colors.white,
                               width: AppHelpers.getScreenWidth(context),
                               height: persion <= 2
                                   ? AppHelpers.getScreenHeight(context) * 0.75
