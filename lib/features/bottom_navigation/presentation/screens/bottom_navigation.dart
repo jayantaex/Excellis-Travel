@@ -35,15 +35,12 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
           if (accessToken != null && accessToken.isNotEmpty) {
             if (context.mounted) {
               context.read<ProfileBloc>().add(const LoadProfileEvent());
-              context
-                  .read<TicketBloc>()
-                  .add(FetchTickets(accessToken: accessToken));
             }
           }
         }
         _screens = [
           const FlightSearchScreen(),
-          TicketScreen(),
+          const TicketScreen(),
           const WishListScreen(),
           MyProfileScreen()
         ];

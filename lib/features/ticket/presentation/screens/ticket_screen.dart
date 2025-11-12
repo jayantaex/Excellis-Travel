@@ -1,21 +1,48 @@
 import 'dart:developer';
 
-import 'package:excellistravel/features/ticket/ticket_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
-import '../../../../core/widgets/compact_ticket_card.dart';
+import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../../auth/auth_module.dart';
 import '../../../flight_booking/data/search_data.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/ticket_bloc.dart';
+import '../../models/ticket_model.dart';
+import '../widgets/ticket_widget.dart';
 
-class TicketScreen extends StatelessWidget {
-  TicketScreen({super.key});
+class TicketScreen extends StatefulWidget {
+  const TicketScreen({super.key});
+
+  @override
+  State<TicketScreen> createState() => _TicketScreenState();
+}
+
+class _TicketScreenState extends State<TicketScreen> {
   final SearchData searchData = SearchData();
+  int page = 1;
+  int limit = 10;
+  final ScrollController _scrollController = ScrollController();
+  List<TicketDataModel> tickets = [];
+  @override
+  void initState() {
+    context.read<TicketBloc>().add(const FetchTickets(page: 1, limit: 10));
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        page++;
+        context.read<TicketBloc>().add(
+              FetchTickets(
+                page: page,
+                limit: limit,
+              ),
+            );
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,8 +97,19 @@ class TicketScreen extends StatelessWidget {
                           : ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: BlocConsumer<TicketBloc, TicketState>(
-                                listener: (context, state) {
-                                  log('state $state');
+                                listener: (context, state) async {
+                                  log("Ticket-STATE $state",
+                                      name: "Ticket-Screen");
+                                  if (state is TicketLoaded) {
+                                    for (var element in state.tickets) {
+                                      tickets.add(element);
+                                    }
+                                  }
+                                  if (state is TicketLoadedMore) {
+                                    for (var element in state.tickets) {
+                                      tickets.add(element);
+                                    }
+                                  }
                                 },
                                 builder: (context, state) {
                                   if (state is TicketLoading) {
@@ -90,8 +128,9 @@ class TicketScreen extends StatelessWidget {
                                       ),
                                     );
                                   }
-                                  if (state is TicketLoaded) {
-                                    if (state.tickets.isEmpty) {
+                                  if (state is TicketLoaded ||
+                                      state is TicketLoadedMore) {
+                                    if (tickets.isEmpty) {
                                       return const Center(
                                         child: Text(
                                           'No Tickets Found',
@@ -104,25 +143,12 @@ class TicketScreen extends StatelessWidget {
                                     }
 
                                     return ListView.builder(
-                                      itemCount: state.tickets.length,
+                                      controller: _scrollController,
+                                      itemCount: tickets.length,
                                       itemBuilder: (context, index) {
-                                        return Container(
-                                          margin:
-                                              const EdgeInsets.only(bottom: 10),
-                                          child: CompactTicketCard(
-                                            ticketData: state.tickets[index],
-                                            onTap: () {
-                                              context.pushNamed(
-                                                  TicketModule.ticketDetails,
-                                                  extra: {
-                                                    'ticketIndex': index
-                                                  });
-                                            },
-                                            isFavIconRequired: true,
-                                            isOnWishList: false,
-                                            onWishListTap: () {},
-                                            data: searchData.ticketData[index],
-                                          ),
+                                        return TicketWidget(
+                                          isLast: index == tickets.length - 1,
+                                          ticketData: tickets[index],
                                         );
                                       },
                                     );
@@ -147,44 +173,6 @@ class TicketScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class NotLoginWidget extends StatelessWidget {
-  const NotLoginWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Center(
-          child: Text(
-            'It looks like you are not logged in',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: AppColors.white,
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        InkWell(
-          onTap: () {
-            context.goNamed(AuthModule.loginName);
-          },
-          child: const Text('LOGIN',
-              style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  decorationColor: AppColors.white,
-                  fontSize: 14,
-                  color: AppColors.white)),
-        ),
-      ],
     );
   }
 }

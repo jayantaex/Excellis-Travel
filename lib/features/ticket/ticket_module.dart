@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/network/api_client.dart';
+import 'models/ticket_model.dart';
 import 'presentation/screens/ticket_details_screen.dart';
 import 'api/ticket_api.dart';
 import 'bloc/ticket_bloc.dart';
@@ -21,7 +22,7 @@ class TicketModule {
       providers: [
         BlocProvider(create: (_) => TicketBloc(repository: ticketRepository)),
       ],
-      child: TicketScreen(),
+      child: const TicketScreen(),
     );
   }
 
@@ -29,8 +30,7 @@ class TicketModule {
   static String ticketDetails = 'ticket_details';
   static String ticketDetailsRoute = '/ticket_details';
   static Widget ticketDetailsBuilder(GoRouterState state) {
-    Map params = state.extra as Map;
-    log('${params['ticketIndex']}', name: 'TICKET MODULE');
+    final TicketDataModel data = state.extra as TicketDataModel;
     final apiClient = ApiClient();
     final ticketApi = TicketApi(apiClient: apiClient);
     final ticketRepository = TicketsRepository(ticketApi: ticketApi);
@@ -38,8 +38,8 @@ class TicketModule {
       providers: [
         BlocProvider(create: (_) => TicketBloc(repository: ticketRepository)),
       ],
-      child: const TicketDetailsScreen(
-        ticketIndex: 1,
+      child: TicketDetailsScreen(
+        ticketData: data,
       ),
     );
   }

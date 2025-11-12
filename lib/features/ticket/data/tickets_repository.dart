@@ -7,7 +7,7 @@ class TicketsRepository {
 
   TicketsRepository({required this.ticketApi});
   Future<ApiResponse<List<TicketDataModel>>> fetchTickets(
-      {required String accessToken}) async {
-    return await ticketApi.getAllBookedTickets(accessToken: accessToken);
+      {required int page, required int limit}) async {
+    return await ticketApi.getAllBookedTickets(page: page, limit: limit);
   }
 }
