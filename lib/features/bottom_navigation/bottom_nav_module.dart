@@ -7,7 +7,6 @@ import '../profile_management/data/profile_management_repository.dart';
 import '../ticket/api/ticket_api.dart';
 import '../ticket/bloc/ticket_bloc.dart';
 import '../ticket/data/tickets_repository.dart';
-
 import 'presentation/screens/bottom_navigation.dart';
 
 class BottomNavModule {

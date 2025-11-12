@@ -44,11 +44,12 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 85,
+      height: 65,
       color: AppColors.white,
-      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 40),
+      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -90,7 +91,7 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
           ),
           SizedBox(
             height: 45,
-            width: AppHelpers.getScreenWidth(context) * 0.25,
+            width: AppHelpers.getScreenWidth(context) * 0.3,
             child: AppPrimaryButton(
               onPressed: () async {
                 try {

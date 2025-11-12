@@ -36,10 +36,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
       TextEditingController(text: '1');
 
   final TextEditingController _depurtureController = TextEditingController(
-    text: 'CCU(KOLKATA)\n SUBHASH CHANDRA BOSE INTL',
+    text: 'CCU(KOLKATA)\nSUBHASH CHANDRA BOSE INTL',
   );
   final TextEditingController _arrivalController = TextEditingController(
-    text: 'DEL(DELHI)\n INDRA GANDHI INTL',
+    text: 'DEL(DELHI)\nINDRA GANDHI INTL',
   );
   String departureCode = 'CCU';
   String departureCity = '';

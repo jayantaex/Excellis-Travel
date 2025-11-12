@@ -38,14 +38,14 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
         const SizedBox(height: 16),
         recentSearches.isEmpty
             ? SizedBox(
-                height: 160,
+                height: 120,
                 width: AppHelpers.getScreenWidth(context),
                 child: Center(
                   child: Text(
                     "It seems you haven't searched for any flight yet \n Start searching now",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black.withOpacity(0.5),
                     ),
