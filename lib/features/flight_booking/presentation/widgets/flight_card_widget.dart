@@ -4,7 +4,7 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../models/flights_data_model.dart';
 
-class FlightCardWidget extends StatefulWidget {
+class FlightCardWidget extends StatelessWidget {
   final Datam data;
   final FlightDictionary? dictionaries;
   final bool? isOnWishList;
@@ -23,16 +23,6 @@ class FlightCardWidget extends StatefulWidget {
       this.customWidth});
 
   @override
-  State<FlightCardWidget> createState() => _FlightCardWidgetState();
-}
-
-class _FlightCardWidgetState extends State<FlightCardWidget> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double width = AppHelpers.getScreenWidth(context);
     return InkWell(
@@ -40,7 +30,7 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
       hoverColor: Colors.transparent,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-      onTap: widget.onTap,
+      onTap: onTap,
       child: ClipPath(
         clipper: TicketClipper(),
         child: Container(
@@ -69,12 +59,12 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                             CircleAvatar(
                               radius: 15,
                               backgroundImage: AssetImage(
-                                  'assets/images/airlines/${widget.data.itineraries?.first.segments?.first.carrierCode}.png'),
+                                  'assets/images/airlines/${data.itineraries?.first.segments?.first.carrierCode}.png'),
                             ),
                             const SizedBox(width: 5),
                             Text(
-                              widget.dictionaries?.dictionaries.carriers![
-                                      '${widget.data.itineraries?.first.segments?.first.carrierCode}'] ??
+                              dictionaries?.dictionaries.carriers![
+                                      '${data.itineraries?.first.segments?.first.carrierCode}'] ??
                                   'NO-NAME',
                               style: const TextStyle(
                                 fontSize: 12,
@@ -100,7 +90,7 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                             color: getColorByStatus('fastest').withOpacity(0.3),
                           ),
                           child: Text(
-                            '${widget.data.numberOfBookableSeats} seats available'
+                            '${data.numberOfBookableSeats} seats available'
                                 .toUpperCase(),
                             style: TextStyle(
                               fontSize: 10,
@@ -122,13 +112,13 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                   children: [
                     SizedBox(
                         height: 90,
-                        width: widget.customWidth ?? width * 0.22,
+                        width: customWidth ?? width * 0.22,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                widget.data.itineraries?.first.segments?.first
+                                data.itineraries?.first.segments?.first
                                         .departure?.iataCode ??
                                     'NO_CODE',
                                 style: const TextStyle(
@@ -136,7 +126,7 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                             Text(
                               AppHelpers.formatDateTime(
                                 DateTime.parse(
-                                  widget.data.itineraries?.first.segments?.first
+                                  data.itineraries?.first.segments?.first
                                           .departure?.at ??
                                       DateTime.now().toString(),
                                 ),
@@ -151,7 +141,7 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                             Text(
                               AppHelpers.formatDateTime(
                                   DateTime.parse(
-                                    widget.data.itineraries?.first.segments
+                                    data.itineraries?.first.segments
                                             ?.first.departure?.at ??
                                         DateTime.now().toString(),
                                   ),
@@ -164,7 +154,7 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                           ],
                         )),
                     SizedBox(
-                        width: widget.customWidth ?? width * 0.22,
+                        width: customWidth ?? width * 0.22,
                         child: Column(
                           children: [
                             AppHelpers.svgAsset(
@@ -173,7 +163,7 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                               children: [
                                 Text(
                                   getDuration(
-                                      duration: widget.data.itineraries?.first
+                                      duration: data.itineraries?.first
                                               .duration ??
                                           ''),
                                   style: const TextStyle(
@@ -185,11 +175,11 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                                   color: AppColors.primary.withOpacity(0.3),
                                 ),
                                 Text(
-                                  widget.data.itineraries?.first.segments
+                                  data.itineraries?.first.segments
                                               ?.length ==
                                           1
                                       ? 'Non-Stop'
-                                      : '${(widget.data.itineraries!.first.segments!.length - 1)} Stop(s)',
+                                      : '${(data.itineraries!.first.segments!.length - 1)} Stop(s)',
                                   style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400),
@@ -200,13 +190,13 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                         )),
                     SizedBox(
                       height: 90,
-                      width: widget.customWidth ?? width * 0.22,
+                      width: customWidth ?? width * 0.22,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                              widget.data.itineraries?.first.segments?.last
+                              data.itineraries?.first.segments?.last
                                       .arrival?.iataCode ??
                                   'NO_CODE',
                               style: const TextStyle(
@@ -214,7 +204,7 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                           Text(
                             AppHelpers.formatDateTime(
                               DateTime.parse(
-                                widget.data.itineraries?.first.segments?.last
+                                data.itineraries?.first.segments?.last
                                         .arrival?.at ??
                                     DateTime.now().toString(),
                               ),
@@ -228,7 +218,7 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                           Text(
                             AppHelpers.formatTime(
                                 DateTime.parse(
-                                  widget.data.itineraries?.first.segments?.last
+                                  data.itineraries?.first.segments?.last
                                           .arrival?.at ??
                                       DateTime.now().toString(),
                                 ),
@@ -268,7 +258,7 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                       ),
                     ),
                     Text(
-                      'Price | ${widget.data.itineraries!.length > 1 ? 'Round Trip' : 'One Way'}',
+                      'Price | ${data.itineraries!.length > 1 ? 'Round Trip' : 'One Way'}',
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -284,14 +274,14 @@ class _FlightCardWidgetState extends State<FlightCardWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.data.travelerPricings?.first.fareDetailsBySegment
+                      data.travelerPricings?.first.fareDetailsBySegment
                               ?.first.cabin ??
                           'NO_CABIN',
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      '₹${widget.data.price?.markupPrice ?? 0.00}',
+                      '₹${data.price?.markupPrice ?? 0.00}',
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),
                     ),

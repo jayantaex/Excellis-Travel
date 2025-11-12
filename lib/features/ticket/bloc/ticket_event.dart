@@ -8,8 +8,12 @@ sealed class TicketEvent extends Equatable {
 }
 
 class FetchTickets extends TicketEvent {
-  final String accessToken;
-  const FetchTickets({required this.accessToken});
+  final int page;
+  final int limit;
+  const FetchTickets({
+    required this.page,
+    required this.limit,
+  });
 }
 
 class RefreshTickets extends TicketEvent {}

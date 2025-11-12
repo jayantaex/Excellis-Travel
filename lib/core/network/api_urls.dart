@@ -41,6 +41,9 @@ class EndPoints {
   //markup pricing
   static const markupPricing = '/markups/calculate-markup';
 
+  //ticket
+  static const ticket = '/bookings/filtered-auto';
+
   //amadues
   static const amaduesAccessToken = "/v1/security/oauth2/token";
   static const airportSearchByKeyword = "/v1/reference-data/locations";

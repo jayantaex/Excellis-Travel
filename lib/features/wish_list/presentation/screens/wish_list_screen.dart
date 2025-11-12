@@ -2,7 +2,6 @@ import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/widgets/compact_ticket_card.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../flight_booking/data/search_data.dart';
 import '../../../flight_booking/models/ticket_data_model.dart';
@@ -15,7 +14,6 @@ class WishListScreen extends StatefulWidget {
 }
 
 class _WishListScreenState extends State<WishListScreen> {
-  final SearchData searchData = SearchData();
   List<TicketModel> wishList = [];
   @override
   void initState() {
@@ -40,7 +38,7 @@ class _WishListScreenState extends State<WishListScreen> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: searchData.ticketData.isEmpty
+                  child: wishList.isEmpty
                       ? const Center(
                           child: Text(
                           'No Tickets Found',
@@ -52,32 +50,11 @@ class _WishListScreenState extends State<WishListScreen> {
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: ListView.builder(
-                            itemCount: searchData.ticketData.length,
+                            itemCount: wishList.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: const EdgeInsets.only(bottom: 10),
-                                child: CompactTicketCard(
-                                  onTap: () {},
-                                  isFavIconRequired: true,
-                                  isOnWishList: wishList.contains(
-                                    searchData.ticketData[index],
-                                  ),
-                                  onWishListTap: () {
-                                    if (wishList.contains(
-                                        searchData.ticketData[index])) {
-                                      setState(() {
-                                        wishList.remove(
-                                            searchData.ticketData[index]);
-                                      });
-                                    } else {
-                                      setState(() {
-                                        wishList
-                                            .add(searchData.ticketData[index]);
-                                      });
-                                    }
-                                  },
-                                  data: searchData.ticketData[index],
-                                ),
+                                child: const SizedBox(),
                               );
                             },
                           ),

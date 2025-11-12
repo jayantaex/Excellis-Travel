@@ -20,13 +20,13 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
       FetchTickets event, Emitter<TicketState> emit) async {
     try {
       emit(TicketLoading());
-      List<TicketDataModel> tickets = [];
-      ApiResponse res =
-          await repository.fetchTickets(accessToken: event.accessToken);
+      ApiResponse<List<TicketDataModel>> res = await repository.fetchTickets(
+        page: event.page,
+        limit: event.limit,
+      );
       log("${res.errorMessage}", name: "TICKET-BLOC");
       if (res.errorMessage == null || res.errorMessage == '') {
-        tickets = res.data ?? [];
-        emit(TicketLoaded(tickets: tickets));
+        emit(TicketLoaded(tickets: res.data ?? []));
         return;
       }
       emit(TicketError(err: res.errorMessage ?? 'Something went wrong'));
