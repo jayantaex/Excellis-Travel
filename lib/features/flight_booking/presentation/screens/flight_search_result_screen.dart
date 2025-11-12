@@ -17,7 +17,7 @@ import '../../flight_booking_module.dart';
 import '../../models/flights_data_model.dart';
 import '../../models/hive/flight_hive_data_model.dart' show FlightHiveDataModel;
 import '../widgets/flight_listing/class_filter_widget.dart';
-import '../widgets/flight_listing/flight_card_widget.dart';
+import '../widgets/flight_card_widget.dart';
 import '../widgets/flight_listing/date_filter_widget.dart';
 import '../widgets/loading/flight_list_loadding_widget.dart';
 
@@ -216,16 +216,14 @@ Future<bool> _saveToLocal(
 
     Map<String, dynamic> dictionaries = flightDictionary.toJson();
     Map<String, dynamic> dataMap = data.toJson();
-    FlightHiveDataModel flightHiveDataModel =
+    FlightHiveDataModel recentSearchedData =
         FlightHiveDataModel(data: dataMap, dictionaries: dictionaries);
 
     FlightHiveDataModel? existingData = flightBox.get(key);
     if (existingData != null) {
       flightBox.delete(key);
     }
-
-    await flightBox.put(key, flightHiveDataModel);
-
+    await flightBox.put(key, recentSearchedData);
     return true;
   } catch (e) {
     log("Error while saving local DB $e");

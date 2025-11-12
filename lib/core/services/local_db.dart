@@ -1,5 +1,4 @@
 import 'package:hive_flutter/hive_flutter.dart';
-
 import '../../features/flight_booking/models/hive/flight_hive_data_model.dart';
 import '../constants/app_constants.dart';
 

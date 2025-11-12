@@ -1,8 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
-import '../../../models/flights_data_model.dart';
+import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../models/flights_data_model.dart';
 
 class FlightCardWidget extends StatefulWidget {
   final Datam data;

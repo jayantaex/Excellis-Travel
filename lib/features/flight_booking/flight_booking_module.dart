@@ -32,6 +32,11 @@ class FlightBookingModule {
   static const String airportSearch = '/airport-search';
   static const String airportSearchName = 'airportSearch';
   static Widget airportSearchBuilder(context, state) {
+    // PaymentVerifiedModel _data = PaymentVerifiedModel.fromJson(bookedData);
+    // return PassDownloadScreen(
+    //   data: _data,
+    // );
+
     final extra = state.extra as Map<String, dynamic>?;
     final onAirportSelected =
         extra?['onAirportSelected'] as void Function(AirportModel airport)?;

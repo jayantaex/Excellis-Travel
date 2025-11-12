@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 class FlightsDataModel {
   final Meta? meta;
   final List<Datam>? datam;
@@ -9,20 +7,26 @@ class FlightsDataModel {
 
   factory FlightsDataModel.fromJson(Map<String, dynamic> json) =>
       FlightsDataModel(
-        meta: json['meta'] != null ? Meta.fromJson(json['meta']) : null,
-        datam: json['data'] != null
-            ? List<Datam>.from(json['data'].map((x) => Datam.fromJson(x)))
+        meta: json['meta'] != null
+            ? Meta.fromJson(json['meta'] as Map<String, dynamic>)
             : null,
+        datam: json['data'] != null
+            ? List<Datam>.from(json['data'].map(
+                (dataItem) => Datam.fromJson(dataItem as Map<String, dynamic>)))
+            : null,
+        // Corrected path to Dictionaries inside the 'dictionaries' key
         dictionaries: json['dictionaries'] != null
-            ? FlightDictionary.fromJson(json['dictionaries'])
+            ? FlightDictionary.fromJson(
+                json['dictionaries'] as Map<String, dynamic>)
             : null,
       );
 
   Map<String, dynamic> toJson() => {
         'meta': meta?.toJson(),
         'data': datam != null
-            ? List<dynamic>.from(datam!.map((x) => x.toJson()))
+            ? List<dynamic>.from(datam!.map((dataItem) => dataItem.toJson()))
             : null,
+        'dictionaries': dictionaries?.toJson(),
       };
 }
 
@@ -83,24 +87,28 @@ class Datam {
         nonHomogeneous: json['nonHomogeneous'],
         oneWay: json['oneWay'],
         isUpsellOffer: json['isUpsellOffer'],
-        lastTicketingDate: json['lastTicketingDate'] ?? '',
-        lastTicketingDateTime: json['lastTicketingDateTime'] ?? '',
+        lastTicketingDate: json['lastTicketingDate'],
+        lastTicketingDateTime: json['lastTicketingDateTime'],
         numberOfBookableSeats: json['numberOfBookableSeats'],
         itineraries: json['itineraries'] != null
-            ? List<Itinerary>.from(
-                json['itineraries'].map((x) => Itinerary.fromJson(x)))
+            ? List<Itinerary>.from(json['itineraries'].map((itineraryJson) {
+                return Itinerary.fromJson(itineraryJson);
+              }))
             : null,
-        price:
-            json['price'] != null ? DatamPrice.fromJson(json['price']) : null,
+        price: json['price'] != null
+            ? DatamPrice.fromJson(json['price'] as Map<String, dynamic>)
+            : null,
         pricingOptions: json['pricingOptions'] != null
-            ? PricingOptions.fromJson(json['pricingOptions'])
+            ? PricingOptions.fromJson(
+                json['pricingOptions'] as Map<String, dynamic>)
             : null,
         validatingAirlineCodes: json['validatingAirlineCodes'] != null
             ? List<String>.from(json['validatingAirlineCodes'])
             : null,
         travelerPricings: json['travelerPricings'] != null
-            ? List<TravelerPricing>.from(json['travelerPricings']
-                .map((x) => TravelerPricing.fromJson(x)))
+            ? List<TravelerPricing>.from(json['travelerPricings'].map(
+                (pricingJson) => TravelerPricing.fromJson(
+                    pricingJson as Map<String, dynamic>)))
             : null,
       );
 
@@ -117,13 +125,14 @@ class Datam {
         'numberOfBookableSeats': numberOfBookableSeats,
         'itineraries': itineraries != null
             ? List<Map<String, dynamic>>.from(
-                itineraries!.map((Itinerary x) => x.toJson()))
+                itineraries!.map((Itinerary itinerary) => itinerary.toJson()))
             : null,
         'price': price?.toJson(),
         'pricingOptions': pricingOptions?.toJson(),
         'validatingAirlineCodes': validatingAirlineCodes,
         'travelerPricings': travelerPricings != null
-            ? List<dynamic>.from(travelerPricings!.map((x) => x.toJson()))
+            ? List<Map<String, dynamic>>.from(travelerPricings!
+                .map((TravelerPricing pricing) => pricing.toJson()))
             : null,
       };
 }
@@ -137,15 +146,15 @@ class Itinerary {
   factory Itinerary.fromJson(Map<String, dynamic> json) => Itinerary(
         duration: json['duration'],
         segments: json['segments'] != null
-            ? List<Segment>.from(
-                json['segments'].map((x) => Segment.fromJson(x)))
+            ? List<Segment>.from(json['segments'].map((segmentJson) =>
+                Segment.fromJson(segmentJson as Map<String, dynamic>)))
             : null,
       );
 
   Map<String, dynamic> toJson() => {
         'duration': duration,
         'segments': segments != null
-            ? List<Map<String, dynamic>>.from(segments!.map((x) => x.toJson()))
+            ? List<dynamic>.from(segments!.map((segment) => segment.toJson()))
             : null,
       };
 }
@@ -177,17 +186,18 @@ class Segment {
 
   factory Segment.fromJson(Map<String, dynamic> json) => Segment(
         departure: json['departure'] != null
-            ? Departure.fromJson(json['departure'])
+            ? Departure.fromJson(json['departure'] as Map<String, dynamic>)
             : null,
-        arrival:
-            json['arrival'] != null ? Arrival.fromJson(json['arrival']) : null,
+        arrival: json['arrival'] != null
+            ? Arrival.fromJson(json['arrival'] as Map<String, dynamic>)
+            : null,
         carrierCode: json['carrierCode'],
         number: json['number'],
         aircraft: json['aircraft'] != null
-            ? Aircraft.fromJson(json['aircraft'])
+            ? Aircraft.fromJson(json['aircraft'] as Map<String, dynamic>)
             : null,
         operating: json['operating'] != null
-            ? Operating.fromJson(json['operating'])
+            ? Operating.fromJson(json['operating'] as Map<String, dynamic>)
             : null,
         duration: json['duration'],
         id: json['id'],
@@ -296,7 +306,8 @@ class DatamPrice {
         total: json['total'],
         base: json['base'],
         fees: json['fees'] != null
-            ? List<Fee>.from(json['fees'].map((x) => Fee.fromJson(x)))
+            ? List<Fee>.from(json['fees'].map(
+                (feeJson) => Fee.fromJson(feeJson as Map<String, dynamic>)))
             : null,
         grandTotal: json['grandTotal'],
       );
@@ -306,9 +317,10 @@ class DatamPrice {
         'total': total,
         'base': base,
         'fees': fees != null
-            ? List<dynamic>.from(fees!.map((x) => x.toJson()))
+            ? List<dynamic>.from(fees!.map((fee) => fee.toJson()))
             : null,
         'grandTotal': grandTotal,
+        'markupPrice': markupPrice, // Included markupPrice in toJson
       };
 }
 
@@ -363,11 +375,13 @@ class TravelerPricing {
         fareOption: json['fareOption'],
         travelerType: json['travelerType'],
         price: json['price'] != null
-            ? TravelerPricingPrice.fromJson(json['price'])
+            ? TravelerPricingPrice.fromJson(
+                json['price'] as Map<String, dynamic>)
             : null,
         fareDetailsBySegment: json['fareDetailsBySegment'] != null
-            ? List<FareDetailsBySegment>.from(json['fareDetailsBySegment']
-                .map((x) => FareDetailsBySegment.fromJson(x)))
+            ? List<FareDetailsBySegment>.from(json['fareDetailsBySegment'].map(
+                (detailsJson) => FareDetailsBySegment.fromJson(
+                    detailsJson as Map<String, dynamic>)))
             : null,
       );
 
@@ -377,7 +391,8 @@ class TravelerPricing {
         'travelerType': travelerType,
         'price': price?.toJson(),
         'fareDetailsBySegment': fareDetailsBySegment != null
-            ? List<dynamic>.from(fareDetailsBySegment!.map((x) => x.toJson()))
+            ? List<Map<String, dynamic>>.from(fareDetailsBySegment!
+                .map((FareDetailsBySegment details) => details.toJson()))
             : null,
       };
 }
@@ -429,14 +444,16 @@ class FareDetailsBySegment {
         brandedFareLabel: json['brandedFareLabel'],
         fareDetailsBySegmentClass: json['class'],
         includedCheckedBags: json['includedCheckedBags'] != null
-            ? IncludedCBags.fromJson(json['includedCheckedBags'])
+            ? IncludedCBags.fromJson(
+                json['includedCheckedBags'] as Map<String, dynamic>)
             : null,
         includedCabinBags: json['includedCabinBags'] != null
-            ? IncludedCBags.fromJson(json['includedCabinBags'])
+            ? IncludedCBags.fromJson(
+                json['includedCabinBags'] as Map<String, dynamic>)
             : null,
         amenities: json['amenities'] != null
-            ? List<Amenity>.from(
-                json['amenities'].map((x) => Amenity.fromJson(x)))
+            ? List<Amenity>.from(json['amenities'].map((amenityJson) =>
+                Amenity.fromJson(amenityJson as Map<String, dynamic>)))
             : null,
       );
 
@@ -450,7 +467,8 @@ class FareDetailsBySegment {
         'includedCheckedBags': includedCheckedBags?.toJson(),
         'includedCabinBags': includedCabinBags?.toJson(),
         'amenities': amenities != null
-            ? List<dynamic>.from(amenities!.map((x) => x.toJson()))
+            ? List<Map<String, dynamic>>.from(
+                amenities!.map((Amenity amenity) => amenity.toJson()))
             : null,
       };
 }
@@ -484,7 +502,8 @@ class Amenity {
         isChargeable: json['isChargeable'],
         amenityType: json['amenityType'],
         amenityProvider: json['amenityProvider'] != null
-            ? AmenityProvider.fromJson(json['amenityProvider'])
+            ? AmenityProvider.fromJson(
+                json['amenityProvider'] as Map<String, dynamic>)
             : null,
       );
 
@@ -512,15 +531,15 @@ class AmenityProvider {
 class FlightDictionary {
   final Dictionaries dictionaries;
   FlightDictionary({required this.dictionaries});
+
+  // The 'dictionaries' field in the outer JSON contains the actual map.
   factory FlightDictionary.fromJson(Map<String, dynamic> json) {
     return FlightDictionary(
       dictionaries: Dictionaries.fromJson(json),
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        'dictionaries': dictionaries.toJson(),
-      };
+  Map<String, dynamic> toJson() => dictionaries.toJson();
 }
 
 class Dictionaries {
@@ -534,12 +553,18 @@ class Dictionaries {
 
   factory Dictionaries.fromJson(Map<String, dynamic> json) {
     return Dictionaries(
-      aircraft: Map<String, String>.from(json['aircraft']),
-      carriers: Map<String, String>.from(json['carriers']),
+      // Added null check before mapping/casting from JSON
+      aircraft: json['aircraft'] != null
+          ? Map<String, String>.from(json['aircraft'])
+          : null,
+      carriers: json['carriers'] != null
+          ? Map<String, String>.from(json['carriers'])
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() => {
+        // Maps are directly serializable if their keys and values are strings
         'aircraft': aircraft,
         'carriers': carriers,
       };

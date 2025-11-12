@@ -37,6 +37,9 @@ class AppColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
   static const Color grey = Color(0xFFA7A4A4);
+  //seat maping color
+  static const Color facility = Color(0xFF872000);
+  static const Color notAvailable = Color(0xFF403f3f);
 }
 
 class AppSizes {

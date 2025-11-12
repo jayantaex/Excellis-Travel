@@ -93,13 +93,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                     ),
                     child: SingleChildScrollView(
                       child: BlocConsumer<FlightBloc, FlightState>(
-                        listener: (context, state) {
-                          log("************************************");
-                          log("************************************");
-                          log("state: $state");
-                          log("************************************");
-                          log("************************************");
-                        },
+                        listener: (context, state) {},
                         builder: (context, state) {
                           if (state is FlightOfferPriceLoading) {
                             return const FlightDetailsLoadingWidet();

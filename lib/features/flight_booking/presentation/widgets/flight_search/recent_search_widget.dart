@@ -1,12 +1,15 @@
-import 'package:excellistravel/features/flight_booking/presentation/widgets/flight_listing/flight_card_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/services/local_db.dart';
 import '../../../../../core/utils/app_helpers.dart';
+import '../../../flight_booking_module.dart';
 import '../../../models/flights_data_model.dart';
 import '../../../models/hive/flight_hive_data_model.dart';
+import '../flight_card_widget.dart';
 
 class RecentSearchWidget extends StatefulWidget {
   const RecentSearchWidget({super.key});
@@ -21,7 +24,7 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       Box<FlightHiveDataModel> flightBox = await LocalDB().getFlightBox();
-      // recentSearches = flightBox.values.toList();
+      recentSearches.addAll(flightBox.values);
       setState(() {});
     });
 
@@ -76,7 +79,9 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                   scrollDirection: Axis.horizontal,
                   itemCount: recentSearches.length,
                   itemBuilder: (context, index) {
-                    Datam datam = Datam.fromJson(recentSearches[index].data);
+                    String strData = jsonEncode(recentSearches[index].data);
+                    Map<String, dynamic> data = jsonDecode(strData);
+                    Datam datam = Datam.fromJson(data);
                     FlightDictionary flightDictionary =
                         FlightDictionary.fromJson(
                             recentSearches[index].dictionaries);
@@ -85,7 +90,15 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                       child: FlightCardWidget(
                           data: datam,
                           dictionaries: flightDictionary,
-                          onTap: () {}),
+                          onTap: () {
+                            context.pushNamed(
+                              FlightBookingModule.flightDetailsName,
+                              extra: {
+                                'data': datam,
+                                'flightDictionary': flightDictionary
+                              },
+                            );
+                          }),
                     );
                   },
                 ),

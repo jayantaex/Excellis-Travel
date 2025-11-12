@@ -3,7 +3,6 @@ import '../api/flight_booking_api.dart';
 import '../models/air_port_model.dart';
 import '../models/create_order_res.dart';
 import '../models/flight_offer_price_model.dart';
-import '../models/flight_order_model.dart';
 import '../models/flights_data_model.dart';
 import '../models/payment_verify_res_model.dart';
 
@@ -30,8 +29,6 @@ class FlightBookingRepository {
   }) async {
     return await api.getFlightOfferPrice(body: body);
   }
-
-
 
   Future<ApiResponse<OrderModel>> createPayment(
       {required Map<String, dynamic> body}) async {
