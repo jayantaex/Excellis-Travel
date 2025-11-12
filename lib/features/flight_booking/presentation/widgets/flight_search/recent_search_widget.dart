@@ -9,7 +9,7 @@ import '../../../../../core/utils/app_helpers.dart';
 import '../../../flight_booking_module.dart';
 import '../../../models/flights_data_model.dart';
 import '../../../models/hive/flight_hive_data_model.dart';
-import '../flight_listing/flight_card_widget.dart';
+import '../flight_card_widget.dart';
 
 class RecentSearchWidget extends StatefulWidget {
   const RecentSearchWidget({super.key});

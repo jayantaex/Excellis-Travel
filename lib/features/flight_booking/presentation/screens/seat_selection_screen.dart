@@ -11,7 +11,6 @@ import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/search_data.dart';
-import '../widgets/seat_check_box_widget.dart';
 import '../widgets/seat_map/facility_box.dart';
 import '../widgets/seat_map/seat_box.dart';
 
