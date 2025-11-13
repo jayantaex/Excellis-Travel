@@ -1,5 +1,3 @@
-// import 'package:flutter/material.dart';
-
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -21,10 +19,10 @@ class SeatSelection extends StatefulWidget {
 
 class _SeatSelectionState extends State<SeatSelection> {
   SeatMapDataModel? _seatData;
-  List<DateTime> dates = [
+  List<DateTime> dates = <DateTime>[
     DateTime.now(),
   ];
-  List<String> filters = [
+  List<String> filters = <String>[
     'Economy',
     'Premium Economy',
     'Business',
@@ -40,7 +38,7 @@ class _SeatSelectionState extends State<SeatSelection> {
   late final Map<String, dynamic> _coordinateMap;
   @override
   void initState() {
-    _coordinateMap = {};
+    _coordinateMap = <String, dynamic>{};
 
     for (int i = 0; i < dateDuration; i++) {
       dates.add(DateTime.now().add(Duration(days: i)));
@@ -56,7 +54,7 @@ class _SeatSelectionState extends State<SeatSelection> {
             element;
       });
     } catch (e) {
-      log("Error while parsing seat data $e");
+      log('Error while parsing seat data $e');
     }
     setState(() {});
     super.initState();
@@ -64,13 +62,13 @@ class _SeatSelectionState extends State<SeatSelection> {
 
   @override
   Widget build(BuildContext context) {
-    log("Flight Search Screen:::: ${_seatData?.data[0].decks[0].seats.length}");
+    log('Flight Search Screen:::: ${_seatData?.data[0].decks[0].seats.length}');
 
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient:
-              LinearGradient(colors: [AppColors.primary, AppColors.secondary]),
+          gradient: LinearGradient(
+              colors: <Color>[AppColors.primary, AppColors.secondary]),
           borderRadius: BorderRadiusDirectional.only(
             topStart: Radius.circular(18),
             topEnd: Radius.circular(18),
@@ -80,7 +78,7 @@ class _SeatSelectionState extends State<SeatSelection> {
           child: Center(
             child: SafeArea(
               child: Column(
-                children: [
+                children: <Widget>[
                   //nav Controller
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -105,7 +103,8 @@ class _SeatSelectionState extends State<SeatSelection> {
                         itemCount: _seatData?.data.first.decks[0]
                                 .deckConfiguration.length ??
                             0,
-                        itemBuilder: (context, index) => SeatArrangemnt(
+                        itemBuilder: (BuildContext context, int index) =>
+                            SeatArrangemnt(
                           isWingsRow: index + 1 ==
                               _seatData?.data.first.decks[0].deckConfiguration
                                   .startWingsRow,
@@ -130,13 +129,12 @@ class _SeatSelectionState extends State<SeatSelection> {
         height: AppHelpers.getScreenHeight(context) * 0.16,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
+          children: <Widget>[
             SizedBox(
               height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   SeatSelectionInformation(
                     title: 'Availabe',
                     bg: AppColors.grey.withOpacity(0.4),
@@ -171,69 +169,66 @@ class _SeatSelectionState extends State<SeatSelection> {
 }
 
 class SeatSelectionInformation extends StatelessWidget {
-  final String title;
-  final Color bg;
   const SeatSelectionInformation(
       {super.key, required this.title, required this.bg});
+  final String title;
+  final Color bg;
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 35,
-      width: AppHelpers.getScreenWidth(context) * 0.3,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(right: 8),
-            height: 16,
-            width: 16,
-            decoration: BoxDecoration(
-              color: bg,
-              borderRadius: BorderRadius.circular(2),
+  Widget build(BuildContext context) => SizedBox(
+        height: 35,
+        width: AppHelpers.getScreenWidth(context) * 0.3,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(right: 8),
+              height: 16,
+              width: 16,
+              decoration: BoxDecoration(
+                color: bg,
+                borderRadius: BorderRadius.circular(2),
+              ),
+              child: title == 'Selected'
+                  ? const Icon(
+                      Icons.check_rounded,
+                      size: 16,
+                      color: AppColors.white,
+                    )
+                  : null,
             ),
-            child: title == 'Selected'
-                ? const Icon(
-                    Icons.check_rounded,
-                    size: 16,
-                    color: AppColors.white,
-                  )
-                : null,
-          ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: AppColors.grey,
-            ),
-          )
-        ],
-      ),
-    );
-  }
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.grey,
+              ),
+            )
+          ],
+        ),
+      );
 }
 
 class SeatArrangemnt extends StatefulWidget {
-  final int x;
-  final bool isWingsRow;
-  final bool isExitRow;
-  final Map<String, dynamic> cordinateMap;
   const SeatArrangemnt(
       {super.key,
       required this.x,
       required this.isWingsRow,
       required this.isExitRow,
       required this.cordinateMap});
+  final int x;
+  final bool isWingsRow;
+  final bool isExitRow;
+  final Map<String, dynamic> cordinateMap;
 
   @override
   State<SeatArrangemnt> createState() => _SeatArrangemntState();
 }
 
 class _SeatArrangemntState extends State<SeatArrangemnt> {
-  List<String> selectedSeats = [];
-  List<String> bookedSeats = [
+  List<String> selectedSeats = <String>[];
+  List<String> bookedSeats = <String>[
     'l-0-0',
     'l-1-0',
     'l-2-0',
@@ -241,66 +236,63 @@ class _SeatArrangemntState extends State<SeatArrangemnt> {
     'r-1-2',
     'r-2-2',
   ];
-  List<String> leftCloumName = ['A', 'B', 'C'];
-  List<String> rightCloumName = ['D', 'E', 'F'];
+  List<String> leftCloumName = <String>['A', 'B', 'C'];
+  List<String> rightCloumName = <String>['D', 'E', 'F'];
   int cloumnInLeft = 7;
   int cloumnInRight = 3;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: widget.isExitRow
-            ? AppColors.primary.withOpacity(0.1)
-            : widget.isWingsRow
-                ? AppColors.primary.withOpacity(0.1)
-                : null,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      width: AppHelpers.getScreenWidth(context),
-      margin: EdgeInsets.symmetric(
-        vertical: widget.isWingsRow || widget.isExitRow ? 18 : 2,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ...List.generate(cloumnInLeft, (index) {
-            String key = '${widget.x}-$index';
-            log('${widget.cordinateMap[key]}');
-            final item = widget.cordinateMap[key];
-            if (item is SeatElement) {
-              log('${widget.cordinateMap[key]}', name: 'item');
-              return SeatBox(
-                data: item,
-              );
-            }
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        decoration: BoxDecoration(
+          color: widget.isExitRow
+              ? AppColors.primary.withOpacity(0.1)
+              : widget.isWingsRow
+                  ? AppColors.primary.withOpacity(0.1)
+                  : null,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        width: AppHelpers.getScreenWidth(context),
+        margin: EdgeInsets.symmetric(
+          vertical: widget.isWingsRow || widget.isExitRow ? 18 : 2,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            ...List.generate(cloumnInLeft, (int index) {
+              final String key = '${widget.x}-$index';
+              log('${widget.cordinateMap[key]}');
+              final item = widget.cordinateMap[key];
+              if (item is SeatElement) {
+                log('${widget.cordinateMap[key]}', name: 'item');
+                return SeatBox(
+                  data: item,
+                );
+              }
 
-            if (item is Facility) {
-              return FacilityBox(
-                facilityCode: widget.cordinateMap[key].code,
-              );
-            }
-            return SizedBox(
-              height: AppHelpers.getScreenWidth(context) * 0.12,
-              width: AppHelpers.getScreenWidth(context) * 0.12,
-              child: Container(
-                margin: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: AppColors.notAvailable,
-                  borderRadius: BorderRadius.circular(12),
+              if (item is Facility) {
+                return FacilityBox(
+                  facilityCode: widget.cordinateMap[key].code,
+                );
+              }
+              return SizedBox(
+                height: AppHelpers.getScreenWidth(context) * 0.12,
+                width: AppHelpers.getScreenWidth(context) * 0.12,
+                child: Container(
+                  margin: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: AppColors.notAvailable,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  alignment: Alignment.center,
+                  height: AppHelpers.getScreenWidth(context) * 0.09,
+                  width: AppHelpers.getScreenWidth(context) * 0.09,
+                  child: const Icon(Icons.close_rounded,
+                      size: 12, color: AppColors.white),
                 ),
-                alignment: Alignment.center,
-                height: AppHelpers.getScreenWidth(context) * 0.09,
-                width: AppHelpers.getScreenWidth(context) * 0.09,
-                child: const Icon(Icons.close_rounded,
-                    size: 12, color: AppColors.white),
-              ),
-            );
-          }),
-        ],
-      ),
-    );
-  }
+              );
+            }),
+          ],
+        ),
+      );
 }

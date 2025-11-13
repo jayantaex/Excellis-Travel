@@ -18,14 +18,13 @@ Future<void> showNotificationDetailsSheet({
 }
 
 class NotificationDetailsSheet extends StatelessWidget {
-  final String title;
-  final String body;
   const NotificationDetailsSheet(
       {super.key, required this.title, required this.body});
+  final String title;
+  final String body;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 40),
       width: AppHelpers.getScreenWidth(context),
       child: Column(
@@ -59,5 +58,4 @@ class NotificationDetailsSheet extends StatelessWidget {
         ],
       ),
     );
-  }
 }

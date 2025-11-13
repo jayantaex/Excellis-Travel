@@ -14,13 +14,13 @@ final class ProfileInitial extends ProfileState {}
 final class ProfileLoading extends ProfileState {}
 
 final class ProfileLoaded extends ProfileState {
-  final ProfileModel profileData;
   const ProfileLoaded({required this.profileData});
+  final ProfileModel profileData;
 }
 
 final class ProfileError extends ProfileState {
-  final String message;
   const ProfileError({required this.message});
+  final String message;
 }
 
 //update profile
@@ -30,6 +30,6 @@ final class ProfileUpdating extends ProfileState {}
 final class ProfileUpdated extends ProfileState {}
 
 final class ProfileUpdateError extends ProfileState {
-  final String message;
   const ProfileUpdateError({required this.message});
+  final String message;
 }

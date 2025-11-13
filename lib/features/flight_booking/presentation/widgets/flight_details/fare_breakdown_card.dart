@@ -4,15 +4,14 @@ import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/flight_offer_price_model.dart';
 
 class FareBreakdownCard extends StatelessWidget {
-  final TravelerPricingPrice? data;
   const FareBreakdownCard({super.key, this.data});
+  final TravelerPricingPrice? data;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         PriceCol(
             titile: 'Base Fare',
             value: double.parse(data!.base ?? '0.00').toStringAsFixed(2)),
@@ -20,9 +19,9 @@ class FareBreakdownCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 10.0),
           child: Column(
-            children: [
+            children: <Widget>[
               ...data!.taxes!.map(
-                (e) => PriceCol(
+                (Tax e) => PriceCol(
                   titile: e.code ?? '',
                   value: e.amount ?? '',
                 ),
@@ -40,7 +39,7 @@ class FareBreakdownCard extends StatelessWidget {
         const SizedBox(height: 12),
         RichText(
           text: TextSpan(
-            children: [
+            children: <InlineSpan>[
               const TextSpan(
                   text: 'Refundable Taxes: ',
                   style: TextStyle(
@@ -59,22 +58,20 @@ class FareBreakdownCard extends StatelessWidget {
         )
       ],
     );
-  }
 }
 
 class PriceCol extends StatelessWidget {
+  const PriceCol({super.key, required this.titile, required this.value});
   final String titile;
   final String value;
-  const PriceCol({super.key, required this.titile, required this.value});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.only(left: 8),
       width: AppHelpers.getScreenWidth(context),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           SizedBox(
             height: 25,
             child: Text(
@@ -99,5 +96,4 @@ class PriceCol extends StatelessWidget {
         ],
       ),
     );
-  }
 }

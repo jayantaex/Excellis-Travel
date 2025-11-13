@@ -1,5 +1,4 @@
 class WalletModel {
-  double? availableBalance;
 
   WalletModel({this.availableBalance});
 
@@ -7,6 +6,7 @@ class WalletModel {
     availableBalance =
         double.tryParse(json['availableBalance'].toString()) ?? 0.0;
   }
+  double? availableBalance;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

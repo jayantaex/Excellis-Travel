@@ -25,13 +25,13 @@ import '../widgets/flight_details/itinerary_card_widget.dart';
 import '../widgets/flight_details/passenger_details_card.dart';
 
 class FlightDetailsScreen extends StatefulWidget {
-  final Datam data;
-  final FlightDictionary flightDictionary;
   const FlightDetailsScreen({
     super.key,
     required this.data,
     required this.flightDictionary,
   });
+  final Datam data;
+  final FlightDictionary flightDictionary;
 
   @override
   State<FlightDetailsScreen> createState() => _FlightDetailsScreenState();
@@ -39,12 +39,12 @@ class FlightDetailsScreen extends StatefulWidget {
 
 class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   String seletedTab = 'ADULT';
-  List<String> userType = [
+  List<String> userType = <String>[
     'ADULT',
     'CHILD',
     'INFANT',
   ];
-  List<PassengerModel> passengers = [];
+  List<PassengerModel> passengers = <PassengerModel>[];
 
   Map<String, dynamic> offerData = {};
   final RazorpayService _razorpayService = RazorpayService();
@@ -65,7 +65,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double width = AppHelpers.getScreenWidth(context);
+    final double width = AppHelpers.getScreenWidth(context);
 
     return Scaffold(
       body: AppGradientBg(
@@ -134,7 +134,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                           .first
                                           .price!
                                           .grandTotal ??
-                                      "0.0"),
+                                      '0.0'),
                                 ),
                                 const SizedBox(height: 8),
                                 const Padding(
@@ -159,7 +159,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     onPassengerRemove: (passenger) {
                                       setState(() {
                                         passengers.remove(passenger);
-                                        log("Called");
+                                        log('Called');
                                       });
                                     },
                                     travelerPricing:
@@ -310,12 +310,12 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
       bottomNavigationBar: BlocConsumer<FlightBloc, FlightState>(
         listener: (context, state) async {
           if (state is FlightOrderCreated) {
-            int amount = state.data.amount ?? 0;
-            String description =
+            final int amount = state.data.amount ?? 0;
+            final String description =
                 'initiated this payment for booking no ${state.data..notes?.bookingId} and reference no ${state.data.notes?.bookingReference}';
-            String orderId = state.data.id ?? '';
-            String mobile = '';
-            String email = '';
+            final String orderId = state.data.id ?? '';
+            const String mobile = '';
+            const String email = '';
 
             await _razorpayService.initatePayment(
                 amount: amount,
@@ -364,7 +364,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
     log('Pauyment successful : ${response.paymentId}', name: 'Payment ID');
     log('Pauyment successful : ${response.signature}', name: 'Signature ID');
     log('Pauyment successful : ${response.orderId}', name: 'Order ID');
-    Map<String, dynamic> verifyPaymentBody = {
+    final Map<String, dynamic> verifyPaymentBody = {
       'razorpay_order_id': response.orderId,
       'razorpay_payment_id': response.paymentId,
       'razorpay_signature': response.signature

@@ -11,8 +11,7 @@ class GreetingWidget extends StatelessWidget {
   const GreetingWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       width: AppHelpers.getScreenWidth(context),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,8 +25,7 @@ class GreetingWidget extends StatelessWidget {
                 BlocConsumer<ProfileBloc, ProfileState>(
                     listener: (context, state) {
                   if (state is ProfileError) {}
-                }, builder: (context, state) {
-                  return state is ProfileLoaded
+                }, builder: (BuildContext context, ProfileState state) => state is ProfileLoaded
                       ? Text(
                           '${getDayTime()}, ${state.profileData.firstName ?? ''}',
                           style: const TextStyle(
@@ -41,8 +39,7 @@ class GreetingWidget extends StatelessWidget {
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               color: AppColors.white),
-                        );
-                }),
+                        )),
                 const Text(
                   'Let’s Explore \nWorld With Us !',
                   style: TextStyle(
@@ -68,7 +65,6 @@ class GreetingWidget extends StatelessWidget {
         ],
       ),
     );
-  }
 }
 
 String getDayTime() {

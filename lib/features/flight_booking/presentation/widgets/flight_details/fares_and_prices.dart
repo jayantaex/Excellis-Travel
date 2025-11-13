@@ -5,19 +5,19 @@ import '../../../models/flight_offer_price_model.dart';
 import 'fare_type_widget.dart';
 
 class FaresAndPrices extends StatefulWidget {
-  final List<TravelerPricing> allTravelerPricings;
-  final double grandPrice;
   const FaresAndPrices(
       {super.key, required this.allTravelerPricings, required this.grandPrice});
+  final List<TravelerPricing> allTravelerPricings;
+  final double grandPrice;
 
   @override
   State<FaresAndPrices> createState() => _FaresAndPricesState();
 }
 
 class _FaresAndPricesState extends State<FaresAndPrices> {
-  final userType = ['ADULT', 'CHILD', 'INFANT'];
+  final List<String> userType = <String>['ADULT', 'CHILD', 'INFANT'];
   String selectedTab = 'ADULT';
-  List<TravelerPricing> filteredTravelerPricings = [];
+  List<TravelerPricing> filteredTravelerPricings = <TravelerPricing>[];
   @override
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _FaresAndPricesState extends State<FaresAndPrices> {
 
   @override
   Widget build(BuildContext context) {
-    double width = AppHelpers.getScreenWidth(context);
+    final double width = AppHelpers.getScreenWidth(context);
 
     return ExpansionTile(
         shape: const Border(),
@@ -40,9 +40,9 @@ class _FaresAndPricesState extends State<FaresAndPrices> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        children: [
+        children: <Widget>[
           Column(
-            children: [
+            children: <Widget>[
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 height: 45,
@@ -57,9 +57,9 @@ class _FaresAndPricesState extends State<FaresAndPrices> {
                 width: AppHelpers.getScreenWidth(context),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     ...userType.map(
-                      (e) => InkWell(
+                      (String e) => InkWell(
                         onTap: () {
                           filter(e);
                         },
@@ -105,9 +105,9 @@ class _FaresAndPricesState extends State<FaresAndPrices> {
                       ),
                     )
                   : Column(
-                      children: [
+                      children: <Widget>[
                         ...filteredTravelerPricings.map(
-                          (e) => FareCard(data: e),
+                          (TravelerPricing e) => FareCard(data: e),
                         )
                       ],
                     )
@@ -118,7 +118,7 @@ class _FaresAndPricesState extends State<FaresAndPrices> {
 
   void filter(travellerType) {
     filteredTravelerPricings.clear();
-    for (var element in widget.allTravelerPricings) {
+    for (TravelerPricing element in widget.allTravelerPricings) {
       if (element.travelerType == travellerType) {
         filteredTravelerPricings.add(element);
       }

@@ -1,16 +1,4 @@
 class OrderModel {
-  int? amount;
-  int? amountDue;
-  int? amountPaid;
-  int? attempts;
-  int? createdAt;
-  String? currency;
-  String? entity;
-  String? id;
-  Notes? notes;
-  String? offerId;
-  String? receipt;
-  String? status;
 
   OrderModel(
       {this.amount,
@@ -40,6 +28,18 @@ class OrderModel {
     receipt = json['receipt'];
     status = json['status'];
   }
+  int? amount;
+  int? amountDue;
+  int? amountPaid;
+  int? attempts;
+  int? createdAt;
+  String? currency;
+  String? entity;
+  String? id;
+  Notes? notes;
+  String? offerId;
+  String? receipt;
+  String? status;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -62,8 +62,6 @@ class OrderModel {
 }
 
 class Notes {
-  String? bookingId;
-  String? bookingReference;
 
   Notes({this.bookingId, this.bookingReference});
 
@@ -71,6 +69,8 @@ class Notes {
     bookingId = json['booking_id'];
     bookingReference = json['booking_reference'];
   }
+  String? bookingId;
+  String? bookingReference;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -5,13 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../core/constants/app_styles.dart';
 
 class AuthInputWidget extends StatefulWidget {
-  final String? label;
-  final String? hint;
-  final bool isPassword;
-  final TextEditingController? controller;
-  final TextInputType? keyboardType;
-  final int maxCharacters;
-  final String? Function(String?)? validator;
 
   const AuthInputWidget(
       {super.key,
@@ -22,6 +15,13 @@ class AuthInputWidget extends StatefulWidget {
       this.keyboardType,
       required this.maxCharacters,
       this.validator});
+  final String? label;
+  final String? hint;
+  final bool isPassword;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final int maxCharacters;
+  final String? Function(String?)? validator;
 
   @override
   State<AuthInputWidget> createState() => _AuthInputWidgetState();
@@ -36,14 +36,13 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return TextField(
+  Widget build(BuildContext context) => TextField(
       controller: widget.controller,
       keyboardType: widget.keyboardType,
       obscureText: _isPasswordVisible,
       style: const TextStyle(
           fontSize: 16, color: AppColors.black, fontWeight: FontWeight.w400),
-      inputFormatters: [
+      inputFormatters: <TextInputFormatter>[
         if (widget.maxCharacters > 0)
           LengthLimitingTextInputFormatter(widget.maxCharacters),
       ],
@@ -93,5 +92,4 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
         ),
       ),
     );
-  }
 }

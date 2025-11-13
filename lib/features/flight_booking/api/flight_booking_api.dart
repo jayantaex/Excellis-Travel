@@ -9,22 +9,22 @@ import '../models/flights_data_model.dart';
 import '../models/payment_verify_res_model.dart';
 
 class FlightBookingApi {
+  FlightBookingApi(this.amadeusClient, {this.apiClient});
   final AmadeusClient amadeusClient;
   ApiClient? apiClient;
-  FlightBookingApi(this.amadeusClient, {this.apiClient});
 
   Future<List<AirportModel>> getAirport(
       {required String keyword, required String country}) async {
     try {
-      List<AirportModel> airportList = [];
+      final List<AirportModel> airportList = <AirportModel>[];
       await amadeusClient.getRequest(
           endPoint: EndPoints.airportSearchByKeyword,
-          queryParameters: {
+          queryParameters: <String, dynamic>{
             'subType': 'AIRPORT',
             'keyword': keyword.trim(),
             'countryCode': country,
           },
-          fromJson: (jsonData) {
+          fromJson: (Map<String, dynamic> jsonData) {
             jsonData['data'].forEach((element) {
               airportList.add(AirportModel.fromJson(element));
             });
@@ -32,19 +32,19 @@ class FlightBookingApi {
           });
       return airportList;
     } catch (e) {
-      return [];
+      return <AirportModel>[];
     }
   }
 
   Future<ApiResponse<FlightsDataModel>> searchFlight(
       {required Map<String, dynamic> body}) async {
     try {
-      ApiResponse<FlightsDataModel> response = await amadeusClient.postRequest(
+      final ApiResponse<FlightsDataModel> response =
+          await amadeusClient.postRequest(
         reqModel: body,
         endPoint: EndPoints.flightSearch,
-        fromJson: (jsonData) {
-          return FlightsDataModel.fromJson(jsonData);
-        },
+        fromJson: (Map<String, dynamic> jsonData) =>
+            FlightsDataModel.fromJson(jsonData),
       );
 
       return response;
@@ -57,19 +57,18 @@ class FlightBookingApi {
   Future<ApiResponse<FlightOfferPriceDataModel>> getFlightOfferPrice(
       {required Map<String, dynamic> body}) async {
     try {
-      Map<String, dynamic> data = {
-        "data": {
-          "type": "flight-offers-pricing",
-          "flightOffers": [body]
+      final Map<String, dynamic> data = <String, dynamic>{
+        'data': <String, Object>{
+          'type': 'flight-offers-pricing',
+          'flightOffers': <Map<String, dynamic>>[body]
         }
       };
-      ApiResponse<FlightOfferPriceDataModel> response =
+      final ApiResponse<FlightOfferPriceDataModel> response =
           await amadeusClient.postRequest(
               reqModel: data,
               endPoint: EndPoints.flightOfferPrice,
-              fromJson: (jsonData) {
-                return FlightOfferPriceDataModel.fromJson(jsonData);
-              });
+              fromJson: (Map<String, dynamic> jsonData) =>
+                  FlightOfferPriceDataModel.fromJson(jsonData));
       return response;
     } catch (e) {
       return ApiResponse(
@@ -80,12 +79,11 @@ class FlightBookingApi {
   Future<ApiResponse<OrderModel>> createPayment(
       {required Map<String, dynamic> body}) async {
     try {
-      ApiResponse<OrderModel> resp = await apiClient!.postRequest(
+      final ApiResponse<OrderModel> resp = await apiClient!.postRequest(
           reqModel: body,
           endPoint: EndPoints.createPayment,
-          fromJson: (jsonData) {
-            return OrderModel.fromJson(jsonData['data']['order']);
-          });
+          fromJson: (Map<String, dynamic> jsonData) =>
+              OrderModel.fromJson(jsonData['data']['order']));
       return resp;
     } catch (e) {
       return ApiResponse(
@@ -96,12 +94,12 @@ class FlightBookingApi {
   Future<ApiResponse<PaymentVerifiedModel>> verifyPayment(
       {required Map<String, dynamic> body}) async {
     try {
-      ApiResponse<PaymentVerifiedModel> response = await apiClient!.postRequest(
-          reqModel: body,
-          endPoint: EndPoints.verifyPayment,
-          fromJson: (jsonData) {
-            return PaymentVerifiedModel.fromJson(jsonData['data']);
-          });
+      final ApiResponse<PaymentVerifiedModel> response = await apiClient!
+          .postRequest(
+              reqModel: body,
+              endPoint: EndPoints.verifyPayment,
+              fromJson: (Map<String, dynamic> jsonData) =>
+                  PaymentVerifiedModel.fromJson(jsonData['data']));
 
       return response;
     } catch (e) {
@@ -113,13 +111,14 @@ class FlightBookingApi {
   Future<ApiResponse<double>> getMarkUpPrice(
       {required double basePrice}) async {
     try {
-      Map<String, dynamic> body = {"baseAmount": basePrice};
-      ApiResponse<double> resp = await apiClient!.postRequest(
+      final Map<String, dynamic> body = <String, dynamic>{
+        'baseAmount': basePrice
+      };
+      final ApiResponse<double> resp = await apiClient!.postRequest(
           reqModel: body,
           endPoint: EndPoints.markupPricing,
-          fromJson: (jsonData) {
-            return double.parse(jsonData['data']['finalAmount'].toString());
-          });
+          fromJson: (Map<String, dynamic> jsonData) =>
+              double.parse(jsonData['data']['finalAmount'].toString()));
       return resp;
     } catch (e) {
       return ApiResponse(errorMessage: e.toString(), statusCode: 400);

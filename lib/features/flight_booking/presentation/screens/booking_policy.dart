@@ -10,14 +10,13 @@ class BookingPolicy extends StatelessWidget {
   const BookingPolicy({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: SafeArea(
             bottom: false,
             child: Column(
-              children: [
+              children: <Widget>[
                 const Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.0, vertical: 2.0),
@@ -82,16 +81,14 @@ class BookingPolicy extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class CancellationWidget extends StatelessWidget {
   const CancellationWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
+  Widget build(BuildContext context) => Column(
+      children: <Widget>[
         ListTile(
           leading:
               AppHelpers.assetImage(assetName: 'indigo', width: 35, height: 35),
@@ -132,7 +129,7 @@ class CancellationWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Text(
                 '00 to 04 hours *',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
@@ -148,7 +145,7 @@ class CancellationWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Text(
                 '04 hours to 04 days *',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
@@ -164,7 +161,7 @@ class CancellationWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Text(
                 '04 days to 365 days *',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
@@ -211,16 +208,14 @@ class CancellationWidget extends StatelessWidget {
         )
       ],
     );
-  }
 }
 
 class DateChange extends StatelessWidget {
   const DateChange({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
+  Widget build(BuildContext context) => Column(
+      children: <Widget>[
         ListTile(
           leading:
               AppHelpers.assetImage(assetName: 'indigo', width: 35, height: 35),
@@ -261,7 +256,7 @@ class DateChange extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Text(
                 '00 to 04 hours *',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
@@ -277,7 +272,7 @@ class DateChange extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Text(
                 '04 hours to 04 days *',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
@@ -293,7 +288,7 @@ class DateChange extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Text(
                 '04 days to 365 days *',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
@@ -340,16 +335,14 @@ class DateChange extends StatelessWidget {
         )
       ],
     );
-  }
 }
 
 class Baggage extends StatelessWidget {
   const Baggage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
+  Widget build(BuildContext context) => Column(
+      children: <Widget>[
         ListTile(
           leading:
               AppHelpers.assetImage(assetName: 'indigo', width: 35, height: 35),
@@ -371,7 +364,7 @@ class Baggage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               SizedBox(
                 width: AppHelpers.getScreenWidth(context) * 0.25,
                 child: const Text(''),
@@ -403,7 +396,7 @@ class Baggage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               SizedBox(
                 width: AppHelpers.getScreenWidth(context) * 0.25,
                 child: const Text(
@@ -475,5 +468,4 @@ class Baggage extends StatelessWidget {
         )
       ],
     );
-  }
 }

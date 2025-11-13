@@ -44,9 +44,7 @@ class _TermsScreenState extends State<TermsScreen> {
             log(error.description.toString());
             log(error.errorCode.toString());
           },
-          onNavigationRequest: (NavigationRequest request) {
-            return NavigationDecision.navigate;
-          },
+          onNavigationRequest: (NavigationRequest request) => NavigationDecision.navigate,
         ),
       )
       ..loadRequest(Uri.parse(termsUrl));
@@ -55,12 +53,10 @@ class _TermsScreenState extends State<TermsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: SafeArea(
-            bottom: true,
             child: Column(
               children: [
                 const Padding(
@@ -92,5 +88,4 @@ class _TermsScreenState extends State<TermsScreen> {
         ),
       ),
     );
-  }
 }

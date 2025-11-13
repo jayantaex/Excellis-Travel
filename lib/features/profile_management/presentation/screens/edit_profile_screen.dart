@@ -81,19 +81,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: SafeArea(
             bottom: false,
             child: BlocConsumer<ProfileBloc, ProfileState>(
-              listener: (context, state) {
+              listener: (BuildContext context, ProfileState state) {
                 if (state is ProfileLoaded) {
-                  List<String> addressList = [];
+                  List<String> addressList = <String>[];
 
                   if (state.profileData.address != null) {
-                    addressList = state.profileData.address?.split(',') ?? [];
+                    addressList = state.profileData.address?.split(',') ?? <String>[];
                   }
 
                   if (addressList.isNotEmpty && addressList.length > 3) {
@@ -115,7 +114,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   _aadhaarNoController.text = '';
                 }
               },
-              builder: (context, state) {
+              builder: (BuildContext context, ProfileState state) {
                 if (state is ProfileLoading) {
                   return const Center(
                     child: CircularProgressIndicator.adaptive(
@@ -126,7 +125,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 if (state is ProfileLoaded || state is ProfileUpdating) {
                   return Column(
-                    children: [
+                    children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: AppCustomAppbar(
@@ -177,7 +176,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 horizontal: 16, vertical: 20),
                             child: SingleChildScrollView(
                               child: Column(
-                                children: [
+                                children: <Widget>[
                                   const SizedBox(height: 20),
                                   AppPrimaryInput(
                                     controller: _firstNameController,
@@ -243,7 +242,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   const SizedBox(height: 16),
                                   const SizedBox(height: 16),
                                   BlocConsumer<StatesBloc, StatesState>(
-                                    listener: (context, state) {
+                                    listener: (BuildContext context, StatesState state) {
                                       if (state is StatesLoaded) {
                                         if (_selectedState.isEmpty) {
                                           _selectedState =
@@ -253,7 +252,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                           _selectedStateId =
                                               state.states[0].id ?? 0;
                                         } else {
-                                          for (var e in state.states) {
+                                          for (StateModel e in state.states) {
                                             if (e.name?.toLowerCase() ==
                                                 _selectedState.toLowerCase()) {
                                               _selectedStateCode = e.code ?? '';
@@ -269,7 +268,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             );
                                       }
                                     },
-                                    builder: (context, state) {
+                                    builder: (BuildContext context, StatesState state) {
                                       if (state is StatesLoaded) {
                                         return AppDropDown(
                                           label: 'State',
@@ -284,8 +283,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                               )
                                               .toList(),
                                           title: 'Select State',
-                                          onChanged: (stateName) {
-                                            for (var element in state.states) {
+                                          onChanged: (String? stateName) {
+                                            for (StateModel element in state.states) {
                                               if (element.name == stateName) {
                                                 _selectedState =
                                                     element.name ?? '';
@@ -311,7 +310,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       context.pushNamed(
                                           ProfileManagementModule
                                               .citySearchName,
-                                          extra: {
+                                          extra: <String, Object>{
                                             'stateCode': _selectedStateCode,
                                             'stateName': _selectedState,
                                             'stateId': _selectedStateId,
@@ -330,7 +329,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   ),
                                   const SizedBox(height: 16),
                                   BlocConsumer<ProfileBloc, ProfileState>(
-                                    listener: (context, state) async {
+                                    listener: (BuildContext context, ProfileState state) async {
                                       log(state.toString());
                                       if (state is ProfileUpdated) {
                                         context
@@ -345,20 +344,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             context, state.message);
                                       }
                                     },
-                                    builder: (context, state) {
-                                      return AppPrimaryButton(
+                                    builder: (BuildContext context, ProfileState state) => AppPrimaryButton(
                                         onPressed: () {
-                                          Map<String, String> data = {
-                                            "first_name": _firstNameController
+                                          final Map<String, String> data = <String, String>{
+                                            'first_name': _firstNameController
                                                 .text
                                                 .trim(),
-                                            "last_name":
+                                            'last_name':
                                                 _lastNameController.text.trim(),
-                                            "email":
+                                            'email':
                                                 _emailController.text.trim(),
-                                            "phone":
+                                            'phone':
                                                 _phoneController.text.trim(),
-                                            "address":
+                                            'address':
                                                 '${_addressController.text.trim().split(',').first}, ${_cityController.text.trim()}, $_selectedState, ${_pinController.text.trim()}',
                                           };
                                           context.read<ProfileBloc>().add(
@@ -367,8 +365,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         title: 'Update',
                                         isLoading: state is ProfileLoading,
                                         bgColor: AppColors.primary,
-                                      );
-                                    },
+                                      ),
                                   )
                                 ],
                               ),
@@ -402,5 +399,4 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
     );
-  }
 }

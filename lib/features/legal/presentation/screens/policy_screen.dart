@@ -46,8 +46,7 @@ class _PolicyScreenState extends State<PolicyScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: SafeArea(
@@ -83,5 +82,4 @@ class _PolicyScreenState extends State<PolicyScreen> {
         ),
       ),
     );
-  }
 }

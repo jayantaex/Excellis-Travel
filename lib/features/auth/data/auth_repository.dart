@@ -3,20 +3,18 @@ import '../apis/auth_api.dart';
 import '../models/auth_resp_model.dart';
 
 class AuthRepository {
-  final AuthApi authApi;
   AuthRepository({required this.authApi});
+  final AuthApi authApi;
 
   Future<ApiResponse<AuthResponseModel>> login(
       {required String username,
       required String password,
       required String fcmToken,
-      required String userType}) async {
-    return await authApi.login(
+      required String userType}) async => await authApi.login(
         username: username,
         password: password,
         fcmToken: fcmToken,
         userType: userType);
-  }
 
   Future<ApiResponse<AuthResponseModel>> register({
     String? companyName,
@@ -36,8 +34,7 @@ class AuthRepository {
     required String password,
     required int commissionRate,
     required bool isDirectBooking,
-  }) async {
-    return await authApi.register(
+  }) async => await authApi.register(
         companyName: companyName,
         firstName: firstName,
         lastName: lastName,
@@ -55,5 +52,4 @@ class AuthRepository {
         password: password,
         commissionRate: commissionRate,
         isDirectBooking: isDirectBooking);
-  }
 }

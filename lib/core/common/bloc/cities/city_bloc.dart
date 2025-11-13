@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:excellistravel/core/network/api_response.dart';
 
 import '../../data/location_repository.dart';
 import '../../models/city_model.dart';
@@ -8,19 +9,19 @@ part 'city_event.dart';
 part 'city_state.dart';
 
 class CityBloc extends Bloc<CityEvent, CityState> {
-  final LocationRepository repository;
   CityBloc({
     required this.repository,
   }) : super(CityInitial()) {
-    on<CityEvent>((event, emit) {});
+    on<CityEvent>((CityEvent event, Emitter<CityState> emit) {});
     on<GetCityEvent>(_handleGetCity);
   }
+  final LocationRepository repository;
   Future<void> _handleGetCity(
       GetCityEvent event, Emitter<CityState> emit) async {
     try {
       emit(GetCityLoading());
-      List<CityModel> cities = [];
-      final res = await repository.getCities(
+      final List<CityModel> cities = <CityModel>[];
+      final ApiResponse<List<CityModel>> res = await repository.getCities(
           stateId: event.stateId, stateCode: event.stateCode);
       if (res.errorMessage == null || res.errorMessage == '') {
         //remove duplicates name if exists

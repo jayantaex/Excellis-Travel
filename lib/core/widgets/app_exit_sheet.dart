@@ -10,19 +10,18 @@ Future<void> showAppExitSheet({required BuildContext context}) async {
       backgroundColor: AppColors.white,
       showDragHandle: false,
       context: context,
-      builder: (context) => const AppExitSheet());
+      builder: (BuildContext context) => const AppExitSheet());
 }
 
 class AppExitSheet extends StatelessWidget {
   const AppExitSheet({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       width: AppHelpers.getScreenWidth(context),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           const SizedBox(height: 24),
           AppHelpers.svgAsset(
             assetName: 'sign_out',
@@ -42,7 +41,7 @@ class AppExitSheet extends StatelessWidget {
             width: AppHelpers.getScreenWidth(context),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: <Widget>[
                 SizedBox(
                     width: AppHelpers.getScreenWidth(context) * 0.4,
                     child: AppPrimaryButton(
@@ -77,5 +76,4 @@ class AppExitSheet extends StatelessWidget {
         ],
       ),
     );
-  }
 }

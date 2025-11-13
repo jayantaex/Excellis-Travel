@@ -9,22 +9,19 @@ import 'api_urls.dart';
 import 'authentication_interceptor.dart';
 
 class ApiClient {
-  //single instance
-  static final ApiClient _instance = ApiClient._internal();
   factory ApiClient() => _instance;
-  final Dio _dio = Dio();
   ApiClient._internal() {
     _dio.options.baseUrl = EndPoints.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 60);
     _dio.options.receiveTimeout = const Duration(seconds: 60);
     _dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (options, handler) async {
-      final token = await StorageService.getAccessToken();
+        .add(InterceptorsWrapper(onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
+      final String? token = await StorageService.getAccessToken();
       if (token != null) {
         options.headers['Authorization'] = 'Bearer $token';
       }
       return handler.next(options);
-    }, onError: (DioException e, handler) {
+    }, onError: (DioException e, ErrorInterceptorHandler handler) {
       if (e.response?.statusCode == 401) {}
       return handler.next(e);
     }));
@@ -41,6 +38,9 @@ class ApiClient {
     ));
     _dio.interceptors.add(AuthenticationInterceptor(_dio));
   }
+  //single instance
+  static final ApiClient _instance = ApiClient._internal();
+  final Dio _dio = Dio();
 
   // API request method GET
   Future<ApiResponse<T>> getRequest<T>(
@@ -48,13 +48,13 @@ class ApiClient {
       required T Function(Map<String, dynamic>) fromJson,
       Map<String, dynamic>? queryParameters}) async {
     try {
-      final response =
+      final Response response =
           await _dio.get(endPoint, queryParameters: queryParameters);
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final statusCode = e.response?.statusCode ?? 0;
-      final errorMessage = _handleDioError(e, statusCode);
+      final int statusCode = e.response?.statusCode ?? 0;
+      final String errorMessage = _handleDioError(e, statusCode);
       return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
     }
   }
@@ -65,14 +65,14 @@ class ApiClient {
       required List<T> Function(List<dynamic>) fromJosnList,
       Map<String, dynamic>? queryParameters}) async {
     try {
-      final response =
+      final Response response =
           await _dio.get(endPoint, queryParameters: queryParameters);
-      final data = fromJosnList(response.data);
+      final List<T> data = fromJosnList(response.data);
       return ApiResponse<List<T>>(
           data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final statusCode = e.response?.statusCode ?? 0;
-      final errorMessage = _handleDioError(e, statusCode);
+      final int statusCode = e.response?.statusCode ?? 0;
+      final String errorMessage = _handleDioError(e, statusCode);
       return ApiResponse<List<T>>(
           statusCode: statusCode, errorMessage: errorMessage);
     }
@@ -84,11 +84,11 @@ class ApiClient {
       Map<String, dynamic>? reqModel,
       required T Function(Map<String, dynamic>) fromJson}) async {
     try {
-      final response = await _dio.post(endPoint, data: reqModel);
+      final Response response = await _dio.post(endPoint, data: reqModel);
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final statusCode = e.response?.statusCode ?? 0;
+      final int statusCode = e.response?.statusCode ?? 0;
       return ApiResponse<T>(
           statusCode: statusCode, errorMessage: _handleDioError(e, statusCode));
     }
@@ -100,13 +100,13 @@ class ApiClient {
       Map<String, dynamic>? reqModel,
       required List<T> Function(List<dynamic>) fromJsonList}) async {
     try {
-      final response = await _dio.post(endPoint, data: reqModel);
-      final data = fromJsonList(response.data);
+      final Response response = await _dio.post(endPoint, data: reqModel);
+      final List<T> data = fromJsonList(response.data);
       return ApiResponse<List<T>>(
           data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final statusCode = e.response?.statusCode ?? 0;
-      final errorMessage = _handleDioError(e, statusCode);
+      final int statusCode = e.response?.statusCode ?? 0;
+      final String errorMessage = _handleDioError(e, statusCode);
       return ApiResponse<List<T>>(
           statusCode: statusCode, errorMessage: errorMessage);
     }
@@ -118,12 +118,12 @@ class ApiClient {
       Map<String, dynamic>? reqModel,
       required T Function(Map<String, dynamic>) fromJson}) async {
     try {
-      final response = await _dio.put(endPoint, data: reqModel);
+      final Response response = await _dio.put(endPoint, data: reqModel);
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final statusCode = e.response?.statusCode ?? 0;
-      final errorMessage = _handleDioError(e, statusCode);
+      final int statusCode = e.response?.statusCode ?? 0;
+      final String errorMessage = _handleDioError(e, statusCode);
       return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
     }
   }
@@ -134,13 +134,13 @@ class ApiClient {
       Map<String, dynamic>? queryParameters,
       required T Function(Map<String, dynamic>) fromJson}) async {
     try {
-      final response =
+      final Response response =
           await _dio.delete(endPoint, queryParameters: queryParameters);
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final statusCode = e.response?.statusCode ?? 0;
-      final errorMessage = _handleDioError(e, statusCode);
+      final int statusCode = e.response?.statusCode ?? 0;
+      final String errorMessage = _handleDioError(e, statusCode);
       return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
     }
   }
@@ -155,21 +155,21 @@ class ApiClient {
   }) async {
     try {
       // Prepare the form data
-      Map<String, dynamic> formDataMap = {
+      final Map<String, dynamic> formDataMap = <String, dynamic>{
         ...?reqModel
       }; // Spread reqModel if it's not null
 
       // If imageFile is provided, add it to the form data
       if (imageFile != null) {
-        String fileName = imageFile.path.split('/').last;
+        final String fileName = imageFile.path.split('/').last;
         formDataMap[imageFieldName] =
             await MultipartFile.fromFile(imageFile.path, filename: fileName);
       }
 
-      FormData formData = FormData.fromMap(formDataMap);
+      final FormData formData = FormData.fromMap(formDataMap);
 
       // Make the POST request
-      final response = await _dio.post(endPoint, data: formData);
+      final Response response = await _dio.post(endPoint, data: formData);
 
       // Parse the response
       final responseData = fromJson(response.data);
@@ -180,8 +180,8 @@ class ApiClient {
       );
     } on DioException catch (e) {
       // Handle Dio errors
-      final statusCode = e.response?.statusCode ?? 0;
-      final errorMessage = _handleDioError(e, statusCode);
+      final int statusCode = e.response?.statusCode ?? 0;
+      final String errorMessage = _handleDioError(e, statusCode);
 
       return ApiResponse<T>(
         statusCode: statusCode,
@@ -195,29 +195,29 @@ class ApiClient {
     String errorMessage;
     switch (error.type) {
       case DioExceptionType.cancel:
-        errorMessage = "Request to API server was cancelled";
+        errorMessage = 'Request to API server was cancelled';
         break;
       case DioExceptionType.connectionTimeout:
-        errorMessage = "Connection timeout with API server";
+        errorMessage = 'Connection timeout with API server';
         break;
       case DioExceptionType.receiveTimeout:
-        errorMessage = "Receive timeout in connection with API server";
+        errorMessage = 'Receive timeout in connection with API server';
         break;
       case DioExceptionType.sendTimeout:
-        errorMessage = "Send timeout in connection with API server";
+        errorMessage = 'Send timeout in connection with API server';
         break;
       case DioExceptionType.badResponse:
         errorMessage = _handleStatusCode(statusCode);
         break;
       case DioExceptionType.connectionError:
-        errorMessage = "please check your connection";
+        errorMessage = 'please check your connection';
         break;
       case DioExceptionType.unknown:
         errorMessage =
-            "Connection to API server failed due to internet connection";
+            'Connection to API server failed due to internet connection';
         break;
       default:
-        errorMessage = "Unexpected error occurred";
+        errorMessage = 'Unexpected error occurred';
         break;
     }
     return errorMessage;
@@ -227,19 +227,19 @@ class ApiClient {
   String _handleStatusCode(int statusCode) {
     switch (statusCode) {
       case 400:
-        return "Bad Request 22";
+        return 'Bad Request 22';
       case 401:
-        return "Unauthorized";
+        return 'Unauthorized';
       case 403:
-        return "Forbidden";
+        return 'Forbidden';
       case 404:
-        return "Not Found";
+        return 'Not Found';
       case 500:
-        return "Internal Server Error";
+        return 'Internal Server Error';
       case 503:
-        return "Service Unavailable";
+        return 'Service Unavailable';
       default:
-        return "Recive invalid status code $statusCode";
+        return 'Recive invalid status code $statusCode';
     }
   }
 }

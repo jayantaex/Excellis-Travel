@@ -50,7 +50,7 @@ class AppStrings {
   static const String registrationSuccessful = 'Registration successful';
   static const String passwordChanged = 'Password changed successfully';
   static const String dontHaveAccount = "Don't have an account?";
-  static const String alreadyHaveAccount = "Already have an account?";
+  static const String alreadyHaveAccount = 'Already have an account?';
 
   // Validation Messages
   static const String emailRequired = 'Email is required';

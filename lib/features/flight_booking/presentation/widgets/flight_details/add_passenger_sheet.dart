@@ -24,7 +24,7 @@ Future<void> showAddPassengerSheet(
   final TextEditingController dobController = TextEditingController();
   DateTime? dob;
   String selectedGender = 'Male';
-  List<String> genderList = ['Male', 'Female'];
+  final List<String> genderList = <String>['Male', 'Female'];
   DateTime firstDate = DateTime(2000);
   DateTime lastDate = DateTime.now();
   switch (travellerType) {
@@ -59,11 +59,11 @@ Future<void> showAddPassengerSheet(
     backgroundColor: AppColors.white,
     isScrollControlled: true,
     context: context,
-    builder: (context) => SingleChildScrollView(
+    builder: (BuildContext context) => SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
-          children: [
+          children: <Widget>[
             const Text(
               'Passenger Details',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -81,7 +81,7 @@ Future<void> showAddPassengerSheet(
               width: AppHelpers.getScreenWidth(context),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   SizedBox(
                     height: 50,
                     width: AppHelpers.getScreenWidth(context) * 0.45,
@@ -134,7 +134,7 @@ Future<void> showAddPassengerSheet(
             ),
             const SizedBox(height: 16),
             AppDropDown(
-              onChanged: (p0) {
+              onChanged: (String? p0) {
                 selectedGender = p0!;
               },
               label: 'Gender',
@@ -142,7 +142,7 @@ Future<void> showAddPassengerSheet(
               value: 'Male',
               items: genderList
                   .map(
-                    (String e) => DropdownMenuItem(
+                    (String e) => DropdownMenuItem<String>(
                       value: e,
                       child: Text(e),
                     ),

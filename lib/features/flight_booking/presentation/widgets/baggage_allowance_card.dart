@@ -17,8 +17,7 @@ class _BaggageAllowanceCardState extends State<BaggageAllowanceCard> {
   bool isBaggageAdded = false;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.grey.withOpacity(0.05),
@@ -187,5 +186,4 @@ class _BaggageAllowanceCardState extends State<BaggageAllowanceCard> {
         ],
       ),
     );
-  }
 }

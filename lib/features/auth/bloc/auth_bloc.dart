@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:excellistravel/features/auth/models/auth_resp_model.dart';
 
 import '../../../core/network/api_response.dart';
 import '../../../core/utils/storage_service.dart';
@@ -9,48 +10,48 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthRepository authRepository;
   AuthBloc({required this.authRepository}) : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) {});
+    on<AuthEvent>((AuthEvent event, Emitter<AuthState> emit) {});
     on<LoginEvent>(_handleLoginEvent);
     on<RegisterEvent>(_handleRegistrationEvent);
     on<LogoutEvent>(_handleLogoutEvent);
   }
+  AuthRepository authRepository;
 
   Future<void> _handleLoginEvent(
       LoginEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthLoading());
       if (event.userName.isEmpty || event.password.isEmpty) {
-        emit(const AuthError(message: "Please enter username and password"));
+        emit(const AuthError(message: 'Please enter username and password'));
         return;
       }
 
       if (event.userType == '') {
-        emit(const AuthError(message: "Please select user type"));
+        emit(const AuthError(message: 'Please select user type'));
       }
 
-      String? passwordError = Validators.password(event.password, 8);
+      final String? passwordError = Validators.password(event.password, 8);
       if (passwordError != null) {
         emit(AuthError(message: passwordError));
         return;
       }
 
       if (event.userName.contains('@')) {
-        String? emailError = Validators.email(event.userName);
+        final String? emailError = Validators.email(event.userName);
         if (emailError != null) {
           emit(AuthError(message: emailError));
           return;
         }
       } else {
-        String? usernameError = Validators.username(event.userName);
+        final String? usernameError = Validators.username(event.userName);
         if (usernameError != null) {
           emit(AuthError(message: usernameError));
           return;
         }
       }
 
-      final res = await authRepository.login(
+      final ApiResponse<AuthResponseModel> res = await authRepository.login(
         username: event.userName,
         password: event.password,
         fcmToken: event.fcmToken,
@@ -73,7 +74,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       RegisterEvent event, Emitter<AuthState> emit) async {
     try {
       emit(RegistrationInProgress());
-      String? errMessage = validateRegisTration(
+      final String? errMessage = validateRegisTration(
         userType: event.userType,
         companyName: event.companyName,
         firstName: event.firstName,
@@ -95,22 +96,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (errMessage != null) {
         emit(RegistrationFailure(message: errMessage));
       } else {
-        ApiResponse res = await authRepository.register(
-            firstName: event.firstName,
-            lastName: event.lastName,
-            email: event.emailId,
-            phone: event.phoneNumber,
-            role: event.userType,
-            officeAddress: event.officeAddress,
-            pinCode: event.pinCode,
-            state: event.state,
-            city: event.city,
-            nearByAirport: event.nearByAirport,
-            gstNumber: event.gstNumber,
-            aadhaarNumber: event.aadhaarNumber,
-            password: event.password,
-            commissionRate: 5,
-            isDirectBooking: true);
+        final ApiResponse<AuthResponseModel> res =
+            await authRepository.register(
+                firstName: event.firstName,
+                lastName: event.lastName,
+                email: event.emailId,
+                phone: event.phoneNumber,
+                role: event.userType,
+                officeAddress: event.officeAddress,
+                pinCode: event.pinCode,
+                state: event.state,
+                city: event.city,
+                nearByAirport: event.nearByAirport,
+                gstNumber: event.gstNumber,
+                aadhaarNumber: event.aadhaarNumber,
+                password: event.password,
+                commissionRate: 5,
+                isDirectBooking: true);
 
         if (res.errorMessage != null) {
           emit(RegistrationFailure(message: res.errorMessage!));

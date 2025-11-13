@@ -4,19 +4,17 @@ import '../constants/app_styles.dart';
 import '../utils/app_helpers.dart';
 
 class AppGradientBg extends StatelessWidget {
-  final Widget child;
   const AppGradientBg({super.key, required this.child});
+  final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       height: AppHelpers.getScreenHeight(context),
       width: AppHelpers.getScreenWidth(context),
       decoration: const BoxDecoration(
         gradient:
-            LinearGradient(colors: [AppColors.primary, AppColors.secondary]),
+            LinearGradient(colors: <Color>[AppColors.primary, AppColors.secondary]),
       ),
       child: child,
     );
-  }
 }

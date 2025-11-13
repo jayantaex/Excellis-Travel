@@ -19,11 +19,11 @@ class RecentSearchWidget extends StatefulWidget {
 }
 
 class _RecentSearchWidgetState extends State<RecentSearchWidget> {
-  List<FlightHiveDataModel> recentSearches = [];
+  List<FlightHiveDataModel> recentSearches = <FlightHiveDataModel>[];
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      Box<FlightHiveDataModel> flightBox = await LocalDB().getFlightBox();
+    WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) async {
+      final Box<FlightHiveDataModel> flightBox = await LocalDB().getFlightBox();
       recentSearches.addAll(flightBox.values);
       setState(() {});
     });
@@ -32,9 +32,8 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
+  Widget build(BuildContext context) => Column(
+      children: <Widget>[
         const SizedBox(height: 16),
         recentSearches.isEmpty
             ? SizedBox(
@@ -57,7 +56,7 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                 width: AppHelpers.getScreenWidth(context),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     Text(
                       'Recent Search',
                       style: TextStyle(
@@ -78,11 +77,11 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: recentSearches.length,
-                  itemBuilder: (context, index) {
-                    String strData = jsonEncode(recentSearches[index].data);
-                    Map<String, dynamic> data = jsonDecode(strData);
-                    Datam datam = Datam.fromJson(data);
-                    FlightDictionary flightDictionary =
+                  itemBuilder: (BuildContext context, int index) {
+                    final String strData = jsonEncode(recentSearches[index].data);
+                    final Map<String, dynamic> data = jsonDecode(strData);
+                    final Datam datam = Datam.fromJson(data);
+                    final FlightDictionary flightDictionary =
                         FlightDictionary.fromJson(
                             recentSearches[index].dictionaries);
                     return Container(
@@ -93,7 +92,7 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                           onTap: () {
                             context.pushNamed(
                               FlightBookingModule.flightDetailsName,
-                              extra: {
+                              extra: <String, Object>{
                                 'data': datam,
                                 'flightDictionary': flightDictionary
                               },
@@ -106,5 +105,4 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
         const SizedBox(height: 50),
       ],
     );
-  }
 }

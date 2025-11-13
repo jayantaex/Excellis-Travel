@@ -5,10 +5,10 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 
 class AppButtonNav extends StatelessWidget {
+  AppButtonNav({super.key, required this.currentIndex, required this.onTap});
   final int currentIndex;
   final Function(int) onTap;
-  AppButtonNav({super.key, required this.currentIndex, required this.onTap});
-  final List<BottomNavigationBarItem> items = [
+  final List<BottomNavigationBarItem> items = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       activeIcon: Container(
         padding: const EdgeInsets.all(8),
@@ -17,7 +17,7 @@ class AppButtonNav extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
+              colors: <Color>[
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
@@ -51,7 +51,7 @@ class AppButtonNav extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
+              colors: <Color>[
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
@@ -85,7 +85,7 @@ class AppButtonNav extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
+              colors: <Color>[
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
@@ -119,7 +119,7 @@ class AppButtonNav extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
+              colors: <Color>[
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
@@ -148,8 +148,7 @@ class AppButtonNav extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
+  Widget build(BuildContext context) => BottomNavigationBar(
       enableFeedback: false,
       useLegacyColorScheme: false,
       type: BottomNavigationBarType.fixed,
@@ -162,5 +161,4 @@ class AppButtonNav extends StatelessWidget {
       onTap: onTap,
       items: items,
     );
-  }
 }

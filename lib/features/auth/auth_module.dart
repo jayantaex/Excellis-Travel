@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nested/nested.dart';
 
 import '../../core/common/api/location_api.dart';
 import '../../core/common/bloc/cities/city_bloc.dart';
@@ -17,14 +18,12 @@ class AuthModule {
   static String loginPath = '/login';
   static String loginName = 'login';
   static Widget loginBuilder() {
-    ApiClient apiClient = ApiClient();
-    AuthApi api = AuthApi(apiClient: apiClient);
+    final ApiClient apiClient = ApiClient();
+    final AuthApi api = AuthApi(apiClient: apiClient);
     final AuthRepository authRepository = AuthRepository(authApi: api);
-    return BlocProvider(
+    return BlocProvider<AuthBloc>(
       create: (_) => AuthBloc(authRepository: authRepository),
-      child: Builder(builder: (context) {
-        return const LoginScreen();
-      }),
+      child: Builder(builder: (BuildContext context) => const LoginScreen()),
     );
   }
 
@@ -32,20 +31,20 @@ class AuthModule {
   static String registerPath = '/register';
   static String registerName = 'register';
   static Widget registerBuilder() {
-    ApiClient apiClient = ApiClient();
-    AuthApi api = AuthApi(apiClient: apiClient);
-    LocationApi statesApi = LocationApi(apiClient: apiClient);
+    final ApiClient apiClient = ApiClient();
+    final AuthApi api = AuthApi(apiClient: apiClient);
+    final LocationApi statesApi = LocationApi(apiClient: apiClient);
     final AuthRepository authRepository = AuthRepository(authApi: api);
     final LocationRepository stateRepository =
         LocationRepository(statesApi: statesApi);
-    return MultiBlocProvider(providers: [
-      BlocProvider(
+    return MultiBlocProvider(providers: <SingleChildWidget>[
+      BlocProvider<AuthBloc>(
         create: (_) => AuthBloc(authRepository: authRepository),
       ),
-      BlocProvider(
+      BlocProvider<StatesBloc>(
         create: (_) => StatesBloc(repository: stateRepository),
       ),
-      BlocProvider(
+      BlocProvider<CityBloc>(
         create: (_) => CityBloc(repository: stateRepository),
       )
     ], child: const RegistrationScreen());

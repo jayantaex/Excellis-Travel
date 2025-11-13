@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nested/nested.dart';
 
 import '../../core/common/api/location_api.dart';
 import '../../core/common/bloc/cities/city_bloc.dart';
@@ -27,45 +29,42 @@ class ProfileManagementModule {
   //my profile
   static String myProfileName = 'my_profile';
   static String myProfilePath = '/my_profile';
-  static Widget myProfileBuilder() {
-    return BlocProvider(
-      create: (_) => ProfileBloc(profileRepository: _profileRepository),
-      child: MyProfileScreen(),
-    );
-  }
+  static Widget myProfileBuilder() => BlocProvider<ProfileBloc>(
+        create: (_) => ProfileBloc(profileRepository: _profileRepository),
+        child: MyProfileScreen(),
+      );
 
 //edit profile
   static String editProfilePath = '/edit_profile';
   static String editProfileName = 'edit_profile';
 
-  static Widget editProfileBuilder() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => ProfileBloc(
-            profileRepository: _profileRepository,
+  static Widget editProfileBuilder() => MultiBlocProvider(
+        providers: <SingleChildWidget>[
+          BlocProvider<ProfileBloc>(
+            create: (_) => ProfileBloc(
+              profileRepository: _profileRepository,
+            ),
           ),
-        ),
-        BlocProvider(
-          create: (_) => StatesBloc(repository: _locationRepository),
-        ),
-        BlocProvider(
-          create: (_) => CityBloc(repository: _locationRepository),
-        )
-      ],
-      child: const EditProfileScreen(),
-    );
-  }
+          BlocProvider<StatesBloc>(
+            create: (_) => StatesBloc(repository: _locationRepository),
+          ),
+          BlocProvider<CityBloc>(
+            create: (_) => CityBloc(repository: _locationRepository),
+          )
+        ],
+        child: const EditProfileScreen(),
+      );
 
   static String citySearchName = 'city_search';
   static String citySeacrRoute = '/city-search';
-  static Widget citySearchBuilder(contex, state) {
-    String stateCode = state.extra['stateCode'];
-    String stateName = state.extra['stateName'];
-    int stateId = state.extra['stateId'];
+  static Widget citySearchBuilder(BuildContext context, state) {
+    final String stateCode = state.extra['stateCode']??'';
+    final String stateName = state.extra['stateName'];
+    final int stateId = state.extra['stateId'];
 
-    return BlocProvider(
-      create: (context) => CityBloc(repository: _locationRepository),
+    return BlocProvider<CityBloc>(
+      create: (BuildContext context) =>
+          CityBloc(repository: _locationRepository),
       child: CitySearch(
         onSelected: state.extra['onSelected'],
         stateCode: stateCode,

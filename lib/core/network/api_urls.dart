@@ -1,10 +1,10 @@
 import '../constants/app_constants.dart';
 
 class MainUrl {
-  final String env = "development";
+  final String env = 'development';
 
   String getUrl() {
-    if (env == "production") {
+    if (env == 'production') {
       return AppConstants.baseUrl;
     } else {
       return 'https://api.excellistravel.com';
@@ -12,7 +12,7 @@ class MainUrl {
   }
 
   String getAmaduesUrl() {
-    if (env == "production") {
+    if (env == 'production') {
       return AppConstants.amaduesUrl;
     } else {
       return 'https://test.api.amadeus.com';
@@ -21,32 +21,32 @@ class MainUrl {
 }
 
 class EndPoints {
-  static var baseUrl = MainUrl().getUrl();
-  static var amaduesBaseUrl = MainUrl().getAmaduesUrl();
+  static String baseUrl = MainUrl().getUrl();
+  static String amaduesBaseUrl = MainUrl().getAmaduesUrl();
   // Authentication
-  static const login = '/auth/login';
-  static const registration = "/auth/register";
-  static const refreshToken = "/auth/refresh-token";
+  static const String login = '/auth/login';
+  static const String registration = '/auth/register';
+  static const String refreshToken = '/auth/refresh-token';
 
   //location - state
-  static const state = "/location/states?limit=1000";
-  static const cities = "/location/cities?limit=1000000";
+  static const String state = '/location/states?limit=1000';
+  static const String cities = '/location/cities?limit=1000000';
   //wish -list
-  static const wishList = "/wish-list";
+  static const String wishList = '/wish-list';
   //Profile
-  static const profile = "/auth/profile";
+  static const String profile = '/auth/profile';
   //payment verify
-  static const createPayment = '/bookings/create-payment';
-  static const verifyPayment = '/bookings/verify-payment';
+  static const String createPayment = '/bookings/create-payment';
+  static const String verifyPayment = '/bookings/verify-payment';
   //markup pricing
-  static const markupPricing = '/markups/calculate-markup';
+  static const String markupPricing = '/markups/calculate-markup';
 
   //ticket
-  static const ticket = '/bookings/filtered-auto';
+  static const String ticket = '/bookings/filtered-auto';
 
   //amadues
-  static const amaduesAccessToken = "/v1/security/oauth2/token";
-  static const airportSearchByKeyword = "/v1/reference-data/locations";
-  static const flightSearch = "/v2/shopping/flight-offers";
-  static const flightOfferPrice = '/v1/shopping/flight-offers/pricing';
+  static const String amaduesAccessToken = '/v1/security/oauth2/token';
+  static const String airportSearchByKeyword = '/v1/reference-data/locations';
+  static const String flightSearch = '/v2/shopping/flight-offers';
+  static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
 }

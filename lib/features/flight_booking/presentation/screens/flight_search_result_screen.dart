@@ -21,8 +21,8 @@ import '../widgets/flight_listing/date_filter_widget.dart';
 import '../widgets/loading/flight_list_loadding_widget.dart';
 
 class FlightSearchResultScreen extends StatefulWidget {
-  final Map<String, dynamic> data;
   const FlightSearchResultScreen({super.key, required this.data});
+  final Map<String, dynamic> data;
 
   @override
   State<FlightSearchResultScreen> createState() =>
@@ -50,11 +50,11 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      Map<String, dynamic> paramData = widget.data;
+      final Map<String, dynamic> paramData = widget.data;
 
       depurtureDate = paramData['depurtureDate'];
       cabinClass = paramData['cabinClass'];
-      List<int> totalTravelers = [
+      final List<int> totalTravelers = [
         paramData['travellers']['adult'],
         paramData['travellers']['child'],
         paramData['travellers']['infant']
@@ -77,8 +77,7 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: Center(
@@ -108,7 +107,7 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                             startDate: depurtureDate,
                             onDateSelected: (date) async {
                               if (widget.data['isRoundTrip']) {
-                                bool? res = await AppHelpers.showConfirmDialog(
+                                final bool? res = await AppHelpers.showConfirmDialog(
                                   confirmText: 'Got it',
                                   context,
                                   title: 'It is a round trip',
@@ -200,29 +199,28 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
         ),
       ),
     );
-  }
 }
 
 Future<bool> _saveToLocal(
     {required Datam data, required FlightDictionary flightDictionary}) async {
   try {
-    String key =
+    final String key =
         '${data.itineraries!.first.segments!.first.departure!.iataCode}_${data.itineraries!.first.segments!.last.arrival!.iataCode}_${data.itineraries?.first.segments?.first.departure?.at}_${data.itineraries?.first.segments?.last.arrival?.at}';
-    Box<FlightHiveDataModel> flightBox = await LocalDB().getFlightBox();
+    final Box<FlightHiveDataModel> flightBox = await LocalDB().getFlightBox();
 
-    Map<String, dynamic> dictionaries = flightDictionary.toJson();
-    Map<String, dynamic> dataMap = data.toJson();
-    FlightHiveDataModel recentSearchedData =
+    final Map<String, dynamic> dictionaries = flightDictionary.toJson();
+    final Map<String, dynamic> dataMap = data.toJson();
+    final FlightHiveDataModel recentSearchedData =
         FlightHiveDataModel(data: dataMap, dictionaries: dictionaries);
 
-    FlightHiveDataModel? existingData = flightBox.get(key);
+    final FlightHiveDataModel? existingData = flightBox.get(key);
     if (existingData != null) {
       flightBox.delete(key);
     }
     await flightBox.put(key, recentSearchedData);
     return true;
   } catch (e) {
-    log("Error while saving local DB $e");
+    log('Error while saving local DB $e');
     return false;
   }
 }
@@ -235,63 +233,61 @@ Map<String, dynamic> getBody({
   required String cabinClass,
   required bool isRoundTrip,
   required List<int> travellersArr,
-}) {
-  return {
-    "currencyCode": "INR",
-    "originDestinations": [
+}) => {
+    'currencyCode': 'INR',
+    'originDestinations': [
       {
-        "id": "1",
-        "originLocationCode": depurture,
-        "destinationLocationCode": arrival,
-        "departureDateTimeRange": {"date": depurtureDate}
+        'id': '1',
+        'originLocationCode': depurture,
+        'destinationLocationCode': arrival,
+        'departureDateTimeRange': {'date': depurtureDate}
       },
       if (isRoundTrip)
         {
-          "id": "2",
-          "originLocationCode": arrival,
-          "destinationLocationCode": depurture,
-          "departureDateTimeRange": {
-            "date": returnDate,
+          'id': '2',
+          'originLocationCode': arrival,
+          'destinationLocationCode': depurture,
+          'departureDateTimeRange': {
+            'date': returnDate,
           }
         }
     ],
-    "travelers": getTravellers(travellersArr: travellersArr),
-    "sources": ["GDS"],
-    "searchCriteria": {
-      "maxFlightOffers": kDebugMode ? 4 : 100,
-      "flightFilters": {
-        "cabinRestrictions": [
+    'travelers': getTravellers(travellersArr: travellersArr),
+    'sources': ['GDS'],
+    'searchCriteria': {
+      'maxFlightOffers': kDebugMode ? 4 : 100,
+      'flightFilters': {
+        'cabinRestrictions': [
           {
-            "cabin": cabinClass.toUpperCase(),
-            "coverage": "MOST_SEGMENTS",
-            "originDestinationIds": ["1"]
+            'cabin': cabinClass.toUpperCase(),
+            'coverage': 'MOST_SEGMENTS',
+            'originDestinationIds': ['1']
           }
         ],
-        "carrierRestrictions": {
-          "excludedCarrierCodes": ["AA", "TP", "AZ"]
+        'carrierRestrictions': {
+          'excludedCarrierCodes': ['AA', 'TP', 'AZ']
         }
       }
     }
   };
-}
 
 List<Map<String, dynamic>> getTravellers({required List<int> travellersArr
 
     /// [adult, child, infant]
     }) {
-  List<Map<String, dynamic>> listOfTravellers = [];
+  final List<Map<String, dynamic>> listOfTravellers = [];
   int travellerId = 1;
   for (int i = 0; i < travellersArr.length; i++) {
     if (travellersArr[i] > 0) {
       for (int j = 0; j < travellersArr[i]; j++) {
-        Map<String, dynamic> traveller = {
-          "id": "$travellerId",
-          "travelerType": i == 0
-              ? "ADULT"
+        final Map<String, dynamic> traveller = {
+          'id': '$travellerId',
+          'travelerType': i == 0
+              ? 'ADULT'
               : i == 1
-                  ? "CHILD"
-                  : "INFANT",
-          "fareOptions": ["STANDARD"]
+                  ? 'CHILD'
+                  : 'INFANT',
+          'fareOptions': ['STANDARD']
         };
         listOfTravellers.add(traveller);
         travellerId++;

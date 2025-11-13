@@ -18,68 +18,62 @@ import '../widgets/user_content_widget.dart';
 class MyProfileScreen extends StatelessWidget {
   MyProfileScreen({super.key});
 
-  final List<Map<String, dynamic>> options = [
-    {
+  final List<Map<String, String>> options = <Map<String, String>>[
+    <String, String>{
       'title': 'Profile',
       'iconPath': '${AppConstants.assetIcontUrl}my_profile.svg',
       'routeName': ProfileManagementModule.editProfileName
     },
-    {
+    <String, String>{
       'title': 'Terms & Conditions',
       'iconPath': '${AppConstants.assetIcontUrl}terms.svg',
       'routeName': LegalModule.termsName
     },
-    {
+    <String, String>{
       'title': 'Privacy Policy',
       'iconPath': '${AppConstants.assetIcontUrl}privacy_policy.svg',
       'routeName': LegalModule.policyName
     },
-    {
+    <String, String>{
       'title': 'Settings',
       'iconPath': '${AppConstants.assetIcontUrl}settings.svg',
       'routeName': SettingsModule.routeName
     },
-    {
+    <String, String>{
       'title': 'Sign Out',
       'iconPath': '${AppConstants.assetIcontUrl}sign_out.svg',
       'routeName': ''
     }
   ];
-  String? token;
   @override
-  Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () async {
-      token = await StorageService.getAccessToken();
-    });
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text(
-          'Profile',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          centerTitle: false,
+          title: const Text(
+            'Profile',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          ),
+          actions: <Widget>[
+            IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  '${AppConstants.assetIcontUrl}whatsapp.svg',
+                  height: 31,
+                  width: 31,
+                ))
+          ],
         ),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
-                '${AppConstants.assetIcontUrl}whatsapp.svg',
-                height: 31,
-                width: 31,
-              ))
-        ],
-      ),
-      body: TransWhiteBgWidget(
-        child: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, state) {
-            return Column(
-              children: [
+        body: TransWhiteBgWidget(
+          child: BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (BuildContext context, ProfileState state) => Column(
+              children: <Widget>[
                 //profile components
                 SizedBox(
                   width: AppHelpers.getScreenWidth(context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       UserContentWidget(
                         userImage: '',
                         userName: state is ProfileLoaded
@@ -108,28 +102,21 @@ class MyProfileScreen extends StatelessWidget {
                       ),
                     ),
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         const SizedBox(height: 20),
-                        ...options.map((option) => ListTile(
+                        ...options.map((Map<String, String> option) => ListTile(
                             leading: SvgPicture.asset(
-                              option['iconPath'],
+                              option['iconPath'] ?? '',
                               height: 17,
                               width: 17,
                             ),
-                            title: option['title'] == 'Sign Out' &&
-                                        token == null ||
-                                    token == ''
-                                ? const Text(
-                                    'Log In',
-                                  )
-                                : Text(
-                                    option['title'],
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400),
-                                  ),
+                            title: Text(
+                              option['title'] ?? '',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w400),
+                            ),
                             onTap: () async {
-                              String? token =
+                              final String? token =
                                   await StorageService.getAccessToken();
                               if ((token == null || token.isEmpty) &&
                                   (option['routeName'] == 'edit_profile')) {
@@ -150,7 +137,7 @@ class MyProfileScreen extends StatelessWidget {
                               }
                               if (option['routeName'] != '') {
                                 if (context.mounted) {
-                                  context.pushNamed(option['routeName']);
+                                  context.pushNamed(option['routeName'] ?? '');
                                 }
                               }
                             }))
@@ -159,10 +146,8 @@ class MyProfileScreen extends StatelessWidget {
                   ),
                 )
               ],
-            );
-          },
+            ),
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

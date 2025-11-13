@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -16,20 +15,20 @@ import '../widgets/airport_search/airport_card.dart';
 import '../widgets/loading/airport_card_loading_widget.dart';
 
 class AirportSearchScreen extends StatelessWidget {
+  AirportSearchScreen(
+      {super.key, this.selectedAirport, this.type, this.onAirportSelected});
   final String? selectedAirport;
   final String? type;
   final void Function(AirportModel airport)? onAirportSelected;
-  AirportSearchScreen(
-      {super.key, this.selectedAirport, this.type, this.onAirportSelected});
   final TextEditingController _searchController = TextEditingController();
-  final List<DropdownMenuItem<String>> items = [];
+  final List<DropdownMenuItem<String>> items = <DropdownMenuItem<String>>[];
   String _selectedCountyCode = 'IN';
 
   @override
   Widget build(BuildContext context) {
-    for (var element in countryList) {
+    for (Map<String, String> element in countryList) {
       items.add(
-        DropdownMenuItem(
+        DropdownMenuItem<String>(
           value: element['code'],
           child: Text('${element['name']} (${element['code']})'),
         ),
@@ -50,7 +49,7 @@ class AirportSearchScreen extends StatelessWidget {
             child: SafeArea(
               bottom: false,
               child: Column(
-                children: [
+                children: <Widget>[
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: AppCustomAppbar(
@@ -67,10 +66,10 @@ class AirportSearchScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Column(
-                        children: [
+                        children: <Widget>[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                            children: <Widget>[
                               SizedBox(
                                 width: AppHelpers.getScreenWidth(context) * 0.6,
                                 child: AppPrimaryInput(
@@ -112,13 +111,16 @@ class AirportSearchScreen extends StatelessWidget {
                           const SizedBox(height: 20),
                           Expanded(
                             child: BlocConsumer<FlightBloc, FlightState>(
-                              listener: (context, state) {},
-                              builder: (context, state) {
+                              listener:
+                                  (BuildContext context, FlightState state) {},
+                              builder:
+                                  (BuildContext context, FlightState state) {
                                 if (state is AirportSearching) {
                                   return ListView.builder(
                                     itemCount: 15,
-                                    itemBuilder: (context, index) =>
-                                        const AirportCardLoadingWidget(),
+                                    itemBuilder:
+                                        (BuildContext context, int index) =>
+                                            const AirportCardLoadingWidget(),
                                   );
                                 }
 
@@ -129,8 +131,9 @@ class AirportSearchScreen extends StatelessWidget {
 
                                   return ListView.builder(
                                     itemCount: state.airports.length,
-                                    itemBuilder: (context, index) =>
-                                        AirportCard(
+                                    itemBuilder:
+                                        (BuildContext context, int index) =>
+                                            AirportCard(
                                       airportCode:
                                           state.airports[index].iataCode ?? '',
                                       city: state.airports[index].address
@@ -177,14 +180,12 @@ class NoAirPortFound extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("No Airport Found",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-            color: AppColors.grey,
-          )),
-    );
-  }
+  Widget build(BuildContext context) => const Center(
+        child: Text('No Airport Found',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: AppColors.grey,
+            )),
+      );
 }

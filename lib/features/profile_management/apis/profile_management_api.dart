@@ -4,26 +4,21 @@ import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
 
 class ProfileManagementApi {
-  final ApiClient apiClient;
   ProfileManagementApi({required this.apiClient});
+  final ApiClient apiClient;
 
-  Future<ApiResponse<ProfileModel>> fetchUserProfile() async {
-    return await apiClient.getRequest(
-      endPoint: EndPoints.profile,
-      fromJson: (jsonData) {
-        return ProfileModel.fromJson(jsonData['data']);
-      },
-    );
-  }
+  Future<ApiResponse<ProfileModel>> fetchUserProfile() async =>
+      await apiClient.getRequest(
+        endPoint: EndPoints.profile,
+        fromJson: (jsonData) => ProfileModel.fromJson(jsonData['data']),
+      );
 
   Future<ApiResponse<ProfileModel>> updateProfile(
-      {required Map<String, dynamic> body}) async {
-    return await apiClient.putRequest(
-      endPoint: EndPoints.profile,
-      reqModel: body,
-      fromJson: (jsonData) {
-        return ProfileModel.fromJson(jsonData['data']);
-      },
-    );
-  }
+          {required Map<String, dynamic> body}) async =>
+      await apiClient.putRequest(
+        endPoint: EndPoints.profile,
+        reqModel: body,
+        fromJson: (Map<String, dynamic> jsonData) =>
+            ProfileModel.fromJson(jsonData['data']),
+      );
 }

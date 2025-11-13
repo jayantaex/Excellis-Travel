@@ -3,41 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ErrorScreen extends StatelessWidget {
+  const ErrorScreen({super.key, this.errorMessage, this.errorDesc});
   final String? errorMessage;
   final String? errorDesc;
-  const ErrorScreen({super.key, this.errorMessage, this.errorDesc});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          const Spacer(flex: 2),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8,
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: SvgPicture.string(
-                noCoonectionIllistration,
-                fit: BoxFit.scaleDown,
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: <Widget>[
+            const Spacer(flex: 2),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: SvgPicture.string(
+                  noCoonectionIllistration,
+                  fit: BoxFit.scaleDown,
+                ),
               ),
             ),
-          ),
-          const Spacer(flex: 2),
-          ErrorInfo(
-            title: kDebugMode ? "$errorMessage" : "Opps!....",
-            description: kDebugMode
-                ? errorDesc ?? 'no description for for debug mode'
-                : "Something wrong happened while processing your request, Please try again after a moment.",
-            // button: you can pass your custom button,
-            // btnText: default is retry, you can pass your custom text,
-            press: () {},
-          ),
-        ],
-      ),
-    );
-  }
+            const Spacer(flex: 2),
+            ErrorInfo(
+              title: kDebugMode ? '$errorMessage' : 'Opps!....',
+              description: kDebugMode
+                  ? errorDesc ?? 'no description for for debug mode'
+                  : 'Something wrong happened while processing your request, Please try again after a moment.',
+              // button: you can pass your custom button,
+              // btnText: default is retry, you can pass your custom text,
+              press: () {},
+            ),
+          ],
+        ),
+      );
 }
 
 class ErrorInfo extends StatelessWidget {
@@ -57,36 +55,33 @@ class ErrorInfo extends StatelessWidget {
   final VoidCallback press;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 400),
-        alignment: Alignment.center,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              description,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16 * 2.5),
-          ],
+  Widget build(BuildContext context) => Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall!
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                description,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16 * 2.5),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }
 
-const noCoonectionIllistration =
+const String noCoonectionIllistration =
     '''<svg width="1080" height="1080" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M495.37 347.17C529.49 305.3 601.8 305.22 636.11 346.94" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M572.22 752.17C632.85 752.17 682 707.533 682 652.47C682 597.407 632.85 552.77 572.22 552.77C511.59 552.77 462.44 597.407 462.44 652.47C462.44 707.533 511.59 752.17 572.22 752.17Z" fill="#D3D3D3"/>

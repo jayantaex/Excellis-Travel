@@ -1,7 +1,4 @@
 class StateModel {
-  int? id;
-  String? name;
-  String? code;
 
   StateModel({this.id, this.name, this.code});
 
@@ -10,6 +7,9 @@ class StateModel {
     name = json['name'];
     code = json['code'];
   }
+  int? id;
+  String? name;
+  String? code;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

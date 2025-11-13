@@ -9,18 +9,18 @@ import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 
 class CitySearch extends StatelessWidget {
-  final int stateId;
-  final String stateCode;
-  final String stateName;
-  final Function(CityModel city) onSelected;
   CitySearch(
       {super.key,
       required this.stateId,
       required this.stateCode,
       required this.stateName,
       required this.onSelected});
+  final int stateId;
+  final String stateCode;
+  final String stateName;
+  final Function(CityModel city) onSelected;
 
-  final List<CityModel> cities = [];
+  final List<CityModel> cities = <CityModel>[];
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class CitySearch extends StatelessWidget {
               child: SafeArea(
                 bottom: false,
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     const Padding(
                       padding: EdgeInsets.only(top: 8, left: 16, right: 16),
                       child: AppCustomAppbar(
@@ -52,8 +52,8 @@ class CitySearch extends StatelessWidget {
                           color: AppColors.white,
                         ),
                         child: BlocConsumer<CityBloc, CityState>(
-                          listener: (context, state) {},
-                          builder: (context, state) {
+                          listener: (BuildContext context, CityState state) {},
+                          builder: (BuildContext context, CityState state) {
                             if (state is GetCityLoading) {
                               return const Center(
                                   child: CircularProgressIndicator.adaptive());
@@ -61,14 +61,14 @@ class CitySearch extends StatelessWidget {
 
                             if (state is CityLoaded) {
                               return Column(
-                                children: [
+                                children: <Widget>[
                                   const SizedBox(height: 12),
                                   SizedBox(
                                     height:
                                         AppHelpers.getScreenHeight(context) *
                                             0.8,
                                     child: ListView.builder(
-                                      itemBuilder: (context, index) =>
+                                      itemBuilder: (BuildContext context, int index) =>
                                           Container(
                                         margin:
                                             const EdgeInsets.only(bottom: 8),

@@ -7,8 +7,7 @@ class FlightDetailsLoadingWidet extends StatelessWidget {
   const FlightDetailsLoadingWidet({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       height: AppHelpers.getScreenHeight(context) * 0.8,
       width: AppHelpers.getScreenWidth(context),
       child: const Center(
@@ -17,5 +16,4 @@ class FlightDetailsLoadingWidet extends StatelessWidget {
         ),
       ),
     );
-  }
 }

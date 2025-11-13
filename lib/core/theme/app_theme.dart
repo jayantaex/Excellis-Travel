@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import '../constants/app_styles.dart';
 
 class AppTheme {
-  static ThemeData get lightTheme {
-    return ThemeData(
+  static ThemeData get lightTheme => ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primary,
@@ -151,10 +150,8 @@ class AppTheme {
         behavior: SnackBarBehavior.floating,
       ),
     );
-  }
 
-  static ThemeData get darkTheme {
-    return ThemeData(
+  static ThemeData get darkTheme => ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primary,
@@ -180,5 +177,4 @@ class AppTheme {
       // The rest of the theme configuration would be similar to light theme
       // but with dark color variants
     );
-  }
 }

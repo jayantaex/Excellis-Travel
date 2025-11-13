@@ -1,9 +1,4 @@
 class AuthResponseModel {
-  bool? success;
-  String? message;
-  Data? data;
-  int? statusCode;
-  String? timestamp;
 
   AuthResponseModel(
       {this.success, this.message, this.data, this.statusCode, this.timestamp});
@@ -15,6 +10,11 @@ class AuthResponseModel {
     statusCode = json['statusCode'];
     timestamp = json['timestamp'];
   }
+  bool? success;
+  String? message;
+  Data? data;
+  int? statusCode;
+  String? timestamp;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -30,9 +30,6 @@ class AuthResponseModel {
 }
 
 class Data {
-  User? user;
-  String? token;
-  String? refreshToken;
 
   Data({this.user, this.token, this.refreshToken});
 
@@ -41,6 +38,9 @@ class Data {
     token = json['token'];
     refreshToken = json['refreshToken'];
   }
+  User? user;
+  String? token;
+  String? refreshToken;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -54,20 +54,6 @@ class Data {
 }
 
 class User {
-  int? id;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? role;
-  String? status;
-  String? emailStatus;
-  String? lastLoginAt;
-  String? phone;
-  String? address;
-  String? commissionRate;
-  bool? isDirectBooking;
-  String? createdAt;
-  String? updatedAt;
 
   User(
       {this.id,
@@ -101,6 +87,20 @@ class User {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? role;
+  String? status;
+  String? emailStatus;
+  String? lastLoginAt;
+  String? phone;
+  String? address;
+  String? commissionRate;
+  bool? isDirectBooking;
+  String? createdAt;
+  String? updatedAt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

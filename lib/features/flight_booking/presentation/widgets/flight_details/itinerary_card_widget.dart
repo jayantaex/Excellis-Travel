@@ -8,34 +8,33 @@ import '../../../models/flights_data_model.dart' show FlightDictionary;
 import 'segement_card_widget.dart';
 
 class ItineraryCard extends StatelessWidget {
-  final Itinerary data;
-  final FlightDictionary flightDictionary;
-  final bool? isSegmentRequired;
   const ItineraryCard(
       {super.key,
       required this.width,
       required this.data,
       required this.flightDictionary,
       this.isSegmentRequired = true});
+  final Itinerary data;
+  final FlightDictionary flightDictionary;
+  final bool? isSegmentRequired;
 
   final double width;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
+  Widget build(BuildContext context) => Column(
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               SizedBox(
                 height: 90,
                 width: width * 0.25,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     Text(
                         AppHelpers.formatDateTime(
                             DateTime.parse(
@@ -68,10 +67,10 @@ class ItineraryCard extends StatelessWidget {
               SizedBox(
                   width: width * 0.25,
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       AppHelpers.svgAsset(assetName: 'flight', width: 100),
                       Column(
-                        children: [
+                        children: <Widget>[
                           Text(
                             getDuration(
                                 duration: data.segments?.first.duration ?? ''),
@@ -99,7 +98,7 @@ class ItineraryCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
+                  children: <Widget>[
                     Text(
                         AppHelpers.formatDateTime(
                             DateTime.parse(
@@ -131,23 +130,23 @@ class ItineraryCard extends StatelessWidget {
           ),
         ),
         DottedBorder(
-          dashPattern: const [8, 4],
-          customPath: (size) => Path()
+          dashPattern: const <double>[8, 4],
+          customPath: (Size size) => Path()
             ..moveTo(0, size.height)
             ..relativeLineTo(size.width, 0),
           color: AppColors.grey,
           strokeWidth: 0.5,
           child: Column(
             children: isSegmentRequired ?? true
-                ? [
+                ? <Widget>[
                     ...data.segments!.map(
-                      (e) => SegmentCard(
+                      (Segment e) => SegmentCard(
                         flightDictionary: flightDictionary,
                         data: e,
                       ),
                     )
                   ]
-                : [
+                : <Widget>[
                     SizedBox(
                       height: 2,
                       width: AppHelpers.getScreenWidth(context),
@@ -157,14 +156,13 @@ class ItineraryCard extends StatelessWidget {
         ),
       ],
     );
-  }
 }
 
 getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
-  String hr = duration.split('H')[0].trim();
-  String mn = duration.split('H')[1].split('M')[0].trim();
+  final String hr = duration.split('H')[0].trim();
+  final String mn = duration.split('H')[1].split('M')[0].trim();
 
   return '${hr}H ${mn}M';
 }

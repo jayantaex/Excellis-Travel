@@ -18,13 +18,12 @@ class _SettingScreenState extends State<SettingScreen> {
   bool notificationOn = false;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: AppGradientBg(
         child: SafeArea(
           bottom: false,
           child: Column(
-            children: [
+            children: <Widget>[
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: AppCustomAppbar(
@@ -44,7 +43,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ),
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       ListTile(
                         contentPadding: const EdgeInsets.all(0),
                         title: const Text('Notifications',
@@ -63,7 +62,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           scale: 0.8,
                           child: CupertinoSwitch(
                             value: notificationOn,
-                            onChanged: (value) {
+                            onChanged: (bool value) {
                               setState(() {
                                 notificationOn = value;
                               });
@@ -129,12 +128,11 @@ class _SettingScreenState extends State<SettingScreen> {
         color: AppColors.white,
         height: 55,
         child: Column(
-          children: [
+          children: <Widget>[
             Text('V$appVersion',
                 style: const TextStyle(fontSize: 16, color: AppColors.grey)),
           ],
         ),
       ),
     );
-  }
 }

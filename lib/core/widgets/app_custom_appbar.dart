@@ -4,13 +4,6 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 
 class AppCustomAppbar extends StatelessWidget {
-  final Function? onBackClicked;
-  final Function? onMoreClicked;
-  final Widget? trailing;
-  final String? start;
-  final String? end;
-  final String? centerTitle;
-  final bool? isBackButtonRequired;
 
   const AppCustomAppbar(
       {super.key,
@@ -21,14 +14,20 @@ class AppCustomAppbar extends StatelessWidget {
       this.end,
       this.isBackButtonRequired = true,
       this.centerTitle});
+  final Function? onBackClicked;
+  final Function? onMoreClicked;
+  final Widget? trailing;
+  final String? start;
+  final String? end;
+  final String? centerTitle;
+  final bool? isBackButtonRequired;
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       height: 45,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           isBackButtonRequired ?? true
               ? CircleAvatar(
                   backgroundColor: AppColors.black.withOpacity(0.1),
@@ -48,7 +47,7 @@ class AppCustomAppbar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: centerTitle == null
-                    ? [
+                    ? <Widget>[
                         Text(start ?? '',
                             style: const TextStyle(
                                 fontSize: 18,
@@ -64,7 +63,7 @@ class AppCustomAppbar extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.white)),
                       ]
-                    : [
+                    : <Widget>[
                         Text(centerTitle!,
                             style: const TextStyle(
                                 fontSize: 18,
@@ -76,5 +75,4 @@ class AppCustomAppbar extends StatelessWidget {
         ],
       ),
     );
-  }
 }

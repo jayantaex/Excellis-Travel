@@ -10,7 +10,7 @@ class BarcodeService {
     double? fontHeight,
   }) {
     /// Create the Barcode
-    String svg = bc.toSvg(
+    final String svg = bc.toSvg(
       data,
       width: width ?? 200,
       height: height ?? 80,

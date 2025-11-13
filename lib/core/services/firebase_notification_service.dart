@@ -12,20 +12,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class FirebaseNotificationService {
   FirebaseNotificationService._();
   static FirebaseNotificationService instance = FirebaseNotificationService._();
-  final _messaging = FirebaseMessaging.instance;
-  final _localNotifications = FlutterLocalNotificationsPlugin();
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
   bool _isFlutterLocalNotificationsInitialized = false;
 
   Future<void> initialize() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await _requestPermission();
     await _setupMessageHandlers();
-    final token = await _messaging.getToken();
+    final String? token = await _messaging.getToken();
     log('FCM Token: $token');
   }
 
   Future<void> _requestPermission() async {
-    final settings = await _messaging.requestPermission(
+    final NotificationSettings settings = await _messaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
@@ -35,11 +35,11 @@ class FirebaseNotificationService {
   }
 
   Future<void> _setupMessageHandlers() async {
-    FirebaseMessaging.onMessage.listen((message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       showNotification(message);
     });
     FirebaseMessaging.onMessageOpenedApp.listen(_handleBackgroundMessage);
-    final initialMessage = await _messaging.getInitialMessage();
+    final RemoteMessage? initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
       _handleBackgroundMessage(initialMessage);
     }
@@ -52,9 +52,9 @@ class FirebaseNotificationService {
 
   Future<void> showNotification(RemoteMessage message) async {
     try {
-      int notificationId = message.notification?.hashCode ?? 0;
-      String title = message.notification?.title ?? '';
-      String body = message.notification?.body ?? '';
+      final int notificationId = message.notification?.hashCode ?? 0;
+      final String title = message.notification?.title ?? '';
+      final String body = message.notification?.body ?? '';
       const AndroidNotificationDetails andriod = AndroidNotificationDetails(
         'Excellis Travel Notification Channel',
         'Excellis Travel Notification ',
@@ -70,7 +70,7 @@ class FirebaseNotificationService {
       _localNotifications.show(notificationId, title, body,
           const NotificationDetails(android: andriod, iOS: ios));
     } catch (e) {
-      log("Error: $e");
+      log('Error: $e');
     }
   }
 

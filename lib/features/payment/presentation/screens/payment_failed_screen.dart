@@ -5,12 +5,11 @@ import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 
 class PaymentFailedScreen extends StatelessWidget {
-  final String errMsg;
   const PaymentFailedScreen({super.key, required this.errMsg});
+  final String errMsg;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: SizedBox(
         width: AppHelpers.percenWidth(context: context),
         child: Padding(
@@ -61,5 +60,4 @@ class PaymentFailedScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 }

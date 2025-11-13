@@ -5,13 +5,6 @@ import '../../../../core/utils/app_helpers.dart';
 import '../../models/flights_data_model.dart';
 
 class FlightCardWidget extends StatelessWidget {
-  final Datam data;
-  final FlightDictionary? dictionaries;
-  final bool? isOnWishList;
-  final double? customWidth;
-  final bool? isFavIconRequired;
-  final Function()? onWishListTap;
-  final Function() onTap;
   const FlightCardWidget(
       {super.key,
       required this.data,
@@ -21,10 +14,17 @@ class FlightCardWidget extends StatelessWidget {
       this.dictionaries,
       required this.onTap,
       this.customWidth});
+  final Datam data;
+  final FlightDictionary? dictionaries;
+  final bool? isOnWishList;
+  final double? customWidth;
+  final bool? isFavIconRequired;
+  final Function()? onWishListTap;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
-    double width = AppHelpers.getScreenWidth(context);
+    final double width = AppHelpers.getScreenWidth(context);
     return InkWell(
       focusColor: Colors.transparent,
       hoverColor: Colors.transparent,
@@ -42,20 +42,20 @@ class FlightCardWidget extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
           child: Column(
-            children: [
+            children: <Widget>[
               SizedBox(
                 height: 45,
                 width: width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     SizedBox(
                       height: 40,
                       width: AppHelpers.getScreenWidth(context) * 0.4,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8),
                         child: Row(
-                          children: [
+                          children: <Widget>[
                             CircleAvatar(
                               radius: 15,
                               backgroundImage: AssetImage(
@@ -78,8 +78,7 @@ class FlightCardWidget extends StatelessWidget {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         Container(
                           margin: const EdgeInsets.only(right: 10),
                           height: 25,
@@ -109,14 +108,14 @@ class FlightCardWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     SizedBox(
                         height: 90,
                         width: customWidth ?? width * 0.22,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: <Widget>[
                             Text(
                                 data.itineraries?.first.segments?.first
                                         .departure?.iataCode ??
@@ -156,11 +155,11 @@ class FlightCardWidget extends StatelessWidget {
                     SizedBox(
                         width: customWidth ?? width * 0.22,
                         child: Column(
-                          children: [
+                          children: <Widget>[
                             AppHelpers.svgAsset(
                                 assetName: 'flight', width: 100),
                             Column(
-                              children: [
+                              children: <Widget>[
                                 Text(
                                   getDuration(
                                       duration:
@@ -192,7 +191,7 @@ class FlightCardWidget extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
+                        children: <Widget>[
                           Text(
                               data.itineraries?.first.segments?.last.arrival
                                       ?.iataCode ??
@@ -234,8 +233,8 @@ class FlightCardWidget extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               DottedBorder(
-                  dashPattern: const [8, 4],
-                  customPath: (size) => Path()
+                  dashPattern: const <double>[8, 4],
+                  customPath: (Size size) => Path()
                     ..moveTo(0, size.height)
                     ..relativeLineTo(size.width, 0),
                   color: AppColors.grey,
@@ -246,7 +245,7 @@ class FlightCardWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     const Text(
                       'Cabin Class',
                       style: TextStyle(
@@ -270,7 +269,7 @@ class FlightCardWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: <Widget>[
                     Text(
                       data.travelerPricings?.first.fareDetailsBySegment?.first
                               .cabin ??
@@ -316,8 +315,8 @@ Color getColorByStatus(String status) {
 getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
-  String hr = duration.split('H')[0].trim();
-  String mn = duration.split('H')[1].split('M')[0].trim();
+  final String hr = duration.split('H')[0].trim();
+  final String mn = duration.split('H')[1].split('M')[0].trim();
 
   return '${hr}H ${mn}M';
 }
@@ -325,7 +324,7 @@ getDuration({required String duration}) {
 class TicketClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path = Path();
+    final Path path = Path();
 
     path.lineTo(0.0, size.height);
     path.lineTo(size.width, size.height);

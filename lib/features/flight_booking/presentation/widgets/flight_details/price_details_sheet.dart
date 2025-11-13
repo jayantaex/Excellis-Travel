@@ -8,19 +8,19 @@ Future<void> showPriceDetailsSheet(
   await showModalBottomSheet(
     backgroundColor: AppColors.white,
     context: context,
-    builder: (context) => PriceDetailsSheet(
+    builder: (BuildContext context) => PriceDetailsSheet(
       flightOffer: flightOffer,
     ),
   );
 }
 
 class PriceDetailsSheet extends StatelessWidget {
-  final FlightOffer flightOffer;
   PriceDetailsSheet({super.key, required this.flightOffer});
+  final FlightOffer flightOffer;
 
-  final List<String> adult = [];
-  final List<String> child = [];
-  final List<String> infant = [];
+  final List<String> adult = <String>[];
+  final List<String> child = <String>[];
+  final List<String> infant = <String>[];
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +48,12 @@ class PriceDetailsSheet extends StatelessWidget {
       width: AppHelpers.getScreenWidth(context),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 const SizedBox(height: 25, width: 20),
                 const Text(
                   'Price details',
@@ -81,7 +81,7 @@ class PriceDetailsSheet extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Text(
                     'Total Travelers: ${adult.length + child.length + infant.length} person(s)'),
                 adult.isEmpty
@@ -130,25 +130,24 @@ class PriceDetailsSheet extends StatelessWidget {
 }
 
 class PriceCol extends StatelessWidget {
-  final String titile;
-  final String value;
-  final bool? isBold;
-  final bool? isIconRequired;
   const PriceCol(
       {super.key,
       required this.titile,
       required this.value,
       this.isBold,
       this.isIconRequired});
+  final String titile;
+  final String value;
+  final bool? isBold;
+  final bool? isIconRequired;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.only(left: 8),
       width: AppHelpers.getScreenWidth(context),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           SizedBox(
             height: 25,
             child: Text(
@@ -179,5 +178,4 @@ class PriceCol extends StatelessWidget {
         ],
       ),
     );
-  }
 }

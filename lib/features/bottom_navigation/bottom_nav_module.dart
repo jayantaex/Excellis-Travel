@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nested/nested.dart';
 import '../../core/network/api_client.dart';
 import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
@@ -13,20 +14,22 @@ class BottomNavModule {
   static const String path = '/bottom_nav';
   static const String name = 'bottom_nav_screen';
   static Widget builder() {
-    final apiClient = ApiClient();
-    final profileApi = ProfileManagementApi(apiClient: apiClient);
-    final profileRepo =
+    final ApiClient apiClient = ApiClient();
+    final ProfileManagementApi profileApi =
+        ProfileManagementApi(apiClient: apiClient);
+    final ProfileManagementRepository profileRepo =
         ProfileManagementRepository(profileManagementApi: profileApi);
 
-    final ticketApi = TicketApi(apiClient: apiClient);
-    final ticketRepository = TicketsRepository(ticketApi: ticketApi);
+    final TicketApi ticketApi = TicketApi(apiClient: apiClient);
+    final TicketsRepository ticketRepository =
+        TicketsRepository(ticketApi: ticketApi);
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
+      providers: <SingleChildWidget>[
+        BlocProvider<ProfileBloc>(
           create: (_) => ProfileBloc(profileRepository: profileRepo),
         ),
-     
-        BlocProvider(create: (_) => TicketBloc(repository: ticketRepository)),
+        BlocProvider<TicketBloc>(
+            create: (_) => TicketBloc(repository: ticketRepository)),
       ],
       child: const BottomNavigationScreen(),
     );

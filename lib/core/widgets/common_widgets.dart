@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import '../constants/app_styles.dart';
 
 class LoadingWidget extends StatelessWidget {
-  final String? message;
-  final double size;
-  final Color? color;
 
   const LoadingWidget({
     super.key,
@@ -12,13 +9,15 @@ class LoadingWidget extends StatelessWidget {
     this.size = 50.0,
     this.color,
   });
+  final String? message;
+  final double size;
+  final Color? color;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(BuildContext context) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: <Widget>[
           SizedBox(
             width: size,
             height: size,
@@ -27,7 +26,7 @@ class LoadingWidget extends StatelessWidget {
               strokeWidth: 3.0,
             ),
           ),
-          if (message != null) ...[
+          if (message != null) ...<Widget>[
             const SizedBox(height: AppSizes.md),
             Text(
               message!,
@@ -40,15 +39,9 @@ class LoadingWidget extends StatelessWidget {
         ],
       ),
     );
-  }
 }
 
 class EmptyStateWidget extends StatelessWidget {
-  final String title;
-  final String? subtitle;
-  final IconData? icon;
-  final Widget? action;
-  final double iconSize;
 
   const EmptyStateWidget({
     super.key,
@@ -58,16 +51,20 @@ class EmptyStateWidget extends StatelessWidget {
     this.action,
     this.iconSize = 80.0,
   });
+  final String title;
+  final String? subtitle;
+  final IconData? icon;
+  final Widget? action;
+  final double iconSize;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(BuildContext context) => Center(
       child: Padding(
         padding: const EdgeInsets.all(AppSizes.lg),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) ...[
+          children: <Widget>[
+            if (icon != null) ...<Widget>[
               Icon(
                 icon,
                 size: iconSize,
@@ -82,7 +79,7 @@ class EmptyStateWidget extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            if (subtitle != null) ...[
+            if (subtitle != null) ...<Widget>[
               const SizedBox(height: AppSizes.sm),
               Text(
                 subtitle!,
@@ -92,7 +89,7 @@ class EmptyStateWidget extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ],
-            if (action != null) ...[
+            if (action != null) ...<Widget>[
               const SizedBox(height: AppSizes.xl),
               action!,
             ],
@@ -100,13 +97,9 @@ class EmptyStateWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class ErrorWidget extends StatelessWidget {
-  final String message;
-  final VoidCallback? onRetry;
-  final String? retryText;
 
   const ErrorWidget({
     super.key,
@@ -114,15 +107,17 @@ class ErrorWidget extends StatelessWidget {
     this.onRetry,
     this.retryText,
   });
+  final String message;
+  final VoidCallback? onRetry;
+  final String? retryText;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(BuildContext context) => Center(
       child: Padding(
         padding: const EdgeInsets.all(AppSizes.lg),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             const Icon(
               Icons.error_outline,
               size: 80,
@@ -144,7 +139,7 @@ class ErrorWidget extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            if (onRetry != null) ...[
+            if (onRetry != null) ...<Widget>[
               const SizedBox(height: AppSizes.xl),
               ElevatedButton.icon(
                 onPressed: onRetry,
@@ -156,20 +151,9 @@ class ErrorWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class CustomButton extends StatelessWidget {
-  final String text;
-  final VoidCallback? onPressed;
-  final bool isLoading;
-  final bool isOutlined;
-  final IconData? icon;
-  final Color? backgroundColor;
-  final Color? textColor;
-  final double? width;
-  final double height;
-  final EdgeInsetsGeometry? padding;
 
   const CustomButton({
     super.key,
@@ -184,10 +168,20 @@ class CustomButton extends StatelessWidget {
     this.height = AppSizes.buttonHeight,
     this.padding,
   });
+  final String text;
+  final VoidCallback? onPressed;
+  final bool isLoading;
+  final bool isOutlined;
+  final IconData? icon;
+  final Color? backgroundColor;
+  final Color? textColor;
+  final double? width;
+  final double height;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
-    Widget child = isLoading
+    final Widget child = isLoading
         ? const SizedBox(
             width: 20,
             height: 20,
@@ -199,8 +193,8 @@ class CustomButton extends StatelessWidget {
         : Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (icon != null) ...[
+            children: <Widget>[
+              if (icon != null) ...<Widget>[
                 Icon(icon, size: AppSizes.iconSm),
                 const SizedBox(width: AppSizes.sm),
               ],
@@ -241,19 +235,6 @@ class CustomButton extends StatelessWidget {
 }
 
 class CustomTextField extends StatelessWidget {
-  final String? label;
-  final String? hint;
-  final TextEditingController? controller;
-  final String? Function(String?)? validator;
-  final TextInputType? keyboardType;
-  final bool obscureText;
-  final Widget? prefixIcon;
-  final Widget? suffixIcon;
-  final int? maxLines;
-  final bool enabled;
-  final Function(String)? onChanged;
-  final Function(String)? onSubmitted;
-  final FocusNode? focusNode;
 
   const CustomTextField({
     super.key,
@@ -271,10 +252,22 @@ class CustomTextField extends StatelessWidget {
     this.onSubmitted,
     this.focusNode,
   });
+  final String? label;
+  final String? hint;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final bool obscureText;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final int? maxLines;
+  final bool enabled;
+  final Function(String)? onChanged;
+  final Function(String)? onSubmitted;
+  final FocusNode? focusNode;
 
   @override
-  Widget build(BuildContext context) {
-    return TextFormField(
+  Widget build(BuildContext context) => TextFormField(
       controller: controller,
       validator: validator,
       keyboardType: keyboardType,
@@ -291,17 +284,9 @@ class CustomTextField extends StatelessWidget {
         suffixIcon: suffixIcon,
       ),
     );
-  }
 }
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  final List<Widget>? actions;
-  final Widget? leading;
-  final bool automaticallyImplyLeading;
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-  final double elevation;
 
   const CustomAppBar({
     super.key,
@@ -313,10 +298,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.foregroundColor,
     this.elevation = 0,
   });
+  final String title;
+  final List<Widget>? actions;
+  final Widget? leading;
+  final bool automaticallyImplyLeading;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final double elevation;
 
   @override
-  Widget build(BuildContext context) {
-    return AppBar(
+  Widget build(BuildContext context) => AppBar(
       title: Text(title),
       actions: actions,
       leading: leading,
@@ -326,19 +317,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: elevation,
       centerTitle: true,
     );
-  }
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class CustomCard extends StatelessWidget {
-  final Widget child;
-  final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? margin;
-  final Color? color;
-  final double? elevation;
-  final VoidCallback? onTap;
 
   const CustomCard({
     super.key,
@@ -349,10 +333,16 @@ class CustomCard extends StatelessWidget {
     this.elevation,
     this.onTap,
   });
+  final Widget child;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  final Color? color;
+  final double? elevation;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    Widget card = Card(
+    final Widget card = Card(
       color: color,
       elevation: elevation,
       margin: margin ?? const EdgeInsets.all(AppSizes.sm),

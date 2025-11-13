@@ -10,11 +10,9 @@ class NotLoginWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
+      children: <Widget>[
         const Center(
           child: Text(
             'It looks like you are not logged in',
@@ -39,5 +37,4 @@ class NotLoginWidget extends StatelessWidget {
         ),
       ],
     );
-  }
 }

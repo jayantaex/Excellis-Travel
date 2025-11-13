@@ -4,12 +4,6 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 
 class AppDropDown extends StatelessWidget {
-  final String title;
-  final String value;
-  final String label;
-  final String? prefixIconName;
-  final List<DropdownMenuItem<String>> items;
-  final void Function(String?)? onChanged;
 
   const AppDropDown(
       {super.key,
@@ -19,10 +13,15 @@ class AppDropDown extends StatelessWidget {
       this.prefixIconName,
       required this.items,
       this.onChanged});
+  final String title;
+  final String value;
+  final String label;
+  final String? prefixIconName;
+  final List<DropdownMenuItem<String>> items;
+  final void Function(String?)? onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField(
+  Widget build(BuildContext context) => DropdownButtonFormField(
       
       dropdownColor: AppColors.white,
       style: const TextStyle(
@@ -60,5 +59,4 @@ class AppDropDown extends StatelessWidget {
         labelText: label,
       ),
     );
-  }
 }

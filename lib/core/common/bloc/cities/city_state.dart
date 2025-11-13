@@ -12,11 +12,11 @@ final class CityInitial extends CityState {}
 final class GetCityLoading extends CityState {}
 
 final class CityLoaded extends CityState {
-  final List<CityModel> cities;
   const CityLoaded({required this.cities});
+  final List<CityModel> cities;
 }
 
 final class GetCityError extends CityState {
-  final String errorMessage;
   const GetCityError(this.errorMessage);
+  final String errorMessage;
 }

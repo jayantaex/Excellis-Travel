@@ -6,9 +6,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constants/app_constants.dart';
 
 class StorageService {
-  static final StorageService _instance = StorageService._internal();
   factory StorageService() => _instance;
   StorageService._internal();
+  static final StorageService _instance = StorageService._internal();
 
   static SharedPreferences? _prefs;
   static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
@@ -18,62 +18,36 @@ class StorageService {
   }
 
   // Regular storage methods
-  static Future<bool> setBool(String key, bool value) async {
-    return await _prefs?.setBool(key, value) ?? false;
-  }
+  static Future<bool> setBool(String key, bool value) async => await _prefs?.setBool(key, value) ?? false;
 
-  static bool getBool(String key, {bool defaultValue = false}) {
-    return _prefs?.getBool(key) ?? defaultValue;
-  }
+  static bool getBool(String key, {bool defaultValue = false}) => _prefs?.getBool(key) ?? defaultValue;
 
-  static Future<bool> setString(String key, String value) async {
-    return await _prefs?.setString(key, value) ?? false;
-  }
+  static Future<bool> setString(String key, String value) async => await _prefs?.setString(key, value) ?? false;
 
-  static String getString(String key, {String defaultValue = ''}) {
-    return _prefs?.getString(key) ?? defaultValue;
-  }
+  static String getString(String key, {String defaultValue = ''}) => _prefs?.getString(key) ?? defaultValue;
 
-  static Future<bool> setInt(String key, int value) async {
-    return await _prefs?.setInt(key, value) ?? false;
-  }
+  static Future<bool> setInt(String key, int value) async => await _prefs?.setInt(key, value) ?? false;
 
-  static int getInt(String key, {int defaultValue = 0}) {
-    return _prefs?.getInt(key) ?? defaultValue;
-  }
+  static int getInt(String key, {int defaultValue = 0}) => _prefs?.getInt(key) ?? defaultValue;
 
-  static Future<bool> setDouble(String key, double value) async {
-    return await _prefs?.setDouble(key, value) ?? false;
-  }
+  static Future<bool> setDouble(String key, double value) async => await _prefs?.setDouble(key, value) ?? false;
 
-  static double getDouble(String key, {double defaultValue = 0.0}) {
-    return _prefs?.getDouble(key) ?? defaultValue;
-  }
+  static double getDouble(String key, {double defaultValue = 0.0}) => _prefs?.getDouble(key) ?? defaultValue;
 
-  static Future<bool> setStringList(String key, List<String> value) async {
-    return await _prefs?.setStringList(key, value) ?? false;
-  }
+  static Future<bool> setStringList(String key, List<String> value) async => await _prefs?.setStringList(key, value) ?? false;
 
-  static List<String> getStringList(String key, {List<String>? defaultValue}) {
-    return _prefs?.getStringList(key) ?? defaultValue ?? [];
-  }
+  static List<String> getStringList(String key, {List<String>? defaultValue}) => _prefs?.getStringList(key) ?? defaultValue ?? [];
 
-  static Future<bool> remove(String key) async {
-    return await _prefs?.remove(key) ?? false;
-  }
+  static Future<bool> remove(String key) async => await _prefs?.remove(key) ?? false;
 
-  static Future<bool> clear() async {
-    return await _prefs?.clear() ?? false;
-  }
+  static Future<bool> clear() async => await _prefs?.clear() ?? false;
 
   // Secure storage methods
   static Future<void> setSecureString(String key, String value) async {
     await _secureStorage.write(key: key, value: value);
   }
 
-  static Future<String?> getSecureString(String key) async {
-    return await _secureStorage.read(key: key);
-  }
+  static Future<String?> getSecureString(String key) async => await _secureStorage.read(key: key);
 
   static Future<void> removeSecureString(String key) async {
     await _secureStorage.delete(key: key);
@@ -94,17 +68,11 @@ class StorageService {
     await setSecureString(AppConstants.amadeusKey, amadeusToken);
   }
 
-  static Future<String?> getAccessToken() async {
-    return await getSecureString(AppConstants.accessTokenKey);
-  }
+  static Future<String?> getAccessToken() async => await getSecureString(AppConstants.accessTokenKey);
 
-  static Future<String?> getAmadeusToken() async {
-    return await getSecureString(AppConstants.amadeusKey);
-  }
+  static Future<String?> getAmadeusToken() async => await getSecureString(AppConstants.amadeusKey);
 
-  static Future<String?> getRefreshToken() async {
-    return await getSecureString(AppConstants.refreshTokenKey);
-  }
+  static Future<String?> getRefreshToken() async => await getSecureString(AppConstants.refreshTokenKey);
 
   static Future<void> clearTokens() async {
     await removeSecureString(AppConstants.accessTokenKey);
@@ -143,9 +111,7 @@ class StorageService {
   }
 
   // First time check
-  static bool isFirstTime() {
-    return getBool(AppConstants.isFirstTimeKey, defaultValue: true);
-  }
+  static bool isFirstTime() => getBool(AppConstants.isFirstTimeKey, defaultValue: true);
 
   static Future<void> setFirstTime(bool value) async {
     await setBool(AppConstants.isFirstTimeKey, value);
@@ -156,6 +122,6 @@ class StorageService {
     await clear();
     await clearSecureStorage();
     await clearUserData();
-    log("All storage data cleared.");
+    log('All storage data cleared.');
   }
 }

@@ -6,18 +6,16 @@ import '../../../models/flight_offer_price_model.dart';
 import '../../../models/flights_data_model.dart' show FlightDictionary;
 
 class SegmentCard extends StatelessWidget {
-  final Segment data;
-  final FlightDictionary flightDictionary;
 
   const SegmentCard(
       {super.key, required this.data, required this.flightDictionary});
+  final Segment data;
+  final FlightDictionary flightDictionary;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
+  Widget build(BuildContext context) => Column(
+      children: <Widget>[
         ExpansionTile(
-          initiallyExpanded: false,
           shape: const Border(),
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -45,10 +43,10 @@ class SegmentCard extends StatelessWidget {
           ),
           collapsedIconColor: AppColors.grey,
           iconColor: AppColors.primary,
-          children: [
+          children: <Widget>[
             //departure
             Column(
-              children: [
+              children: <Widget>[
                 ListTile(
                   leading: AppHelpers.svgAsset(assetName: 'from', isIcon: true),
                   title: Text(
@@ -106,14 +104,13 @@ class SegmentCard extends StatelessWidget {
         ),
       ],
     );
-  }
 }
 
 getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
-  String hr = duration.split('H')[0].trim();
-  String mn = duration.split('H')[1].split('M')[0].trim();
+  final String hr = duration.split('H')[0].trim();
+  final String mn = duration.split('H')[1].split('M')[0].trim();
 
   return '${hr}H ${mn}M';
 }

@@ -26,7 +26,9 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
     AppHelpers.debounce(
       () {
         context.pushNamed(PaymentModule.paymentSucessName,
-            pathParameters: {'paymentId': '${response.paymentId}'});
+            pathParameters: <String, String>{
+              'paymentId': '${response.paymentId}'
+            });
       },
       delay: const Duration(milliseconds: 200),
     );
@@ -37,14 +39,12 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
     AppHelpers.debounce(
       () {
         context.pushNamed(PaymentModule.paymentFailedName,
-            pathParameters: {'errorMsg': '${response.message}'});
+            pathParameters: <String, String>{
+              'errorMsg': '${response.message}'
+            });
       },
       delay: const Duration(milliseconds: 200),
     );
-  }
-
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    log('External wallet selected: ${response.walletName}');
   }
 
   @override
@@ -56,40 +56,37 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Wallet'),
-      ),
-      body: BlocConsumer<WalletBloc, WalletState>(
-        listener: (context, state) {
-          log('Wallet states :::: $state');
-        },
-        builder: (context, state) {
-          return state is WalletLoaded
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('My Wallet'),
+        ),
+        body: BlocConsumer<WalletBloc, WalletState>(
+          listener: (BuildContext context, WalletState state) {
+            log('Wallet states :::: $state');
+          },
+          builder: (BuildContext context, WalletState state) => state
+                  is WalletLoaded
               ? Center(child: Text(AppHelpers.formatCurrency(state.balance)))
               : state is WalletLoading
                   ? const Center(child: CircularProgressIndicator.adaptive())
-                  : const Center(child: Text('Unexpected state'));
-        },
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
-        child: AppPrimaryButton(
-          title: "Recharge",
-          isLoading: false,
-          onPressed: () {
-            _razorpayService.initatePayment(
-                orderId: '',
-                amount: 1200,
-                description: 'testing razorpay',
-                mobile: '9064187130',
-                email: 'razorpay@gmail.com',
-                onSuccess: _handlePaymentSuccess,
-                onError: _handlePaymentError);
-          },
+                  : const Center(child: Text('Unexpected state')),
         ),
-      ),
-    );
-  }
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
+          child: AppPrimaryButton(
+            title: 'Recharge',
+            isLoading: false,
+            onPressed: () {
+              _razorpayService.initatePayment(
+                  orderId: '',
+                  amount: 1200,
+                  description: 'testing razorpay',
+                  mobile: '9064187130',
+                  email: 'razorpay@gmail.com',
+                  onSuccess: _handlePaymentSuccess,
+                  onError: _handlePaymentError);
+            },
+          ),
+        ),
+      );
 }

@@ -7,7 +7,6 @@ part 'states_event.dart';
 part 'states_state.dart';
 
 class StatesBloc extends Bloc<StatesEvent, StatesState> {
-  final LocationRepository repository;
   StatesBloc({
     required this.repository,
   }) : super(LocationInitial()) {
@@ -15,13 +14,14 @@ class StatesBloc extends Bloc<StatesEvent, StatesState> {
 
     on<GetStatesEvent>(_handleGetStates);
   }
+  final LocationRepository repository;
 
   Future _handleGetStates(
       GetStatesEvent event, Emitter<StatesState> emit) async {
     try {
       emit(GetStateLoading());
       List<StateModel> states = [];
-      ApiResponse res = await repository.getStates();
+      final ApiResponse res = await repository.getStates();
       if (res.errorMessage == null || res.errorMessage == '') {
         states = res.data ?? [];
         emit(StatesLoaded(states: states));

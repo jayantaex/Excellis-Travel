@@ -2,19 +2,13 @@ import '../../../core/network/api_response.dart';
 import '../api/wishlist_api.dart';
 
 class WishlistRepository {
+  WishlistRepository(this.wishlistApi);
   final WishlistApi wishlistApi;
 
-  WishlistRepository(this.wishlistApi);
+  Future<ApiResponse<String>> getWishlist() => wishlistApi.getWishlist();
 
-  Future<ApiResponse<String>> getWishlist() {
-    return wishlistApi.getWishlist();
-  }
+  Future<ApiResponse<String>> addToWishList() => wishlistApi.addToWishList();
 
-  Future<ApiResponse<String>> addToWishList() {
-    return wishlistApi.addToWishList();
-  }
-
-  Future<ApiResponse<String>> removeFromWishList() {
-    return wishlistApi.removeFromWishList();
-  }
+  Future<ApiResponse<String>> removeFromWishList() =>
+      wishlistApi.removeFromWishList();
 }

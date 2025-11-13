@@ -8,13 +8,13 @@ import '../../models/ticket_model.dart';
 import '../../ticket_module.dart';
 
 class TicketWidget extends StatelessWidget {
+  const TicketWidget({super.key, this.isLast, this.ticketData});
   final bool? isLast;
   final TicketDataModel? ticketData;
-  const TicketWidget({super.key, this.isLast, this.ticketData});
 
   @override
   Widget build(BuildContext context) {
-    double width = AppHelpers.getScreenWidth(context);
+    final double width = AppHelpers.getScreenWidth(context);
     return InkWell(
       focusColor: Colors.transparent,
       hoverColor: Colors.transparent,
@@ -27,7 +27,7 @@ class TicketWidget extends StatelessWidget {
         );
       },
       child: Column(
-        children: [
+        children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(bottom: 18.0),
             child: ClipPath(
@@ -41,20 +41,20 @@ class TicketWidget extends StatelessWidget {
                 height: 250,
                 width: width * 0.95,
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     SizedBox(
                       height: 45,
                       width: width,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           SizedBox(
                             height: 40,
                             width: AppHelpers.getScreenWidth(context) * 0.4,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8),
                               child: Row(
-                                children: [
+                                children: <Widget>[
                                   CircleAvatar(
                                     radius: 15,
                                     backgroundImage: AssetImage(
@@ -76,7 +76,7 @@ class TicketWidget extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                            children: <Widget>[
                               Container(
                                 margin: const EdgeInsets.only(right: 10),
                                 height: 25,
@@ -110,14 +110,14 @@ class TicketWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           SizedBox(
                               height: 90,
                               width: width * 0.22,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: <Widget>[
                                   Text(
                                       '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.iataCode}',
                                       style: const TextStyle(
@@ -151,11 +151,11 @@ class TicketWidget extends StatelessWidget {
                           SizedBox(
                               width: width * 0.22,
                               child: Column(
-                                children: [
+                                children: <Widget>[
                                   AppHelpers.svgAsset(
                                       assetName: 'flight', width: 100),
                                   Column(
-                                    children: [
+                                    children: <Widget>[
                                       Text(
                                         ticketData?.flightData?.itineraries
                                                     ?.length ==
@@ -187,7 +187,7 @@ class TicketWidget extends StatelessWidget {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
+                              children: <Widget>[
                                 Text(
                                     '${ticketData?.flightData?.itineraries?.first.segments?.last.arrival?.iataCode}',
                                     style: const TextStyle(
@@ -223,8 +223,8 @@ class TicketWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     DottedBorder(
-                        dashPattern: const [8, 4],
-                        customPath: (size) => Path()
+                        dashPattern: const <double>[8, 4],
+                        customPath: (Size size) => Path()
                           ..moveTo(0, size.height)
                           ..relativeLineTo(size.width, 0),
                         color: AppColors.grey,
@@ -236,7 +236,7 @@ class TicketWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           const Text(
                             'Booking ID',
                             style: TextStyle(
@@ -246,7 +246,7 @@ class TicketWidget extends StatelessWidget {
                             ),
                           ),
                           Row(
-                            children: [
+                            children: <Widget>[
                               const Text(
                                 'Price',
                                 style: TextStyle(
@@ -273,7 +273,7 @@ class TicketWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           Text(
                             ticketData?.bookingReference ?? 'N/A',
                             style: const TextStyle(
@@ -307,7 +307,7 @@ class TicketWidget extends StatelessWidget {
 class TicketClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path = Path();
+    final Path path = Path();
 
     path.lineTo(0.0, size.height);
     path.lineTo(size.width, size.height);

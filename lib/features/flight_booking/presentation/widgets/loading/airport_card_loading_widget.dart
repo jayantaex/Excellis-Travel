@@ -7,8 +7,7 @@ class AirportCardLoadingWidget extends StatelessWidget {
   const AirportCardLoadingWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       margin: const EdgeInsets.only(bottom: 6),
       child: ListTile(
         title: LoadingEffect(
@@ -31,5 +30,4 @@ class AirportCardLoadingWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }

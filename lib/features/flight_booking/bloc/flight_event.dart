@@ -4,45 +4,45 @@ sealed class FlightEvent extends Equatable {
   const FlightEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => <Object>[];
 }
 
 //airport searches
 
 class SearchAirportEvent extends FlightEvent {
-  final String countryCode;
-  final String keyword;
-  final String subType;
   const SearchAirportEvent({
     required this.countryCode,
     required this.keyword,
     required this.subType,
   });
+  final String countryCode;
+  final String keyword;
+  final String subType;
 }
 //search flights
 
 class SearchFlightsEvent extends FlightEvent {
-  final Map<String, dynamic> body;
   const SearchFlightsEvent({required this.body});
+  final Map<String, dynamic> body;
 }
 
 class GetFlightsOfferPriceEvent extends FlightEvent {
-  final Map<String, dynamic> offerData;
   const GetFlightsOfferPriceEvent({required this.offerData});
+  final Map<String, dynamic> offerData;
 }
 
 class CreateFlightOrder extends FlightEvent {
-  final Map<String, dynamic> body;
 
   const CreateFlightOrder({required this.body});
+  final Map<String, dynamic> body;
 }
 
 class VerifyPayment extends FlightEvent {
-  final Map<String, dynamic> body;
   const VerifyPayment({required this.body});
+  final Map<String, dynamic> body;
 }
 
 class GetMarkupPrice extends FlightEvent {
-  final double baseAmount;
   const GetMarkupPrice({required this.baseAmount});
+  final double baseAmount;
 }

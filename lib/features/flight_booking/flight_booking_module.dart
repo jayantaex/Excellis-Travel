@@ -96,7 +96,7 @@ class FlightBookingModule {
   static const String passDownload = '/pass-download';
   static const String passDownloadName = 'passDownload';
   static Widget passDownloadBuilder(contex, state) {
-    PaymentVerifiedModel data = state.extra['data'];
+    final PaymentVerifiedModel data = state.extra['data'];
     return PassDownloadScreen(data: data);
   }
 

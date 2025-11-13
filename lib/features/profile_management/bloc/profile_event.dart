@@ -12,6 +12,6 @@ final class LoadProfileEvent extends ProfileEvent {
 }
 
 final class UpdateProfileEvent extends ProfileEvent {
-  final Map<String, dynamic> data;
   const UpdateProfileEvent({required this.data});
+  final Map<String, dynamic> data;
 }

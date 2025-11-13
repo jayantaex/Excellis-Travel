@@ -11,7 +11,7 @@ import '../../models/ticket_model.dart';
 import '../widgets/ticket_widget.dart';
 
 class TicketScreen extends StatefulWidget {
-  TicketScreen({super.key});
+  const TicketScreen({super.key});
 
   @override
   State<TicketScreen> createState() => _TicketScreenState();
@@ -21,7 +21,7 @@ class _TicketScreenState extends State<TicketScreen> {
   int page = 1;
   final int limit = 10;
   final ScrollController _scrollController = ScrollController();
-  final List<TicketDataModel> tickets = [];
+  final List<TicketDataModel> tickets = <TicketDataModel>[];
   @override
   void initState() {
     _scrollController.addListener(onScroll);
@@ -32,7 +32,7 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   void onScroll() {
-    final ticketState = context.read<TicketBloc>().state;
+    final TicketState ticketState = context.read<TicketBloc>().state;
     if (ticketState is TicketLoading) {
       return;
     }
@@ -56,97 +56,97 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: TransWhiteBgWidget(
-        child: SafeArea(
-          child: Column(
-            children: [
-              //app bar
-              const AppCustomAppbar(
-                isBackButtonRequired: false,
-                centerTitle: 'My Tickets',
-              ),
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.transparent,
+        body: TransWhiteBgWidget(
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                //app bar
+                const AppCustomAppbar(
+                  isBackButtonRequired: false,
+                  centerTitle: 'My Tickets',
+                ),
 
-              const SizedBox(height: 24),
-              Expanded(
-                child: BlocConsumer<ProfileBloc, ProfileState>(
-                  bloc: context.read<ProfileBloc>(),
-                  listener: (context, state) {},
-                  builder: (context, state) {
-                    if (state is ProfileInitial) {
-                      return const NotLoginWidget();
-                    }
-                    if (state is ProfileError) {
-                      return ErrorScreen(
-                        errorDesc: '${state.message}/n Screen: Ticket Screen',
-                        errorMessage: 'Profile Error',
-                      );
-                    }
+                const SizedBox(height: 24),
+                Expanded(
+                  child: BlocConsumer<ProfileBloc, ProfileState>(
+                    bloc: context.read<ProfileBloc>(),
+                    listener: (BuildContext context, ProfileState state) {},
+                    builder: (BuildContext context, ProfileState state) {
+                      if (state is ProfileInitial) {
+                        return const NotLoginWidget();
+                      }
+                      if (state is ProfileError) {
+                        return ErrorScreen(
+                          errorDesc: '${state.message}/n Screen: Ticket Screen',
+                          errorMessage: 'Profile Error',
+                        );
+                      }
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: BlocConsumer<TicketBloc, TicketState>(
-                          bloc: context.read<TicketBloc>(),
-                          listener: (context, state) async {},
-                          builder: (context, state) {
-                            if (state is TicketLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator.adaptive(
-                                  backgroundColor: AppColors.white,
-                                ),
-                              );
-                            }
-
-                            if (state is TicketError) {
-                              return ErrorScreen(
-                                errorMessage: 'Ticket Error',
-                                errorDesc: state.err,
-                              );
-                            }
-                            if (state is TicketLoaded) {
-                              for (TicketDataModel data in state.tickets) {
-                                tickets.add(data);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: BlocConsumer<TicketBloc, TicketState>(
+                            bloc: context.read<TicketBloc>(),
+                            listener: (BuildContext context,
+                                TicketState state) async {},
+                            builder: (BuildContext context, TicketState state) {
+                              if (state is TicketLoading ||
+                                  state is TicketInitial) {
+                                return const Center(
+                                  child: CircularProgressIndicator.adaptive(
+                                    backgroundColor: AppColors.white,
+                                  ),
+                                );
                               }
-                              return ListView.builder(
-                                controller: _scrollController,
-                                itemCount: tickets.length,
-                                itemBuilder: (context, index) {
-                                  return TicketWidget(
+
+                              if (state is TicketError) {
+                                return ErrorScreen(
+                                  errorMessage: 'Ticket Error',
+                                  errorDesc: state.err,
+                                );
+                              }
+                              if (state is TicketLoaded) {
+                                for (TicketDataModel data in state.tickets) {
+                                  tickets.add(data);
+                                }
+                                return ListView.builder(
+                                  controller: _scrollController,
+                                  itemCount: tickets.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          TicketWidget(
                                     isLast: index == state.tickets.length - 1,
                                     ticketData: tickets[index],
-                                  );
-                                },
-                              );
-                            }
+                                  ),
+                                );
+                              }
 
-                            if (state is MoreTicketLoading) {
-                              return ListView.builder(
-                                controller: _scrollController,
-                                itemCount: tickets.length,
-                                itemBuilder: (context, index) {
-                                  return TicketWidget(
+                              if (state is MoreTicketLoading) {
+                                return ListView.builder(
+                                  controller: _scrollController,
+                                  itemCount: tickets.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          TicketWidget(
                                     isLast: index == tickets.length - 1,
                                     ticketData: tickets[index],
-                                  );
-                                },
-                              );
-                            }
-                            return const ErrorScreen();
-                          },
+                                  ),
+                                );
+                              }
+                              return const ErrorScreen();
+                            },
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              )
-            ],
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

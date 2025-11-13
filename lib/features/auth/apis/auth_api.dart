@@ -6,27 +6,26 @@ import '../../../core/network/api_urls.dart';
 import '../models/auth_resp_model.dart';
 
 class AuthApi {
-  final ApiClient apiClient;
   AuthApi({required this.apiClient});
+  final ApiClient apiClient;
 
   Future<ApiResponse<AuthResponseModel>> login(
       {required String username,
       required String password,
       required String fcmToken,
       required String userType}) async {
-    Map<String, dynamic> data = {
-      "email": username,
-      "password": password,
-      "fcmToken": fcmToken,
-      "userType": userType,
-      "expiresInMins": 1
+    final Map<String, dynamic> data = <String, dynamic>{
+      'email': username,
+      'password': password,
+      'fcmToken': fcmToken,
+      'userType': userType,
+      'expiresInMins': 1
     };
     return await apiClient.postRequest(
       endPoint: EndPoints.login,
       reqModel: data,
-      fromJson: (jsonData) {
-        return AuthResponseModel.fromJson(jsonData);
-      },
+      fromJson: (Map<String, dynamic> jsonData) =>
+          AuthResponseModel.fromJson(jsonData),
     );
   }
 
@@ -50,25 +49,24 @@ class AuthApi {
     required bool isDirectBooking,
   }) async {
     log('role $role');
-    final Map<String, dynamic> body = {
-      "first_name": firstName,
-      "last_name": lastName,
-      "email": email,
-      "password": password,
-      "role": role == 'retailer' ? "sales_executive" : 'sales_executive',
-      "phone": phone,
-      "address":
+    final Map<String, dynamic> body = <String, dynamic>{
+      'first_name': firstName,
+      'last_name': lastName,
+      'email': email,
+      'password': password,
+      'role': role == 'retailer' ? 'sales_executive' : 'sales_executive',
+      'phone': phone,
+      'address':
           '${officeAddress.trim()}, ${city.trim().trim()}, ${state.trim()}, ${pinCode.trim()}',
-      "commissionRate": commissionRate,
-      "isDirectBooking": isDirectBooking
+      'commissionRate': commissionRate,
+      'isDirectBooking': isDirectBooking
     };
 
     return apiClient.postRequest(
       endPoint: EndPoints.registration,
       reqModel: body,
-      fromJson: (jsonData) {
-        return AuthResponseModel.fromJson(jsonData);
-      },
+      fromJson: (Map<String, dynamic> jsonData) =>
+          AuthResponseModel.fromJson(jsonData),
     );
   }
 }

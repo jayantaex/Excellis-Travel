@@ -14,11 +14,11 @@ final class GetStates extends StatesState {}
 final class GetStateLoading extends StatesState {}
 
 final class StatesLoaded extends StatesState {
-  final List<StateModel> states;
   const StatesLoaded({required this.states});
+  final List<StateModel> states;
 }
 
 final class GetStateError extends StatesState {
-  final String errorMessage;
   const GetStateError(this.errorMessage);
+  final String errorMessage;
 }

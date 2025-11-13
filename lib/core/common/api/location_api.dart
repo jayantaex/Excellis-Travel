@@ -5,15 +5,13 @@ import '../models/city_model.dart';
 import '../models/state_model.dart';
 
 class LocationApi {
-  final ApiClient apiClient;
-
   LocationApi({required this.apiClient});
-
+  final ApiClient apiClient;
   Future<ApiResponse<List<StateModel>>> getStates() async {
-    List<StateModel> states = [];
-    final response = await apiClient.getRequest(
+    final List<StateModel> states = <StateModel>[];
+    final ApiResponse<List<StateModel>> response = await apiClient.getRequest(
         endPoint: EndPoints.state,
-        fromJson: (data) {
+        fromJson: (Map<String, dynamic> data) {
           data['data'].forEach((element) {
             states.add(StateModel.fromJson(element));
           });
@@ -26,11 +24,14 @@ class LocationApi {
     required int stateId,
     required String stateCode,
   }) async {
-    List<CityModel> cities = [];
-    final response = await apiClient.getRequest(
+    final List<CityModel> cities = <CityModel>[];
+    final ApiResponse<List<CityModel>> response = await apiClient.getRequest(
         endPoint: EndPoints.cities,
-        queryParameters: {'stateId': stateId, 'stateCode': stateCode},
-        fromJson: (data) {
+        queryParameters: <String, dynamic>{
+          'stateId': stateId,
+          'stateCode': stateCode
+        },
+        fromJson: (Map<String, dynamic> data) {
           data['data'].forEach((element) {
             cities.add(CityModel.fromJson(element));
           });

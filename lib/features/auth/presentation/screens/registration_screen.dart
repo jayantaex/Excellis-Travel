@@ -8,42 +8,38 @@ class RegistrationScreen extends StatelessWidget {
 
   @override
   @override
-  Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        if (!didPop) {
-          await showAppExitSheet(context: context);
-        }
-      },
-      child: Scaffold(
-        backgroundColor: AppColors.black,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Center(
-                child: Image.asset('assets/images/app_logo.png'),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
+  Widget build(BuildContext context) => PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, Object? result) async {
+          if (!didPop) {
+            await showAppExitSheet(context: context);
+          }
+        },
+        child: Scaffold(
+          backgroundColor: AppColors.black,
+          body: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Center(
+                  child: Image.asset('assets/images/app_logo.png'),
                 ),
-                child: const AgencyRegistrationSheet(),
               ),
-            ),
-          ],
+              Expanded(
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  decoration: const BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: const AgencyRegistrationSheet(),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

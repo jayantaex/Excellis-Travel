@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,16 +115,15 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     required BuildContext context,
     required DateTime initialDate,
     required DateTime firstDate,
-  }) async {
-    return await showDatePicker(
-      context: context,
-      firstDate: firstDate,
-      lastDate: DateTime.now().add(
-        const Duration(days: 365),
-      ),
-      initialDate: initialDate,
-    );
-  }
+  }) async =>
+      await showDatePicker(
+        context: context,
+        firstDate: firstDate,
+        lastDate: DateTime.now().add(
+          const Duration(days: 365),
+        ),
+        initialDate: initialDate,
+      );
 
   @override
   void dispose() {
@@ -136,433 +133,437 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     super.dispose();
   }
 
-  _swapAirports() {
-    String temp = _depurtureController.text;
+  void _swapAirports() {
+    final String temp = _depurtureController.text;
     _depurtureController.text = _arrivalController.text;
     _arrivalController.text = temp;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return TransWhiteBgWidget(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: SafeArea(
-            child: Column(
-              children: [
-                //greeting part
-                BlocBuilder<ProfileBloc, ProfileState>(
-                  builder: (context, state) {
-                    return const GreetingWidget();
-                  },
-                ),
-                const SizedBox(height: 16),
-                //searching part
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  width: AppHelpers.getScreenWidth(context),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(24),
+  Widget build(BuildContext context) => TransWhiteBgWidget(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SingleChildScrollView(
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  //greeting part
+                  BlocBuilder<ProfileBloc, ProfileState>(
+                    builder: (BuildContext context, ProfileState state) =>
+                        const GreetingWidget(),
                   ),
-                  child: SizedBox(
+                  const SizedBox(height: 16),
+                  //searching part
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     width: AppHelpers.getScreenWidth(context),
-                    child: Stack(
-                      children: [
-                        SizedBox(
-                          width: AppHelpers.getScreenWidth(context),
-                          child: Column(
-                            children: [
-                              AppPrimaryInput(
-                                isMultiline: true,
-                                controller: _depurtureController,
-                                enable: true,
-                                maxCharacters: 10,
-                                hint: 'Enter your departure airport',
-                                label: 'Departure',
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: AppHelpers.svgAsset(
-                                      assetName: 'from', isIcon: true),
-                                ),
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.black),
-                                onTap: () async {
-                                  context.pushNamed(
-                                      FlightBookingModule.airportSearchName,
-                                      extra: {
-                                        'type': 'Departure',
-                                        'selectedAirport': departureCity.trim(),
-                                        'onAirportSelected':
-                                            (AirportModel airport) {
-                                          departureCity =
-                                              airport.address?.cityName ?? '';
-                                          departureCode =
-                                              airport.iataCode ?? '';
-                                          _depurtureController.text =
-                                              '${airport.iataCode}(${airport.address!.cityName})\n${airport.name}';
-                                        },
-                                      });
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              AppPrimaryInput(
-                                isMultiline: true,
-                                controller: _arrivalController,
-                                enable: true,
-                                maxCharacters: 10,
-                                hint: 'Enter your arrival airport',
-                                label: 'Arrival',
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: AppHelpers.svgAsset(
-                                      assetName: 'to', isIcon: true),
-                                ),
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.black),
-                                onTap: () async {
-                                  context.pushNamed(
-                                      FlightBookingModule.airportSearchName,
-                                      extra: {
-                                        'type': 'Arrival',
-                                        'selectedAirport': arrivalCity.trim(),
-                                        'onAirportSelected':
-                                            (AirportModel airport) {
-                                          arrivalCity =
-                                              airport.address?.cityName ?? '';
-                                          arrivalCode = airport.iataCode ?? '';
-                                          _arrivalController.text =
-                                              '${airport.iataCode}(${airport.address?.cityName})\n${airport.name}';
-                                        },
-                                      });
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              AppPrimaryInput(
-                                controller: TextEditingController(
-                                  text: AppHelpers.formatDate(
-                                      departureDate ?? DateTime.now(),
-                                      pattern: 'E, dd MMM yyyy'),
-                                ),
-                                enable: true,
-                                maxCharacters: 10,
-                                hint: 'Pick your departure date',
-                                label: 'Departure',
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: SvgPicture.asset(
-                                    '${AppConstants.assetIcontUrl}calender.svg',
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: SizedBox(
+                      width: AppHelpers.getScreenWidth(context),
+                      child: Stack(
+                        children: <Widget>[
+                          SizedBox(
+                            width: AppHelpers.getScreenWidth(context),
+                            child: Column(
+                              children: <Widget>[
+                                AppPrimaryInput(
+                                  isMultiline: true,
+                                  controller: _depurtureController,
+                                  enable: true,
+                                  maxCharacters: 10,
+                                  hint: 'Enter your departure airport',
+                                  label: 'Departure',
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: AppHelpers.svgAsset(
+                                        assetName: 'from', isIcon: true),
                                   ),
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.black),
+                                  onTap: () async {
+                                    context.pushNamed(
+                                        FlightBookingModule.airportSearchName,
+                                        extra: <String, Object>{
+                                          'type': 'Departure',
+                                          'selectedAirport':
+                                              departureCity.trim(),
+                                          'onAirportSelected':
+                                              (AirportModel airport) {
+                                            departureCity =
+                                                airport.address?.cityName ?? '';
+                                            departureCode =
+                                                airport.iataCode ?? '';
+                                            _depurtureController.text =
+                                                '${airport.iataCode}(${airport.address!.cityName})\n${airport.name}';
+                                          },
+                                        });
+                                  },
                                 ),
-                                suffixIcon: SizedBox(
-                                  width:
-                                      AppHelpers.getScreenWidth(context) * 0.37,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      const Text(
-                                        'Roundtrip?',
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w300,
-                                            color: AppColors.grey),
-                                      ),
-                                      Transform.scale(
-                                        scale: 0.6,
-                                        child: CupertinoSwitch(
-                                            activeColor: AppColors.primary,
-                                            value: isRoundTrip,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                isRoundTrip = value;
-                                              });
-                                            }),
-                                      ),
-                                    ],
+                                const SizedBox(height: 16),
+                                AppPrimaryInput(
+                                  isMultiline: true,
+                                  controller: _arrivalController,
+                                  enable: true,
+                                  maxCharacters: 10,
+                                  hint: 'Enter your arrival airport',
+                                  label: 'Arrival',
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: AppHelpers.svgAsset(
+                                        assetName: 'to', isIcon: true),
                                   ),
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.black),
+                                  onTap: () async {
+                                    context.pushNamed(
+                                        FlightBookingModule.airportSearchName,
+                                        extra: <String, Object>{
+                                          'type': 'Arrival',
+                                          'selectedAirport': arrivalCity.trim(),
+                                          'onAirportSelected':
+                                              (AirportModel airport) {
+                                            arrivalCity =
+                                                airport.address?.cityName ?? '';
+                                            arrivalCode =
+                                                airport.iataCode ?? '';
+                                            _arrivalController.text =
+                                                '${airport.iataCode}(${airport.address?.cityName})\n${airport.name}';
+                                          },
+                                        });
+                                  },
                                 ),
-                                style: _defaultTextStyple,
-                                onTap: () async {
-                                  departureDate = await _pickDate(
-                                    context: context,
-                                    firstDate: _today,
-                                    initialDate: _today,
-                                  );
-                                  setState(() {});
-
-                                  //hide keyboard
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              isRoundTrip
-                                  ? AppPrimaryInput(
-                                      controller: TextEditingController(
-                                        text: AppHelpers.formatDate(
-                                            roundTripDate ??
-                                                _today.add(_fiveDay),
-                                            pattern: 'E, dd MMM yyyy'),
-                                      ),
-                                      enable: true,
-                                      maxCharacters: 10,
-                                      hint: 'Pick your return date',
-                                      label: 'Return',
-                                      prefixIcon: Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: SvgPicture.asset(
-                                          '${AppConstants.assetIcontUrl}calender.svg',
+                                const SizedBox(height: 16),
+                                AppPrimaryInput(
+                                  controller: TextEditingController(
+                                    text: AppHelpers.formatDate(
+                                        departureDate ?? DateTime.now(),
+                                        pattern: 'E, dd MMM yyyy'),
+                                  ),
+                                  enable: true,
+                                  maxCharacters: 10,
+                                  hint: 'Pick your departure date',
+                                  label: 'Departure',
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: SvgPicture.asset(
+                                      '${AppConstants.assetIcontUrl}calender.svg',
+                                    ),
+                                  ),
+                                  suffixIcon: SizedBox(
+                                    width: AppHelpers.getScreenWidth(context) *
+                                        0.37,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        const Text(
+                                          'Roundtrip?',
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w300,
+                                              color: AppColors.grey),
                                         ),
-                                      ),
-                                      style: _defaultTextStyple,
-                                      onTap: () async {
-                                        if (context.mounted) {
-                                          FocusScope.of(context).unfocus();
-                                        }
-                                        roundTripDate = await _pickDate(
-                                            context: context,
-                                            firstDate: departureDate?.add(
-                                                    const Duration(hours: 2)) ??
-                                                _today.add(_oneDay),
-                                            initialDate:
-                                                departureDate?.add(_fiveDay) ??
-                                                    _today.add(_fiveDay));
-                                        setState(() {});
-                                        log('roundTripDate $roundTripDate');
-                                        //hide keyboard
-                                      },
-                                    )
-                                  : const SizedBox(),
-                              SizedBox(height: isRoundTrip ? 16 : 0),
-                              SizedBox(
-                                width: AppHelpers.getScreenWidth(context),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width:
-                                          AppHelpers.getScreenWidth(context) *
-                                              0.4,
-                                      child: AppPrimaryInput(
-                                        keyboardType: TextInputType.number,
-                                        controller: _travellerController,
+                                        Transform.scale(
+                                          scale: 0.6,
+                                          child: CupertinoSwitch(
+                                              activeColor: AppColors.primary,
+                                              value: isRoundTrip,
+                                              onChanged: (bool value) {
+                                                setState(() {
+                                                  isRoundTrip = value;
+                                                });
+                                              }),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  style: _defaultTextStyple,
+                                  onTap: () async {
+                                    departureDate = await _pickDate(
+                                      context: context,
+                                      firstDate: _today,
+                                      initialDate: _today,
+                                    );
+                                    setState(() {});
+
+                                    //hide keyboard
+                                  },
+                                ),
+                                const SizedBox(height: 16),
+                                isRoundTrip
+                                    ? AppPrimaryInput(
+                                        controller: TextEditingController(
+                                          text: AppHelpers.formatDate(
+                                              roundTripDate ??
+                                                  _today.add(_fiveDay),
+                                              pattern: 'E, dd MMM yyyy'),
+                                        ),
                                         enable: true,
-                                        maxCharacters: 2,
-                                        hint: '1 Adult',
-                                        label: 'Travellers',
+                                        maxCharacters: 10,
+                                        hint: 'Pick your return date',
+                                        label: 'Return',
                                         prefixIcon: Padding(
                                           padding: const EdgeInsets.all(12.0),
                                           child: SvgPicture.asset(
-                                            '${AppConstants.assetIcontUrl}users.svg',
-                                          ),
-                                        ),
-                                        onTap: () {
-                                          showPassengerSelectionSheet(
-                                            adult: _adultCount,
-                                            child: _childCount,
-                                            infant: _infantCount,
-                                            onDone: (adult, child, infant) {
-                                              _adultCount = adult;
-                                              _childCount = child;
-                                              _infantCount = infant;
-                                              _travellerController.text =
-                                                  '${adult + child + infant}';
-                                              setState(() {});
-                                            },
-                                            context: context,
-                                          );
-                                        },
-                                        suffixIcon: Container(
-                                          alignment: Alignment.centerLeft,
-                                          width: AppHelpers.getScreenWidth(
-                                                  context) *
-                                              0.19,
-                                          child: const Text(
-                                            'Travellers',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.black,
-                                            ),
+                                            '${AppConstants.assetIcontUrl}calender.svg',
                                           ),
                                         ),
                                         style: _defaultTextStyple,
-                                        onChange: (p0) {},
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width:
-                                          AppHelpers.getScreenWidth(context) *
-                                              0.4,
-                                      child: AppDropDown(
-                                        label: 'Cabin Class',
-                                        prefixIconName: 'seat',
-                                        title: 'Cabin Class',
-                                        items: _cabinTypes,
-                                        value: _selectedSeatType,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _selectedSeatType = value ?? '';
-                                          });
+                                        onTap: () async {
+                                          if (context.mounted) {
+                                            FocusScope.of(context).unfocus();
+                                          }
+                                          roundTripDate = await _pickDate(
+                                              context: context,
+                                              firstDate: departureDate?.add(
+                                                      const Duration(
+                                                          hours: 2)) ??
+                                                  _today.add(_oneDay),
+                                              initialDate: departureDate
+                                                      ?.add(_fiveDay) ??
+                                                  _today.add(_fiveDay));
+                                          setState(() {});
+                                          //hide keyboard
                                         },
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              SizedBox(
-                                width: AppHelpers.getScreenWidth(context),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width:
-                                          AppHelpers.getScreenWidth(context) *
-                                              0.4,
-                                      child: AppDropDown(
-                                        label: 'Fare Type',
-                                        prefixIconName: 'users',
-                                        title: 'Select A Fare Type',
-                                        items: _fareTipes,
-                                        value: _selectedFareType,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _selectedFareType = value ?? '';
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width:
-                                          AppHelpers.getScreenWidth(context) *
-                                              0.4,
-                                      child: AppDropDown(
-                                        label: 'Trending Search',
-                                        prefixIconName: 'seat',
-                                        title: 'Trending Search',
-                                        items: _trendingSearches,
-                                        value: _trendingSearch,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _trendingSearch = value ?? '';
-                                          });
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              AppPrimaryButton(
-                                  onPressed: () async {
-                                    if (_arrivalController.text.isEmpty ||
-                                        _depurtureController.text.isEmpty) {
-                                      showToast(
-                                          message:
-                                              'Please enter both arrival and depurture');
-                                      return;
-                                    }
-
-                                    if (_arrivalController.text ==
-                                        _depurtureController.text) {
-                                      showToast(
-                                          message:
-                                              'Please enter different arrival and depurture');
-                                      return;
-                                    }
-                                    if (_arrivalController.text.isNotEmpty &&
-                                        _depurtureController.text.isNotEmpty) {
-                                      Map<String, dynamic> data = {
-                                        'depurture': departureCode,
-                                        'arrival': arrivalCode,
-                                        'isRoundTrip': isRoundTrip,
-                                        'depurtureDate': AppHelpers.formatDate(
-                                          departureDate ?? _today,
-                                          pattern: 'yyyy-MM-dd',
+                                      )
+                                    : const SizedBox(),
+                                SizedBox(height: isRoundTrip ? 16 : 0),
+                                SizedBox(
+                                  width: AppHelpers.getScreenWidth(context),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        width:
+                                            AppHelpers.getScreenWidth(context) *
+                                                0.4,
+                                        child: AppPrimaryInput(
+                                          keyboardType: TextInputType.number,
+                                          controller: _travellerController,
+                                          enable: true,
+                                          maxCharacters: 2,
+                                          hint: '1 Adult',
+                                          label: 'Travellers',
+                                          prefixIcon: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: SvgPicture.asset(
+                                              '${AppConstants.assetIcontUrl}users.svg',
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            showPassengerSelectionSheet(
+                                              adult: _adultCount,
+                                              child: _childCount,
+                                              infant: _infantCount,
+                                              onDone: (int adult, int child,
+                                                  int infant) {
+                                                _adultCount = adult;
+                                                _childCount = child;
+                                                _infantCount = infant;
+                                                _travellerController.text =
+                                                    '${adult + child + infant}';
+                                                setState(() {});
+                                              },
+                                              context: context,
+                                            );
+                                          },
+                                          suffixIcon: Container(
+                                            alignment: Alignment.centerLeft,
+                                            width: AppHelpers.getScreenWidth(
+                                                    context) *
+                                                0.19,
+                                            child: const Text(
+                                              'Travellers',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: AppColors.black,
+                                              ),
+                                            ),
+                                          ),
+                                          style: _defaultTextStyple,
+                                          onChange: (String p0) {},
                                         ),
-                                        'returnDate': isRoundTrip
-                                            ? AppHelpers.formatDate(
-                                                roundTripDate ??
-                                                    _today.add(_fiveDay),
-                                                pattern: 'yyyy-MM-dd',
-                                              )
-                                            : null,
-                                        'travellers': {
-                                          'adult': _adultCount,
-                                          'child': _childCount,
-                                          'infant': _infantCount
-                                        },
-                                        'fareType': _selectedFareType,
-                                        'cabinClass': _selectedSeatType,
-                                      };
-                                      final token =
-                                          await StorageService.getAccessToken();
-                                      if (token == null || token.isEmpty) {
-                                        if (context.mounted) {
-                                          await AppHelpers.showSnackBar(
-                                              context, "Please login first");
-                                        }
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            AppHelpers.getScreenWidth(context) *
+                                                0.4,
+                                        child: AppDropDown(
+                                          label: 'Cabin Class',
+                                          prefixIconName: 'seat',
+                                          title: 'Cabin Class',
+                                          items: _cabinTypes,
+                                          value: _selectedSeatType,
+                                          onChanged: (String? value) {
+                                            setState(() {
+                                              _selectedSeatType = value ?? '';
+                                            });
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                SizedBox(
+                                  width: AppHelpers.getScreenWidth(context),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        width:
+                                            AppHelpers.getScreenWidth(context) *
+                                                0.4,
+                                        child: AppDropDown(
+                                          label: 'Fare Type',
+                                          prefixIconName: 'users',
+                                          title: 'Select A Fare Type',
+                                          items: _fareTipes,
+                                          value: _selectedFareType,
+                                          onChanged: (String? value) {
+                                            setState(() {
+                                              _selectedFareType = value ?? '';
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            AppHelpers.getScreenWidth(context) *
+                                                0.4,
+                                        child: AppDropDown(
+                                          label: 'Trending Search',
+                                          prefixIconName: 'seat',
+                                          title: 'Trending Search',
+                                          items: _trendingSearches,
+                                          value: _trendingSearch,
+                                          onChanged: (String? value) {
+                                            setState(() {
+                                              _trendingSearch = value ?? '';
+                                            });
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                AppPrimaryButton(
+                                    onPressed: () async {
+                                      if (_arrivalController.text.isEmpty ||
+                                          _depurtureController.text.isEmpty) {
+                                        showToast(
+                                            message:
+                                                'Please enter both arrival and depurture');
                                         return;
                                       }
-                                      if (context.mounted) {
-                                        context.pushNamed(
-                                            FlightBookingModule
-                                                .flightSearchResultName,
-                                            extra: data);
-                                      }
-                                    }
-                                  },
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.white,
-                                  ),
-                                  bgColor: AppColors.primary,
-                                  title: 'Search Flights',
-                                  isLoading: false),
-                              const SizedBox(height: 16),
-                            ],
-                          ),
-                        ),
 
-                        //swap button
-                        Positioned(
-                          right: 30,
-                          top: _depurtureController.text.isEmpty
-                              ? 40
-                              : _arrivalController.text.isEmpty
-                                  ? 60
-                                  : 55,
-                          child: InkWell(
-                            onTap: () {
-                              _swapAirports();
-                            },
-                            child: CircleAvatar(
-                              radius: 24,
-                              backgroundColor: AppColors.primary,
-                              child: AppHelpers.svgAsset(
-                                  assetName: 'swap', isIcon: true),
+                                      if (_arrivalController.text ==
+                                          _depurtureController.text) {
+                                        showToast(
+                                            message:
+                                                'Please enter different arrival and depurture');
+                                        return;
+                                      }
+                                      if (_arrivalController.text.isNotEmpty &&
+                                          _depurtureController
+                                              .text.isNotEmpty) {
+                                        final Map<String, dynamic> data =
+                                            <String, dynamic>{
+                                          'depurture': departureCode,
+                                          'arrival': arrivalCode,
+                                          'isRoundTrip': isRoundTrip,
+                                          'depurtureDate':
+                                              AppHelpers.formatDate(
+                                            departureDate ?? _today,
+                                            pattern: 'yyyy-MM-dd',
+                                          ),
+                                          'returnDate': isRoundTrip
+                                              ? AppHelpers.formatDate(
+                                                  roundTripDate ??
+                                                      _today.add(_fiveDay),
+                                                  pattern: 'yyyy-MM-dd',
+                                                )
+                                              : null,
+                                          'travellers': <String, int>{
+                                            'adult': _adultCount,
+                                            'child': _childCount,
+                                            'infant': _infantCount
+                                          },
+                                          'fareType': _selectedFareType,
+                                          'cabinClass': _selectedSeatType,
+                                        };
+                                        final String? token =
+                                            await StorageService
+                                                .getAccessToken();
+                                        if (token == null || token.isEmpty) {
+                                          if (context.mounted) {
+                                            await AppHelpers.showSnackBar(
+                                                context, 'Please login first');
+                                          }
+                                          return;
+                                        }
+                                        if (context.mounted) {
+                                          context.pushNamed(
+                                              FlightBookingModule
+                                                  .flightSearchResultName,
+                                              extra: data);
+                                        }
+                                      }
+                                    },
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.white,
+                                    ),
+                                    bgColor: AppColors.primary,
+                                    title: 'Search Flights',
+                                    isLoading: false),
+                                const SizedBox(height: 16),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
+
+                          //swap button
+                          Positioned(
+                            right: 30,
+                            top: _depurtureController.text.isEmpty
+                                ? 40
+                                : _arrivalController.text.isEmpty
+                                    ? 60
+                                    : 55,
+                            child: InkWell(
+                              onTap: () {
+                                _swapAirports();
+                              },
+                              child: CircleAvatar(
+                                radius: 24,
+                                backgroundColor: AppColors.primary,
+                                child: AppHelpers.svgAsset(
+                                    assetName: 'swap', isIcon: true),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
 
-                const RecentSearchWidget(),
-              ],
+                  const RecentSearchWidget(),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

@@ -9,8 +9,7 @@ class BottomNavigationLoading extends StatelessWidget {
   const BottomNavigationLoading({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: SizedBox(
@@ -21,19 +20,19 @@ class BottomNavigationLoading extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     const SizedBox(height: 8),
                     SizedBox(
                       width: AppHelpers.getScreenWidth(context),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           SizedBox(
                             width: AppHelpers.getScreenWidth(context) * 0.8,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: <Widget>[
                                 LoadingEffect(
                                   height: 19,
                                   width: 140,
@@ -63,7 +62,7 @@ class BottomNavigationLoading extends StatelessWidget {
                     const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         LoadingEffect(
                           height: 20,
                           width: 120,
@@ -87,5 +86,4 @@ class BottomNavigationLoading extends StatelessWidget {
         ),
       ),
     );
-  }
 }

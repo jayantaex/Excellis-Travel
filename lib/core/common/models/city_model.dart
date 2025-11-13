@@ -1,7 +1,4 @@
 class CityModel {
-  int? id;
-  String? name;
-  int? stateId;
 
   CityModel({this.id, this.name, this.stateId});
 
@@ -10,6 +7,9 @@ class CityModel {
     name = json['name'];
     stateId = json['state_id'];
   }
+  int? id;
+  String? name;
+  int? stateId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

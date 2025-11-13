@@ -4,11 +4,6 @@ import 'package:shimmer/shimmer.dart';
 import '../constants/app_styles.dart';
 
 class LoadingEffect extends StatelessWidget {
-  final double? height;
-  final double? width;
-  final double? radius;
-  final Color? baseColor;
-  final Color? heighLightColor;
   LoadingEffect(
       {super.key,
       required this.height,
@@ -16,13 +11,17 @@ class LoadingEffect extends StatelessWidget {
       this.radius,
       this.baseColor,
       this.heighLightColor});
+  final double? height;
+  final double? width;
+  final double? radius;
+  final Color? baseColor;
+  final Color? heighLightColor;
 
   final Color _baseColor = AppColors.white.withOpacity(0.3);
   final Color _highlightColor = AppColors.white.withOpacity(0.8);
 
   @override
-  Widget build(BuildContext context) {
-    return Shimmer.fromColors(
+  Widget build(BuildContext context) => Shimmer.fromColors(
       baseColor: baseColor ?? _baseColor,
       highlightColor: heighLightColor ?? _highlightColor,
       child: Container(
@@ -34,5 +33,4 @@ class LoadingEffect extends StatelessWidget {
         width: width ?? 45,
       ),
     );
-  }
 }

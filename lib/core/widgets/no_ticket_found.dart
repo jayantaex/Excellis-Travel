@@ -6,10 +6,9 @@ class NoTicketFound extends StatelessWidget {
   const NoTicketFound({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(
+  Widget build(BuildContext context) => const Center(
       child: SizedBox(
-        child: Text("Tickets not found !",
+        child: Text('Tickets not found !',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
@@ -17,7 +16,6 @@ class NoTicketFound extends StatelessWidget {
             )),
       ),
     );
-  }
 }
 
 const String ticket =

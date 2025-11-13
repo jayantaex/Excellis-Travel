@@ -4,13 +4,12 @@ import '../../../../core/constants/app_styles.dart';
 import '../../models/ticket_model.dart';
 
 class BillingInfo extends StatelessWidget {
+  const BillingInfo({super.key, this.billingAddress, this.contactDetails});
   final BillingAddress? billingAddress;
   final ContactDetails? contactDetails;
-  const BillingInfo({super.key, this.billingAddress, this.contactDetails});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.grey.withOpacity(0.05),
@@ -65,17 +64,15 @@ class BillingInfo extends StatelessWidget {
         ],
       ),
     );
-  }
 }
 
 class ItemRow extends StatelessWidget {
+  const ItemRow({super.key, required this.title, required this.value});
   final String title;
   final String value;
-  const ItemRow({super.key, required this.title, required this.value});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
+  Widget build(BuildContext context) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,5 +91,4 @@ class ItemRow extends StatelessWidget {
         ],
       ),
     );
-  }
 }

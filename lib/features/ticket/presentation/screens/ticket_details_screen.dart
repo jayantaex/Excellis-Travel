@@ -10,19 +10,19 @@ import '../../models/ticket_model.dart';
 import '../widgets/billing_info_widget.dart';
 
 class TicketDetailsScreen extends StatelessWidget {
-  final TicketDataModel? ticketData;
   const TicketDetailsScreen({super.key, required this.ticketData});
+  final TicketDataModel? ticketData;
 
   @override
   Widget build(BuildContext context) {
-    double width = AppHelpers.getScreenWidth(context);
+    final double width = AppHelpers.getScreenWidth(context);
 
     return Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: SafeArea(
             child: Column(
-              children: [
+              children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: AppCustomAppbar(
@@ -41,7 +41,7 @@ class TicketDetailsScreen extends StatelessWidget {
                     ),
                     child: SingleChildScrollView(
                       child: Column(
-                        children: [
+                        children: <Widget>[
                           Container(
                               height: 45,
                               width: width,
@@ -67,21 +67,21 @@ class TicketDetailsScreen extends StatelessWidget {
                                   ))),
 
                           ...ticketData!.flightData!.itineraries!.map(
-                            (e) => DottedBorder(
+                            (Itinerary e) => DottedBorder(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 10),
-                              dashPattern: const [8, 4],
-                              customPath: (size) => Path()
+                              dashPattern: const <double>[8, 4],
+                              customPath: (Size size) => Path()
                                 ..moveTo(0, size.height)
                                 ..relativeLineTo(size.width, 0),
                               color: AppColors.grey,
                               strokeWidth: 0.5,
                               child: Column(
-                                children: [
+                                children: <Widget>[
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: [
+                                    children: <Widget>[
                                       SizedBox(
                                           height: 90,
                                           width: width * 0.25,
@@ -90,7 +90,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                                 MainAxisAlignment.center,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
+                                            children: <Widget>[
                                               Text(
                                                 '${e.segments?.first.departure?.iataCode}',
                                                 style: const TextStyle(
@@ -123,7 +123,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                       SizedBox(
                                           width: width * 0.25,
                                           child: Column(
-                                            children: [
+                                            children: <Widget>[
                                               AppHelpers.svgAsset(
                                                   assetName: 'flight',
                                                   width: 100),
@@ -144,7 +144,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                               MainAxisAlignment.center,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
-                                          children: [
+                                          children: <Widget>[
                                             Text(
                                               '${e.segments?.last.arrival?.iataCode}',
                                               style: const TextStyle(
@@ -180,7 +180,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                   ...ticketData!
                                       .flightData!.itineraries!.first.segments!
                                       .map(
-                                    (e) => ExpansionTile(
+                                    (Segment e) => ExpansionTile(
                                       collapsedShape: const Border(),
                                       shape: const Border(),
                                       tilePadding: const EdgeInsets.all(0),
@@ -205,7 +205,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                           color: AppColors.grey,
                                         ),
                                       ),
-                                      children: [
+                                      children: <Widget>[
                                         ListTile(
                                           leading: AppHelpers.svgAsset(
                                               assetName: 'from', isIcon: true),
@@ -286,7 +286,7 @@ class TicketDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           ...ticketData!.travellerDetails!.adults!.map(
-                            (adult) => ListTile(
+                            (Adult adult) => ListTile(
                               leading: const CircleAvatar(
                                 radius: 16,
                                 child: Icon(
@@ -347,14 +347,14 @@ class TicketDetailsScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             SizedBox(
               width: AppHelpers.getScreenWidth(context) * 0.4,
               height: 60,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Text(
                     '₹${ticketData?.totalAmount}',
                     style: const TextStyle(
@@ -395,7 +395,7 @@ getDuration({required String time}) {
   int minute = 0;
   int hours = 0;
 
-  time.split('H').forEach((element) {
+  time.split('H').forEach((String element) {
     if (element.contains('M')) {
       minute = int.parse(element.split('M')[0]);
     } else {

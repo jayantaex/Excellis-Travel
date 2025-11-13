@@ -23,13 +23,13 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _currentIndex = 0;
   bool isLoading = true;
 
-  List<Widget> _screens = [];
+  List<Widget> _screens = <Widget>[];
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       {
-        String? accessToken = await StorageService.getAccessToken();
+        final String? accessToken = await StorageService.getAccessToken();
         if (context.mounted) {
           if (accessToken != null && accessToken.isNotEmpty) {
             if (context.mounted) {
@@ -37,9 +37,9 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             }
           }
         }
-        _screens = [
+        _screens = <Widget>[
           const FlightSearchScreen(),
-          TicketScreen(),
+          const TicketScreen(),
           const WishListScreen(),
           MyProfileScreen()
         ];
@@ -52,36 +52,34 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return isLoading
-        ? const BottomNavigationLoading()
-        : PopScope(
-            canPop: false,
-            onPopInvokedWithResult: (didPop, result) async {
-              log('didPop $didPop');
-              log('pop result $result');
-              if (!didPop) {
-                if (_currentIndex == 0) {
-                  await showAppExitSheet(context: context);
-                }
-                setState(() {
-                  _currentIndex = 0;
-                });
+  Widget build(BuildContext context) => isLoading
+      ? const BottomNavigationLoading()
+      : PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (bool didPop, Object? result) async {
+            log('didPop $didPop');
+            log('pop result $result');
+            if (!didPop) {
+              if (_currentIndex == 0) {
+                await showAppExitSheet(context: context);
               }
-            },
-            child: Scaffold(
-              body: AppGradientBg(
-                child: SafeArea(child: _screens[_currentIndex]),
-              ),
-              bottomNavigationBar: AppButtonNav(
-                currentIndex: _currentIndex,
-                onTap: (index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-              ),
+              setState(() {
+                _currentIndex = 0;
+              });
+            }
+          },
+          child: Scaffold(
+            body: AppGradientBg(
+              child: SafeArea(child: _screens[_currentIndex]),
             ),
-          );
-  }
+            bottomNavigationBar: AppButtonNav(
+              currentIndex: _currentIndex,
+              onTap: (int index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+          ),
+        );
 }

@@ -1,6 +1,4 @@
 class FlightOfferPriceDataModel {
-  final Data? data;
-  final Dictionaries? dictionaries;
 
   FlightOfferPriceDataModel({
     this.data,
@@ -18,6 +16,8 @@ class FlightOfferPriceDataModel {
             : Dictionaries.fromJson(
                 json['dictionaries'] as Map<String, dynamic>),
       );
+  final Data? data;
+  final Dictionaries? dictionaries;
 
   // Encoder: From FlightOfferPriceDataModel instance to JSON map
   Map<String, dynamic> toJson() => {
@@ -27,9 +27,6 @@ class FlightOfferPriceDataModel {
 }
 
 class Data {
-  final String? type;
-  final List<FlightOffer>? flightOffers;
-  final BookingRequirements? bookingRequirements;
 
   Data({
     this.type,
@@ -48,6 +45,9 @@ class Data {
             : BookingRequirements.fromJson(
                 json['bookingRequirements'] as Map<String, dynamic>),
       );
+  final String? type;
+  final List<FlightOffer>? flightOffers;
+  final BookingRequirements? bookingRequirements;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -58,18 +58,6 @@ class Data {
 }
 
 class FlightOffer {
-  final String? type;
-  final String? id;
-  final String? source;
-  final bool? instantTicketingRequired;
-  final bool? nonHomogeneous;
-  final bool? paymentCardRequired;
-  final String? lastTicketingDate;
-  final List<Itinerary>? itineraries;
-  final FlightOfferPrice? price;
-  final PricingOptions? pricingOptions;
-  final List<String>? validatingAirlineCodes;
-  final List<TravelerPricing>? travelerPricings;
 
   FlightOffer({
     this.type,
@@ -113,6 +101,18 @@ class FlightOffer {
             ?.map((x) => TravelerPricing.fromJson(x as Map<String, dynamic>))
             .toList(),
       );
+  final String? type;
+  final String? id;
+  final String? source;
+  final bool? instantTicketingRequired;
+  final bool? nonHomogeneous;
+  final bool? paymentCardRequired;
+  final String? lastTicketingDate;
+  final List<Itinerary>? itineraries;
+  final FlightOfferPrice? price;
+  final PricingOptions? pricingOptions;
+  final List<String>? validatingAirlineCodes;
+  final List<TravelerPricing>? travelerPricings;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -132,7 +132,6 @@ class FlightOffer {
 }
 
 class Itinerary {
-  final List<Segment>? segments;
 
   Itinerary({
     this.segments,
@@ -144,6 +143,7 @@ class Itinerary {
             ?.map((x) => Segment.fromJson(x as Map<String, dynamic>))
             .toList(),
       );
+  final List<Segment>? segments;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -152,16 +152,6 @@ class Itinerary {
 }
 
 class Segment {
-  final Arrival? departure;
-  final Arrival? arrival;
-  final String? carrierCode;
-  final String? number;
-  final Aircraft? aircraft;
-  final Operating? operating;
-  final String? duration;
-  final String? id;
-  final int? numberOfStops;
-  final List<Co2Emission>? co2Emissions;
 
   Segment({
     this.departure,
@@ -199,6 +189,16 @@ class Segment {
             ?.map((x) => Co2Emission.fromJson(x as Map<String, dynamic>))
             .toList(),
       );
+  final Arrival? departure;
+  final Arrival? arrival;
+  final String? carrierCode;
+  final String? number;
+  final Aircraft? aircraft;
+  final Operating? operating;
+  final String? duration;
+  final String? id;
+  final int? numberOfStops;
+  final List<Co2Emission>? co2Emissions;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -216,7 +216,6 @@ class Segment {
 }
 
 class Aircraft {
-  final String? code;
 
   Aircraft({
     this.code,
@@ -226,6 +225,7 @@ class Aircraft {
   factory Aircraft.fromJson(Map<String, dynamic> json) => Aircraft(
         code: json['code'] as String?,
       );
+  final String? code;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -234,9 +234,6 @@ class Aircraft {
 }
 
 class Arrival {
-  final String? iataCode;
-  final String? terminal;
-  final String? at;
 
   Arrival({
     this.iataCode,
@@ -250,6 +247,9 @@ class Arrival {
         terminal: json['terminal'] as String?,
         at: json['at'] ?? '',
       );
+  final String? iataCode;
+  final String? terminal;
+  final String? at;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -260,9 +260,6 @@ class Arrival {
 }
 
 class Co2Emission {
-  final int? weight;
-  final String? weightUnit;
-  final String? cabin;
 
   Co2Emission({
     this.weight,
@@ -276,6 +273,9 @@ class Co2Emission {
         weightUnit: json['weightUnit'] as String?,
         cabin: json['cabin'] as String?,
       );
+  final int? weight;
+  final String? weightUnit;
+  final String? cabin;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -286,7 +286,6 @@ class Co2Emission {
 }
 
 class Operating {
-  final String? carrierCode;
 
   Operating({
     this.carrierCode,
@@ -296,6 +295,7 @@ class Operating {
   factory Operating.fromJson(Map<String, dynamic> json) => Operating(
         carrierCode: json['carrierCode'] as String?,
       );
+  final String? carrierCode;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -304,13 +304,6 @@ class Operating {
 }
 
 class FlightOfferPrice {
-  final String? currency;
-  final String? total;
-  final String? base;
-  final List<Fee>? fees;
-  final String? grandTotal;
-  String? markup;
-  final String? billingCurrency;
 
   FlightOfferPrice(
       {this.currency,
@@ -333,6 +326,13 @@ class FlightOfferPrice {
         grandTotal: json['grandTotal'] as String?,
         billingCurrency: json['billingCurrency'] as String?,
       );
+  final String? currency;
+  final String? total;
+  final String? base;
+  final List<Fee>? fees;
+  final String? grandTotal;
+  String? markup;
+  final String? billingCurrency;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -346,8 +346,6 @@ class FlightOfferPrice {
 }
 
 class Fee {
-  final String? amount;
-  final String? type;
 
   Fee({
     this.amount,
@@ -359,6 +357,8 @@ class Fee {
         amount: json['amount'] as String?,
         type: json['type'] as String?,
       );
+  final String? amount;
+  final String? type;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -368,8 +368,6 @@ class Fee {
 }
 
 class PricingOptions {
-  final List<String>? fareType;
-  final bool? includedCheckedBagsOnly;
 
   PricingOptions({
     this.fareType,
@@ -383,6 +381,8 @@ class PricingOptions {
             .toList(),
         includedCheckedBagsOnly: json['includedCheckedBagsOnly'] as bool?,
       );
+  final List<String>? fareType;
+  final bool? includedCheckedBagsOnly;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -392,11 +392,6 @@ class PricingOptions {
 }
 
 class TravelerPricing {
-  final String? travelerId;
-  final String? fareOption;
-  final String? travelerType;
-  final TravelerPricingPrice? price;
-  final List<FareDetailsBySegment>? fareDetailsBySegment;
 
   TravelerPricing({
     this.travelerId,
@@ -421,6 +416,11 @@ class TravelerPricing {
                 (x) => FareDetailsBySegment.fromJson(x as Map<String, dynamic>))
             .toList(),
       );
+  final String? travelerId;
+  final String? fareOption;
+  final String? travelerType;
+  final TravelerPricingPrice? price;
+  final List<FareDetailsBySegment>? fareDetailsBySegment;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -434,13 +434,6 @@ class TravelerPricing {
 }
 
 class FareDetailsBySegment {
-  final String? segmentId;
-  final String? cabin;
-  final String? fareBasis;
-  final String? brandedFare;
-  final String?
-      fareDetailsBySegmentClass; // Renamed to avoid reserved keyword 'class' in some contexts
-  final IncludedCheckedBags? includedCheckedBags;
 
   FareDetailsBySegment({
     this.segmentId,
@@ -464,6 +457,13 @@ class FareDetailsBySegment {
             : IncludedCheckedBags.fromJson(
                 json['includedCheckedBags'] as Map<String, dynamic>),
       );
+  final String? segmentId;
+  final String? cabin;
+  final String? fareBasis;
+  final String? brandedFare;
+  final String?
+      fareDetailsBySegmentClass; // Renamed to avoid reserved keyword 'class' in some contexts
+  final IncludedCheckedBags? includedCheckedBags;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -477,8 +477,6 @@ class FareDetailsBySegment {
 }
 
 class IncludedCheckedBags {
-  final int? weight;
-  final String? weightUnit;
 
   IncludedCheckedBags({
     this.weight,
@@ -491,6 +489,8 @@ class IncludedCheckedBags {
         weight: json['weight'] ?? 0,
         weightUnit: json['weightUnit'] ?? 'kg',
       );
+  final int? weight;
+  final String? weightUnit;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -500,11 +500,6 @@ class IncludedCheckedBags {
 }
 
 class TravelerPricingPrice {
-  final String? currency;
-  final String? total;
-  final String? base;
-  final List<Tax>? taxes;
-  final String? refundableTaxes;
 
   TravelerPricingPrice({
     this.currency,
@@ -525,6 +520,11 @@ class TravelerPricingPrice {
             .toList(),
         refundableTaxes: json['refundableTaxes'] as String?,
       );
+  final String? currency;
+  final String? total;
+  final String? base;
+  final List<Tax>? taxes;
+  final String? refundableTaxes;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -537,8 +537,6 @@ class TravelerPricingPrice {
 }
 
 class Tax {
-  final String? amount;
-  final String? code;
 
   Tax({
     this.amount,
@@ -550,6 +548,8 @@ class Tax {
         amount: json['amount'] as String?,
         code: json['code'] as String?,
       );
+  final String? amount;
+  final String? code;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -559,9 +559,6 @@ class Tax {
 }
 
 class BookingRequirements {
-  final bool? emailAddressRequired;
-  final bool? mobilePhoneNumberRequired;
-  final List<TravelerRequirement>? travelerRequirements;
 
   BookingRequirements({
     this.emailAddressRequired,
@@ -579,6 +576,9 @@ class BookingRequirements {
                 (x) => TravelerRequirement.fromJson(x as Map<String, dynamic>))
             .toList(),
       );
+  final bool? emailAddressRequired;
+  final bool? mobilePhoneNumberRequired;
+  final List<TravelerRequirement>? travelerRequirements;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -590,12 +590,6 @@ class BookingRequirements {
 }
 
 class TravelerRequirement {
-  final String? travelerId;
-  final bool? genderRequired;
-  final bool? documentRequired;
-  final bool? dateOfBirthRequired;
-  final bool? redressRequiredIfAny;
-  final bool? residenceRequired;
 
   TravelerRequirement({
     this.travelerId,
@@ -616,6 +610,12 @@ class TravelerRequirement {
         redressRequiredIfAny: json['redressRequiredIfAny'] as bool?,
         residenceRequired: json['residenceRequired'] as bool?,
       );
+  final String? travelerId;
+  final bool? genderRequired;
+  final bool? documentRequired;
+  final bool? dateOfBirthRequired;
+  final bool? redressRequiredIfAny;
+  final bool? residenceRequired;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -629,7 +629,6 @@ class TravelerRequirement {
 }
 
 class Dictionaries {
-  final Locations? locations;
 
   Dictionaries({
     this.locations,
@@ -641,6 +640,7 @@ class Dictionaries {
             ? null
             : Locations.fromJson(json['locations'] as Map<String, dynamic>),
       );
+  final Locations? locations;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -649,11 +649,6 @@ class Dictionaries {
 }
 
 class Locations {
-  // Note: The specific keys 'mad', 'bos', 'lhr' suggest dynamic keys, but for
-  // this example, we'll keep them concrete for simplicity.
-  final Bos? mad;
-  final Bos? bos;
-  final Bos? lhr;
 
   Locations({
     this.mad,
@@ -673,6 +668,11 @@ class Locations {
             ? null
             : Bos.fromJson(json['LHR'] as Map<String, dynamic>),
       );
+  // Note: The specific keys 'mad', 'bos', 'lhr' suggest dynamic keys, but for
+  // this example, we'll keep them concrete for simplicity.
+  final Bos? mad;
+  final Bos? bos;
+  final Bos? lhr;
 
   // Encoder
   Map<String, dynamic> toJson() => {
@@ -684,8 +684,6 @@ class Locations {
 }
 
 class Bos {
-  final String? cityCode;
-  final String? countryCode;
 
   Bos({
     this.cityCode,
@@ -697,6 +695,8 @@ class Bos {
         cityCode: json['cityCode'] as String?,
         countryCode: json['countryCode'] as String?,
       );
+  final String? cityCode;
+  final String? countryCode;
 
   // Encoder
   Map<String, dynamic> toJson() => {

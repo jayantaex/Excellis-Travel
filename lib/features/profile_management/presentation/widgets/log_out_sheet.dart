@@ -23,8 +23,7 @@ class LogOutSheet extends StatelessWidget {
  final  LocalDB _localDB = LocalDB();
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       width: AppHelpers.getScreenWidth(context),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -78,5 +77,4 @@ class LogOutSheet extends StatelessWidget {
         ],
       ),
     );
-  }
 }

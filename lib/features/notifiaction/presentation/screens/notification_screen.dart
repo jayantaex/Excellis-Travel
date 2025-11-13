@@ -9,8 +9,8 @@ import '../widgets/notification_details_sheet.dart';
 class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key});
 
-  final List<Map<String, dynamic>> notifications = [
-    {
+  final List<Map<String, dynamic>> notifications = <Map<String, dynamic>>[
+    <String, dynamic>{
       'id': '1',
       'title': 'Flight Booking Confirmed',
       'details':
@@ -20,7 +20,7 @@ class NotificationScreen extends StatelessWidget {
       'type': 'booking',
       'icon': '✈️',
     },
-    {
+    <String, dynamic>{
       'id': '2',
       'title': 'Price Drop Alert',
       'details': 'The price for your watched route (LAX → SFO) dropped by 20%.',
@@ -29,7 +29,7 @@ class NotificationScreen extends StatelessWidget {
       'type': 'alert',
       'icon': '💸',
     },
-    {
+    <String, dynamic>{
       'id': '3',
       'title': 'Check-in Reminder',
       'details': 'Your flight to London opens for check-in in 3 hours.',
@@ -38,7 +38,7 @@ class NotificationScreen extends StatelessWidget {
       'type': 'reminder',
       'icon': '⏰',
     },
-    {
+    <String, dynamic>{
       'id': '4',
       'title': 'Loyalty Points Updated',
       'details': 'You earned 1,200 points from your recent trip.',
@@ -50,88 +50,87 @@ class NotificationScreen extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: AppGradientBg(
-          child: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: AppCustomAppbar(
-                centerTitle: 'Notification',
-              ),
-            ),
-            Expanded(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                margin: const EdgeInsets.only(top: 24),
-                width: AppHelpers.getScreenWidth(context),
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
-                  ),
-                ),
-                child: ListView.builder(
-                  itemCount: notifications.length,
-                  itemBuilder: (_, index) => Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: notifications[index]['isRead']
-                          ? AppColors.white
-                          : AppColors.primary.withOpacity(0.1),
-                    ),
-                    child: ListTile(
-                      onTap: () {
-                        showNotificationDetailsSheet(
-                          body: notifications[index]['details'],
-                          context: context,
-                          title: notifications[index]['title'],
-                        );
-                      },
-                      contentPadding: const EdgeInsets.all(0),
-                      leading: const CircleAvatar(
-                        child: Icon(Icons.notifications),
-                      ),
-                      title: Text(
-                        '${notifications[index]['title']}',
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
-                      subtitle: Text(
-                        notifications[index]['details'],
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 12, color: AppColors.grey),
-                      ),
-                      trailing: Text(
-                        getDelay(createdAt: notifications[index]['createdAt']),
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ),
+  Widget build(BuildContext context) => Scaffold(
+        body: AppGradientBg(
+            child: SafeArea(
+          bottom: false,
+          child: Column(
+            children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: AppCustomAppbar(
+                  centerTitle: 'Notification',
                 ),
               ),
-            ),
-          ],
-        ),
-      )),
-    );
-  }
+              Expanded(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  margin: const EdgeInsets.only(top: 24),
+                  width: AppHelpers.getScreenWidth(context),
+                  decoration: const BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                      topRight: Radius.circular(24),
+                    ),
+                  ),
+                  child: ListView.builder(
+                    itemCount: notifications.length,
+                    itemBuilder: (_, int index) => Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: notifications[index]['isRead']
+                            ? AppColors.white
+                            : AppColors.primary.withOpacity(0.1),
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          showNotificationDetailsSheet(
+                            body: notifications[index]['details'],
+                            context: context,
+                            title: notifications[index]['title'],
+                          );
+                        },
+                        contentPadding: const EdgeInsets.all(0),
+                        leading: const CircleAvatar(
+                          child: Icon(Icons.notifications),
+                        ),
+                        title: Text(
+                          '${notifications[index]['title']}',
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        subtitle: Text(
+                          notifications[index]['details'],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 12, color: AppColors.grey),
+                        ),
+                        trailing: Text(
+                          getDelay(
+                              createdAt: notifications[index]['createdAt']),
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )),
+      );
 }
 
 String getDelay({required DateTime createdAt}) {
-  final now = DateTime.now();
-  int hr = now.difference(createdAt).inHours;
-  int min = now.difference(createdAt).inMinutes;
-  int sec = now.difference(createdAt).inSeconds;
+  final DateTime now = DateTime.now();
+  final int hr = now.difference(createdAt).inHours;
+  final int min = now.difference(createdAt).inMinutes;
+  final int sec = now.difference(createdAt).inSeconds;
   if (hr > 0) {
     return '$hr hr ago';
   } else if (min > 0) {

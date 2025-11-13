@@ -13,13 +13,13 @@ final class TicketLoading extends TicketState {}
 final class MoreTicketLoading extends TicketState {}
 
 final class TicketLoaded extends TicketState {
-  final List<TicketDataModel> tickets;
 
   const TicketLoaded({required this.tickets});
+  final List<TicketDataModel> tickets;
 }
 
 final class TicketError extends TicketState {
-  final String err;
 
   const TicketError({required this.err});
+  final String err;
 }

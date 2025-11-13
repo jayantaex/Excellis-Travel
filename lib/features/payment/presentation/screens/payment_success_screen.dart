@@ -6,12 +6,11 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
 
 class PaymentSuccessScreen extends StatelessWidget {
-  final String paymentId;
   const PaymentSuccessScreen({super.key, required this.paymentId});
+  final String paymentId;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: SizedBox(
         width: AppHelpers.percenWidth(context: context),
         child: Padding(
@@ -59,5 +58,4 @@ class PaymentSuccessScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 }

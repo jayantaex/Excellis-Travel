@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nested/nested.dart';
 import '../../core/network/api_client.dart';
 import 'models/ticket_model.dart';
 import 'presentation/screens/ticket_details_screen.dart';
@@ -14,14 +15,16 @@ class TicketModule {
   static String tickets = 'ticket';
   static String ticketsRoute = '/ticket';
   static Widget ticketBuilder() {
-    final apiClient = ApiClient();
-    final ticketApi = TicketApi(apiClient: apiClient);
-    final ticketRepository = TicketsRepository(ticketApi: ticketApi);
+    final ApiClient apiClient = ApiClient();
+    final TicketApi ticketApi = TicketApi(apiClient: apiClient);
+    final TicketsRepository ticketRepository =
+        TicketsRepository(ticketApi: ticketApi);
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => TicketBloc(repository: ticketRepository)),
+      providers: <SingleChildWidget>[
+        BlocProvider<TicketBloc>(
+            create: (_) => TicketBloc(repository: ticketRepository)),
       ],
-      child: TicketScreen(),
+      child: const TicketScreen(),
     );
   }
 
@@ -30,12 +33,14 @@ class TicketModule {
   static String ticketDetailsRoute = '/ticket_details';
   static Widget ticketDetailsBuilder(GoRouterState state) {
     final TicketDataModel data = state.extra as TicketDataModel;
-    final apiClient = ApiClient();
-    final ticketApi = TicketApi(apiClient: apiClient);
-    final ticketRepository = TicketsRepository(ticketApi: ticketApi);
+    final ApiClient apiClient = ApiClient();
+    final TicketApi ticketApi = TicketApi(apiClient: apiClient);
+    final TicketsRepository ticketRepository =
+        TicketsRepository(ticketApi: ticketApi);
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => TicketBloc(repository: ticketRepository)),
+      providers: <SingleChildWidget>[
+        BlocProvider<TicketBloc>(
+            create: (_) => TicketBloc(repository: ticketRepository)),
       ],
       child: TicketDetailsScreen(
         ticketData: data,

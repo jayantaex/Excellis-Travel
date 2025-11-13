@@ -1,9 +1,4 @@
 class FlightsDataModel {
-  final Meta? meta;
-  final List<Datam>? datam;
-  final FlightDictionary? dictionaries;
-
-  FlightsDataModel({this.meta, this.datam, this.dictionaries});
 
   factory FlightsDataModel.fromJson(Map<String, dynamic> json) =>
       FlightsDataModel(
@@ -21,6 +16,11 @@ class FlightsDataModel {
             : null,
       );
 
+  FlightsDataModel({this.meta, this.datam, this.dictionaries});
+  final Meta? meta;
+  final List<Datam>? datam;
+  final FlightDictionary? dictionaries;
+
   Map<String, dynamic> toJson() => {
         'meta': meta?.toJson(),
         'data': datam != null
@@ -31,13 +31,13 @@ class FlightsDataModel {
 }
 
 class Meta {
-  final int? count;
 
   Meta({this.count});
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
         count: json['count'],
       );
+  final int? count;
 
   Map<String, dynamic> toJson() => {
         'count': count,
@@ -45,21 +45,6 @@ class Meta {
 }
 
 class Datam {
-  final String? type;
-  final String? id;
-  final String? source;
-  final bool? instantTicketingRequired;
-  final bool? nonHomogeneous;
-  final bool? oneWay;
-  final bool? isUpsellOffer;
-  final String? lastTicketingDate;
-  final String? lastTicketingDateTime;
-  final int? numberOfBookableSeats;
-  final List<Itinerary>? itineraries;
-  final DatamPrice? price;
-  final PricingOptions? pricingOptions;
-  final List<String>? validatingAirlineCodes;
-  final List<TravelerPricing>? travelerPricings;
 
   Datam({
     this.type,
@@ -91,9 +76,7 @@ class Datam {
         lastTicketingDateTime: json['lastTicketingDateTime'],
         numberOfBookableSeats: json['numberOfBookableSeats'],
         itineraries: json['itineraries'] != null
-            ? List<Itinerary>.from(json['itineraries'].map((itineraryJson) {
-                return Itinerary.fromJson(itineraryJson);
-              }))
+            ? List<Itinerary>.from(json['itineraries'].map((itineraryJson) => Itinerary.fromJson(itineraryJson)))
             : null,
         price: json['price'] != null
             ? DatamPrice.fromJson(json['price'] as Map<String, dynamic>)
@@ -111,6 +94,21 @@ class Datam {
                     pricingJson as Map<String, dynamic>)))
             : null,
       );
+  final String? type;
+  final String? id;
+  final String? source;
+  final bool? instantTicketingRequired;
+  final bool? nonHomogeneous;
+  final bool? oneWay;
+  final bool? isUpsellOffer;
+  final String? lastTicketingDate;
+  final String? lastTicketingDateTime;
+  final int? numberOfBookableSeats;
+  final List<Itinerary>? itineraries;
+  final DatamPrice? price;
+  final PricingOptions? pricingOptions;
+  final List<String>? validatingAirlineCodes;
+  final List<TravelerPricing>? travelerPricings;
 
   Map<String, dynamic> toJson() => {
         'type': type,
@@ -138,8 +136,6 @@ class Datam {
 }
 
 class Itinerary {
-  final String? duration;
-  final List<Segment>? segments;
 
   Itinerary({this.duration, this.segments});
 
@@ -150,6 +146,8 @@ class Itinerary {
                 Segment.fromJson(segmentJson as Map<String, dynamic>)))
             : null,
       );
+  final String? duration;
+  final List<Segment>? segments;
 
   Map<String, dynamic> toJson() => {
         'duration': duration,
@@ -160,16 +158,6 @@ class Itinerary {
 }
 
 class Segment {
-  final Departure? departure;
-  final Arrival? arrival;
-  final String? carrierCode;
-  final String? number;
-  final Aircraft? aircraft;
-  final Operating? operating;
-  final String? duration;
-  final String? id;
-  final int? numberOfStops;
-  final bool? blacklistedInEu;
 
   Segment({
     this.departure,
@@ -204,6 +192,16 @@ class Segment {
         numberOfStops: json['numberOfStops'],
         blacklistedInEu: json['blacklistedInEU'],
       );
+  final Departure? departure;
+  final Arrival? arrival;
+  final String? carrierCode;
+  final String? number;
+  final Aircraft? aircraft;
+  final Operating? operating;
+  final String? duration;
+  final String? id;
+  final int? numberOfStops;
+  final bool? blacklistedInEu;
 
   Map<String, dynamic> toJson() => {
         'departure': departure?.toJson(),
@@ -220,9 +218,6 @@ class Segment {
 }
 
 class Departure {
-  final String? iataCode;
-  final String? terminal;
-  final String? at;
 
   Departure({this.iataCode, this.terminal, this.at});
 
@@ -231,6 +226,9 @@ class Departure {
         terminal: json['terminal'],
         at: json['at'],
       );
+  final String? iataCode;
+  final String? terminal;
+  final String? at;
 
   Map<String, dynamic> toJson() => {
         'iataCode': iataCode,
@@ -240,9 +238,6 @@ class Departure {
 }
 
 class Arrival {
-  final String? iataCode;
-  final String? terminal;
-  final String? at;
 
   Arrival({
     this.iataCode,
@@ -255,6 +250,9 @@ class Arrival {
         iataCode: json['iataCode'],
         at: json['at'],
       );
+  final String? iataCode;
+  final String? terminal;
+  final String? at;
 
   Map<String, dynamic> toJson() => {
         'iataCode': iataCode,
@@ -264,34 +262,28 @@ class Arrival {
 }
 
 class Aircraft {
-  final String? code;
 
   Aircraft({this.code});
 
   factory Aircraft.fromJson(Map<String, dynamic> json) =>
       Aircraft(code: json['code']);
+  final String? code;
 
   Map<String, dynamic> toJson() => {'code': code};
 }
 
 class Operating {
-  final String? carrierCode;
 
   Operating({this.carrierCode});
 
   factory Operating.fromJson(Map<String, dynamic> json) =>
       Operating(carrierCode: json['carrierCode']);
+  final String? carrierCode;
 
   Map<String, dynamic> toJson() => {'carrierCode': carrierCode};
 }
 
 class DatamPrice {
-  final String? currency;
-  final String? total;
-  final String? base;
-  final List<Fee>? fees;
-  final String? grandTotal;
-  String? markupPrice;
 
   DatamPrice(
       {this.currency,
@@ -311,6 +303,12 @@ class DatamPrice {
             : null,
         grandTotal: json['grandTotal'],
       );
+  final String? currency;
+  final String? total;
+  final String? base;
+  final List<Fee>? fees;
+  final String? grandTotal;
+  String? markupPrice;
 
   Map<String, dynamic> toJson() => {
         'currency': currency,
@@ -325,20 +323,18 @@ class DatamPrice {
 }
 
 class Fee {
-  final String? amount;
-  final String? type;
 
   Fee({this.amount, this.type});
 
   factory Fee.fromJson(Map<String, dynamic> json) =>
       Fee(amount: json['amount'], type: json['type']);
+  final String? amount;
+  final String? type;
 
   Map<String, dynamic> toJson() => {'amount': amount, 'type': type};
 }
 
 class PricingOptions {
-  final List<String>? fareType;
-  final bool? includedCheckedBagsOnly;
 
   PricingOptions({this.fareType, this.includedCheckedBagsOnly});
 
@@ -348,6 +344,8 @@ class PricingOptions {
             : null,
         includedCheckedBagsOnly: json['includedCheckedBagsOnly'],
       );
+  final List<String>? fareType;
+  final bool? includedCheckedBagsOnly;
 
   Map<String, dynamic> toJson() => {
         'fareType': fareType,
@@ -356,11 +354,6 @@ class PricingOptions {
 }
 
 class TravelerPricing {
-  final String? travelerId;
-  final String? fareOption;
-  final String? travelerType;
-  final TravelerPricingPrice? price;
-  final List<FareDetailsBySegment>? fareDetailsBySegment;
 
   TravelerPricing(
       {this.travelerId,
@@ -384,6 +377,11 @@ class TravelerPricing {
                     detailsJson as Map<String, dynamic>)))
             : null,
       );
+  final String? travelerId;
+  final String? fareOption;
+  final String? travelerType;
+  final TravelerPricingPrice? price;
+  final List<FareDetailsBySegment>? fareDetailsBySegment;
 
   Map<String, dynamic> toJson() => {
         'travelerId': travelerId,
@@ -398,30 +396,21 @@ class TravelerPricing {
 }
 
 class TravelerPricingPrice {
-  final String? currency;
-  final String? total;
-  final String? base;
 
   TravelerPricingPrice({this.currency, this.total, this.base});
 
   factory TravelerPricingPrice.fromJson(Map<String, dynamic> json) =>
       TravelerPricingPrice(
           currency: json['currency'], total: json['total'], base: json['base']);
+  final String? currency;
+  final String? total;
+  final String? base;
 
   Map<String, dynamic> toJson() =>
       {'currency': currency, 'total': total, 'base': base};
 }
 
 class FareDetailsBySegment {
-  final String? segmentId;
-  final String? cabin;
-  final String? fareBasis;
-  final String? brandedFare;
-  final String? brandedFareLabel;
-  final String? fareDetailsBySegmentClass;
-  final IncludedCBags? includedCheckedBags;
-  final IncludedCBags? includedCabinBags;
-  final List<Amenity>? amenities;
 
   FareDetailsBySegment({
     this.segmentId,
@@ -456,6 +445,15 @@ class FareDetailsBySegment {
                 Amenity.fromJson(amenityJson as Map<String, dynamic>)))
             : null,
       );
+  final String? segmentId;
+  final String? cabin;
+  final String? fareBasis;
+  final String? brandedFare;
+  final String? brandedFareLabel;
+  final String? fareDetailsBySegmentClass;
+  final IncludedCBags? includedCheckedBags;
+  final IncludedCBags? includedCabinBags;
+  final List<Amenity>? amenities;
 
   Map<String, dynamic> toJson() => {
         'segmentId': segmentId,
@@ -474,22 +472,18 @@ class FareDetailsBySegment {
 }
 
 class IncludedCBags {
-  final int? weight;
-  final String? weightUnit;
 
   IncludedCBags({this.weight, this.weightUnit});
 
   factory IncludedCBags.fromJson(Map<String, dynamic> json) =>
       IncludedCBags(weight: json['weight'], weightUnit: json['weightUnit']);
+  final int? weight;
+  final String? weightUnit;
 
   Map<String, dynamic> toJson() => {'weight': weight, 'weightUnit': weightUnit};
 }
 
 class Amenity {
-  final String? description;
-  final bool? isChargeable;
-  final String? amenityType;
-  final AmenityProvider? amenityProvider;
 
   Amenity(
       {this.description,
@@ -506,6 +500,10 @@ class Amenity {
                 json['amenityProvider'] as Map<String, dynamic>)
             : null,
       );
+  final String? description;
+  final bool? isChargeable;
+  final String? amenityType;
+  final AmenityProvider? amenityProvider;
 
   Map<String, dynamic> toJson() => {
         'description': description,
@@ -516,7 +514,6 @@ class Amenity {
 }
 
 class AmenityProvider {
-  final String? name;
 
   AmenityProvider({this.name});
 
@@ -524,35 +521,31 @@ class AmenityProvider {
       AmenityProvider(
         name: json['name'],
       );
+  final String? name;
 
   Map<String, dynamic> toJson() => {'name': name};
 }
 
 class FlightDictionary {
-  final Dictionaries dictionaries;
   FlightDictionary({required this.dictionaries});
 
   // The 'dictionaries' field in the outer JSON contains the actual map.
-  factory FlightDictionary.fromJson(Map<String, dynamic> json) {
-    return FlightDictionary(
+  factory FlightDictionary.fromJson(Map<String, dynamic> json) => FlightDictionary(
       dictionaries: Dictionaries.fromJson(json),
     );
-  }
+  final Dictionaries dictionaries;
 
   Map<String, dynamic> toJson() => dictionaries.toJson();
 }
 
 class Dictionaries {
-  Map<String, String>? aircraft;
-  Map<String, String>? carriers;
 
   Dictionaries({
     this.aircraft,
     this.carriers,
   });
 
-  factory Dictionaries.fromJson(Map<String, dynamic> json) {
-    return Dictionaries(
+  factory Dictionaries.fromJson(Map<String, dynamic> json) => Dictionaries(
       // Added null check before mapping/casting from JSON
       aircraft: json['aircraft'] != null
           ? Map<String, String>.from(json['aircraft'])
@@ -561,7 +554,8 @@ class Dictionaries {
           ? Map<String, String>.from(json['carriers'])
           : null,
     );
-  }
+  Map<String, String>? aircraft;
+  Map<String, String>? carriers;
 
   Map<String, dynamic> toJson() => {
         // Maps are directly serializable if their keys and values are strings

@@ -22,10 +22,6 @@ Future<void> showPassengerSelectionSheet(
 }
 
 class PassengerSelectionSheet extends StatefulWidget {
-  final Function(int, int, int) onDone;
-  final int adult;
-  final int child;
-  final int infant;
 
   const PassengerSelectionSheet(
       {super.key,
@@ -33,6 +29,10 @@ class PassengerSelectionSheet extends StatefulWidget {
       required this.adult,
       required this.child,
       required this.infant});
+  final Function(int, int, int) onDone;
+  final int adult;
+  final int child;
+  final int infant;
 
   @override
   State<PassengerSelectionSheet> createState() =>
@@ -53,8 +53,7 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 40),
       width: AppHelpers.getScreenWidth(context),
       child: Column(
@@ -194,15 +193,9 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
         ],
       ),
     );
-  }
 }
 
 class InCrementDecrementButton extends StatelessWidget {
-  final int value;
-  final Function() onIncrement;
-  final Function() onDecrement;
-  final String title;
-  final String subtitle;
 
   const InCrementDecrementButton(
       {super.key,
@@ -211,10 +204,14 @@ class InCrementDecrementButton extends StatelessWidget {
       required this.onDecrement,
       required this.title,
       required this.subtitle});
+  final int value;
+  final Function() onIncrement;
+  final Function() onDecrement;
+  final String title;
+  final String subtitle;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         width: 120,
         decoration: BoxDecoration(
@@ -257,5 +254,4 @@ class InCrementDecrementButton extends StatelessWidget {
             ),
           ],
         ));
-  }
 }

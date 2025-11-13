@@ -10,11 +10,11 @@ sealed class WishlistEvent extends Equatable {
 class GetWishListEvent extends WishlistEvent {}
 
 class AddToWishListEvent extends WishlistEvent {
-  final String ticketId;
   const AddToWishListEvent({required this.ticketId});
+  final String ticketId;
 }
 
 class RemoveFromWishListEvent extends WishlistEvent {
-  final String ticketId;
   const RemoveFromWishListEvent({required this.ticketId});
+  final String ticketId;
 }

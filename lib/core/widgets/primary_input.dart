@@ -4,19 +4,6 @@ import 'package:flutter/services.dart';
 import '../constants/app_styles.dart';
 
 class AppPrimaryInput extends StatelessWidget {
-  final String? label;
-  final String? hint;
-  final TextEditingController? controller;
-  final TextInputType? keyboardType;
-  final int maxCharacters;
-  final Widget? suffixIcon;
-  final Widget? prefixIcon;
-  final bool? enable;
-  final bool? isMultiline;
-  final TextStyle? style;
-  final VoidCallback? onTap;
-  final FocusNode? focusNode;
-  final Function(String)? onChange;
 
   const AppPrimaryInput({
     super.key,
@@ -34,10 +21,22 @@ class AppPrimaryInput extends StatelessWidget {
     this.focusNode,
     this.isMultiline,
   });
+  final String? label;
+  final String? hint;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final int maxCharacters;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final bool? enable;
+  final bool? isMultiline;
+  final TextStyle? style;
+  final VoidCallback? onTap;
+  final FocusNode? focusNode;
+  final Function(String)? onChange;
 
   @override
-  Widget build(BuildContext context) {
-    return TextField(
+  Widget build(BuildContext context) => TextField(
       enabled: enable ?? true,
       maxLines: isMultiline == true ? null : 1,
       onChanged: onChange,
@@ -46,7 +45,7 @@ class AppPrimaryInput extends StatelessWidget {
       keyboardType: onTap != null ? TextInputType.none : keyboardType,
       focusNode: focusNode,
       style: style,
-      inputFormatters: [
+      inputFormatters: <TextInputFormatter>[
         if (maxCharacters > 0) LengthLimitingTextInputFormatter(maxCharacters),
       ],
       cursorWidth: onTap == null ? 2 : 0,
@@ -71,5 +70,4 @@ class AppPrimaryInput extends StatelessWidget {
         hintText: hint,
       ),
     );
-  }
 }

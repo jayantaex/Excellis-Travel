@@ -6,7 +6,7 @@ part 'wishlist_state.dart';
 
 class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
   WishlistBloc() : super(WishlistInitial()) {
-    on<WishlistEvent>((event, emit) {
+    on<WishlistEvent>((WishlistEvent event, Emitter<WishlistState> emit) {
       emit(WishListLoading());
     });
 

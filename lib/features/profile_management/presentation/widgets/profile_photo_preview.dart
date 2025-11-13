@@ -5,7 +5,7 @@ Future<void> showPhotoPreview(
     {required BuildContext context, required String url}) async {
   showDialog(
     context: context,
-    builder: (context) => AlertDialog.adaptive(
+    builder: (BuildContext context) => AlertDialog.adaptive(
       content: SizedBox(
         height: 200,
         width: 200,
@@ -15,7 +15,7 @@ Future<void> showPhotoPreview(
               Image.file(File(url), height: 200, width: 200, fit: BoxFit.fill),
         ),
       ),
-      actions: [
+      actions: <Widget>[
         TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Close')),

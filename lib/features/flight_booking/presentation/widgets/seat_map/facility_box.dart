@@ -5,12 +5,11 @@ import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/seat_map_data_model.dart';
 
 class FacilityBox extends StatelessWidget {
-  final FacilityCode facilityCode;
   const FacilityBox({super.key, required this.facilityCode});
+  final FacilityCode facilityCode;
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       height: AppHelpers.getScreenWidth(context) * 0.12,
       width: AppHelpers.getScreenWidth(context) * 0.12,
       child: Container(
@@ -31,5 +30,4 @@ class FacilityBox extends StatelessWidget {
         ),
       ),
     );
-  }
 }

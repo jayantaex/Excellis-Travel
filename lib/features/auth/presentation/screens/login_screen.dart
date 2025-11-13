@@ -12,10 +12,9 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return PopScope(
+  Widget build(BuildContext context) => PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
         if (!didPop) {
           await showAppExitSheet(context: context);
         }
@@ -25,7 +24,7 @@ class LoginScreen extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 40),
               child: Center(
@@ -37,7 +36,7 @@ class LoginScreen extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
                   child: BlocConsumer<AuthBloc, AuthState>(
-                    listener: (context, state) {
+                    listener: (BuildContext context, AuthState state) {
                       if (state is AuthError) {
                         AppErrorWidget.show(
                           type: WidghetType.snackBar,
@@ -51,11 +50,9 @@ class LoginScreen extends StatelessWidget {
                         context.goNamed(BottomNavModule.name);
                       }
                     },
-                    builder: (context, state) {
-                      return LoginSheet(
+                    builder: (BuildContext context, AuthState state) => LoginSheet(
                         isLoading: state is AuthLoading,
-                      );
-                    },
+                      ),
                   ),
                 ),
               ),
@@ -64,5 +61,4 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
-  }
 }

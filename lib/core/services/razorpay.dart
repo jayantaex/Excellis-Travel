@@ -5,10 +5,10 @@ import '../constants/app_constants.dart';
 class RazorpayService {
   final Razorpay _razorpay = Razorpay();
 
-  final Map<String, dynamic> _options = {
+  final Map<String, dynamic> _options = <String, dynamic>{
     'key': AppConstants.razorpayKey,
     'name': AppConstants.razorpayUserName,
-    'theme': {'color': '#f25a12'}
+    'theme': <String, String>{'color': '#f25a12'}
   };
 
   Future<void> initatePayment({
@@ -25,7 +25,7 @@ class RazorpayService {
     _options['amount'] = amount;
     _options['description'] = description;
     _options['order_id'] = orderId;
-    _options['prefill'] = {
+    _options['prefill'] = <String, String>{
       'contact': mobile,
       'email': email,
     };

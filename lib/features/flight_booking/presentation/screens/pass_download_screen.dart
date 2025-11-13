@@ -20,8 +20,8 @@ import '../../models/payment_verify_res_model.dart';
 import '../widgets/launge_access_widget.dart';
 
 class PassDownloadScreen extends StatefulWidget {
-  final PaymentVerifiedModel data;
   const PassDownloadScreen({super.key, required this.data});
+  final PaymentVerifiedModel data;
 
   @override
   State<PassDownloadScreen> createState() => _PassDownloadScreenState();
@@ -48,7 +48,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double width = AppHelpers.getScreenWidth(context);
+    final double width = AppHelpers.getScreenWidth(context);
     return PopScope(
       canPop: true,
       child: Scaffold(
@@ -401,10 +401,10 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                 bgColor: AppColors.primary,
                 onPressed: () async {
                   try {
-                    Uint8List ticket =
+                    final Uint8List ticket =
                         await PdfService().generateTicket(data: widget.data);
                     log(ticket.length.toString());
-                    String? path = await savePdfToMobileStorage(
+                    final String? path = await savePdfToMobileStorage(
                         ticket, '${widget.data.booking?.bookingReference}.pdf');
                     if (path != null) {
                       if (context.mounted) {
@@ -449,8 +449,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
 getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
-  String hr = duration.split('H')[0].trim();
-  String mn = duration.split('H')[1].split('M')[0].trim();
+  final String hr = duration.split('H')[0].trim();
+  final String mn = duration.split('H')[1].split('M')[0].trim();
 
   return '${hr}H ${mn}M';
 }
@@ -458,7 +458,7 @@ getDuration({required String duration}) {
 class TicketClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    Path path = Path();
+    final Path path = Path();
 
     path.lineTo(0.0, size.height);
     path.lineTo(size.width, size.height);

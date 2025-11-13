@@ -12,17 +12,17 @@ class FetchTickets extends TicketEvent {
 }
 
 class FetchMoreTickets extends TicketEvent {
-  final int page;
-  final int limit;
   const FetchMoreTickets({
     required this.page,
     required this.limit,
   });
+  final int page;
+  final int limit;
 }
 
 class RefreshTickets extends TicketEvent {}
 
 class GetTicketDetails extends TicketEvent {
-  final String ticketId;
   const GetTicketDetails({required this.ticketId});
+  final String ticketId;
 }

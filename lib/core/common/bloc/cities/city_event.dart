@@ -8,8 +8,8 @@ sealed class CityEvent extends Equatable {
 }
 
 final class GetCityEvent extends CityEvent {
-  final int stateId;
-  final String stateCode;
 
   const GetCityEvent({required this.stateId, required this.stateCode});
+  final int stateId;
+  final String stateCode;
 }

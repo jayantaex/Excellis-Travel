@@ -1,22 +1,6 @@
 // ignore_for_file: unnecessary_new
 
 class ProfileModel {
-  int? id;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? role;
-  String? status;
-  String? emailStatus;
-  String? lastLoginAt;
-  String? phone;
-  String? address;
-  String? commissionRate;
-  bool? isDirectBooking;
-  String? createdAt;
-  String? updatedAt;
-  UserRole? userRole;
-  int? hierarchyLevel;
 
   ProfileModel(
       {this.id,
@@ -56,6 +40,22 @@ class ProfileModel {
         : null;
     hierarchyLevel = json['hierarchy_level'];
   }
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? role;
+  String? status;
+  String? emailStatus;
+  String? lastLoginAt;
+  String? phone;
+  String? address;
+  String? commissionRate;
+  bool? isDirectBooking;
+  String? createdAt;
+  String? updatedAt;
+  UserRole? userRole;
+  int? hierarchyLevel;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -82,13 +82,13 @@ class ProfileModel {
 }
 
 class UserRole {
-  int? hierarchyLevel;
 
   UserRole({this.hierarchyLevel});
 
   UserRole.fromJson(Map<String, dynamic> json) {
     hierarchyLevel = json['hierarchy_level'];
   }
+  int? hierarchyLevel;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

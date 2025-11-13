@@ -11,9 +11,9 @@ class SplashModule {
   static String spashName = 'Splash';
   static Widget builder() {
     final ApiClient apiClient = ApiClient();
-    ProfileManagementApi profileApi =
+    final ProfileManagementApi profileApi =
         ProfileManagementApi(apiClient: apiClient);
-    ProfileManagementRepository repository =
+    final ProfileManagementRepository repository =
         ProfileManagementRepository(profileManagementApi: profileApi);
 
     return MultiBlocProvider(

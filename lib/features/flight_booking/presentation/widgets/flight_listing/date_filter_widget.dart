@@ -3,11 +3,11 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 
 class DateFilterWidget extends StatefulWidget {
-  final String startDate;
-  final Function(DateTime date)? onDateSelected;
 
   const DateFilterWidget(
       {super.key, required this.startDate, this.onDateSelected});
+  final String startDate;
+  final Function(DateTime date)? onDateSelected;
 
   @override
   State<DateFilterWidget> createState() => _DateFilterWidgetState();
@@ -36,15 +36,13 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       height: 70,
       width: AppHelpers.percenWidth(context: context),
       child: ListView.builder(
           itemCount: dates.length,
           scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return InkWell(
+          itemBuilder: (context, index) => InkWell(
               onTap: () {
                 widget.onDateSelected!(dates[index]);
                 setState(() {
@@ -95,8 +93,6 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
                   ],
                 ),
               ),
-            );
-          }),
+            )),
     );
-  }
 }

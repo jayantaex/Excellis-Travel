@@ -9,19 +9,18 @@ Future<void> showDeleteAccountSheet({required BuildContext context}) async {
       backgroundColor: AppColors.white,
       showDragHandle: true,
       context: context,
-      builder: (context) => const DeleteAccountSheet());
+      builder: (BuildContext context) => const DeleteAccountSheet());
 }
 
 class DeleteAccountSheet extends StatelessWidget {
   const DeleteAccountSheet({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       width: AppHelpers.getScreenWidth(context),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           const Icon(
             Icons.delete_outline_rounded,
             size: 52,
@@ -41,7 +40,7 @@ class DeleteAccountSheet extends StatelessWidget {
             width: AppHelpers.getScreenWidth(context),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: <Widget>[
                 SizedBox(
                     width: AppHelpers.getScreenWidth(context) * 0.4,
                     child: AppPrimaryButton(
@@ -64,5 +63,4 @@ class DeleteAccountSheet extends StatelessWidget {
         ],
       ),
     );
-  }
 }

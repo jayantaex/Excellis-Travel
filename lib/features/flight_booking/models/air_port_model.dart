@@ -1,13 +1,4 @@
 class AirportModel {
-  String? type;
-  String? subType;
-  String? name;
-  String? detailedName;
-  String? id;
-  String? timeZoneOffset;
-  String? iataCode;
-  GeoCode? geoCode;
-  Address? address;
 
   AirportModel(
       {this.type,
@@ -33,6 +24,15 @@ class AirportModel {
     address =
         json['address'] != null ? Address.fromJson(json['address']) : null;
   }
+  String? type;
+  String? subType;
+  String? name;
+  String? detailedName;
+  String? id;
+  String? timeZoneOffset;
+  String? iataCode;
+  GeoCode? geoCode;
+  Address? address;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -54,8 +54,6 @@ class AirportModel {
 }
 
 class GeoCode {
-  double? latitude;
-  double? longitude;
 
   GeoCode({this.latitude, this.longitude});
 
@@ -63,6 +61,8 @@ class GeoCode {
     latitude = json['latitude'];
     longitude = json['longitude'];
   }
+  double? latitude;
+  double? longitude;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -73,12 +73,6 @@ class GeoCode {
 }
 
 class Address {
-  String? cityName;
-  String? cityCode;
-  String? countryName;
-  String? countryCode;
-  String? stateCode;
-  String? regionCode;
 
   Address(
       {this.cityName,
@@ -96,6 +90,12 @@ class Address {
     stateCode = json['stateCode'];
     regionCode = json['regionCode'];
   }
+  String? cityName;
+  String? cityCode;
+  String? countryName;
+  String? countryCode;
+  String? stateCode;
+  String? regionCode;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

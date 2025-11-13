@@ -25,38 +25,34 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      backgroundColor: AppColors.black,
-      body: BlocConsumer<ProfileBloc, ProfileState>(
-        listener: (context, state) async {
-          if (state is ProfileError) {
-            await StorageService.clearTokens();
-            if (context.mounted) {
-              context.goNamed(AuthModule.loginName);
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(),
+        backgroundColor: AppColors.black,
+        body: BlocConsumer<ProfileBloc, ProfileState>(
+          listener: (BuildContext context, ProfileState state) async {
+            if (state is ProfileError) {
+              await StorageService.clearTokens();
+              if (context.mounted) {
+                context.goNamed(AuthModule.loginName);
+              }
             }
-          }
-          if (state is ProfileLoaded) {
-            if (context.mounted) {
-              context.goNamed(BottomNavModule.name);
+            if (state is ProfileLoaded) {
+              if (context.mounted) {
+                context.goNamed(BottomNavModule.name);
+              }
             }
-          }
-        },
-        builder: (context, state) {
-          return Center(
+          },
+          builder: (BuildContext context, ProfileState state) => Center(
             child: Image.asset('assets/images/app_logo.png'),
-          );
-        },
-      ),
-    );
-  }
+          ),
+        ),
+      );
 
   // landle authentication
   Future<void> _handleAuthentication() async {
     try {
-      String? asscessToken = await StorageService.getAccessToken();
-      String? refreshToken = await StorageService.getAccessToken();
+      final String? asscessToken = await StorageService.getAccessToken();
+      final String? refreshToken = await StorageService.getAccessToken();
       if ((asscessToken != null && asscessToken.isNotEmpty) &&
           (refreshToken != null && refreshToken.isNotEmpty)) {
         if (context.mounted) {

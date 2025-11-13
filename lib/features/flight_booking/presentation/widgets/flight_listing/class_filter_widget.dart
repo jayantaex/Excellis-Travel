@@ -4,8 +4,8 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 
 class ClassFilterWidget extends StatefulWidget {
-  final List<String> filters;
   const ClassFilterWidget({super.key, required this.filters});
+  final List<String> filters;
 
   @override
   State<ClassFilterWidget> createState() => _ClassFilterWidgetState();
@@ -14,8 +14,7 @@ class ClassFilterWidget extends StatefulWidget {
 class _ClassFilterWidgetState extends State<ClassFilterWidget> {
   String selectedFilter = 'All';
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
+  Widget build(BuildContext context) => SizedBox(
       height: 40,
       width: AppHelpers.getScreenWidth(context),
       child: ListView.builder(
@@ -32,23 +31,21 @@ class _ClassFilterWidgetState extends State<ClassFilterWidget> {
         scrollDirection: Axis.horizontal,
       ),
     );
-  }
 }
 
 class SearchFilterWidget extends StatelessWidget {
-  final String title;
-  final bool isSelected;
-  final Function onTap;
 
   const SearchFilterWidget(
       {super.key,
       required this.title,
       required this.isSelected,
       required this.onTap});
+  final String title;
+  final bool isSelected;
+  final Function onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
+  Widget build(BuildContext context) => InkWell(
       onTap: () => onTap(),
       child: Container(
         margin: const EdgeInsets.only(right: 8),
@@ -72,5 +69,4 @@ class SearchFilterWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }
