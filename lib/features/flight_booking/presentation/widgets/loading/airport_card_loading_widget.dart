@@ -25,7 +25,7 @@ class AirportCardLoadingWidget extends StatelessWidget {
         ),
         subtitle: LoadingEffect(
           height: 15,
-          width: 80,
+          width: 20,
           baseColor: AppColors.grey.withOpacity(0.05),
           heighLightColor: AppColors.white,
         ),

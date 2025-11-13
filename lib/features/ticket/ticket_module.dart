@@ -21,7 +21,7 @@ class TicketModule {
       providers: [
         BlocProvider(create: (_) => TicketBloc(repository: ticketRepository)),
       ],
-      child: const TicketScreen(),
+      child: TicketScreen(),
     );
   }
 

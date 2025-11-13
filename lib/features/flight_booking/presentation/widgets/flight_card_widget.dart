@@ -35,7 +35,7 @@ class FlightCardWidget extends StatelessWidget {
         clipper: TicketClipper(),
         child: Container(
           height: 250,
-          width: width * 0.85,
+          width: width * 0.95,
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(24),
@@ -141,8 +141,8 @@ class FlightCardWidget extends StatelessWidget {
                             Text(
                               AppHelpers.formatDateTime(
                                   DateTime.parse(
-                                    data.itineraries?.first.segments
-                                            ?.first.departure?.at ??
+                                    data.itineraries?.first.segments?.first
+                                            .departure?.at ??
                                         DateTime.now().toString(),
                                   ),
                                   pattern: 'hh:mm:aa'),
@@ -163,9 +163,9 @@ class FlightCardWidget extends StatelessWidget {
                               children: [
                                 Text(
                                   getDuration(
-                                      duration: data.itineraries?.first
-                                              .duration ??
-                                          ''),
+                                      duration:
+                                          data.itineraries?.first.duration ??
+                                              ''),
                                   style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400),
@@ -175,9 +175,7 @@ class FlightCardWidget extends StatelessWidget {
                                   color: AppColors.primary.withOpacity(0.3),
                                 ),
                                 Text(
-                                  data.itineraries?.first.segments
-                                              ?.length ==
-                                          1
+                                  data.itineraries?.first.segments?.length == 1
                                       ? 'Non-Stop'
                                       : '${(data.itineraries!.first.segments!.length - 1)} Stop(s)',
                                   style: const TextStyle(
@@ -196,16 +194,16 @@ class FlightCardWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                              data.itineraries?.first.segments?.last
-                                      .arrival?.iataCode ??
+                              data.itineraries?.first.segments?.last.arrival
+                                      ?.iataCode ??
                                   'NO_CODE',
                               style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600)),
                           Text(
                             AppHelpers.formatDateTime(
                               DateTime.parse(
-                                data.itineraries?.first.segments?.last
-                                        .arrival?.at ??
+                                data.itineraries?.first.segments?.last.arrival
+                                        ?.at ??
                                     DateTime.now().toString(),
                               ),
                               pattern: 'dd MMM, yyyy',
@@ -218,8 +216,8 @@ class FlightCardWidget extends StatelessWidget {
                           Text(
                             AppHelpers.formatTime(
                                 DateTime.parse(
-                                  data.itineraries?.first.segments?.last
-                                          .arrival?.at ??
+                                  data.itineraries?.first.segments?.last.arrival
+                                          ?.at ??
                                       DateTime.now().toString(),
                                 ),
                                 pattern: 'hh:mm:aa'),
@@ -274,8 +272,8 @@ class FlightCardWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      data.travelerPricings?.first.fareDetailsBySegment
-                              ?.first.cabin ??
+                      data.travelerPricings?.first.fareDetailsBySegment?.first
+                              .cabin ??
                           'NO_CABIN',
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),

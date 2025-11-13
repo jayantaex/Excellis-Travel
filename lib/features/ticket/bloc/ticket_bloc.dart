@@ -14,6 +14,7 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
   final TicketsRepository repository;
   TicketBloc({required this.repository}) : super(TicketInitial()) {
     on<FetchTickets>(_handleFetchTickets);
+    on<FetchMoreTickets>(_handleFetchMoreTickets);
   }
 
   Future<void> _handleFetchTickets(
@@ -21,14 +22,33 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
     try {
       emit(TicketLoading());
       ApiResponse<List<TicketDataModel>> res = await repository.fetchTickets(
-        page: event.page,
-        limit: event.limit,
+        page: 1,
+        limit: 10,
       );
-      log("${res.errorMessage}", name: "TICKET-BLOC");
       if (res.errorMessage == null || res.errorMessage == '') {
         emit(TicketLoaded(tickets: res.data ?? []));
         return;
       }
+
+      emit(TicketError(err: res.errorMessage ?? 'Something went wrong'));
+    } catch (e) {
+      emit(TicketError(err: e.toString()));
+    }
+  }
+
+  Future<void> _handleFetchMoreTickets(
+      FetchMoreTickets event, Emitter<TicketState> emit) async {
+    try {
+      emit(MoreTicketLoading());
+      ApiResponse<List<TicketDataModel>> res = await repository.fetchTickets(
+        page: event.page,
+        limit: event.limit,
+      );
+      if (res.errorMessage == null || res.errorMessage == '') {
+        emit(TicketLoaded(tickets: res.data ?? []));
+        return;
+      }
+
       emit(TicketError(err: res.errorMessage ?? 'Something went wrong'));
     } catch (e) {
       emit(TicketError(err: e.toString()));

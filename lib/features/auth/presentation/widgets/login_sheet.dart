@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -140,8 +139,6 @@ class _LoginSheetState extends State<LoginSheet> {
                 title: 'LOGIN',
                 isLoading: widget.isLoading,
                 onPressed: () {
-                  log('Login pressed');
-
                   context.read<AuthBloc>().add(
                         LoginEvent(
                           fcmToken: '',

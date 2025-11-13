@@ -1,8 +1,12 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/data/country_code.dart';
+import '../../../../core/errors/error_screen.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_drop_down.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
@@ -18,9 +22,19 @@ class AirportSearchScreen extends StatelessWidget {
   AirportSearchScreen(
       {super.key, this.selectedAirport, this.type, this.onAirportSelected});
   final TextEditingController _searchController = TextEditingController();
+  final List<DropdownMenuItem<String>> items = [];
+  String _selectedCountyCode = 'IN';
 
   @override
   Widget build(BuildContext context) {
+    for (var element in countryList) {
+      items.add(
+        DropdownMenuItem(
+          value: element['code'],
+          child: Text('${element['name']} (${element['code']})'),
+        ),
+      );
+    }
     if (selectedAirport != null && selectedAirport!.isNotEmpty) {
       _searchController.text = selectedAirport!;
       context.read<FlightBloc>().add(SearchAirportEvent(
@@ -54,25 +68,46 @@ class AirportSearchScreen extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          AppPrimaryInput(
-                            onChange: (String query) {
-                              AppHelpers.debounce(
-                                delay: const Duration(milliseconds: 200),
-                                () {
-                                  context.read<FlightBloc>().add(
-                                        SearchAirportEvent(
-                                          countryCode: 'IN',
-                                          keyword: query,
-                                          subType: 'CITY,AIRPORT',
-                                        ),
-                                      );
-                                },
-                              );
-                            },
-                            label: type ?? 'Airport',
-                            hint: 'Enter city name here or airport code',
-                            maxCharacters: 20,
-                            controller: _searchController,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: AppHelpers.getScreenWidth(context) * 0.6,
+                                child: AppPrimaryInput(
+                                  onChange: (String query) {
+                                    AppHelpers.debounce(
+                                      delay: const Duration(milliseconds: 200),
+                                      () {
+                                        context.read<FlightBloc>().add(
+                                              SearchAirportEvent(
+                                                countryCode:
+                                                    _selectedCountyCode,
+                                                keyword: query,
+                                                subType: 'CITY,AIRPORT',
+                                              ),
+                                            );
+                                      },
+                                    );
+                                  },
+                                  label: type ?? 'Airport',
+                                  hint: 'Enter city name here or airport code',
+                                  maxCharacters: 20,
+                                  controller: _searchController,
+                                ),
+                              ),
+                              SizedBox(
+                                width: AppHelpers.getScreenWidth(context) * 0.3,
+                                child: AppDropDown(
+                                  onChanged: (String? value) {
+                                    _selectedCountyCode = value ?? 'IN';
+                                  },
+                                  title: 'Country',
+                                  value: _selectedCountyCode,
+                                  label: 'Country',
+                                  items: items,
+                                ),
+                              )
+                            ],
                           ),
                           const SizedBox(height: 20),
                           Expanded(
@@ -112,8 +147,9 @@ class AirportSearchScreen extends StatelessWidget {
                                   );
                                 }
                                 if (state is AirportSearchingError) {
-                                  return Center(
-                                    child: Text(state.message),
+                                  return ErrorScreen(
+                                    errorDesc: state.message,
+                                    errorMessage: 'Airport Error',
                                   );
                                 }
 

@@ -33,12 +33,16 @@ class AppPrimaryButton extends StatelessWidget {
               onPressed!();
             },
       child: isLoading
-          ? CircularProgressIndicator.adaptive(
-              strokeWidth: 2,
-              backgroundColor: AppColors.white,
-              valueColor: bgColor == null
-                  ? const AlwaysStoppedAnimation<Color>(AppColors.black)
-                  : const AlwaysStoppedAnimation<Color>(AppColors.primary),
+          ? SizedBox(
+              height: 25,
+              width: 25,
+              child: CircularProgressIndicator.adaptive(
+                strokeWidth: 2,
+                backgroundColor: AppColors.white,
+                valueColor: bgColor == null
+                    ? const AlwaysStoppedAnimation<Color>(AppColors.black)
+                    : const AlwaysStoppedAnimation<Color>(AppColors.primary),
+              ),
             )
           : Text(
               title,

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/errors/error_screen.dart';
 import '../../../../core/services/razorpay.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
@@ -17,8 +18,7 @@ import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
 import '../../models/flights_data_model.dart' show FlightDictionary, Datam;
 import '../../models/passenger_model.dart';
-import '../widgets/flight_details/err_widget.dart';
-import '../widgets/flight_details/fareign_options_card_widget.dart';
+import '../widgets/flight_details/fares_and_prices.dart';
 import '../widgets/loading/flight_details_loading_widet.dart';
 import '../widgets/flight_details/pricing_bottom_bar.dart';
 import '../widgets/flight_details/itinerary_card_widget.dart';
@@ -99,10 +99,15 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                             return const FlightDetailsLoadingWidet();
                           }
                           if (state is FlightOfferPriceError) {
-                            return ErrWidget(message: state.message);
+                            return ErrorScreen(
+                              errorDesc: state.message,
+                              errorMessage: 'Flight Offer Error',
+                            );
                           }
                           if (state is FlightPaymentVerificationFailed) {
-                            return ErrWidget(message: state.error);
+                            return ErrorScreen(
+                                errorDesc: state.error,
+                                errorMessage: 'Flight Payment Error');
                           }
 
                           if (state is FlightOfferPriceLoaded) {
@@ -119,7 +124,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                FareignOptionsCardWidget(
+                                FaresAndPrices(
                                   allTravelerPricings: state.data.data!
                                       .flightOffers!.first.travelerPricings!,
                                   grandPrice: double.parse(state

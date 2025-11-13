@@ -13,7 +13,8 @@ class FlightBookingApi {
   ApiClient? apiClient;
   FlightBookingApi(this.amadeusClient, {this.apiClient});
 
-  Future<List<AirportModel>> getAirport({required String keyword}) async {
+  Future<List<AirportModel>> getAirport(
+      {required String keyword, required String country}) async {
     try {
       List<AirportModel> airportList = [];
       await amadeusClient.getRequest(
@@ -21,7 +22,7 @@ class FlightBookingApi {
           queryParameters: {
             'subType': 'AIRPORT',
             'keyword': keyword.trim(),
-            'countryCode': 'IN',
+            'countryCode': country,
           },
           fromJson: (jsonData) {
             jsonData['data'].forEach((element) {

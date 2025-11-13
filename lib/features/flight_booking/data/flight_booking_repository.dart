@@ -14,8 +14,9 @@ class FlightBookingRepository {
 
   Future<List<AirportModel>> getAirport({
     required String keyword,
+    required String country,
   }) async {
-    return await api.getAirport(keyword: keyword);
+    return await api.getAirport(keyword: keyword, country: country);
   }
 
   Future<ApiResponse<FlightsDataModel>> searchFlight({

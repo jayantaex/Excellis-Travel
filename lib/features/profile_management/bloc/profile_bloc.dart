@@ -23,8 +23,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoading());
     try {
       ApiResponse res = await profileRepository.getUserProfile();
-      log('res $res');
       final ProfileModel profileData = res.data;
+      // emit(const ProfileError(message: 'Access denied'));
+
       emit(ProfileLoaded(profileData: profileData));
     } catch (e) {
       emit(ProfileError(message: e.toString()));

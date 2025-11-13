@@ -4,18 +4,17 @@ import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/flight_offer_price_model.dart';
 import 'fare_type_widget.dart';
 
-class FareignOptionsCardWidget extends StatefulWidget {
+class FaresAndPrices extends StatefulWidget {
   final List<TravelerPricing> allTravelerPricings;
   final double grandPrice;
-  const FareignOptionsCardWidget(
+  const FaresAndPrices(
       {super.key, required this.allTravelerPricings, required this.grandPrice});
 
   @override
-  State<FareignOptionsCardWidget> createState() =>
-      _FareignOptionsCardWidgetState();
+  State<FaresAndPrices> createState() => _FaresAndPricesState();
 }
 
-class _FareignOptionsCardWidgetState extends State<FareignOptionsCardWidget> {
+class _FaresAndPricesState extends State<FaresAndPrices> {
   final userType = ['ADULT', 'CHILD', 'INFANT'];
   String selectedTab = 'ADULT';
   List<TravelerPricing> filteredTravelerPricings = [];

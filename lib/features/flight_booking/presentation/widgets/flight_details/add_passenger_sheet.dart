@@ -125,7 +125,8 @@ Future<void> showAddPassengerSheet(
               onTap: () async {
                 dob = await showDatePicker(
                     context: context, firstDate: firstDate, lastDate: lastDate);
-                dobController.text = AppHelpers.formatDate(dob!);
+                dobController.text =
+                    AppHelpers.formatDate(dob ?? DateTime.parse('2000-01-01'));
               },
               hint: 'Enter your date of birth',
               label: 'Date of Birth*',

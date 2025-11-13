@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
@@ -24,9 +23,13 @@ class AppDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
+      isExpanded: true,
       dropdownColor: AppColors.white,
       style: const TextStyle(
-          fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.black),
+          overflow: TextOverflow.ellipsis,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: AppColors.black),
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       value: value,
       icon: const SizedBox(),

@@ -5,10 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 
-import '../../../../core/constants/app_styles.dart';
+import '../../../../core/errors/error_screen.dart';
 import '../../../../core/services/local_db.dart';
 import '../../../../core/utils/app_helpers.dart';
-import '../../../../core/utils/app_toast.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
@@ -107,11 +106,20 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                           padding: const EdgeInsets.only(left: 16),
                           child: DateFilterWidget(
                             startDate: depurtureDate,
-                            onDateSelected: (date) {
+                            onDateSelected: (date) async {
                               if (widget.data['isRoundTrip']) {
-                                showToast(
-                                    message:
-                                        'Please select return date from the search page');
+                                bool? res = await AppHelpers.showConfirmDialog(
+                                  confirmText: 'Got it',
+                                  context,
+                                  title: 'It is a round trip',
+                                  content:
+                                      'You can not change the date for round trip. Get you flight information from previous screen',
+                                );
+                                if (res == true) {
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                  }
+                                }
                                 return;
                               }
                               body = getBody(
@@ -175,27 +183,15 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                     );
                   }
                   if (state is FlightSearchingError) {
-                    return Center(
-                      child: Text(
-                        state.message,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.white,
-                        ),
-                      ),
+                    return ErrorScreen(
+                      errorDesc: state.message,
+                      errorMessage: 'Flight Searching Error',
                     );
                   }
 
-                  return const Center(
-                    child: Text(
-                      'Something went wrong',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.white,
-                      ),
-                    ),
+                  return const ErrorScreen(
+                    errorDesc: 'Something went wrong',
+                    errorMessage: 'Flight Searching Error',
                   );
                 },
               ),

@@ -39,7 +39,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         }
         _screens = [
           const FlightSearchScreen(),
-          const TicketScreen(),
+          TicketScreen(),
           const WishListScreen(),
           MyProfileScreen()
         ];

@@ -1,12 +1,12 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../core/constants/app_styles.dart';
 import '../../../core/utils/storage_service.dart';
 import '../../auth/auth_module.dart';
 import '../../bottom_navigation/bottom_nav_module.dart';
+import '../../profile_management/bloc/profile_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,7 +18,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 1), () async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _handleAuthentication();
     });
     super.initState();
@@ -29,8 +29,25 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       appBar: AppBar(),
       backgroundColor: AppColors.black,
-      body: Center(
-        child: Image.asset('assets/images/app_logo.png'),
+      body: BlocConsumer<ProfileBloc, ProfileState>(
+        listener: (context, state) async {
+          if (state is ProfileError) {
+            await StorageService.clearTokens();
+            if (context.mounted) {
+              context.goNamed(AuthModule.loginName);
+            }
+          }
+          if (state is ProfileLoaded) {
+            if (context.mounted) {
+              context.goNamed(BottomNavModule.name);
+            }
+          }
+        },
+        builder: (context, state) {
+          return Center(
+            child: Image.asset('assets/images/app_logo.png'),
+          );
+        },
       ),
     );
   }
@@ -40,26 +57,15 @@ class _SplashScreenState extends State<SplashScreen> {
     try {
       String? asscessToken = await StorageService.getAccessToken();
       String? refreshToken = await StorageService.getAccessToken();
-
       if ((asscessToken != null && asscessToken.isNotEmpty) &&
           (refreshToken != null && refreshToken.isNotEmpty)) {
-        //check if token is valid
-
-        //if token is inValid take another token from api using refresh token
-
-        //if refresh token is inValid go to login
-
-        // if refresh token is valid and got access token successfully then save it to secure storage
-
-        // if api got failed while getting access token then go to login
         if (context.mounted) {
-          context.goNamed(BottomNavModule.name);
+          context.read<ProfileBloc>().add(const LoadProfileEvent());
         }
         return;
       }
       if (context.mounted) {
         context.goNamed(AuthModule.loginName);
-        // context.goNamed(BottomNavModule.name);
       }
       return;
     } catch (e) {

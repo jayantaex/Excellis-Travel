@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/no_ticket_found.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 
 class WishListScreen extends StatefulWidget {
@@ -29,7 +29,7 @@ class _WishListScreenState extends State<WishListScreen> {
               //app bar
               const AppCustomAppbar(
                 isBackButtonRequired: false,
-                centerTitle: 'Wish List',
+                centerTitle: 'My Wishlist',
               ),
 
               const SizedBox(height: 24),
@@ -37,14 +37,7 @@ class _WishListScreenState extends State<WishListScreen> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: wishList.isEmpty
-                      ? const Center(
-                          child: Text(
-                          'No Tickets Found',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.white),
-                        ))
+                      ? const NoTicketFound()
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: ListView.builder(
