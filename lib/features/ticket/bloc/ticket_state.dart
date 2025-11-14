@@ -10,16 +10,15 @@ sealed class TicketState extends Equatable {
 final class TicketInitial extends TicketState {}
 
 final class TicketLoading extends TicketState {}
+
 final class MoreTicketLoading extends TicketState {}
 
 final class TicketLoaded extends TicketState {
-
   const TicketLoaded({required this.tickets});
-  final List<TicketDataModel> tickets;
+  final TicketDataModel tickets;
 }
 
 final class TicketError extends TicketState {
-
   const TicketError({required this.err});
   final String err;
 }

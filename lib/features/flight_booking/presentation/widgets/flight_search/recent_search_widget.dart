@@ -33,76 +33,80 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
 
   @override
   Widget build(BuildContext context) => Column(
-      children: <Widget>[
-        const SizedBox(height: 16),
-        recentSearches.isEmpty
-            ? SizedBox(
-                height: 120,
-                width: AppHelpers.getScreenWidth(context),
-                child: Center(
-                  child: Text(
-                    "It seems you haven't searched for any flight yet \n Start searching now",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.black.withOpacity(0.5),
-                    ),
-                  ),
-                ),
-              )
-            : SizedBox(
-                height: 20,
-                width: AppHelpers.getScreenWidth(context),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Recent Search',
+        children: <Widget>[
+          const SizedBox(height: 16),
+          recentSearches.isEmpty
+              ? SizedBox(
+                  height: 120,
+                  width: AppHelpers.getScreenWidth(context),
+                  child: Center(
+                    child: Text(
+                      "It seems you haven't searched for any flight yet \n Start searching now",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.white,
+                        color: AppColors.black.withOpacity(0.5),
                       ),
                     ),
-                  ],
+                  ),
+                )
+              : SizedBox(
+                  height: 20,
+                  width: AppHelpers.getScreenWidth(context),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Recent Search',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-        const SizedBox(height: 16),
-        recentSearches.isEmpty
-            ? const SizedBox()
-            : SizedBox(
-                height: 250,
-                width: AppHelpers.getScreenWidth(context),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: recentSearches.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final String strData = jsonEncode(recentSearches[index].data);
-                    final Map<String, dynamic> data = jsonDecode(strData);
-                    final Datam datam = Datam.fromJson(data);
-                    final FlightDictionary flightDictionary =
-                        FlightDictionary.fromJson(
-                            recentSearches[index].dictionaries);
-                    return Container(
-                      margin: const EdgeInsets.only(right: 11),
-                      child: FlightCardWidget(
-                          data: datam,
-                          dictionaries: flightDictionary,
-                          onTap: () {
-                            context.pushNamed(
-                              FlightBookingModule.flightDetailsName,
-                              extra: <String, Object>{
-                                'data': datam,
-                                'flightDictionary': flightDictionary
-                              },
-                            );
-                          }),
-                    );
-                  },
+          const SizedBox(height: 16),
+          recentSearches.isEmpty
+              ? const SizedBox()
+              : SizedBox(
+                  height: 220,
+                  width: AppHelpers.getScreenWidth(context),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: recentSearches.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final String strData =
+                          jsonEncode(recentSearches[index].data);
+                      final Map<String, dynamic> data = jsonDecode(strData);
+                      final Datam datam = Datam.fromJson(data);
+                      final FlightDictionary flightDictionary =
+                          FlightDictionary.fromJson(
+                              recentSearches[index].dictionaries);
+                      return Container(
+                        margin: const EdgeInsets.only(right: 11),
+                        child: FlightCardWidget(
+                            hasFinalPrice: false,
+                            customWidth:
+                                AppHelpers.getScreenWidth(context) * 0.9,
+                            data: datam,
+                            dictionaries: flightDictionary,
+                            onTap: () {
+                              context.pushNamed(
+                                FlightBookingModule.flightDetailsName,
+                                extra: <String, Object>{
+                                  'data': datam,
+                                  'flightDictionary': flightDictionary
+                                },
+                              );
+                            }),
+                      );
+                    },
+                  ),
                 ),
-              ),
-        const SizedBox(height: 50),
-      ],
-    );
+          const SizedBox(height: 50),
+        ],
+      );
 }

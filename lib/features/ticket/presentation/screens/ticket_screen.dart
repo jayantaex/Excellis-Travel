@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -7,7 +9,7 @@ import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/ticket_bloc.dart';
-import '../../models/ticket_model.dart';
+import '../../models/ticket_model.dart' show Booking;
 import '../widgets/ticket_widget.dart';
 
 class TicketScreen extends StatefulWidget {
@@ -20,8 +22,9 @@ class TicketScreen extends StatefulWidget {
 class _TicketScreenState extends State<TicketScreen> {
   int page = 1;
   final int limit = 10;
+  int totalItems = 10;
   final ScrollController _scrollController = ScrollController();
-  final List<TicketDataModel> tickets = <TicketDataModel>[];
+  List<Booking>? tickets;
   @override
   void initState() {
     _scrollController.addListener(onScroll);
@@ -33,7 +36,7 @@ class _TicketScreenState extends State<TicketScreen> {
 
   void onScroll() {
     final TicketState ticketState = context.read<TicketBloc>().state;
-    if (ticketState is TicketLoading) {
+    if (ticketState is TicketLoading || tickets!.length >= totalItems) {
       return;
     }
     if (_scrollController.position.pixels ==
@@ -109,17 +112,20 @@ class _TicketScreenState extends State<TicketScreen> {
                                 );
                               }
                               if (state is TicketLoaded) {
-                                for (TicketDataModel data in state.tickets) {
-                                  tickets.add(data);
-                                }
+                                totalItems =
+                                    state.tickets.pagination?.totalItems ?? 0;
+                                state.tickets.bookings?.forEach((element) {
+                                  tickets ??= <Booking>[];
+                                  tickets!.add(element);
+                                });
                                 return ListView.builder(
                                   controller: _scrollController,
-                                  itemCount: tickets.length,
+                                  itemCount: tickets?.length,
                                   itemBuilder:
                                       (BuildContext context, int index) =>
                                           TicketWidget(
-                                    isLast: index == state.tickets.length - 1,
-                                    ticketData: tickets[index],
+                                    isLast: false,
+                                    ticketData: tickets?[index],
                                   ),
                                 );
                               }
@@ -127,12 +133,12 @@ class _TicketScreenState extends State<TicketScreen> {
                               if (state is MoreTicketLoading) {
                                 return ListView.builder(
                                   controller: _scrollController,
-                                  itemCount: tickets.length,
+                                  itemCount: tickets?.length,
                                   itemBuilder:
                                       (BuildContext context, int index) =>
                                           TicketWidget(
-                                    isLast: index == tickets.length - 1,
-                                    ticketData: tickets[index],
+                                    isLast: index == tickets!.length - 1,
+                                    ticketData: tickets?[index],
                                   ),
                                 );
                               }

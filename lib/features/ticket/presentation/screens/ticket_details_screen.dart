@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:dotted_border/dotted_border.dart';
+import 'package:excellistravel/core/services/file_downloader.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
@@ -11,7 +15,7 @@ import '../widgets/billing_info_widget.dart';
 
 class TicketDetailsScreen extends StatelessWidget {
   const TicketDetailsScreen({super.key, required this.ticketData});
-  final TicketDataModel? ticketData;
+  final Booking? ticketData;
 
   @override
   Widget build(BuildContext context) {
@@ -217,8 +221,8 @@ class TicketDetailsScreen extends StatelessWidget {
                                           ),
                                           subtitle: Text(
                                             AppHelpers.formatDateTime(
-                                                e.departure?.at ??
-                                                    DateTime.now(),
+                                                DateTime.parse(
+                                                    e.departure?.at ?? ''),
                                                 pattern:
                                                     'dd MMM, yyyy | hh:mm'),
                                             style: const TextStyle(
@@ -245,7 +249,8 @@ class TicketDetailsScreen extends StatelessWidget {
                                                   fontWeight: FontWeight.w700)),
                                           subtitle: Text(
                                             AppHelpers.formatDateTime(
-                                                e.arrival?.at ?? DateTime.now(),
+                                                DateTime.parse(
+                                                    e.arrival?.at ?? ''),
                                                 pattern:
                                                     'dd MMM, yyyy | hh:mm'),
                                             style: const TextStyle(
@@ -352,7 +357,6 @@ class TicketDetailsScreen extends StatelessWidget {
               width: AppHelpers.getScreenWidth(context) * 0.4,
               height: 60,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
@@ -378,10 +382,27 @@ class TicketDetailsScreen extends StatelessWidget {
               width: AppHelpers.getScreenWidth(context) * 0.4,
               height: 45,
               child: AppPrimaryButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    try {
+                      Fluttertoast.showToast(msg: 'Downloading...');
+                      bool res = await FileDownloaderService.saveFile(
+                        bokkingRefId: '${ticketData?.bookingReference}',
+                        showDownloadProgress: (count, total) {
+                          log('$count $total');
+                          log('${(count / total) * 100}');
+                        },
+                      );
+
+                      if (res) {
+                        Fluttertoast.showToast(msg: 'Downloaded successfully');
+                      }
+                    } catch (e) {
+                      Fluttertoast.showToast(msg: '$e');
+                    }
+                  },
                   bgColor: AppColors.primary,
                   style: const TextStyle(fontSize: 14, color: AppColors.white),
-                  title: 'Download Ticket',
+                  title: 'Download',
                   isLoading: false),
             )
           ],
@@ -391,7 +412,7 @@ class TicketDetailsScreen extends StatelessWidget {
   }
 }
 
-getDuration({required String time}) {
+String getDuration({required String time}) {
   int minute = 0;
   int hours = 0;
 

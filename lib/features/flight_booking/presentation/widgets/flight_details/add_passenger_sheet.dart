@@ -61,20 +61,25 @@ Future<void> showAddPassengerSheet(
     context: context,
     builder: (BuildContext context) => SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 20,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+        ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const Text(
               'Passenger Details',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
             const Text(
               'Complete the form by providing necessary information',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
             ),
-            const SizedBox(height: 16),
             const SizedBox(height: 16),
             SizedBox(
               height: 50,

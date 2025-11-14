@@ -58,7 +58,7 @@ class _LoginSheetState extends State<LoginSheet> {
           ),
         ),
         padding: const EdgeInsets.only(top: 8),
-        height: AppHelpers.getScreenHeight(context) * 0.7,
+        height: AppHelpers.getScreenHeight(context) * 0.55,
         width: AppHelpers.getScreenWidth(context),
         child: SingleChildScrollView(
           child: Column(
@@ -99,16 +99,16 @@ class _LoginSheetState extends State<LoginSheet> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
               ),
               const SizedBox(height: 33),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: AuthDropdownWidget(
-                  items: _items,
-                  onChanged: (String? value) {
-                    usertype = value ?? 'retailer';
-                  },
-                ),
-              ),
-              const SizedBox(height: 12),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 20),
+              //   child: AuthDropdownWidget(
+              //     items: _items,
+              //     onChanged: (String? value) {
+              //       usertype = value ?? 'retailer';
+              //     },
+              //   ),
+              // ),
+              // const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: AuthInputWidget(

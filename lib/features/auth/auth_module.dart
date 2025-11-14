@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nested/nested.dart';
 
 import '../../core/common/api/location_api.dart';
 import '../../core/common/bloc/cities/city_bloc.dart';
@@ -37,7 +36,7 @@ class AuthModule {
     final AuthRepository authRepository = AuthRepository(authApi: api);
     final LocationRepository stateRepository =
         LocationRepository(statesApi: statesApi);
-    return MultiBlocProvider(providers: <SingleChildWidget>[
+    return MultiBlocProvider(providers: [
       BlocProvider<AuthBloc>(
         create: (_) => AuthBloc(authRepository: authRepository),
       ),

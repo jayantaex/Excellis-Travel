@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../utils/storage_service.dart';
 import 'api_response.dart';
@@ -30,11 +29,6 @@ class ApiClient {
       requestHeader: true,
       requestBody: true,
       responseBody: false,
-      responseHeader: false,
-      error: true,
-      compact: true,
-      maxWidth: 90,
-      enabled: kDebugMode,
     ));
     _dio.interceptors.add(AuthenticationInterceptor(_dio));
   }

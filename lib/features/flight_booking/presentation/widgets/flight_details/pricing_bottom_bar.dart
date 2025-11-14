@@ -18,10 +18,12 @@ class PricingBottomBar extends StatefulWidget {
     required this.passengers,
     required this.travellersCount,
     required this.markup,
+    required this.myMarkup,
     required this.flightOffer,
   });
   final String grandTotal;
   final String markup;
+  final MyMarkup myMarkup;
   final int travellersCount;
   final List<PassengerModel> passengers;
   final FlightOffer flightOffer;
@@ -58,7 +60,7 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
                 Column(
                   children: <Widget>[
                     Text(
-                      '₹${widget.markup}',
+                      '₹${getCalculatedPrice(basePrice: widget.markup, type: widget.myMarkup.type ?? 'Fixed', value: widget.myMarkup.value ?? '0')}',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -79,7 +81,9 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
                 InkWell(
                   onTap: () async {
                     await showPriceDetailsSheet(
-                        context: context, flightOffer: widget.flightOffer);
+                        context: context,
+                        flightOffer: widget.flightOffer,
+                        myMarkup: widget.myMarkup);
                   },
                   child: const Icon(
                     Icons.info_outline_rounded,
@@ -232,4 +236,18 @@ Map<String, dynamic> calculateFareDetails({
     'originalSubtotal': double.parse(grandTotal),
     'showTotalFare': true
   };
+}
+
+String getCalculatedPrice(
+    {required String basePrice, required String type, required String value}) {
+  double price = double.parse(basePrice);
+
+  if (type == 'Fixed') {
+    final double amount = double.parse(value);
+    price += amount;
+  }
+  final amount = (price * double.parse(value)) / 100;
+  price += amount;
+
+  return price.toStringAsFixed(2);
 }

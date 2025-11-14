@@ -22,7 +22,7 @@ class AppButtonNav extends StatelessWidget {
                 AppColors.transparent
               ]),
           border:
-              const Border(top: BorderSide(color: AppColors.black, width: 2)),
+              const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}home.svg',
@@ -56,7 +56,7 @@ class AppButtonNav extends StatelessWidget {
                 AppColors.transparent
               ]),
           border:
-              const Border(top: BorderSide(color: AppColors.black, width: 2)),
+              const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}ticket.svg',
@@ -90,7 +90,7 @@ class AppButtonNav extends StatelessWidget {
                 AppColors.transparent
               ]),
           border:
-              const Border(top: BorderSide(color: AppColors.black, width: 2)),
+              const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}wish_list.svg',
@@ -124,7 +124,7 @@ class AppButtonNav extends StatelessWidget {
                 AppColors.transparent
               ]),
           border:
-              const Border(top: BorderSide(color: AppColors.black, width: 2)),
+              const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}profile.svg',
@@ -155,7 +155,6 @@ class AppButtonNav extends StatelessWidget {
       unselectedItemColor: AppColors.grey,
       selectedItemColor: AppColors.black,
       selectedFontSize: 12,
-      unselectedFontSize: 12,
       elevation: 0,
       currentIndex: currentIndex,
       onTap: onTap,

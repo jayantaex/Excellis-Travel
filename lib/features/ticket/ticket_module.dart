@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nested/nested.dart';
 import '../../core/network/api_client.dart';
 import 'models/ticket_model.dart';
 import 'presentation/screens/ticket_details_screen.dart';
@@ -20,7 +19,7 @@ class TicketModule {
     final TicketsRepository ticketRepository =
         TicketsRepository(ticketApi: ticketApi);
     return MultiBlocProvider(
-      providers: <SingleChildWidget>[
+      providers: [
         BlocProvider<TicketBloc>(
             create: (_) => TicketBloc(repository: ticketRepository)),
       ],
@@ -32,13 +31,13 @@ class TicketModule {
   static String ticketDetails = 'ticket_details';
   static String ticketDetailsRoute = '/ticket_details';
   static Widget ticketDetailsBuilder(GoRouterState state) {
-    final TicketDataModel data = state.extra as TicketDataModel;
+    final Booking data = state.extra as Booking;
     final ApiClient apiClient = ApiClient();
     final TicketApi ticketApi = TicketApi(apiClient: apiClient);
     final TicketsRepository ticketRepository =
         TicketsRepository(ticketApi: ticketApi);
     return MultiBlocProvider(
-      providers: <SingleChildWidget>[
+      providers: [
         BlocProvider<TicketBloc>(
             create: (_) => TicketBloc(repository: ticketRepository)),
       ],

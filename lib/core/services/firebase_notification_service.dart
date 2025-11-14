@@ -26,10 +26,7 @@ class FirebaseNotificationService {
 
   Future<void> _requestPermission() async {
     final NotificationSettings settings = await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-      provisional: false,
+      
     );
     log('Permission status: ${settings.authorizationStatus}');
   }

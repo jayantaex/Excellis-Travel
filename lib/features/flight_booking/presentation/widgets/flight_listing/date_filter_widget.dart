@@ -1,12 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 
 class DateFilterWidget extends StatefulWidget {
-
   const DateFilterWidget(
-      {super.key, required this.startDate, this.onDateSelected});
-  final String startDate;
+      {super.key, this.onDateSelected, required this.selectedDate});
+  final DateTime selectedDate;
   final Function(DateTime date)? onDateSelected;
 
   @override
@@ -14,47 +15,46 @@ class DateFilterWidget extends StatefulWidget {
 }
 
 class _DateFilterWidgetState extends State<DateFilterWidget> {
-  int selectedIndex = 0;
   DateTime startDate = DateTime.now();
   List<DateTime> dates = [];
-  int limit = 30; //days
+  int limit = 30;
 
   @override
   void initState() {
-    startDate = DateTime.parse(widget.startDate);
     for (var i = 0; i < limit; i++) {
       dates.add(startDate.add(Duration(days: i)));
     }
-    setState(() {});
-
-    // startDate = DateTime.parse(widget.startDate);
-    // for (var i = 0; i < limit; i++) {
-    //   dates.add(startDate.add(Duration(days: i)));
-    // }
+    log('${widget.selectedDate}');
     setState(() {});
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox(
+  Widget build(BuildContext context) {
+    String selectedDate = AppHelpers.formatDate(
+      widget.selectedDate,
+      pattern: 'yyyy-MM-dd',
+    );
+    return SizedBox(
       height: 70,
       width: AppHelpers.percenWidth(context: context),
       child: ListView.builder(
           itemCount: dates.length,
           scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) => InkWell(
+          itemBuilder: (context, index) {
+            String thisDate =
+                AppHelpers.formatDate(dates[index], pattern: 'yyyy-MM-dd');
+            return InkWell(
               onTap: () {
                 widget.onDateSelected!(dates[index]);
-                setState(() {
-                  selectedIndex = index;
-                });
+                // log('${dates[index]}');
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
-                  color: selectedIndex != index
-                      ? AppColors.white
-                      : AppColors.black,
+                  color: selectedDate == thisDate
+                      ? AppColors.black
+                      : AppColors.white,
                   borderRadius: BorderRadius.circular(14),
                 ),
                 height: 65,
@@ -62,7 +62,6 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       AppHelpers.formatDate(
@@ -72,9 +71,9 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: selectedIndex != index
-                            ? AppColors.grey
-                            : AppColors.white,
+                        color: selectedDate == thisDate
+                            ? AppColors.white
+                            : AppColors.grey,
                       ),
                     ),
                     Text(
@@ -85,14 +84,16 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: selectedIndex != index
-                            ? AppColors.grey
-                            : AppColors.white,
+                        color: selectedDate == thisDate
+                            ? AppColors.white
+                            : AppColors.grey,
                       ),
                     ),
                   ],
                 ),
               ),
-            )),
+            );
+          }),
     );
+  }
 }

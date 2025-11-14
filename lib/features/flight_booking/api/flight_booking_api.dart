@@ -124,4 +124,16 @@ class FlightBookingApi {
       return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
   }
+
+  Future<ApiResponse<MyMarkup>> getMyMarkup() async {
+    try {
+      final ApiResponse<MyMarkup> resp = await apiClient!.getRequest(
+          endPoint: EndPoints.myMarkup,
+          fromJson: (Map<String, dynamic> jsonData) =>
+              MyMarkup.fromJson(jsonData['data'][0]));
+      return resp;
+    } catch (e) {
+      return ApiResponse(errorMessage: e.toString(), statusCode: 400);
+    }
+  }
 }

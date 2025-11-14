@@ -53,11 +53,11 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       offerData = widget.data.toJson();
+      context.read<ProfileBloc>().add(const LoadProfileEvent());
 
       context
           .read<FlightBloc>()
           .add(GetFlightsOfferPriceEvent(offerData: offerData));
-      context.read<ProfileBloc>().add(const LoadProfileEvent());
     });
 
     super.initState();
@@ -339,6 +339,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
               builder: (context, profileState) {
                 if (profileState is ProfileLoaded) {
                   return PricingBottomBar(
+                    myMarkup: flightState.data.data!.myMarkup!,
                     markup: flightState
                         .data.data!.flightOffers!.first.price!.markup!,
                     travellersCount: flightState.data.data!.flightOffers!.first

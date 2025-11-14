@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nested/nested.dart';
 import '../../core/network/api_client.dart';
 import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
@@ -24,7 +23,7 @@ class BottomNavModule {
     final TicketsRepository ticketRepository =
         TicketsRepository(ticketApi: ticketApi);
     return MultiBlocProvider(
-      providers: <SingleChildWidget>[
+      providers: [
         BlocProvider<ProfileBloc>(
           create: (_) => ProfileBloc(profileRepository: profileRepo),
         ),

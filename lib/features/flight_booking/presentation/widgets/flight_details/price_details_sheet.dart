@@ -4,19 +4,24 @@ import '../../../../../core/utils/app_helpers.dart';
 import '../../../models/flight_offer_price_model.dart';
 
 Future<void> showPriceDetailsSheet(
-    {required BuildContext context, required FlightOffer flightOffer}) async {
+    {required BuildContext context,
+    required FlightOffer flightOffer,
+    required MyMarkup myMarkup}) async {
   await showModalBottomSheet(
     backgroundColor: AppColors.white,
     context: context,
     builder: (BuildContext context) => PriceDetailsSheet(
       flightOffer: flightOffer,
+      myMarkup: myMarkup,
     ),
   );
 }
 
 class PriceDetailsSheet extends StatelessWidget {
-  PriceDetailsSheet({super.key, required this.flightOffer});
+  PriceDetailsSheet(
+      {super.key, required this.flightOffer, required this.myMarkup});
   final FlightOffer flightOffer;
+  final MyMarkup myMarkup;
 
   final List<String> adult = <String>[];
   final List<String> child = <String>[];
@@ -80,7 +85,6 @@ class PriceDetailsSheet extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Text(
                     'Total Travelers: ${adult.length + child.length + infant.length} person(s)'),
@@ -88,34 +92,41 @@ class PriceDetailsSheet extends StatelessWidget {
                     ? const SizedBox()
                     : PriceCol(
                         isIconRequired: false,
-                        titile: '',
-                        value: '${adult.length}(ADULT) x ${adult[0]}'),
+                        titile: 'ADULT',
+                        value: '${adult.length}P'),
                 const SizedBox(height: 6),
                 child.isEmpty
                     ? const SizedBox()
                     : PriceCol(
                         isIconRequired: false,
-                        titile: '',
-                        value: '${adult.length}(CHILD) x ${child[0]}'),
+                        titile: 'CHILD',
+                        value: '${adult.length}P'),
                 infant.isEmpty
                     ? const SizedBox()
                     : PriceCol(
                         isIconRequired: false,
-                        titile: '',
-                        value: '${adult.length}(INFANT) x ${infant[0]}'),
-                PriceCol(
-                    titile: 'Total', value: flightOffer.price!.grandTotal!),
+                        titile: 'INFANT',
+                        value: '${adult.length}(INFANT)P'),
+                SizedBox(height: 8),
+                PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
                 PriceCol(
                     titile: 'platfrom fee',
-                    value: (double.parse(flightOffer.price!.markup!) -
-                            double.parse(flightOffer.price!.grandTotal!))
+                    value: (double.parse(getCalculatedPrice(
+                                basePrice: flightOffer.price!.markup!,
+                                type: myMarkup.type ?? 'Fixed',
+                                value: myMarkup.value ?? '0')) -
+                            double.parse(flightOffer.price!.markup!))
                         .toStringAsFixed(2)),
                 const SizedBox(height: 6),
                 const Divider(),
                 const SizedBox(height: 12),
                 PriceCol(
                   titile: 'Grand Total',
-                  value: flightOffer.price!.markup!,
+                  value: getCalculatedPrice(
+                    basePrice: flightOffer.price!.markup!,
+                    type: myMarkup.type ?? 'Fixed',
+                    value: myMarkup.value ?? '0',
+                  ),
                   isBold: true,
                   isIconRequired: true,
                 ),
@@ -143,39 +154,53 @@ class PriceCol extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      padding: const EdgeInsets.only(left: 8),
-      width: AppHelpers.getScreenWidth(context),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          SizedBox(
-            height: 25,
-            child: Text(
-              titile,
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight:
-                      isBold ?? false ? FontWeight.w600 : FontWeight.w400),
+        padding: const EdgeInsets.only(left: 8),
+        width: AppHelpers.getScreenWidth(context),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            SizedBox(
+              height: 25,
+              child: Text(
+                titile,
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight:
+                        isBold ?? false ? FontWeight.w600 : FontWeight.w400),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 25,
-            child: Text(
-              value == ''
-                  ? ''
-                  : value == '0.00'
-                      ? 'Free'
-                      : isIconRequired ?? true
-                          ? '₹ $value'
-                          : ' $value',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight:
-                      isBold ?? false ? FontWeight.w600 : FontWeight.w400,
-                  color: value == '0.00' ? AppColors.success : Colors.black),
-            ),
-          )
-        ],
-      ),
-    );
+            SizedBox(
+              height: 25,
+              child: Text(
+                value == ''
+                    ? ''
+                    : value == '0.00'
+                        ? 'Free'
+                        : isIconRequired ?? true
+                            ? '₹ $value'
+                            : ' $value',
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight:
+                        isBold ?? false ? FontWeight.w600 : FontWeight.w400,
+                    color: value == '0.00' ? AppColors.success : Colors.black),
+              ),
+            )
+          ],
+        ),
+      );
+}
+
+String getCalculatedPrice(
+    {required String basePrice, required String type, required String value}) {
+  double price = double.parse(basePrice);
+
+  if (type == 'Fixed') {
+    final double amount = double.parse(value);
+    price += amount;
+  }
+  final amount = (price * double.parse(value)) / 100;
+  price += amount;
+
+  return price.toStringAsFixed(2);
 }

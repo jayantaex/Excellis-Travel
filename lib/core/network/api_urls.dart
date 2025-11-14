@@ -40,9 +40,11 @@ class EndPoints {
   static const String verifyPayment = '/bookings/verify-payment';
   //markup pricing
   static const String markupPricing = '/markups/calculate-markup';
+  static const String myMarkup = '/markups/user';
 
   //ticket
   static const String ticket = '/bookings/filtered-auto';
+  static const String downloadFile = '/bookings';
 
   //amadues
   static const String amaduesAccessToken = '/v1/security/oauth2/token';

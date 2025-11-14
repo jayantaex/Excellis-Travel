@@ -12,11 +12,13 @@ class FlightCardWidget extends StatelessWidget {
       this.isOnWishList,
       this.onWishListTap,
       this.dictionaries,
+      this.hasFinalPrice = true,
       required this.onTap,
       this.customWidth});
   final Datam data;
   final FlightDictionary? dictionaries;
   final bool? isOnWishList;
+  final bool? hasFinalPrice;
   final double? customWidth;
   final bool? isFavIconRequired;
   final Function()? onWishListTap;
@@ -34,23 +36,23 @@ class FlightCardWidget extends StatelessWidget {
       child: ClipPath(
         clipper: TicketClipper(),
         child: Container(
-          height: 250,
-          width: width * 0.95,
+          height: hasFinalPrice ?? true ? 250 : 200,
+          width: customWidth ?? width * 0.95,
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(24),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 9),
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: 45,
+                height: 35,
                 width: width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     SizedBox(
-                      height: 40,
+                      height: 35,
                       width: AppHelpers.getScreenWidth(context) * 0.4,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8),
@@ -105,13 +107,13 @@ class FlightCardWidget extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     SizedBox(
                         height: 90,
-                        width: customWidth ?? width * 0.22,
+                        width: width * 0.22,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +155,7 @@ class FlightCardWidget extends StatelessWidget {
                           ],
                         )),
                     SizedBox(
-                        width: customWidth ?? width * 0.22,
+                        width: width * 0.22,
                         child: Column(
                           children: <Widget>[
                             AppHelpers.svgAsset(
@@ -187,7 +189,7 @@ class FlightCardWidget extends StatelessWidget {
                         )),
                     SizedBox(
                       height: 90,
-                      width: customWidth ?? width * 0.22,
+                      width: width * 0.22,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -231,7 +233,7 @@ class FlightCardWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: hasFinalPrice ?? true ? 22 : 8),
               DottedBorder(
                   dashPattern: const <double>[8, 4],
                   customPath: (Size size) => Path()
@@ -254,14 +256,16 @@ class FlightCardWidget extends StatelessWidget {
                         color: AppColors.grey,
                       ),
                     ),
-                    Text(
-                      'Price | ${data.itineraries!.length > 1 ? 'Round Trip' : 'One Way'}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.grey,
-                      ),
-                    ),
+                    hasFinalPrice ?? true
+                        ? Text(
+                            'Price | ${data.itineraries!.length > 1 ? 'Round Trip' : 'One Way'}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.grey,
+                            ),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ),
@@ -277,11 +281,13 @@ class FlightCardWidget extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w500),
                     ),
-                    Text(
-                      '₹${data.price?.markupPrice ?? 0.00}',
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                    ),
+                    hasFinalPrice ?? true
+                        ? Text(
+                            '₹${data.price?.markupPrice ?? 0.00}',
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500),
+                          )
+                        : SizedBox(),
                   ],
                 ),
               ),
@@ -312,7 +318,7 @@ Color getColorByStatus(String status) {
   }
 }
 
-getDuration({required String duration}) {
+String getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
   final String hr = duration.split('H')[0].trim();

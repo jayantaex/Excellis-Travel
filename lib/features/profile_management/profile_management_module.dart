@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:nested/nested.dart';
 
 import '../../core/common/api/location_api.dart';
 import '../../core/common/bloc/cities/city_bloc.dart';
@@ -39,7 +37,7 @@ class ProfileManagementModule {
   static String editProfileName = 'edit_profile';
 
   static Widget editProfileBuilder() => MultiBlocProvider(
-        providers: <SingleChildWidget>[
+        providers: [
           BlocProvider<ProfileBloc>(
             create: (_) => ProfileBloc(
               profileRepository: _profileRepository,
@@ -58,7 +56,7 @@ class ProfileManagementModule {
   static String citySearchName = 'city_search';
   static String citySeacrRoute = '/city-search';
   static Widget citySearchBuilder(BuildContext context, state) {
-    final String stateCode = state.extra['stateCode']??'';
+    final String stateCode = state.extra['stateCode'] ?? '';
     final String stateName = state.extra['stateName'];
     final int stateId = state.extra['stateId'];
 

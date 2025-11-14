@@ -1,12 +1,14 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:excellistravel/features/flight_booking/models/flights_data_model.dart' show FlightsDataModel, Datam;
+import 'package:excellistravel/features/flight_booking/models/flights_data_model.dart'
+    show FlightsDataModel, Datam;
 import '../../../core/network/api_response.dart';
 import '../data/flight_booking_repository.dart';
 import '../models/air_port_model.dart';
 import '../models/create_order_res.dart';
-import '../models/flight_offer_price_model.dart' show FlightOfferPriceDataModel;
+import '../models/flight_offer_price_model.dart'
+    show FlightOfferPriceDataModel, MyMarkup;
 import '../models/flights_data_model.dart' show FlightsDataModel;
 import '../models/payment_verify_res_model.dart';
 part 'flight_event.dart';
@@ -55,6 +57,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       for (Datam element in res.data!.datam!) {
         final ApiResponse<double> res = await repository.getMarkUpPrice(
             basePrice: double.parse(element.price!.grandTotal!));
+
         element.price?.markupPrice = res.data!.toStringAsFixed(2);
         log(element.price?.markupPrice ?? 'No data');
       }
@@ -87,6 +90,8 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
 
       res.data!.data!.flightOffers!.first.price?.markup =
           markupRes.data!.toStringAsFixed(2);
+      final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
+      res.data!.data!.myMarkup = myMarkup.data;
       emit(FlightOfferPriceLoaded(data: res.data!));
     } catch (e) {
       emit(FlightOfferPriceError(

@@ -1,8 +1,4 @@
-# Production-grade analysis options for Flutter
-# Place this file at the project root: analysis_options.yaml
-
 include: package:flutter_lints/flutter.yaml
-
 analyzer:
   # Exclude generated/build files from analysis
   exclude:
@@ -33,7 +29,7 @@ linter:
   rules:
     # Core best practices
     - always_declare_return_types
-    - always_specify_types
+    # - always_specify_types
     - avoid_annotating_with_dynamic
     - prefer_final_fields
     - prefer_final_locals
@@ -46,7 +42,7 @@ linter:
     - annotate_overrides
     - avoid_print
     - avoid_redundant_argument_values
-    - avoid_dynamic_calls
+    # - avoid_dynamic_calls
     - prefer_if_null_operators
     - prefer_expression_function_bodies
     - sort_constructors_first

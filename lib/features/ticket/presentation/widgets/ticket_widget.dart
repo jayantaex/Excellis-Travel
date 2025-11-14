@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,10 +12,11 @@ import '../../ticket_module.dart';
 class TicketWidget extends StatelessWidget {
   const TicketWidget({super.key, this.isLast, this.ticketData});
   final bool? isLast;
-  final TicketDataModel? ticketData;
+  final Booking? ticketData;
 
   @override
   Widget build(BuildContext context) {
+    log(ticketData.toString());
     final double width = AppHelpers.getScreenWidth(context);
     return InkWell(
       focusColor: Colors.transparent,
@@ -75,7 +78,6 @@ class TicketWidget extends StatelessWidget {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Container(
                                 margin: const EdgeInsets.only(right: 10),
@@ -96,7 +98,8 @@ class TicketWidget extends StatelessWidget {
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                     color: getColorByStatus(
-                                        ticketData?.bookingStatus ?? ''),
+                                      ticketData?.bookingStatus ?? '',
+                                    ),
                                   ),
                                 ),
                               ),

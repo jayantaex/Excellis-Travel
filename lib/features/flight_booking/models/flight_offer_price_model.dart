@@ -1,5 +1,4 @@
 class FlightOfferPriceDataModel {
-
   FlightOfferPriceDataModel({
     this.data,
     this.dictionaries,
@@ -27,8 +26,8 @@ class FlightOfferPriceDataModel {
 }
 
 class Data {
-
   Data({
+    this.myMarkup,
     this.type,
     this.flightOffers,
     this.bookingRequirements,
@@ -46,6 +45,7 @@ class Data {
                 json['bookingRequirements'] as Map<String, dynamic>),
       );
   final String? type;
+  MyMarkup? myMarkup;
   final List<FlightOffer>? flightOffers;
   final BookingRequirements? bookingRequirements;
 
@@ -58,7 +58,6 @@ class Data {
 }
 
 class FlightOffer {
-
   FlightOffer({
     this.type,
     this.id,
@@ -132,7 +131,6 @@ class FlightOffer {
 }
 
 class Itinerary {
-
   Itinerary({
     this.segments,
   });
@@ -152,7 +150,6 @@ class Itinerary {
 }
 
 class Segment {
-
   Segment({
     this.departure,
     this.arrival,
@@ -216,7 +213,6 @@ class Segment {
 }
 
 class Aircraft {
-
   Aircraft({
     this.code,
   });
@@ -234,7 +230,6 @@ class Aircraft {
 }
 
 class Arrival {
-
   Arrival({
     this.iataCode,
     this.terminal,
@@ -260,7 +255,6 @@ class Arrival {
 }
 
 class Co2Emission {
-
   Co2Emission({
     this.weight,
     this.weightUnit,
@@ -286,7 +280,6 @@ class Co2Emission {
 }
 
 class Operating {
-
   Operating({
     this.carrierCode,
   });
@@ -304,7 +297,6 @@ class Operating {
 }
 
 class FlightOfferPrice {
-
   FlightOfferPrice(
       {this.currency,
       this.total,
@@ -346,7 +338,6 @@ class FlightOfferPrice {
 }
 
 class Fee {
-
   Fee({
     this.amount,
     this.type,
@@ -368,7 +359,6 @@ class Fee {
 }
 
 class PricingOptions {
-
   PricingOptions({
     this.fareType,
     this.includedCheckedBagsOnly,
@@ -392,7 +382,6 @@ class PricingOptions {
 }
 
 class TravelerPricing {
-
   TravelerPricing({
     this.travelerId,
     this.fareOption,
@@ -434,7 +423,6 @@ class TravelerPricing {
 }
 
 class FareDetailsBySegment {
-
   FareDetailsBySegment({
     this.segmentId,
     this.cabin,
@@ -477,7 +465,6 @@ class FareDetailsBySegment {
 }
 
 class IncludedCheckedBags {
-
   IncludedCheckedBags({
     this.weight,
     this.weightUnit,
@@ -500,7 +487,6 @@ class IncludedCheckedBags {
 }
 
 class TravelerPricingPrice {
-
   TravelerPricingPrice({
     this.currency,
     this.total,
@@ -537,7 +523,6 @@ class TravelerPricingPrice {
 }
 
 class Tax {
-
   Tax({
     this.amount,
     this.code,
@@ -559,7 +544,6 @@ class Tax {
 }
 
 class BookingRequirements {
-
   BookingRequirements({
     this.emailAddressRequired,
     this.mobilePhoneNumberRequired,
@@ -590,7 +574,6 @@ class BookingRequirements {
 }
 
 class TravelerRequirement {
-
   TravelerRequirement({
     this.travelerId,
     this.genderRequired,
@@ -629,7 +612,6 @@ class TravelerRequirement {
 }
 
 class Dictionaries {
-
   Dictionaries({
     this.locations,
   });
@@ -649,7 +631,6 @@ class Dictionaries {
 }
 
 class Locations {
-
   Locations({
     this.mad,
     this.bos,
@@ -684,7 +665,6 @@ class Locations {
 }
 
 class Bos {
-
   Bos({
     this.cityCode,
     this.countryCode,
@@ -703,4 +683,52 @@ class Bos {
         'cityCode': cityCode,
         'countryCode': countryCode,
       };
+}
+
+class MyMarkup {
+  MyMarkup.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    product = json['product'];
+    type = json['type'];
+    operator = json['operator'];
+    fareType = json['fareType'];
+    value = json['value'];
+    isActive = json['isActive'];
+    currency = json['currency'];
+    userId = json['userId'];
+  }
+
+  MyMarkup(
+      {this.id,
+      this.product,
+      this.type,
+      this.operator,
+      this.fareType,
+      this.value,
+      this.isActive,
+      this.currency,
+      this.userId});
+  int? id;
+  String? product;
+  String? type;
+  String? operator;
+  String? fareType;
+  String? value;
+  bool? isActive;
+  String? currency;
+  int? userId;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['product'] = product;
+    data['type'] = type;
+    data['operator'] = operator;
+    data['fareType'] = fareType;
+    data['value'] = value;
+    data['isActive'] = isActive;
+    data['currency'] = currency;
+    data['userId'] = userId;
+    return data;
+  }
 }

@@ -1,15 +1,12 @@
-import 'dart:developer';
-
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
-import '../../../../core/services/pdf_generator.dart';
+import '../../../../core/services/file_downloader.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
@@ -32,8 +29,6 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
 
   @override
   void initState() {
-    log(':::: ${widget.data.toJson()}');
-
     Future.delayed(Duration.zero, () async {
       barCodeSvg = BarcodeService.buildBarcode(
         Barcode.code39(),
@@ -50,7 +45,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
   Widget build(BuildContext context) {
     final double width = AppHelpers.getScreenWidth(context);
     return PopScope(
-      canPop: true,
+      canPop: false,
       child: Scaffold(
         body: AppGradientBg(
           child: TransWhiteBgWidget(
@@ -356,7 +351,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                               height: 73,
                               child: SvgPicture.string(
                                 barCodeSvg,
-                                width: 300,
+                                width: 200,
                                 height: 80,
                               ),
                             )),
@@ -401,28 +396,17 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                 bgColor: AppColors.primary,
                 onPressed: () async {
                   try {
-                    final Uint8List ticket =
-                        await PdfService().generateTicket(data: widget.data);
-                    log(ticket.length.toString());
-                    final String? path = await savePdfToMobileStorage(
-                        ticket, '${widget.data.booking?.bookingReference}.pdf');
-                    if (path != null) {
-                      if (context.mounted) {
-                        AppHelpers.showSnackBar(
-                            context, 'Ticket Downloaded to Download Ticket');
-                      }
-                      return;
-                    }
-                    if (context.mounted) {
-                      AppHelpers.showSnackBar(
-                          context, 'Permission Denied to Download Ticket');
+                    Fluttertoast.showToast(msg: 'Downloading...');
+                    final bool res = await FileDownloaderService.saveFile(
+                      bokkingRefId: '${widget.data.booking?.bookingReference}',
+                      showDownloadProgress: (count, total) {},
+                    );
+
+                    if (res) {
+                      Fluttertoast.showToast(msg: 'Downloaded successfully');
                     }
                   } catch (e) {
-                    log('$e');
-                    if (context.mounted) {
-                      AppHelpers.showSnackBar(
-                          context, 'Error Downloading Ticket');
-                    }
+                    Fluttertoast.showToast(msg: '$e');
                   }
                 },
               ),
@@ -446,7 +430,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
   }
 }
 
-getDuration({required String duration}) {
+String getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
   final String hr = duration.split('H')[0].trim();

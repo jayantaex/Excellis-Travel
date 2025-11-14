@@ -22,8 +22,6 @@ class LoginScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.black,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 40),

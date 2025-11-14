@@ -122,7 +122,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 55),
+                    const SizedBox(height: 30),
                     const Text('Register As Agency',
                         style: TextStyle(
                             fontSize: 28, fontWeight: FontWeight.bold)),
@@ -135,17 +135,17 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    const SizedBox(height: 53),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: AuthDropdownWidget(
-                        items: _items,
-                        onChanged: (String? value) {
-                          usertype = value ?? 'retailer';
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 33),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //   child: AuthDropdownWidget(
+                    //     items: _items,
+                    //     onChanged: (String? value) {
+                    //       usertype = value ?? 'retailer';
+                    //     },
+                    //   ),
+                    // ),
+                    // const SizedBox(height: 12),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: AuthInputWidget(
