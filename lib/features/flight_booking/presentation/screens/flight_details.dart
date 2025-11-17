@@ -221,8 +221,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
                                           children: [
                                             const Text(
                                               'It seems you are not logged in \n please login to continue',
@@ -269,7 +267,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                 height: 900,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     SizedBox(
                                       width: 25,
@@ -373,7 +370,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
     context.read<FlightBloc>().add(VerifyPayment(body: verifyPaymentBody));
   }
 
-  _handlePaymentError(PaymentFailureResponse response) {
+  Future<void> _handlePaymentError(PaymentFailureResponse response) async {
     log('Payment error: ${response.code} - ${response.message}');
     context.pushNamed(PaymentModule.paymentFailedName,
         pathParameters: {'errorMsg': '${response.message}'});

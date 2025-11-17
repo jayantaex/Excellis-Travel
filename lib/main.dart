@@ -1,8 +1,4 @@
 import 'dart:io';
-
-import 'package:excellistravel/core/constants/app_styles.dart';
-import 'package:excellistravel/core/errors/error_screen.dart';
-import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'core/services/firebase_notification_service.dart';
@@ -19,9 +15,6 @@ void main() async {
       ? null
       : await FirebaseNotificationService.instance.initialize();
   await LocalDB().initLocalDB();
-  ErrorWidget.builder = (FlutterErrorDetails details) => RedScreenError(
-        message: '${details.exception}',
-      );
   runApp(const MyApp());
 }
 
@@ -35,23 +28,5 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.lightTheme,
         routerConfig: AppRouter.router,
-      );
-}
-
-class RedScreenError extends StatelessWidget {
-  const RedScreenError({super.key, required this.message});
-  final String message;
-
-  @override
-  Widget build(BuildContext context) => SizedBox(
-        height: AppHelpers.getScreenHeight(context),
-        width: AppHelpers.getScreenWidth(context),
-        child: Scaffold(
-          backgroundColor: AppColors.error,
-          body: ErrorScreen(
-            errorDesc: message,
-            errorMessage: 'App Crashed',
-          ),
-        ),
       );
 }
