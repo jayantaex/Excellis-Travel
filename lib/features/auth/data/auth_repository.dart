@@ -7,14 +7,15 @@ class AuthRepository {
   final AuthApi authApi;
 
   Future<ApiResponse<AuthResponseModel>> login(
-      {required String username,
-      required String password,
-      required String fcmToken,
-      required String userType}) async => await authApi.login(
-        username: username,
-        password: password,
-        fcmToken: fcmToken,
-        userType: userType);
+          {required String username,
+          required String password,
+          required String fcmToken,
+          required String userType}) async =>
+      await authApi.login(
+          username: username,
+          password: password,
+          fcmToken: fcmToken,
+          userType: userType);
 
   Future<ApiResponse<AuthResponseModel>> register({
     String? companyName,
@@ -34,22 +35,32 @@ class AuthRepository {
     required String password,
     required int commissionRate,
     required bool isDirectBooking,
-  }) async => await authApi.register(
-        companyName: companyName,
-        firstName: firstName,
-        lastName: lastName,
-        panNumber: panNumber,
-        email: email,
-        phone: phone,
-        role: role,
-        officeAddress: officeAddress,
-        pinCode: pinCode,
-        state: state,
-        city: city,
-        nearByAirport: nearByAirport,
-        gstNumber: gstNumber,
-        aadhaarNumber: aadhaarNumber,
-        password: password,
-        commissionRate: commissionRate,
-        isDirectBooking: isDirectBooking);
+  }) async =>
+      await authApi.register(
+          companyName: companyName,
+          firstName: firstName,
+          lastName: lastName,
+          panNumber: panNumber,
+          email: email,
+          phone: phone,
+          role: role,
+          officeAddress: officeAddress,
+          pinCode: pinCode,
+          state: state,
+          city: city,
+          nearByAirport: nearByAirport,
+          gstNumber: gstNumber,
+          aadhaarNumber: aadhaarNumber,
+          password: password,
+          commissionRate: commissionRate,
+          isDirectBooking: isDirectBooking);
+
+  Future<ApiResponse<bool>> resetPassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async =>
+      await authApi.resetPassword(
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      );
 }

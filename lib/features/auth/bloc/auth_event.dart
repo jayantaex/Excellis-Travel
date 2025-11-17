@@ -4,11 +4,10 @@ sealed class AuthEvent extends Equatable {
   const AuthEvent();
 
   @override
-  List<Object> get props => <Object> [];
+  List<Object> get props => <Object>[];
 }
 
 final class LoginEvent extends AuthEvent {
-
   const LoginEvent(
       {required this.userName,
       required this.password,
@@ -24,7 +23,6 @@ final class LoginEvent extends AuthEvent {
 }
 
 final class RegisterEvent extends AuthEvent {
-
   const RegisterEvent({
     required this.nearByAirport,
     required this.password,
@@ -80,3 +78,12 @@ final class RegisterEvent extends AuthEvent {
 }
 
 final class LogoutEvent extends AuthEvent {}
+
+final class ResetPasswordEvent extends AuthEvent {
+  const ResetPasswordEvent({
+    required this.currentPassword,
+    required this.newPassword,
+  });
+  final String currentPassword;
+  final String newPassword;
+}

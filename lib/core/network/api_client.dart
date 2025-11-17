@@ -13,8 +13,8 @@ class ApiClient {
     _dio.options.baseUrl = EndPoints.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 60);
     _dio.options.receiveTimeout = const Duration(seconds: 60);
-    _dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
+    _dio.interceptors.add(InterceptorsWrapper(onRequest:
+        (RequestOptions options, RequestInterceptorHandler handler) async {
       final String? token = await StorageService.getAccessToken();
       if (token != null) {
         options.headers['Authorization'] = 'Bearer $token';
@@ -84,7 +84,9 @@ class ApiClient {
     } on DioException catch (e) {
       final int statusCode = e.response?.statusCode ?? 0;
       return ApiResponse<T>(
-          statusCode: statusCode, errorMessage: _handleDioError(e, statusCode));
+          statusCode: statusCode,
+          errorMessage:
+              e.response?.data['message'] ?? _handleDioError(e, statusCode));
     }
   }
 

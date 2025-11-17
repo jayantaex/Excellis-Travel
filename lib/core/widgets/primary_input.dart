@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import '../constants/app_styles.dart';
 
 class AppPrimaryInput extends StatelessWidget {
-
   const AppPrimaryInput({
     super.key,
     this.label,
@@ -13,6 +12,7 @@ class AppPrimaryInput extends StatelessWidget {
     this.keyboardType,
     required this.maxCharacters,
     this.suffixIcon,
+    this.isPassword,
     this.prefixIcon,
     this.enable,
     this.style,
@@ -30,6 +30,7 @@ class AppPrimaryInput extends StatelessWidget {
   final Widget? prefixIcon;
   final bool? enable;
   final bool? isMultiline;
+  final bool? isPassword;
   final TextStyle? style;
   final VoidCallback? onTap;
   final FocusNode? focusNode;
@@ -37,37 +38,39 @@ class AppPrimaryInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TextField(
-      enabled: enable ?? true,
-      maxLines: isMultiline == true ? null : 1,
-      onChanged: onChange,
-      onTap: onTap,
-      controller: controller,
-      keyboardType: onTap != null ? TextInputType.none : keyboardType,
-      focusNode: focusNode,
-      style: style,
-      inputFormatters: <TextInputFormatter>[
-        if (maxCharacters > 0) LengthLimitingTextInputFormatter(maxCharacters),
-      ],
-      cursorWidth: onTap == null ? 2 : 0,
-      decoration: InputDecoration(
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(16),
+        obscureText: isPassword == true ? true : false,
+        enabled: enable ?? true,
+        maxLines: isMultiline == true ? null : 1,
+        onChanged: onChange,
+        onTap: onTap,
+        controller: controller,
+        keyboardType: onTap != null ? TextInputType.none : keyboardType,
+        focusNode: focusNode,
+        style: style,
+        inputFormatters: <TextInputFormatter>[
+          if (maxCharacters > 0)
+            LengthLimitingTextInputFormatter(maxCharacters),
+        ],
+        cursorWidth: onTap == null ? 2 : 0,
+        decoration: InputDecoration(
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
           ),
-          borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+          border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(16),
+            ),
+            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+          ),
+          labelText: label,
+          hintText: hint,
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
-        ),
-        labelText: label,
-        hintText: hint,
-      ),
-    );
+      );
 }
