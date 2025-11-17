@@ -54,10 +54,14 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         return;
       }
 
+      //filering the array by departure time
+      res.data!.datam?.sort((a, b) => a
+          .itineraries!.first.segments!.first.departure!.at!
+          .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
+
       for (Datam element in res.data!.datam!) {
         final ApiResponse<double> res = await repository.getMarkUpPrice(
             basePrice: double.parse(element.price!.grandTotal!));
-
         element.price?.markupPrice = res.data!.toStringAsFixed(2);
         log(element.price?.markupPrice ?? 'No data');
       }

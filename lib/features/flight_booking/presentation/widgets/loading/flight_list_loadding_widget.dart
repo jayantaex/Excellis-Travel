@@ -58,7 +58,7 @@ class FlightListLoaddingWidget extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 12),
                   child: LoadingEffect(
                     radius: 24,
-                    height: 150,
+                    height: 245,
                     width: AppHelpers.getScreenWidth(context),
                   ),
                 ),

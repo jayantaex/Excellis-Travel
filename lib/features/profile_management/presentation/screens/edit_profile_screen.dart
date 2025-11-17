@@ -9,6 +9,7 @@ import '../../../../core/common/models/state_model.dart';
 import '../../../../core/constants/app_styles.dart';
 // import '../../../../core/utils/image_picker.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/image_picker.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -19,6 +20,7 @@ import '../../../flight_booking/presentation/widgets/flight_search/app_drop_down
 import '../../bloc/profile_bloc.dart';
 import '../../profile_management_module.dart';
 import '../widgets/delete_account_sheet.dart';
+import '../widgets/profile_avatar_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -28,7 +30,6 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  // final AppImagePicker _appImagePicker = AppImagePicker();
   final TextEditingController _companyNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -82,271 +83,276 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: AppGradientBg(
-        child: TransWhiteBgWidget(
-          child: SafeArea(
-            bottom: false,
-            child: BlocConsumer<ProfileBloc, ProfileState>(
-              listener: (BuildContext context, ProfileState state) {
-                if (state is ProfileLoaded) {
-                  List<String> addressList = <String>[];
+        body: AppGradientBg(
+          child: TransWhiteBgWidget(
+            child: SafeArea(
+              bottom: false,
+              child: BlocConsumer<ProfileBloc, ProfileState>(
+                listener: (BuildContext context, ProfileState state) {
+                  if (state is ProfileLoaded) {
+                    List<String> addressList = <String>[];
 
-                  if (state.profileData.address != null) {
-                    addressList = state.profileData.address?.split(',') ?? <String>[];
+                    if (state.profileData.address != null) {
+                      addressList =
+                          state.profileData.address?.split(',') ?? <String>[];
+                    }
+
+                    if (addressList.isNotEmpty && addressList.length > 3) {
+                      _pinController.text = addressList.last;
+                      _selectedState =
+                          addressList[addressList.length - 2].trim();
+                      _cityController.text =
+                          addressList[addressList.length - 3].trim();
+                    }
+
+                    _companyNameController.text = '';
+                    _firstNameController.text =
+                        state.profileData.firstName ?? '';
+                    _lastNameController.text = state.profileData.lastName ?? '';
+                    _panNoController.text = '';
+                    _emailController.text = state.profileData.email ?? '';
+                    _phoneController.text = state.profileData.phone ?? '';
+                    _addressController.text = state.profileData.address ?? '';
+                    _nearbyAirportController.text = '';
+                    _gstNoController.text = '';
+                    _aadhaarNoController.text = '';
+                  }
+                },
+                builder: (BuildContext context, ProfileState state) {
+                  if (state is ProfileLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(
+                        backgroundColor: AppColors.white,
+                      ),
+                    );
                   }
 
-                  if (addressList.isNotEmpty && addressList.length > 3) {
-                    _pinController.text = addressList.last;
-                    _selectedState = addressList[addressList.length - 2].trim();
-                    _cityController.text =
-                        addressList[addressList.length - 3].trim();
-                  }
-
-                  _companyNameController.text = '';
-                  _firstNameController.text = state.profileData.firstName ?? '';
-                  _lastNameController.text = state.profileData.lastName ?? '';
-                  _panNoController.text = '';
-                  _emailController.text = state.profileData.email ?? '';
-                  _phoneController.text = state.profileData.phone ?? '';
-                  _addressController.text = state.profileData.address ?? '';
-                  _nearbyAirportController.text = '';
-                  _gstNoController.text = '';
-                  _aadhaarNoController.text = '';
-                }
-              },
-              builder: (BuildContext context, ProfileState state) {
-                if (state is ProfileLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(
-                      backgroundColor: AppColors.white,
-                    ),
-                  );
-                }
-
-                if (state is ProfileLoaded || state is ProfileUpdating) {
-                  return Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: AppCustomAppbar(
-                          centerTitle: 'Profile',
-                          trailing: CircleAvatar(
-                            backgroundColor: AppColors.black.withOpacity(0.1),
-                            child: IconButton(
-                              onPressed: () async {
-                                await showDeleteAccountSheet(context: context);
-                              },
-                              icon: const Icon(
-                                Icons.more_horiz_rounded,
-                                color: AppColors.white,
+                  if (state is ProfileLoaded ||
+                      state is ProfileUpdating ||
+                      state is ProfileImageUpdating) {
+                    return Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: AppCustomAppbar(
+                            centerTitle: 'Profile',
+                            trailing: CircleAvatar(
+                              backgroundColor: AppColors.black.withOpacity(0.1),
+                              child: IconButton(
+                                onPressed: () async {
+                                  await showDeleteAccountSheet(
+                                      context: context);
+                                },
+                                icon: const Icon(
+                                  Icons.more_horiz_rounded,
+                                  color: AppColors.white,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      Badge(
-                        isLabelVisible: false,
-                        child: CircleAvatar(
-                          radius: 60,
-                          child: Text(
-                            _firstNameController.text[0].toUpperCase(),
-                            style: const TextStyle(
-                              fontSize: 45,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
+                        const SizedBox(height: 20),
+                        ProfileAvatarWidget(),
+                        const SizedBox(height: 8),
+                        Text(
                           '${_firstNameController.text} ${_lastNameController.text}',
                           style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
-                              color: AppColors.white)),
-                      const SizedBox(height: 16),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 20),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: <Widget>[
-                                  const SizedBox(height: 20),
-                                  AppPrimaryInput(
-                                    controller: _firstNameController,
-                                    label: 'First Name',
-                                    maxCharacters: 50,
-                                    isMultiline: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AppPrimaryInput(
-                                    controller: _lastNameController,
-                                    label: 'Last Name',
-                                    maxCharacters: 50,
-                                    isMultiline: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AppPrimaryInput(
-                                    controller: _emailController,
-                                    label: 'Email',
-                                    maxCharacters: 50,
-                                    isMultiline: false,
-                                    enable: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AppPrimaryInput(
-                                    controller: _phoneController,
-                                    label: 'Phone Number',
-                                    maxCharacters: 10,
-                                    isMultiline: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AppPrimaryInput(
-                                    controller: _aadhaarNoController,
-                                    label: 'Aadhar Number',
-                                    maxCharacters: 12,
-                                    isMultiline: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AppPrimaryInput(
-                                    controller: _panNoController,
-                                    label: 'Pan Number',
-                                    maxCharacters: 10,
-                                    isMultiline: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AppPrimaryInput(
-                                    controller: _nearbyAirportController,
-                                    label: 'Nearby Airport',
-                                    maxCharacters: 50,
-                                    isMultiline: false,
-                                    onTap: () {
-                                      context.pushNamed(FlightBookingModule
-                                          .airportSearchName);
-                                    },
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AppPrimaryInput(
-                                    controller: _addressController,
-                                    label: 'Address',
-                                    hint: 'Enter your address',
-                                    maxCharacters: 20,
-                                    isMultiline: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  const SizedBox(height: 16),
-                                  BlocConsumer<StatesBloc, StatesState>(
-                                    listener: (BuildContext context, StatesState state) {
-                                      if (state is StatesLoaded) {
-                                        if (_selectedState.isEmpty) {
-                                          _selectedState =
-                                              state.states[0].name ?? '';
-                                          _selectedStateCode =
-                                              state.states[0].code ?? '';
-                                          _selectedStateId =
-                                              state.states[0].id ?? 0;
-                                        } else {
-                                          for (StateModel e in state.states) {
-                                            if (e.name?.toLowerCase() ==
-                                                _selectedState.toLowerCase()) {
-                                              _selectedStateCode = e.code ?? '';
-                                              _selectedStateId = e.id ?? 0;
-                                            }
-                                          }
-                                        }
-                                        context.read<CityBloc>().add(
-                                              GetCityEvent(
-                                                stateId: _selectedStateId,
-                                                stateCode: _selectedStateCode,
-                                              ),
-                                            );
-                                      }
-                                    },
-                                    builder: (BuildContext context, StatesState state) {
-                                      if (state is StatesLoaded) {
-                                        return AppDropDown(
-                                          label: 'State',
-                                          value: _selectedState,
-                                          items: state.states
-                                              .map(
-                                                (StateModel e) =>
-                                                    DropdownMenuItem<String>(
-                                                  value: e.name ?? '',
-                                                  child: Text(e.name ?? ''),
-                                                ),
-                                              )
-                                              .toList(),
-                                          title: 'Select State',
-                                          onChanged: (String? stateName) {
-                                            for (StateModel element in state.states) {
-                                              if (element.name == stateName) {
-                                                _selectedState =
-                                                    element.name ?? '';
+                              color: AppColors.white),
+                        ),
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 20),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: <Widget>[
+                                    const SizedBox(height: 20),
+                                    AppPrimaryInput(
+                                      controller: _firstNameController,
+                                      label: 'First Name',
+                                      maxCharacters: 50,
+                                      isMultiline: false,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    AppPrimaryInput(
+                                      controller: _lastNameController,
+                                      label: 'Last Name',
+                                      maxCharacters: 50,
+                                      isMultiline: false,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    AppPrimaryInput(
+                                      controller: _emailController,
+                                      label: 'Email',
+                                      maxCharacters: 50,
+                                      isMultiline: false,
+                                      enable: false,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    AppPrimaryInput(
+                                      controller: _phoneController,
+                                      label: 'Phone Number',
+                                      maxCharacters: 10,
+                                      isMultiline: false,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    AppPrimaryInput(
+                                      controller: _aadhaarNoController,
+                                      label: 'Aadhar Number',
+                                      maxCharacters: 12,
+                                      isMultiline: false,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    AppPrimaryInput(
+                                      controller: _panNoController,
+                                      label: 'Pan Number',
+                                      maxCharacters: 10,
+                                      isMultiline: false,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    AppPrimaryInput(
+                                      controller: _nearbyAirportController,
+                                      label: 'Nearby Airport',
+                                      maxCharacters: 50,
+                                      isMultiline: false,
+                                      onTap: () {
+                                        context.pushNamed(FlightBookingModule
+                                            .airportSearchName);
+                                      },
+                                    ),
+                                    const SizedBox(height: 16),
+                                    AppPrimaryInput(
+                                      controller: _addressController,
+                                      label: 'Address',
+                                      hint: 'Enter your address',
+                                      maxCharacters: 20,
+                                      isMultiline: false,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    const SizedBox(height: 16),
+                                    BlocConsumer<StatesBloc, StatesState>(
+                                      listener: (BuildContext context,
+                                          StatesState state) {
+                                        if (state is StatesLoaded) {
+                                          if (_selectedState.isEmpty) {
+                                            _selectedState =
+                                                state.states[0].name ?? '';
+                                            _selectedStateCode =
+                                                state.states[0].code ?? '';
+                                            _selectedStateId =
+                                                state.states[0].id ?? 0;
+                                          } else {
+                                            for (StateModel e in state.states) {
+                                              if (e.name?.toLowerCase() ==
+                                                  _selectedState
+                                                      .toLowerCase()) {
                                                 _selectedStateCode =
-                                                    element.code ?? '';
-                                                _selectedStateId =
-                                                    element.id ?? 0;
+                                                    e.code ?? '';
+                                                _selectedStateId = e.id ?? 0;
                                               }
                                             }
-                                            setState(() {});
-                                          },
-                                        );
-                                      }
-                                      return const SizedBox();
-                                    },
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AppPrimaryInput(
-                                    controller: _cityController,
-                                    label: 'City*',
-                                    enable: _selectedStateCode.isNotEmpty,
-                                    onTap: () {
-                                      context.pushNamed(
-                                          ProfileManagementModule
-                                              .citySearchName,
-                                          extra: <String, Object>{
-                                            'stateCode': _selectedStateCode,
-                                            'stateName': _selectedState,
-                                            'stateId': _selectedStateId,
-                                            'onSelected': onCityChange
-                                          });
-                                    },
-                                    maxCharacters: 6,
-                                    isMultiline: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  AppPrimaryInput(
-                                    controller: _pinController,
-                                    label: 'Pincode',
-                                    maxCharacters: 6,
-                                    isMultiline: false,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  BlocConsumer<ProfileBloc, ProfileState>(
-                                    listener: (BuildContext context, ProfileState state) async {
-                                      log(state.toString());
-                                      if (state is ProfileUpdated) {
-                                        context
-                                            .read<ProfileBloc>()
-                                            .add(const LoadProfileEvent());
-                                        AppHelpers.showSnackBar(context,
-                                            'Profile updated successfully',
-                                            backgroundColor: AppColors.success);
-                                      }
-                                      if (state is ProfileUpdateError) {
-                                        await AppHelpers.showSnackBar(
-                                            context, state.message);
-                                      }
-                                    },
-                                    builder: (BuildContext context, ProfileState state) => AppPrimaryButton(
+                                          }
+                                          context.read<CityBloc>().add(
+                                                GetCityEvent(
+                                                  stateId: _selectedStateId,
+                                                  stateCode: _selectedStateCode,
+                                                ),
+                                              );
+                                        }
+                                      },
+                                      builder: (BuildContext context,
+                                          StatesState state) {
+                                        if (state is StatesLoaded) {
+                                          return AppDropDown(
+                                            label: 'State',
+                                            value: _selectedState,
+                                            items: state.states
+                                                .map(
+                                                  (StateModel e) =>
+                                                      DropdownMenuItem<String>(
+                                                    value: e.name ?? '',
+                                                    child: Text(e.name ?? ''),
+                                                  ),
+                                                )
+                                                .toList(),
+                                            title: 'Select State',
+                                            onChanged: (String? stateName) {
+                                              for (StateModel element
+                                                  in state.states) {
+                                                if (element.name == stateName) {
+                                                  _selectedState =
+                                                      element.name ?? '';
+                                                  _selectedStateCode =
+                                                      element.code ?? '';
+                                                  _selectedStateId =
+                                                      element.id ?? 0;
+                                                }
+                                              }
+                                              setState(() {});
+                                            },
+                                          );
+                                        }
+                                        return const SizedBox();
+                                      },
+                                    ),
+                                    const SizedBox(height: 16),
+                                    AppPrimaryInput(
+                                      controller: _cityController,
+                                      label: 'City*',
+                                      enable: _selectedStateCode.isNotEmpty,
+                                      onTap: () {
+                                        context.pushNamed(
+                                            ProfileManagementModule
+                                                .citySearchName,
+                                            extra: <String, Object>{
+                                              'stateCode': _selectedStateCode,
+                                              'stateName': _selectedState,
+                                              'stateId': _selectedStateId,
+                                              'onSelected': onCityChange
+                                            });
+                                      },
+                                      maxCharacters: 6,
+                                      isMultiline: false,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    AppPrimaryInput(
+                                      controller: _pinController,
+                                      label: 'Pincode',
+                                      maxCharacters: 6,
+                                      isMultiline: false,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    BlocConsumer<ProfileBloc, ProfileState>(
+                                      listener: (BuildContext context,
+                                          ProfileState state) async {
+                                        if (state is ProfileUpdated) {
+                                          context
+                                              .read<ProfileBloc>()
+                                              .add(const LoadProfileEvent());
+                                          AppHelpers.showSnackBar(context,
+                                              'Profile updated successfully',
+                                              backgroundColor:
+                                                  AppColors.success);
+                                        }
+                                        if (state is ProfileUpdateError) {
+                                          await AppHelpers.showSnackBar(
+                                              context, state.message);
+                                        }
+                                      },
+                                      builder: (BuildContext context,
+                                              ProfileState state) =>
+                                          AppPrimaryButton(
                                         onPressed: () {
-                                          final Map<String, String> data = <String, String>{
+                                          final Map<String, String> data =
+                                              <String, String>{
                                             'first_name': _firstNameController
                                                 .text
                                                 .trim(),
@@ -366,37 +372,37 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         isLoading: state is ProfileLoading,
                                         bgColor: AppColors.primary,
                                       ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }
+                      ],
+                    );
+                  }
 
-                if (state is ProfileError) {
-                  return Center(
-                    child: Text(state.message),
+                  if (state is ProfileError) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  }
+                  if (state is ProfileUpdateError) {
+                    return Center(
+                      child: Text(state.message),
+                    );
+                  }
+                  return const Center(
+                    child: Text(
+                      'Something wents wrong',
+                      style: TextStyle(fontSize: 14, color: AppColors.white),
+                    ),
                   );
-                }
-                if (state is ProfileUpdateError) {
-                  return Center(
-                    child: Text(state.message),
-                  );
-                }
-                return const Center(
-                  child: Text(
-                    'Something wents wrong',
-                    style: TextStyle(fontSize: 14, color: AppColors.white),
-                  ),
-                );
-              },
+                },
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
 }

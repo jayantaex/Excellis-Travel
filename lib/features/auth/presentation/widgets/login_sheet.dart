@@ -9,7 +9,6 @@ import '../../../bottom_navigation/bottom_nav_module.dart';
 import '../../../legal/legal_module.dart';
 import '../../auth_module.dart';
 import '../../bloc/auth_bloc.dart';
-import 'auth_dropdown_widget.dart';
 import 'auth_input_widget.dart';
 
 class LoginSheet extends StatefulWidget {
@@ -57,8 +56,8 @@ class _LoginSheetState extends State<LoginSheet> {
             topRight: Radius.circular(30),
           ),
         ),
-        padding: const EdgeInsets.only(top: 8),
-        height: AppHelpers.getScreenHeight(context) * 0.55,
+        padding: const EdgeInsets.only(top: 8, bottom: 30),
+        // height: AppHelpers.getScreenHeight(context) * 0.55,
         width: AppHelpers.getScreenWidth(context),
         child: SingleChildScrollView(
           child: Column(

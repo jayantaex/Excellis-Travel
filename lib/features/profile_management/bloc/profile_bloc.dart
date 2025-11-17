@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -14,6 +16,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc({required this.profileRepository}) : super(ProfileInitial()) {
     on<LoadProfileEvent>(_handleLoadProfileEvent);
     on<UpdateProfileEvent>(_handleUpdateProfileEvent);
+    on<UpdateProfileImageEvent>(_handleUpdateProfileImageEvent);
   }
   final ProfileManagementRepository profileRepository;
 
@@ -41,6 +44,27 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         body: event.data,
       );
       if (res.errorMessage == null) {
+        emit(ProfileUpdated());
+        return;
+      }
+      emit(
+        ProfileUpdateError(
+          message: res.errorMessage ?? 'Something went wrong',
+        ),
+      );
+    } catch (e) {
+      emit(ProfileError(message: e.toString()));
+    }
+  }
+
+  Future<void> _handleUpdateProfileImageEvent(
+      UpdateProfileImageEvent event, Emitter<ProfileState> emit) async {
+    try {
+      emit(ProfileUpdating());
+      final ApiResponse<bool> res = await profileRepository.updateProfileImage(
+        imageFile: event.imageFile,
+      );
+      if (res.errorMessage == null && (res.data ?? false)) {
         emit(ProfileUpdated());
         return;
       }

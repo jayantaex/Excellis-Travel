@@ -1,7 +1,6 @@
 // ignore_for_file: unnecessary_new
 
 class ProfileModel {
-
   ProfileModel(
       {this.id,
       this.firstName,
@@ -12,6 +11,7 @@ class ProfileModel {
       this.emailStatus,
       this.lastLoginAt,
       this.phone,
+      this.profileImage,
       this.address,
       this.commissionRate,
       this.isDirectBooking,
@@ -25,6 +25,7 @@ class ProfileModel {
     firstName = json['first_name'];
     lastName = json['last_name'];
     email = json['email'];
+    profileImage = json['profile_image'];
     role = json['role'];
     status = json['status'];
     emailStatus = json['emailStatus'];
@@ -44,6 +45,7 @@ class ProfileModel {
   String? firstName;
   String? lastName;
   String? email;
+  String? profileImage;
   String? role;
   String? status;
   String? emailStatus;
@@ -82,7 +84,6 @@ class ProfileModel {
 }
 
 class UserRole {
-
   UserRole({this.hierarchyLevel});
 
   UserRole.fromJson(Map<String, dynamic> json) {

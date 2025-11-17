@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 Future<void> showPhotoPreview(
-    {required BuildContext context, required String url}) async {
+    {required BuildContext context,
+    required String url,
+    required VoidCallback onUpdate}) async {
   showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog.adaptive(
@@ -20,7 +22,10 @@ Future<void> showPhotoPreview(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Close')),
         TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pop();
+              onUpdate();
+            },
             child: const Text('Update'))
       ],
     ),

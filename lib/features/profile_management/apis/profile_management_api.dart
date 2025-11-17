@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../../core/common/models/profile_data_model.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
@@ -20,5 +22,14 @@ class ProfileManagementApi {
         reqModel: body,
         fromJson: (Map<String, dynamic> jsonData) =>
             ProfileModel.fromJson(jsonData['data']),
+      );
+
+  Future<ApiResponse<bool>> updateProfileImage({File? imageFile}) async =>
+      await apiClient.uploadImage(
+        endPoint: EndPoints.updateProfileImage,
+        imageFile: imageFile,
+        imageFieldName: 'profileImage',
+        fromJson: (Map<String, dynamic> jsonData) =>
+            jsonData['success'] ?? false,
       );
 }
