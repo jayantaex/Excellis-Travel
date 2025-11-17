@@ -29,7 +29,7 @@ final class RegistrationFailure extends AuthState {
   final String message;
 
   @override
-  List<Object> get props => <Object> [message];
+  List<Object> get props => <Object>[message];
 }
 
 //logout states
@@ -42,7 +42,7 @@ final class LoggedOutFailure extends AuthState {
   final String message;
 
   @override
-  List<Object> get props => <Object> [message];
+  List<Object> get props => <Object>[message];
 }
 
 //error state
@@ -51,5 +51,17 @@ final class AuthError extends AuthState {
   final String message;
 
   @override
-  List<Object> get props => <Object> [message];
+  List<Object> get props => <Object>[message];
+}
+
+final class PasswordResetInProgress extends AuthState {}
+
+final class PasswordResetSuccess extends AuthState {}
+
+final class PasswordResetFailure extends AuthState {
+  const PasswordResetFailure({required this.message});
+  final String message;
+
+  @override
+  List<Object> get props => <Object>[message];
 }

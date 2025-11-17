@@ -69,4 +69,20 @@ class AuthApi {
           AuthResponseModel.fromJson(jsonData),
     );
   }
+
+  Future<ApiResponse<bool>> resetPassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    final Map<String, dynamic> body = <String, dynamic>{
+      'currentPassword': currentPassword,
+      'newPassword': newPassword,
+    };
+
+    return apiClient.postRequest(
+      endPoint: EndPoints.resetPassword,
+      reqModel: body,
+      fromJson: (Map<String, dynamic> jsonData) => jsonData['success'] ?? false,
+    );
+  }
 }

@@ -27,6 +27,7 @@ class EndPoints {
   static const String login = '/auth/login';
   static const String registration = '/auth/register';
   static const String refreshToken = '/auth/refresh-token';
+    static var resetPassword = '/auth/change-password';
 
   //location - state
   static const String state = '/location/states?limit=1000';
@@ -52,4 +53,6 @@ class EndPoints {
   static const String airportSearchByKeyword = '/v1/reference-data/locations';
   static const String flightSearch = '/v2/shopping/flight-offers';
   static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
+
+
 }

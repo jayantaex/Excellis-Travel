@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:excellistravel/features/auth/models/auth_resp_model.dart';
@@ -15,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginEvent>(_handleLoginEvent);
     on<RegisterEvent>(_handleRegistrationEvent);
     on<LogoutEvent>(_handleLogoutEvent);
+    on<ResetPasswordEvent>(_handleResetPasswordEvent);
   }
   AuthRepository authRepository;
 
@@ -132,6 +135,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(LoggedOutSucess());
     } catch (e) {
       emit(LoggedOutFailure(message: e.toString()));
+    }
+  }
+
+  Future<void> _handleResetPasswordEvent(
+      ResetPasswordEvent event, Emitter<AuthState> emit) async {
+    try {
+      emit(PasswordResetInProgress());
+      final ApiResponse<bool> res = await authRepository.resetPassword(
+          currentPassword: event.currentPassword,
+          newPassword: event.newPassword);
+      if (res.errorMessage != null) {
+        emit(PasswordResetFailure(message: res.errorMessage!));
+      } else {
+        emit(PasswordResetSuccess());
+      }
+    } catch (e) {
+      emit(PasswordResetFailure(message: e.toString()));
     }
   }
 }
