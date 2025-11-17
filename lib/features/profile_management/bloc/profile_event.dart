@@ -15,3 +15,8 @@ final class UpdateProfileEvent extends ProfileEvent {
   const UpdateProfileEvent({required this.data});
   final Map<String, dynamic> data;
 }
+
+final class UpdateProfileImageEvent extends ProfileEvent {
+  const UpdateProfileImageEvent({required this.imageFile});
+  final File imageFile;
+}

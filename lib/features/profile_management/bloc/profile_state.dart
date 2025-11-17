@@ -13,6 +13,15 @@ final class ProfileInitial extends ProfileState {}
 
 final class ProfileLoading extends ProfileState {}
 
+final class ProfileImageUpdating extends ProfileState {}
+
+final class ProfileImageUpdated extends ProfileState {}
+
+final class ProfileImageUpdateError extends ProfileState {
+  const ProfileImageUpdateError({required this.message});
+  final String message;
+}
+
 final class ProfileLoaded extends ProfileState {
   const ProfileLoaded({required this.profileData});
   final ProfileModel profileData;

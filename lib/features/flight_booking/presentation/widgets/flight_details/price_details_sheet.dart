@@ -107,10 +107,10 @@ class PriceDetailsSheet extends StatelessWidget {
                         isIconRequired: false,
                         titile: 'INFANT',
                         value: '${adult.length}(INFANT)P'),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
                 PriceCol(
-                    titile: 'platfrom fee',
+                    titile: 'Agent fee',
                     value: (double.parse(getCalculatedPrice(
                                 basePrice: flightOffer.price!.markup!,
                                 type: myMarkup.type ?? 'Fixed',

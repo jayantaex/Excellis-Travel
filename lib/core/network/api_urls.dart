@@ -35,6 +35,7 @@ class EndPoints {
   static const String wishList = '/wish-list';
   //Profile
   static const String profile = '/auth/profile';
+  static const String updateProfileImage = '/auth/profile/upload-image';
   //payment verify
   static const String createPayment = '/bookings/create-payment';
   static const String verifyPayment = '/bookings/verify-payment';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
+import 'profile_avatar_widget.dart';
 
 class UserContentWidget extends StatelessWidget {
   const UserContentWidget(
@@ -12,14 +13,9 @@ class UserContentWidget extends StatelessWidget {
         padding: const EdgeInsets.only(left: 20),
         child: Column(
           children: <Widget>[
-            CircleAvatar(
-                radius: 45,
-                child: Text(userName.substring(0, 1),
-                    style: const TextStyle(
-                      color: AppColors.black,
-                      fontSize: 45,
-                      fontWeight: FontWeight.w600,
-                    ))),
+            ProfileAvatarWidget(
+              isEditable: false,
+            ),
             const SizedBox(height: 6),
             Text(
               userName,
