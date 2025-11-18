@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:excellistravel/features/profile_management/bloc/profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/image_picker.dart';
+import '../../bloc/profile_bloc.dart';
 import 'profile_photo_preview.dart';
 
 class ProfileAvatarWidget extends StatelessWidget {
@@ -63,7 +63,9 @@ class ProfileAvatarWidget extends StatelessWidget {
                     : state.profileData.profileImage == null ||
                             state.profileData.profileImage == ''
                         ? Text(
-                            state.profileData.firstName![0].toUpperCase(),
+                            state.profileData.firstName?.isNotEmpty == true
+                                ? state.profileData.firstName![0].toUpperCase()
+                                : 'G',
                             style: const TextStyle(
                               fontSize: 45,
                             ),

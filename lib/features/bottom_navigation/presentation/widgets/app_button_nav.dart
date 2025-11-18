@@ -21,8 +21,7 @@ class AppButtonNav extends StatelessWidget {
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
-          border:
-              const Border(top: BorderSide(width: 2)),
+          border: const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}home.svg',
@@ -55,8 +54,7 @@ class AppButtonNav extends StatelessWidget {
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
-          border:
-              const Border(top: BorderSide(width: 2)),
+          border: const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}ticket.svg',
@@ -89,11 +87,12 @@ class AppButtonNav extends StatelessWidget {
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
-          border:
-              const Border(top: BorderSide(width: 2)),
+          border: const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
-          '${AppConstants.assetIcontUrl}wish_list.svg',
+          height: 30,
+          width: 30,
+          '${AppConstants.assetIcontUrl}sales.svg',
           colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
         ),
       ),
@@ -105,11 +104,13 @@ class AppButtonNav extends StatelessWidget {
               Border(top: BorderSide(color: AppColors.transparent, width: 2)),
         ),
         child: SvgPicture.asset(
-          '${AppConstants.assetIcontUrl}wish_list.svg',
+          '${AppConstants.assetIcontUrl}sales.svg',
+          height: 30,
+          width: 30,
           colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
         ),
       ),
-      label: 'Wishlist',
+      label: 'Sales',
     ),
     BottomNavigationBarItem(
       activeIcon: Container(
@@ -123,8 +124,7 @@ class AppButtonNav extends StatelessWidget {
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
-          border:
-              const Border(top: BorderSide(width: 2)),
+          border: const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}profile.svg',
@@ -149,15 +149,15 @@ class AppButtonNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BottomNavigationBar(
-      enableFeedback: false,
-      useLegacyColorScheme: false,
-      type: BottomNavigationBarType.fixed,
-      unselectedItemColor: AppColors.grey,
-      selectedItemColor: AppColors.black,
-      selectedFontSize: 12,
-      elevation: 0,
-      currentIndex: currentIndex,
-      onTap: onTap,
-      items: items,
-    );
+        enableFeedback: false,
+        useLegacyColorScheme: false,
+        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: AppColors.grey,
+        selectedItemColor: AppColors.black,
+        selectedFontSize: 12,
+        elevation: 0,
+        currentIndex: currentIndex,
+        onTap: onTap,
+        items: items,
+      );
 }

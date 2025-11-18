@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/core/services/file_downloader.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/services/file_downloader.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
@@ -382,25 +382,36 @@ class TicketDetailsScreen extends StatelessWidget {
               width: AppHelpers.getScreenWidth(context) * 0.4,
               height: 45,
               child: AppPrimaryButton(
-                  onPressed: () async {
-                    try {
-                      Fluttertoast.showToast(msg: 'Downloading...');
-                      bool res = await FileDownloaderService.saveFile(
-                        bokkingRefId: '${ticketData?.bookingReference}',
-                        showDownloadProgress: (count, total) {
-                          log('$count $total');
-                          log('${(count / total) * 100}');
-                        },
-                      );
+                  onPressed: ticketData?.bookingStatus == 'confirmed'
+                      ? () async {
+                          try {
+                            Fluttertoast.showToast(msg: 'Downloading...');
+                            final bool res =
+                                await FileDownloaderService.saveFile(
+                              baseFare: '${ticketData?.fareDetails?.baseFare}',
+                              totalFare:
+                                  '${ticketData?.fareDetails?.totalFare}',
+                              markupPrice:
+                                  '${(ticketData?.fareDetails?.totalFare ?? 0.00) - (ticketData?.fareDetails?.baseFare ?? 0.00)}',
+                              bokkingRefId: '${ticketData?.bookingReference}',
+                              showDownloadProgress: (count, total) {
+                                log('$count $total');
+                                log('${(count / total) * 100}');
+                              },
+                            );
 
-                      if (res) {
-                        Fluttertoast.showToast(msg: 'Downloaded successfully');
-                      }
-                    } catch (e) {
-                      Fluttertoast.showToast(msg: '$e');
-                    }
-                  },
-                  bgColor: AppColors.primary,
+                            if (res) {
+                              Fluttertoast.showToast(
+                                  msg: 'Downloaded successfully');
+                            }
+                          } catch (e) {
+                            Fluttertoast.showToast(msg: '$e');
+                          }
+                        }
+                      : null,
+                  bgColor: ticketData?.bookingStatus == 'confirmed'
+                      ? AppColors.primary
+                      : AppColors.grey,
                   style: const TextStyle(fontSize: 14, color: AppColors.white),
                   title: 'Download',
                   isLoading: false),
@@ -420,7 +431,9 @@ String getDuration({required String time}) {
     if (element.contains('M')) {
       minute = int.parse(element.split('M')[0]);
     } else {
-      hours = int.parse(element.split('PT')[1]);
+      if (element.contains('PT')) {
+        hours = int.parse(element.split('PT')[1]);
+      }
     }
   });
   return '${hours}H ${minute}M';

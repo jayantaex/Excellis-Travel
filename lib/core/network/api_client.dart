@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:flutter/foundation.dart';
 import '../utils/storage_service.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
@@ -25,11 +26,13 @@ class ApiClient {
       return handler.next(e);
     }));
 
-    _dio.interceptors.add(PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-      responseBody: false,
-    ));
+    if (!kReleaseMode) {
+      _dio.interceptors.add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: false,
+      ));
+    }
     _dio.interceptors.add(AuthenticationInterceptor(_dio));
   }
   //single instance

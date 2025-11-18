@@ -58,6 +58,7 @@ Future<void> showAddPassengerSheet(
   await showModalBottomSheet(
     backgroundColor: AppColors.white,
     isScrollControlled: true,
+    useSafeArea: true,
     context: context,
     builder: (BuildContext context) => SingleChildScrollView(
       child: Padding(

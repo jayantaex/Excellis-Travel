@@ -90,7 +90,7 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
                   markupPrice: widget.markup,
                   taxes: widget.flightOffer.price?.fees,
                   showTotalFare: widget.offerFareEnabled,
-                  myMarkupType: widget.myMarkup.type ?? 'Fixed',
+                  myMarkupType: widget.myMarkup.fareType ?? 'Fixed',
                 );
 
                 createPaymentBody = getCreatePaymentBody(
@@ -205,8 +205,11 @@ Map<String, dynamic> calculateFareDetails(
         : (double.parse(getCalculatedPrice(
             basePrice: markupPrice, type: myMarkupType, value: myMarkupPrice))),
     'taxes': tax,
-    'taxesWithMarkup': double.parse(myMarkupPrice) + tax,
-    'markup': double.parse(myMarkupPrice),
+    'taxesWithMarkup': double.parse(getCalculatedPrice(
+            basePrice: markupPrice, type: myMarkupType, value: myMarkupPrice)) +
+        tax,
+    'markup': double.parse(getCalculatedPrice(
+        basePrice: markupPrice, type: myMarkupType, value: myMarkupPrice)),
     'discount': 0,
     'originalSubtotal': showTotalFare
         ? (double.parse(markupPrice))
@@ -223,9 +226,9 @@ String getCalculatedPrice(
   if (type == 'Fixed') {
     final double amount = double.parse(value);
     price += amount;
+    return price.toStringAsFixed(2);
   }
   final amount = (price * double.parse(value)) / 100;
   price += amount;
-
   return price.toStringAsFixed(2);
 }

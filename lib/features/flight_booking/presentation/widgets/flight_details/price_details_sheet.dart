@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
@@ -105,12 +107,12 @@ class PriceDetailsSheet extends StatelessWidget {
                   const SizedBox(height: 8),
                   PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
                   PriceCol(
-                      titile: 'Booking charges',
+                      titile: 'Taxes, Surcharges & Fees',
                       value: offerFareEnabled
                           ? '0.00'
                           : (double.parse(getCalculatedPrice(
                                       basePrice: flightOffer.price!.markup!,
-                                      type: myMarkup.type ?? 'Fixed',
+                                      type: myMarkup.fareType ?? 'Fixed',
                                       value: myMarkup.value ?? '0')) -
                                   double.parse(flightOffer.price!.markup!))
                               .toStringAsFixed(2)),
@@ -123,7 +125,7 @@ class PriceDetailsSheet extends StatelessWidget {
                         ? flightOffer.price!.markup!
                         : getCalculatedPrice(
                             basePrice: flightOffer.price!.markup!,
-                            type: myMarkup.type ?? 'Fixed',
+                            type: myMarkup.fareType ?? 'Fixed',
                             value: myMarkup.value ?? '0',
                           ),
                     isBold: true,
@@ -193,13 +195,13 @@ class PriceCol extends StatelessWidget {
 String getCalculatedPrice(
     {required String basePrice, required String type, required String value}) {
   double price = double.parse(basePrice);
-
+  log('My Markup Type: $type, Value: $value');
   if (type == 'Fixed') {
     final double amount = double.parse(value);
     price += amount;
+    return price.toStringAsFixed(2);
   }
   final amount = (price * double.parse(value)) / 100;
   price += amount;
-
   return price.toStringAsFixed(2);
 }

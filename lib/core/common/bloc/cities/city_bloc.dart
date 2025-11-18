@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:excellistravel/core/network/api_response.dart';
 
+import '../../../network/api_response.dart';
 import '../../data/location_repository.dart';
 import '../../models/city_model.dart';
 

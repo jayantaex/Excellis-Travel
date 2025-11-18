@@ -26,7 +26,7 @@ class AppPrimaryButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(90),
             ),
           )),
-      onPressed: isLoading
+      onPressed: isLoading || onPressed == null
           ? null
           : () {
               onPressed!();

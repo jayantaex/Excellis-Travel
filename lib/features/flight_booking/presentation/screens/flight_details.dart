@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -53,20 +51,21 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      offerData = widget.data.toJson();
-      context.read<ProfileBloc>().add(const LoadProfileEvent());
-      context
-          .read<FlightBloc>()
-          .add(GetFlightsOfferPriceEvent(offerData: offerData));
-    });
-
+    offerData = widget.data.toJson();
     super.initState();
+    Future.microtask(() {
+      if (mounted) {
+        context.read<ProfileBloc>().add(const LoadProfileEvent());
+        context
+            .read<FlightBloc>()
+            .add(GetFlightsOfferPriceEvent(offerData: offerData));
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    log('Rebuilding Flight Details Screen', name: 'FlightDetailsScreen');
+    
     final double width = AppHelpers.getScreenWidth(context);
 
     return Scaffold(
@@ -93,65 +92,80 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                         topRight: Radius.circular(32),
                       ),
                     ),
-                    child: SingleChildScrollView(
-                      child: BlocConsumer<FlightBloc, FlightState>(
-                        listener: (context, flightState) {},
-                        builder: (context, flightState) {
-                          if (flightState is FlightOfferPriceLoading) {
-                            return const FlightDetailsLoadingWidet();
-                          }
-                          if (flightState is FlightOfferPriceError) {
-                            return ErrorScreen(
-                              errorDesc: flightState.message,
-                              errorMessage: 'Flight Offer Error',
-                            );
-                          }
-                          if (flightState is FlightPaymentVerificationFailed) {
-                            return ErrorScreen(
-                                errorDesc: flightState.error,
-                                errorMessage: 'Flight Payment Error');
-                          }
+                    child: BlocBuilder<FlightBloc, FlightState>(
+                      buildWhen: (previous, current) =>
+                          current is FlightOfferPriceLoading ||
+                          current is FlightOfferPriceLoaded ||
+                          current is FlightOfferPriceError ||
+                          current is FlightPaymentVerificationFailed ||
+                          current is FlightOrderLoading,
+                      builder: (context, flightState) {
+                        if (flightState is FlightOfferPriceLoading) {
+                          return const FlightDetailsLoadingWidet();
+                        }
+                        if (flightState is FlightOfferPriceError) {
+                          return ErrorScreen(
+                            errorDesc: flightState.message,
+                            errorMessage: 'Flight Offer Error',
+                          );
+                        }
+                        if (flightState is FlightPaymentVerificationFailed) {
+                          return ErrorScreen(
+                              errorDesc: flightState.error,
+                              errorMessage: 'Flight Payment Error');
+                        }
 
-                          if (flightState is FlightOfferPriceLoaded) {
-                            return Column(
-                              children: [
-                                const SizedBox(height: 8),
-                                ...flightState
-                                    .data.data!.flightOffers!.first.itineraries!
-                                    .map(
-                                  (e) => ItineraryCard(
+                        if (flightState is FlightOfferPriceLoaded) {
+                          final itineraries = flightState
+                              .data.data!.flightOffers!.first.itineraries!;
+                          final travelerPricings = flightState
+                              .data.data!.flightOffers!.first.travelerPricings!;
+                          final grandTotal = double.parse(
+                              flightState.data.data!.flightOffers!.first.price!
+                                      .grandTotal ??
+                                  '0.0');
+                          return CustomScrollView(
+                            slivers: [
+                              const SliverToBoxAdapter(
+                                  child: SizedBox(height: 8)),
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) => ItineraryCard(
                                     width: width,
                                     flightDictionary: widget.flightDictionary,
-                                    data: e,
+                                    data: itineraries[index],
                                   ),
+                                  childCount: itineraries.length,
                                 ),
-                                const SizedBox(height: 12),
-                                FaresAndPrices(
-                                  allTravelerPricings: flightState.data.data!
-                                      .flightOffers!.first.travelerPricings!,
-                                  grandPrice: double.parse(flightState
-                                          .data
-                                          .data!
-                                          .flightOffers!
-                                          .first
-                                          .price!
-                                          .grandTotal ??
-                                      '0.0'),
+                              ),
+                              const SliverToBoxAdapter(
+                                  child: SizedBox(height: 12)),
+                              SliverToBoxAdapter(
+                                child: FaresAndPrices(
+                                  allTravelerPricings: travelerPricings,
+                                  grandPrice: grandTotal,
                                 ),
-                                const SizedBox(height: 8),
-                                const Padding(
+                              ),
+                              const SliverToBoxAdapter(
+                                  child: SizedBox(height: 8)),
+                              const SliverToBoxAdapter(
+                                child: Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 16, vertical: 12),
                                   child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text('Travellers Details',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                        )),
+                                    child: Text(
+                                      'Travellers Details',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                Padding(
+                              ),
+                              SliverToBoxAdapter(
+                                child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16),
                                   child: PassengerDetailsCard(
@@ -161,39 +175,28 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     onPassengerRemove: (passenger) {
                                       setState(() {
                                         passengers.remove(passenger);
-                                        log('Called');
                                       });
                                     },
                                     travelerPricing:
                                         widget.data.travelerPricings ?? [],
                                   ),
                                 ),
-                                const SizedBox(height: 8),
-                                BlocConsumer<ProfileBloc, ProfileState>(
-                                  listener: (context, state) {
-                                    if (state is ProfileError) {}
-                                  },
+                              ),
+                              SliverToBoxAdapter(
+                                child:
+                                    BlocBuilder<ProfileBloc, ProfileState>(
+                                  buildWhen: (prev, curr) =>
+                                      curr is ProfileLoaded ||
+                                      curr is ProfileError,
                                   builder: (context, state) {
                                     if (state is ProfileLoaded) {
-                                      // to change the billing or conatct details
-                                      // company name
-                                      // first name
-                                      // last name
-                                      // phone
-                                      // email
-                                      // cityName
-                                      //country code
-                                      //postal code
-                                      //address line [address, address, address]
                                       return Column(
                                         children: [
                                           OfferFareTogglerTile(
                                             onToggle: (bool value) {
-                                              log('Offer Fare Toggled: $value');
                                               setState(() {
                                                 isOfferEnabled = value;
                                               });
-                                              // context.read<FlightBloc>().add(ToggleFareOption());
                                             },
                                             flightOffer: flightState
                                                 .data.data!.flightOffers!.first,
@@ -202,8 +205,16 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                           ),
                                           ListTile(
                                             leading: CircleAvatar(
-                                              child: Text(state
-                                                  .profileData.firstName![0]),
+                                              child: Text(
+                                                (state
+                                                            .profileData
+                                                            .firstName
+                                                            ?.isNotEmpty ??
+                                                        false)
+                                                    ? state.profileData
+                                                        .firstName![0]
+                                                    : '?',
+                                              ),
                                             ),
                                             title: Text(
                                                 '${state.profileData.firstName} ${state.profileData.lastName}'),
@@ -214,7 +225,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                         ],
                                       );
                                     }
-
                                     if (state is ProfileError) {
                                       return SizedBox(
                                         height: 300,
@@ -241,61 +251,60 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                                 'LOGIN',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: AppColors.primary,
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                    decorationColor:
-                                                        AppColors.primary),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: AppColors.primary,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  decorationColor:
+                                                      AppColors.primary,
+                                                ),
                                               ),
                                             ),
                                           ],
                                         ),
                                       );
                                     }
-                                    return const Text('Loading...');
+                                    return const SizedBox();
                                   },
-                                )
-                              ],
-                            );
-                          }
-
-                          if (flightState is! FlightOrderLoading) {
-                            return const Center(
-                              child: SizedBox(
-                                height: 900,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 25,
-                                      height: 25,
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.primary,
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    Text(
-                                      'Please allow us to process your booking',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.grey,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8),
-                                  ],
                                 ),
                               ),
-                            );
-                          } else {
-                            return const SizedBox();
-                          }
-                        },
-                      ),
+                            ],
+                          );
+                        }
+                        if (flightState is FlightOrderLoading) {
+                          return const Center(
+                            child: SizedBox(
+                              height: 900,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 25,
+                                    height: 25,
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.primary,
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                  SizedBox(height: 12),
+                                  Text(
+                                    'Please allow us to process your booking',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.grey,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                        return const SizedBox();
+                      },
                     ),
                   ),
                 )
@@ -309,7 +318,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
           if (state is FlightOrderCreated) {
             final int amount = state.data.amount ?? 0;
             final String description =
-                'initiated this payment for booking no ${state.data..notes?.bookingId} and reference no ${state.data.notes?.bookingReference}';
+                'initiated this payment for booking no ${state.data.notes?.bookingId} and reference no ${state.data.notes?.bookingReference}';
             final String orderId = state.data.id ?? '';
             const String mobile = '';
             const String email = '';

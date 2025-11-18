@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/common/api/location_api.dart';
 import '../../core/common/bloc/cities/city_bloc.dart';
@@ -27,22 +28,27 @@ class ProfileManagementModule {
   //my profile
   static String myProfileName = 'my_profile';
   static String myProfilePath = '/my_profile';
-  static Widget myProfileBuilder() => BlocProvider<ProfileBloc>(
-        create: (_) => ProfileBloc(profileRepository: _profileRepository),
-        child: MyProfileScreen(),
+  static Widget myProfileBuilder(BuildContext context) => BlocProvider.value(
+        value: BlocProvider.of<ProfileBloc>(context),
+        child: const MyProfileScreen(),
       );
 
 //edit profile
   static String editProfilePath = '/edit_profile';
   static String editProfileName = 'edit_profile';
 
-  static Widget editProfileBuilder() => MultiBlocProvider(
+  static Widget editProfileBuilder(BuildContext context, GoRouterState state) => MultiBlocProvider(
         providers: [
-          BlocProvider<ProfileBloc>(
-            create: (_) => ProfileBloc(
-              profileRepository: _profileRepository,
+          if (state.extra is ProfileBloc)
+            BlocProvider<ProfileBloc>.value(
+              value: state.extra as ProfileBloc,
+            )
+          else
+            BlocProvider<ProfileBloc>(
+              create: (_) => ProfileBloc(
+                profileRepository: _profileRepository,
+              ),
             ),
-          ),
           BlocProvider<StatesBloc>(
             create: (_) => StatesBloc(repository: _locationRepository),
           ),

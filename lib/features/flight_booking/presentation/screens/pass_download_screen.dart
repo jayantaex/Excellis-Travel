@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -398,8 +400,16 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                   try {
                     Fluttertoast.showToast(msg: 'Downloading...');
                     final bool res = await FileDownloaderService.saveFile(
+                      baseFare: '${widget.data.booking?.fareDetails?.baseFare}',
+                      totalFare:
+                          '${widget.data.booking?.fareDetails?.totalFare}',
+                      markupPrice:
+                          '${(widget.data.booking?.fareDetails?.totalFare ?? 0.00) - (widget.data.booking?.fareDetails?.baseFare ?? 0.00)}',
                       bokkingRefId: '${widget.data.booking?.bookingReference}',
-                      showDownloadProgress: (count, total) {},
+                      showDownloadProgress: (count, total) {
+                        log('$count $total');
+                        log('${(count / total) * 100}');
+                      },
                     );
 
                     if (res) {

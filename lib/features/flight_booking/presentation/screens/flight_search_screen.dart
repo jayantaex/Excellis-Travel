@@ -159,6 +159,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                         horizontal: 16, vertical: 12),
                     width: AppHelpers.getScreenWidth(context),
                     decoration: BoxDecoration(
+                      
                       color: AppColors.white,
                       borderRadius: BorderRadius.circular(24),
                     ),

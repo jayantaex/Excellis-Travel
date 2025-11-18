@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
+import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
@@ -25,10 +26,18 @@ class _TicketScreenState extends State<TicketScreen> {
   List<Booking>? tickets;
   @override
   void initState() {
-    _scrollController.addListener(onScroll);
-    context.read<TicketBloc>().add(
-          const FetchTickets(),
-        );
+    Future.microtask(() async {
+      final String token = await StorageService.getAccessToken() ?? '';
+      if (token.isEmpty) {
+        return;
+      }
+      _scrollController.addListener(onScroll);
+      if (context.mounted) {
+        context.read<TicketBloc>().add(
+              const FetchTickets(),
+            );
+      }
+    });
     super.initState();
   }
 

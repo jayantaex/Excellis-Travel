@@ -1,10 +1,11 @@
-import 'package:excellistravel/core/network/api_client.dart';
-import 'package:excellistravel/features/auth/apis/auth_api.dart';
-import 'package:excellistravel/features/auth/bloc/auth_bloc.dart';
-import 'package:excellistravel/features/auth/data/auth_repository.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/network/api_client.dart';
+import '../auth/apis/auth_api.dart';
+import '../auth/bloc/auth_bloc.dart';
+import '../auth/data/auth_repository.dart';
 import 'presentation/screens/setting_screen.dart';
 
 class SettingsModule {

@@ -56,179 +56,219 @@ class _LoginSheetState extends State<LoginSheet> {
             topRight: Radius.circular(30),
           ),
         ),
-        padding: const EdgeInsets.only(top: 8, bottom: 30),
+
         // height: AppHelpers.getScreenHeight(context) * 0.55,
         width: AppHelpers.getScreenWidth(context),
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              // const SizedBox(height: 25),
-              SizedBox(
-                width: AppHelpers.getScreenWidth(context),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    onTap: () {
-                      context.goNamed(BottomNavModule.name);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 16),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 5),
-                      child: const Text(
-                        'Skip >>',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.grey,
-                          fontWeight: FontWeight.w600,
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+            ),
+            child: Column(
+              children: <Widget>[
+                // const SizedBox(height: 25),
+                SizedBox(
+                  width: AppHelpers.getScreenWidth(context),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        context.goNamed(BottomNavModule.name);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 5),
+                        child: const Text(
+                          'Skip >>',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.grey,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              const SizedBox(height: 8),
-              const Text(
-                'Welcome back!',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const Text(
-                'You can reach us anytime',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
-              ),
-              const SizedBox(height: 33),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 20),
-              //   child: AuthDropdownWidget(
-              //     items: _items,
-              //     onChanged: (String? value) {
-              //       usertype = value ?? 'retailer';
-              //     },
-              //   ),
-              // ),
-              // const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: AuthInputWidget(
-                    isPassword: false,
-                    maxCharacters: 100,
-                    controller: _userNameController,
-                    label: 'Email or Username',
-                    hint: 'Enter your Email or Username'),
-              ),
-              const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: AuthInputWidget(
-                    isPassword: true,
-                    maxCharacters: 20,
-                    controller: _passwordController,
-                    label: 'Password',
-                    hint: 'Enter your Password'),
-              ),
-              const SizedBox(height: 40),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: AppPrimaryButton(
-                  title: 'LOGIN',
-                  isLoading: widget.isLoading,
-                  onPressed: () {
-                    context.read<AuthBloc>().add(
-                          LoginEvent(
-                            fcmToken: '',
-                            userName: _userNameController.text,
-                            password: _passwordController.text,
-                            userType: usertype,
-                          ),
-                        );
-                  },
+                const SizedBox(height: 8),
+                const Text(
+                  'Welcome back!',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: AppHelpers.getScreenWidth(context),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'Don’t have an account? ',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
+                const Text(
+                  'You can reach us anytime',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                ),
+                const SizedBox(height: 33),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                //   child: AuthDropdownWidget(
+                //     items: _items,
+                //     onChanged: (String? value) {
+                //       usertype = value ?? 'retailer';
+                //     },
+                //   ),
+                // ),
+                // const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: AuthInputWidget(
+                      isPassword: false,
+                      maxCharacters: 100,
+                      controller: _userNameController,
+                      label: 'Email or Username',
+                      hint: 'Enter your Email or Username'),
+                ),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: AuthInputWidget(
+                      isPassword: true,
+                      maxCharacters: 20,
+                      controller: _passwordController,
+                      label: 'Password',
+                      hint: 'Enter your Password'),
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const Text(
+                        'did you forget your password?',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.grey,
+                        ),
                       ),
-                    ),
-                    InkWell(
-                      splashColor: Colors.transparent,
-                      onTap: () async {
-                        context.goNamed(AuthModule.registerName);
-                      },
-                      child: const Text(
-                        'Sign up',
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () {
+                          if (_userNameController.text.isEmpty) {
+                            AppHelpers.showSnackBar(context,
+                                'please enter your email to recover password');
+                          }
+                        },
+                        child: const Text(
+                          "Recover Now",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
+                            color: AppColors.black,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: AppPrimaryButton(
+                    title: 'LOGIN',
+                    isLoading: widget.isLoading,
+                    onPressed: () {
+                      context.read<AuthBloc>().add(
+                            LoginEvent(
+                              fcmToken: '',
+                              userName: _userNameController.text,
+                              password: _passwordController.text,
+                              userType: usertype,
+                            ),
+                          );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: AppHelpers.getScreenWidth(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text(
+                        'Don’t have an account? ',
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ),
-                  ],
+                      InkWell(
+                        splashColor: Colors.transparent,
+                        onTap: () async {
+                          context.goNamed(AuthModule.registerName);
+                        },
+                        child: const Text(
+                          'Sign up',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'By continuing, you agree to our ',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                const SizedBox(height: 20),
+                const Text(
+                  'By continuing, you agree to our ',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 2),
+                const SizedBox(height: 2),
 
-              SizedBox(
-                width: AppHelpers.getScreenWidth(context),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    InkWell(
-                      splashColor: Colors.transparent,
-                      onTap: () async {
-                        context.pushNamed(LegalModule.termsName);
-                      },
-                      child: const Text(
-                        'Terms & Conditions',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                SizedBox(
+                  width: AppHelpers.getScreenWidth(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      InkWell(
+                        splashColor: Colors.transparent,
+                        onTap: () async {
+                          context.pushNamed(LegalModule.termsName);
+                        },
+                        child: const Text(
+                          'Terms & Conditions',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                    const Text(
-                      ' and ',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    InkWell(
-                      splashColor: Colors.transparent,
-                      onTap: () async {
-                        context.pushNamed(LegalModule.policyName);
-                      },
-                      child: const Text(
-                        'Privacy Policy',
+                      const Text(
+                        ' and ',
                         style: TextStyle(
-                          decoration: TextDecoration.underline,
                           fontSize: 14,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      InkWell(
+                        splashColor: Colors.transparent,
+                        onTap: () async {
+                          context.pushNamed(LegalModule.policyName);
+                        },
+                        child: const Text(
+                          'Privacy Policy',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       );

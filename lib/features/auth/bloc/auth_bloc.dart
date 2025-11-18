@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:excellistravel/features/auth/models/auth_resp_model.dart';
 
 import '../../../core/network/api_response.dart';
 import '../../../core/utils/storage_service.dart';
 import '../../../core/utils/validators.dart';
 import '../data/auth_repository.dart';
+import '../models/auth_resp_model.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 

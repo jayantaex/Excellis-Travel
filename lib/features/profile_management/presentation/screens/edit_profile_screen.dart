@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,9 +6,7 @@ import '../../../../core/common/bloc/states/states_bloc.dart';
 import '../../../../core/common/models/city_model.dart';
 import '../../../../core/common/models/state_model.dart';
 import '../../../../core/constants/app_styles.dart';
-// import '../../../../core/utils/image_picker.dart';
 import '../../../../core/utils/app_helpers.dart';
-import '../../../../core/utils/image_picker.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';

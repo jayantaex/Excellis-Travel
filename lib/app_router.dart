@@ -139,7 +139,7 @@ class AppRouter {
         path: ProfileManagementModule.editProfilePath,
         name: ProfileManagementModule.editProfileName,
         builder: (BuildContext context, GoRouterState state) =>
-            ProfileManagementModule.editProfileBuilder(),
+            ProfileManagementModule.editProfileBuilder(context, state),
       ),
       GoRoute(
         path: ProfileManagementModule.citySeacrRoute,

@@ -50,7 +50,7 @@ class FlightBookingApi {
       return response;
     } catch (e) {
       return ApiResponse(
-          errorMessage: e.toString(), data: null, statusCode: 400);
+          errorMessage: e.toString(), statusCode: 400);
     }
   }
 
@@ -72,7 +72,7 @@ class FlightBookingApi {
       return response;
     } catch (e) {
       return ApiResponse(
-          errorMessage: e.toString(), data: null, statusCode: 400);
+          errorMessage: e.toString(), statusCode: 400);
     }
   }
 
@@ -87,7 +87,7 @@ class FlightBookingApi {
       return resp;
     } catch (e) {
       return ApiResponse(
-          errorMessage: e.toString(), data: null, statusCode: 400);
+          errorMessage: e.toString(), statusCode: 400);
     }
   }
 
@@ -104,7 +104,7 @@ class FlightBookingApi {
       return response;
     } catch (e) {
       return ApiResponse(
-          errorMessage: e.toString(), data: null, statusCode: 400);
+          errorMessage: e.toString(), statusCode: 400);
     }
   }
 
