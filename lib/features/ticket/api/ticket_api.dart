@@ -9,17 +9,17 @@ class TicketApi {
   TicketApi({required this.apiClient});
   final ApiClient apiClient;
 
-  Future<ApiResponse<TicketDataModel>> getAllBookedTickets(
+  Future<ApiResponse<BookingListModel>> getAllBookedTickets(
       {required int page, required int limit}) async {
     try {
-      final ApiResponse<TicketDataModel> resp = await apiClient.getRequest(
+      final ApiResponse<BookingListModel> resp = await apiClient.getRequest(
           queryParameters: <String, dynamic>{'page': page, 'limit': limit},
           endPoint: EndPoints.ticket,
           fromJson: (Map<String, dynamic> json) =>
-              TicketDataModel.fromJson(json['data']));
+              BookingListModel.fromJson(json['data']));
       return resp;
     } catch (e) {
-      log(e.toString());
+      log('$e', name: 'getAllBookedTickets TicketApi');
       return ApiResponse(statusCode: 400, errorMessage: e.toString());
     }
   }

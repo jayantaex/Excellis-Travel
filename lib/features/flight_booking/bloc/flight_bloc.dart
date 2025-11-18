@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -24,6 +25,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     on<GetFlightsOfferPriceEvent>(_handleFlightOfferPrice);
     on<CreateFlightOrder>(_handleCreateFlightOrder);
     on<VerifyPayment>(_handleVerifyPayment);
+    on<ToggleFareOption>(_handleOfferFareToggle);
   }
   final FlightBookingRepository repository;
 
@@ -153,6 +155,15 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       }
     } catch (e) {
       emit(FlightSearchingError(message: '$e'));
+    }
+  }
+
+  FutureOr<void> _handleOfferFareToggle(
+      ToggleFareOption event, Emitter<FlightState> emit) {
+    if (state is OfferPriceEnabledState) {
+      emit(OfferPriceDisabledState());
+    } else {
+      emit(OfferPriceEnabledState());
     }
   }
 }

@@ -13,7 +13,6 @@ final class FlightInitial extends FlightState {}
 final class AirportSearching extends FlightState {}
 
 final class AirportLoaded extends FlightState {
-
   const AirportLoaded({
     required this.airports,
   });
@@ -21,7 +20,6 @@ final class AirportLoaded extends FlightState {
 }
 
 final class AirportSearchingError extends FlightState {
-
   const AirportSearchingError({required this.message});
   final String message;
 }
@@ -31,7 +29,6 @@ final class AirportSearchingError extends FlightState {
 final class FlightSearching extends FlightState {}
 
 final class FlightLoaded extends FlightState {
-
   const FlightLoaded({
     required this.data,
   });
@@ -39,7 +36,6 @@ final class FlightLoaded extends FlightState {
 }
 
 final class FlightSearchingError extends FlightState {
-
   const FlightSearchingError({required this.message});
   final String message;
 }
@@ -48,7 +44,6 @@ final class FlightSearchingError extends FlightState {
 final class FlightOfferPriceLoading extends FlightState {}
 
 final class FlightOfferPriceLoaded extends FlightState {
-
   const FlightOfferPriceLoaded({required this.data});
   final FlightOfferPriceDataModel data;
 }
@@ -59,7 +54,6 @@ final class FlightOfferPriceError extends FlightState {
 }
 
 final class FlightOrderCreated extends FlightState {
-
   const FlightOrderCreated({
     required this.data,
   });
@@ -88,3 +82,7 @@ final class FlightPaymentVerificationFailed extends FlightState {
   const FlightPaymentVerificationFailed({required this.error});
   final String error;
 }
+
+final class OfferPriceEnabledState extends FlightState {}
+
+final class OfferPriceDisabledState extends FlightState {}

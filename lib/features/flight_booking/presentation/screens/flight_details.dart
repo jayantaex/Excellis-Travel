@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +20,7 @@ import '../../flight_booking_module.dart';
 import '../../models/flights_data_model.dart' show FlightDictionary, Datam;
 import '../../models/passenger_model.dart';
 import '../widgets/flight_details/fares_and_prices.dart';
+import '../widgets/flight_details/offer_fare_toggler_tile.dart';
 import '../widgets/loading/flight_details_loading_widet.dart';
 import '../widgets/flight_details/pricing_bottom_bar.dart';
 import '../widgets/flight_details/itinerary_card_widget.dart';
@@ -45,7 +47,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
     'INFANT',
   ];
   List<PassengerModel> passengers = <PassengerModel>[];
-
+  bool isOfferEnabled = false;
   Map<String, dynamic> offerData = {};
   final RazorpayService _razorpayService = RazorpayService();
 
@@ -54,7 +56,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       offerData = widget.data.toJson();
       context.read<ProfileBloc>().add(const LoadProfileEvent());
-
       context
           .read<FlightBloc>()
           .add(GetFlightsOfferPriceEvent(offerData: offerData));
@@ -65,6 +66,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('Rebuilding Flight Details Screen', name: 'FlightDetailsScreen');
     final double width = AppHelpers.getScreenWidth(context);
 
     return Scaffold(
@@ -93,28 +95,28 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                     ),
                     child: SingleChildScrollView(
                       child: BlocConsumer<FlightBloc, FlightState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          if (state is FlightOfferPriceLoading) {
+                        listener: (context, flightState) {},
+                        builder: (context, flightState) {
+                          if (flightState is FlightOfferPriceLoading) {
                             return const FlightDetailsLoadingWidet();
                           }
-                          if (state is FlightOfferPriceError) {
+                          if (flightState is FlightOfferPriceError) {
                             return ErrorScreen(
-                              errorDesc: state.message,
+                              errorDesc: flightState.message,
                               errorMessage: 'Flight Offer Error',
                             );
                           }
-                          if (state is FlightPaymentVerificationFailed) {
+                          if (flightState is FlightPaymentVerificationFailed) {
                             return ErrorScreen(
-                                errorDesc: state.error,
+                                errorDesc: flightState.error,
                                 errorMessage: 'Flight Payment Error');
                           }
 
-                          if (state is FlightOfferPriceLoaded) {
+                          if (flightState is FlightOfferPriceLoaded) {
                             return Column(
                               children: [
                                 const SizedBox(height: 8),
-                                ...state
+                                ...flightState
                                     .data.data!.flightOffers!.first.itineraries!
                                     .map(
                                   (e) => ItineraryCard(
@@ -125,9 +127,9 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                 ),
                                 const SizedBox(height: 12),
                                 FaresAndPrices(
-                                  allTravelerPricings: state.data.data!
+                                  allTravelerPricings: flightState.data.data!
                                       .flightOffers!.first.travelerPricings!,
-                                  grandPrice: double.parse(state
+                                  grandPrice: double.parse(flightState
                                           .data
                                           .data!
                                           .flightOffers!
@@ -167,25 +169,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                BlocBuilder<ProfileBloc, ProfileState>(
-                                  builder: (context, state) {
-                                    if (state is ProfileLoaded) {
-                                      return const Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 12),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text('Billing Details',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                              )),
-                                        ),
-                                      );
-                                    }
-                                    return const SizedBox();
-                                  },
-                                ),
                                 BlocConsumer<ProfileBloc, ProfileState>(
                                   listener: (context, state) {
                                     if (state is ProfileError) {}
@@ -202,16 +185,33 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       //country code
                                       //postal code
                                       //address line [address, address, address]
-                                      return ListTile(
-                                        leading: CircleAvatar(
-                                          child: Text(
-                                              state.profileData.firstName![0]),
-                                        ),
-                                        title: Text(
-                                            '${state.profileData.firstName} ${state.profileData.lastName}'),
-                                        subtitle:
-                                            Text('${state.profileData.email}'),
-                                        trailing: const Text('Change'),
+                                      return Column(
+                                        children: [
+                                          OfferFareTogglerTile(
+                                            onToggle: (bool value) {
+                                              log('Offer Fare Toggled: $value');
+                                              setState(() {
+                                                isOfferEnabled = value;
+                                              });
+                                              // context.read<FlightBloc>().add(ToggleFareOption());
+                                            },
+                                            flightOffer: flightState
+                                                .data.data!.flightOffers!.first,
+                                            myMarkup: flightState
+                                                .data.data!.myMarkup!,
+                                          ),
+                                          ListTile(
+                                            leading: CircleAvatar(
+                                              child: Text(state
+                                                  .profileData.firstName![0]),
+                                            ),
+                                            title: Text(
+                                                '${state.profileData.firstName} ${state.profileData.lastName}'),
+                                            subtitle: Text(
+                                                '${state.profileData.email}'),
+                                            trailing: const Text('Change'),
+                                          ),
+                                        ],
                                       );
                                     }
 
@@ -261,7 +261,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                             );
                           }
 
-                          if (state is! FlightOrderLoading) {
+                          if (flightState is! FlightOrderLoading) {
                             return const Center(
                               child: SizedBox(
                                 height: 900,
@@ -346,6 +346,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                     grandTotal: flightState
                         .data.data!.flightOffers!.first.price!.grandTotal!,
                     profile: profileState.profileData,
+                    offerFareEnabled: isOfferEnabled,
                   );
                 }
                 return const SizedBox();
@@ -359,9 +360,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   }
 
   Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    log('Pauyment successful : ${response.paymentId}', name: 'Payment ID');
-    log('Pauyment successful : ${response.signature}', name: 'Signature ID');
-    log('Pauyment successful : ${response.orderId}', name: 'Order ID');
     final Map<String, dynamic> verifyPaymentBody = {
       'razorpay_order_id': response.orderId,
       'razorpay_payment_id': response.paymentId,

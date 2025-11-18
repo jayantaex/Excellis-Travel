@@ -15,7 +15,7 @@ final class MoreTicketLoading extends TicketState {}
 
 final class TicketLoaded extends TicketState {
   const TicketLoaded({required this.tickets});
-  final TicketDataModel tickets;
+  final BookingListModel tickets;
 }
 
 final class TicketError extends TicketState {

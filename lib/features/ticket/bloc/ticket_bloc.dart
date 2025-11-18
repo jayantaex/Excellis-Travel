@@ -19,13 +19,13 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
       FetchTickets event, Emitter<TicketState> emit) async {
     try {
       emit(TicketLoading());
-      final ApiResponse<TicketDataModel> res = await repository.fetchTickets(
+      final ApiResponse<BookingListModel> res = await repository.fetchTickets(
         page: 1,
         limit: 10,
       );
       if (res.errorMessage == null || res.errorMessage == '') {
         log('${res.data?.bookings?.length}', name: 'Length');
-        emit(TicketLoaded(tickets: res.data ?? TicketDataModel()));
+        emit(TicketLoaded(tickets: res.data ?? BookingListModel()));
         return;
       }
 
@@ -39,12 +39,12 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
       FetchMoreTickets event, Emitter<TicketState> emit) async {
     try {
       emit(MoreTicketLoading());
-      final ApiResponse<TicketDataModel> res = await repository.fetchTickets(
+      final ApiResponse<BookingListModel> res = await repository.fetchTickets(
         page: event.page,
         limit: event.limit,
       );
       if (res.errorMessage == null || res.errorMessage == '') {
-        emit(TicketLoaded(tickets: res.data ?? TicketDataModel()));
+        emit(TicketLoaded(tickets: res.data ?? BookingListModel()));
         return;
       }
 

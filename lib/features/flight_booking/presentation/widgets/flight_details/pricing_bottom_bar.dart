@@ -8,12 +8,12 @@ import '../../../../../core/widgets/primary_button.dart';
 import '../../../bloc/flight_bloc.dart';
 import '../../../models/flight_offer_price_model.dart';
 import '../../../models/passenger_model.dart';
-import 'price_details_sheet.dart';
 
 class PricingBottomBar extends StatefulWidget {
   const PricingBottomBar({
     super.key,
     required this.grandTotal,
+    required this.offerFareEnabled,
     required this.profile,
     required this.passengers,
     required this.travellersCount,
@@ -24,6 +24,7 @@ class PricingBottomBar extends StatefulWidget {
   final String grandTotal;
   final String markup;
   final MyMarkup myMarkup;
+  final bool offerFareEnabled;
   final int travellersCount;
   final List<PassengerModel> passengers;
   final FlightOffer flightOffer;
@@ -49,115 +50,72 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
         height: 65,
         color: AppColors.white,
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Text(
-                      '₹${getCalculatedPrice(basePrice: widget.markup, type: widget.myMarkup.type ?? 'Fixed', value: widget.myMarkup.value ?? '0')}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.black,
-                      ),
-                    ),
-                    const Text(
-                      'Grand Price',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.grey,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(width: 8),
-                InkWell(
-                  onTap: () async {
-                    await showPriceDetailsSheet(
-                        context: context,
-                        flightOffer: widget.flightOffer,
-                        myMarkup: widget.myMarkup);
-                  },
-                  child: const Icon(
-                    Icons.info_outline_rounded,
-                    size: 18,
-                    color: AppColors.grey,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 45,
-              width: AppHelpers.getScreenWidth(context) * 0.3,
-              child: AppPrimaryButton(
-                onPressed: () async {
-                  try {
-                    // isLoading = true;
-                    if (widget.travellersCount != widget.passengers.length) {
-                      AppHelpers.showSnackBar(
-                          context, 'Please add all the travellers');
-                      return;
-                    }
-                    for (int i = 0; i < widget.passengers.length; i++) {
-                      final Map<String, dynamic> data = getPassengetDetails(
-                        passenger: widget.passengers[i],
-                      );
-                      log('${widget.passengers[i].type}');
-                      if (widget.passengers[i].type == 'Adult') {
-                        travellers['adults']?.add(data);
-                      }
-                      if (widget.passengers[i].type == 'Child') {
-                        travellers['children']?.add(data);
-                      }
-                      if (widget.passengers[i].type == 'Infant') {
-                        travellers['infants']?.add(data);
-                      }
-                    }
-                    final Map<String, dynamic> billingAddress =
-                        getBillingAddress(
-                      address: widget.profile.address ?? '',
-                    );
-                    final Map<String, dynamic> contactDetails =
-                        getContactDetails(
-                      email: widget.profile.email ?? '',
-                      phone: widget.profile.phone ?? '',
-                    );
-                    final Map<String, dynamic> fareDetails =
-                        calculateFareDetails(
-                      grandTotal: widget.grandTotal,
-                      markupPrice: widget.markup,
-                      taxes: widget.flightOffer.price?.fees,
-                    );
-
-                    createPaymentBody = getCreatePaymentBody(
-                      billingAddress: billingAddress,
-                      contactDetails: contactDetails,
-                      flightOfferData: widget.flightOffer.toJson(),
-                      travellers: travellers,
-                      fareDetails: fareDetails,
-                    );
-
-                    context
-                        .read<FlightBloc>()
-                        .add(CreateFlightOrder(body: createPaymentBody));
-                  } catch (e) {
-                    log(e.toString());
+        child: SizedBox(
+          height: 45,
+          width: AppHelpers.getScreenWidth(context),
+          child: AppPrimaryButton(
+            onPressed: () async {
+              try {
+                // isLoading = true;
+                if (widget.travellersCount != widget.passengers.length) {
+                  AppHelpers.showSnackBar(
+                      context, 'Please add all the travellers');
+                  return;
+                }
+                for (int i = 0; i < widget.passengers.length; i++) {
+                  final Map<String, dynamic> data = getPassengetDetails(
+                    passenger: widget.passengers[i],
+                  );
+                  log('${widget.passengers[i].type}');
+                  if (widget.passengers[i].type == 'Adult') {
+                    travellers['adults']?.add(data);
                   }
-                },
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-                title: 'Book now',
-                isLoading: false,
-              ),
-            ),
-          ],
+                  if (widget.passengers[i].type == 'Child') {
+                    travellers['children']?.add(data);
+                  }
+                  if (widget.passengers[i].type == 'Infant') {
+                    travellers['infants']?.add(data);
+                  }
+                }
+                final Map<String, dynamic> billingAddress = getBillingAddress(
+                  address: widget.profile.address ?? '',
+                );
+                final Map<String, dynamic> contactDetails = getContactDetails(
+                  email: widget.profile.email ?? '',
+                  phone: widget.profile.phone ?? '',
+                );
+                final Map<String, dynamic> fareDetails = calculateFareDetails(
+                  myMarkupPrice: widget.myMarkup.value ?? '0',
+                  grandTotal: widget.grandTotal,
+                  markupPrice: widget.markup,
+                  taxes: widget.flightOffer.price?.fees,
+                  showTotalFare: widget.offerFareEnabled,
+                  myMarkupType: widget.myMarkup.type ?? 'Fixed',
+                );
+
+                createPaymentBody = getCreatePaymentBody(
+                  markupPrice: widget.markup,
+                  myMarkupPrice: widget.myMarkup.value ?? '0',
+                  myMarkupType: widget.myMarkup.type ?? 'Fixed',
+                  billingAddress: billingAddress,
+                  contactDetails: contactDetails,
+                  flightOfferData: widget.flightOffer.toJson(),
+                  travellers: travellers,
+                  fareDetails: fareDetails,
+                  isOfferEnabled: widget.offerFareEnabled,
+                );
+                // log('createPaymentBody $createPaymentBody');
+                context
+                    .read<FlightBloc>()
+                    .add(CreateFlightOrder(body: createPaymentBody));
+              } catch (e) {
+                log(e.toString());
+              }
+            },
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+            title: 'Book now',
+            isLoading: false,
+          ),
         ),
       );
 }
@@ -167,6 +125,10 @@ Map<String, dynamic> getCreatePaymentBody(
         required Map<String, dynamic> travellers,
         required Map<String, dynamic> contactDetails,
         required Map<String, dynamic> fareDetails,
+        required bool isOfferEnabled,
+        required String markupPrice,
+        required String myMarkupPrice,
+        required String myMarkupType,
         required Map<String, dynamic> billingAddress}) =>
     <String, dynamic>{
       'flightOffer': flightOfferData,
@@ -174,7 +136,15 @@ Map<String, dynamic> getCreatePaymentBody(
       'contactDetails': contactDetails,
       'billingAddress': billingAddress,
       'fareDetails': fareDetails,
-      'amount': double.parse(flightOfferData['price']['grandTotal']),
+
+      //enable  ->markup price
+      //disable -> markup price + my markup price
+      'amount': isOfferEnabled
+          ? (double.parse(markupPrice))
+          : (double.parse(getCalculatedPrice(
+              basePrice: markupPrice,
+              type: myMarkupType,
+              value: myMarkupPrice))),
       'currency': 'INR'
     };
 
@@ -213,11 +183,13 @@ Map<String, dynamic> getPassengetDetails({required PassengerModel passenger}) =>
       'open': true
     };
 
-Map<String, dynamic> calculateFareDetails({
-  required String grandTotal,
-  required String markupPrice,
-  required List<Fee>? taxes,
-}) {
+Map<String, dynamic> calculateFareDetails(
+    {required String grandTotal,
+    required String markupPrice,
+    required String myMarkupPrice,
+    required String myMarkupType,
+    required List<Fee>? taxes,
+    required bool showTotalFare}) {
   double tax = 0.0;
   if (taxes != null || taxes!.isNotEmpty) {
     for (Fee element in taxes) {
@@ -227,14 +199,20 @@ Map<String, dynamic> calculateFareDetails({
 
   return <String, dynamic>{
     'selectedFare': 'selection',
-    'totalFare': double.parse(markupPrice),
-    'baseFare': double.parse(grandTotal),
+    'baseFare': double.parse(markupPrice),
+    'totalFare': showTotalFare
+        ? (double.parse(markupPrice))
+        : (double.parse(getCalculatedPrice(
+            basePrice: markupPrice, type: myMarkupType, value: myMarkupPrice))),
     'taxes': tax,
-    'taxesWithMarkup': double.parse(markupPrice) + tax,
-    'markup': double.parse(markupPrice),
+    'taxesWithMarkup': double.parse(myMarkupPrice) + tax,
+    'markup': double.parse(myMarkupPrice),
     'discount': 0,
-    'originalSubtotal': double.parse(grandTotal),
-    'showTotalFare': true
+    'originalSubtotal': showTotalFare
+        ? (double.parse(markupPrice))
+        : (double.parse(getCalculatedPrice(
+            basePrice: markupPrice, type: myMarkupType, value: myMarkupPrice))),
+    'showTotalFare': showTotalFare
   };
 }
 

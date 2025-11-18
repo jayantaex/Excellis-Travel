@@ -1,18 +1,18 @@
 import 'dart:convert';
 
-// --- Top-Level Model ---
+// --- Top-Level Model for the partial JSON ---
 
-class TicketDataModel {
-  TicketDataModel({
+class BookingListModel {
+  BookingListModel({
     this.bookings,
     this.pagination,
   });
 
-  factory TicketDataModel.fromRawJson(String str) =>
-      TicketDataModel.fromJson(json.decode(str));
+  factory BookingListModel.fromRawJson(String str) =>
+      BookingListModel.fromJson(json.decode(str));
 
-  factory TicketDataModel.fromJson(Map<String, dynamic> json) =>
-      TicketDataModel(
+  factory BookingListModel.fromJson(Map<String, dynamic> json) =>
+      BookingListModel(
         bookings: json['bookings'] == null
             ? null
             : List<Booking>.from(
@@ -69,9 +69,9 @@ class Booking {
 
   factory Booking.fromJson(Map<String, dynamic> json) => Booking(
         id: json['id'],
-        bookingReference: json['booking_reference'],
+        bookingReference: '${json['booking_reference']}',
         userId: json['user_id'],
-        flightOfferId: json['flight_offer_id'],
+        flightOfferId: '${json['flight_offer_id']}',
         flightData: json['flight_data'] == null
             ? null
             : FlightData.fromJson(json['flight_data']),
@@ -84,35 +84,35 @@ class Booking {
         contactDetails: json['contact_details'] == null
             ? null
             : ContactDetails.fromJson(json['contact_details']),
-        seatSelections: json['seat_elections'],
+        seatSelections: json['seat_selections'],
         mealSelections: json['meal_selections'],
         insuranceSelections: json['insurance_selections'],
         fareDetails: json['fare_details'] == null
             ? null
             : FareDetails.fromJson(json['fare_details']),
-        totalAmount: json['total_amount'],
-        currency: json['currency'],
-        bookingStatus: json['booking_status'],
-        paymentStatus: json['payment_status'],
-        bookingType: json['booking_type'],
-        expiresAt: json['expires_at'],
-        confirmationNumber: json['confirmation_number'],
+        totalAmount: '${json['total_amount']}',
+        currency: '${json['currency']}',
+        bookingStatus: '${json['booking_status']}',
+        paymentStatus: '${json['payment_status']}',
+        bookingType: '${json['booking_type']}',
+        expiresAt: '${json['expires_at']}',
+        confirmationNumber: '${json['confirmation_number']}',
         ticketNumbers: json['ticket_numbers'] == null
             ? null
-            : List<String>.from(json['ticket_numbers']!.map((x) => x)),
-        pnrNumber: json['pnr_number'],
+            : List<String>.from(json['ticket_numbers']!.map((x) => '${x}')),
+        pnrNumber: '${json['pnr_number']}',
         cancellationPolicy: json['cancellation_policy'] == null
             ? null
             : CancellationPolicy.fromJson(json['cancellation_policy']),
         refundPolicy: json['refund_policy'] == null
             ? null
             : RefundPolicy.fromJson(json['refund_policy']),
-        flightOrderId: json['flight_order_id'],
+        flightOrderId: '${json['flight_order_id']}',
         amadeusOrderData: json['amadeus_order_data'] == null
             ? null
             : AmadeusOrderData.fromJson(json['amadeus_order_data']),
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at'],
+        createdAt: '${json['created_at']}',
+        updatedAt: '${json['updated_at']}',
       );
   final int? id;
   final String? bookingReference;
@@ -144,38 +144,40 @@ class Booking {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'bookingReference': bookingReference,
-        'userId': userId,
-        'flightOfferId': flightOfferId,
-        'flightData': flightData?.toJson(),
-        'travellerDetails': travellerDetails?.toJson(),
-        'billingAddress': billingAddress?.toJson(),
-        'contactDetails': contactDetails?.toJson(),
-        'seatSelections': seatSelections,
-        'mealSelections': mealSelections,
-        'insuranceSelections': insuranceSelections,
-        'fareDetails': fareDetails?.toJson(),
-        'totalAmount': totalAmount,
+        'booking_reference': bookingReference,
+        'user_id': userId,
+        'flight_offer_id': flightOfferId,
+        'flight_data': flightData?.toJson(),
+        'traveller_details': travellerDetails?.toJson(),
+        'billing_address': billingAddress?.toJson(),
+        'contact_details': contactDetails?.toJson(),
+        'seat_selections': seatSelections,
+        'meal_selections': mealSelections,
+        'insurance_selections': insuranceSelections,
+        'fare_details': fareDetails?.toJson(),
+        'total_amount': totalAmount,
         'currency': currency,
-        'bookingStatus': bookingStatus,
-        'paymentStatus': paymentStatus,
-        'bookingType': bookingType,
-        'expiresAt': expiresAt,
-        'confirmationNumber': confirmationNumber,
-        'ticketNumbers': ticketNumbers == null
+        'booking_status': bookingStatus,
+        'payment_status': paymentStatus,
+        'booking_type': bookingType,
+        'expires_at': expiresAt,
+        'confirmation_number': confirmationNumber,
+        'ticket_numbers': ticketNumbers == null
             ? null
             : List<dynamic>.from(ticketNumbers!.map((x) => x)),
-        'pnrNumber': pnrNumber,
-        'cancellationPolicy': cancellationPolicy?.toJson(),
-        'refundPolicy': refundPolicy?.toJson(),
-        'flightOrderId': flightOrderId,
-        'amadeusOrderData': amadeusOrderData?.toJson(),
-        'createdAt': createdAt,
-        'updatedAt': updatedAt,
+        'pnr_number': pnrNumber,
+        'cancellation_policy': cancellationPolicy?.toJson(),
+        'refund_policy': refundPolicy?.toJson(),
+        'flight_order_id': flightOrderId,
+        'amadeus_order_data': amadeusOrderData?.toJson(),
+        'created_at': createdAt,
+        'updated_at': updatedAt,
       };
 }
 
-// --- AmadeusOrderData and Nested Models ---
+// ---------------------------------------------
+// NESTED MODELS (AmadeusOrderData, FlightOffer, etc.)
+// ---------------------------------------------
 
 class AmadeusOrderData {
   AmadeusOrderData({
@@ -193,8 +195,8 @@ class AmadeusOrderData {
 
   factory AmadeusOrderData.fromJson(Map<String, dynamic> json) =>
       AmadeusOrderData(
-        id: json['id'],
-        type: json['type'],
+        id: '${json['id']}',
+        type: '${json['type']}',
         remarks:
             json['remarks'] == null ? null : Remarks.fromJson(json['remarks']),
         contacts: json['contacts'] == null
@@ -209,7 +211,7 @@ class AmadeusOrderData {
             ? null
             : List<FlightOffer>.from(
                 json['flightOffers']!.map((x) => FlightOffer.fromJson(x))),
-        queuingOfficeId: json['queuingOfficeId'],
+        queuingOfficeId: '${json['queuingOfficeId']}',
         automatedProcess: json['automatedProcess'] == null
             ? null
             : List<AutomatedProcess>.from(json['automatedProcess']!
@@ -267,12 +269,12 @@ class AssociatedRecord {
 
   factory AssociatedRecord.fromJson(Map<String, dynamic> json) =>
       AssociatedRecord(
-        reference: json['reference'],
+        reference: '${json['reference']}',
         creationDate: json['creationDate'] == null
             ? null
             : DateTime.parse(json['creationDate']),
-        flightOfferId: json['flightOfferId'],
-        originSystemCode: json['originSystemCode'],
+        flightOfferId: '${json['flightOfferId']}',
+        originSystemCode: '${json['originSystemCode']}',
       );
   final String? reference;
   final DateTime? creationDate;
@@ -296,9 +298,9 @@ class AutomatedProcess {
 
   factory AutomatedProcess.fromJson(Map<String, dynamic> json) =>
       AutomatedProcess(
-        code: json['code'],
+        code: '${json['code']}',
         queue: json['queue'] == null ? null : Queue.fromJson(json['queue']),
-        officeId: json['officeId'],
+        officeId: '${json['officeId']}',
       );
   final String? code;
   final Queue? queue;
@@ -318,8 +320,8 @@ class Queue {
   });
 
   factory Queue.fromJson(Map<String, dynamic> json) => Queue(
-        number: json['number'],
-        category: json['category'],
+        number: '${json['number']}',
+        category: '${json['category']}',
       );
   final String? number;
   final String? category;
@@ -346,9 +348,9 @@ class ContactElement {
             : List<Phone>.from(json['phones']!.map((x) => Phone.fromJson(x))),
         address:
             json['address'] == null ? null : Address.fromJson(json['address']),
-        purpose: json['purpose'],
-        companyName: json['companyName'],
-        emailAddress: json['emailAddress'],
+        purpose: '${json['purpose']}',
+        companyName: '${json['companyName']}',
+        emailAddress: '${json['emailAddress']}',
         addresseeName: json['addresseeName'] == null
             ? null
             : AddresseeName.fromJson(json['addresseeName']),
@@ -382,9 +384,9 @@ class Address {
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
         lines: json['lines'],
-        cityName: json['cityName'],
-        postalCode: json['postalCode'],
-        countryCode: json['countryCode'],
+        cityName: '${json['cityName']}',
+        postalCode: '${json['postalCode']}',
+        countryCode: '${json['countryCode']}',
       );
   final List<dynamic>? lines;
   final String? cityName;
@@ -405,7 +407,7 @@ class AddresseeName {
   });
 
   factory AddresseeName.fromJson(Map<String, dynamic> json) => AddresseeName(
-        firstName: json['firstName'],
+        firstName: '${json['firstName']}',
       );
   final String? firstName;
 
@@ -422,8 +424,9 @@ class Phone {
   });
 
   factory Phone.fromJson(Map<String, dynamic> json) => Phone(
-        number: json['number'],
-        deviceType: json['deviceType'],
+        number: '${json['number']}',
+        deviceType: '${json['deviceType']}',
+        countryCallingCode: '${json['countryCallingCode']}',
       );
   final String? number;
   final String? deviceType;
@@ -451,12 +454,12 @@ class FlightOffer {
   });
 
   factory FlightOffer.fromJson(Map<String, dynamic> json) => FlightOffer(
-        id: json['id'],
-        type: json['type'],
+        id: '${json['id']}',
+        type: '${json['type']}',
         price: json['price'] == null
             ? null
             : FlightOfferPrice.fromJson(json['price']),
-        source: json['source'],
+        source: '${json['source']}',
         itineraries: json['itineraries'] == null
             ? null
             : List<Itinerary>.from(
@@ -538,18 +541,18 @@ class Segment {
   });
 
   factory Segment.fromJson(Map<String, dynamic> json) => Segment(
-        id: json['id'],
-        number: json['number'],
+        id: '${json['id']}',
+        number: '${json['number']}',
         arrival:
             json['arrival'] == null ? null : Arrival.fromJson(json['arrival']),
         aircraft: json['aircraft'] == null
             ? null
             : Aircraft.fromJson(json['aircraft']),
-        duration: json['duration'],
+        duration: '${json['duration']}',
         departure: json['departure'] == null
             ? null
             : Arrival.fromJson(json['departure']),
-        carrierCode: json['carrierCode'],
+        carrierCode: '${json['carrierCode']}',
         co2Emissions: json['co2Emissions'] == null
             ? null
             : List<Co2Emission>.from(
@@ -592,7 +595,7 @@ class Aircraft {
   });
 
   factory Aircraft.fromJson(Map<String, dynamic> json) => Aircraft(
-        code: json['code'],
+        code: '${json['code']}' == 'null' ? null : '${json['code']}',
       );
   final String? code;
 
@@ -609,9 +612,9 @@ class Arrival {
   });
 
   factory Arrival.fromJson(Map<String, dynamic> json) => Arrival(
-        at: json['at'],
-        iataCode: json['iataCode'],
-        terminal: json['terminal'],
+        at: '${json['at']}',
+        iataCode: '${json['iataCode']}',
+        terminal: '${json['terminal']}',
       );
   final String? at;
   final String? iataCode;
@@ -632,9 +635,9 @@ class Co2Emission {
   });
 
   factory Co2Emission.fromJson(Map<String, dynamic> json) => Co2Emission(
-        cabin: json['cabin'],
+        cabin: '${json['cabin']}',
         weight: json['weight'],
-        weightUnit: json['weightUnit'],
+        weightUnit: '${json['weightUnit']}',
       );
   final String? cabin;
   final int? weight;
@@ -653,7 +656,7 @@ class Operating {
   });
 
   factory Operating.fromJson(Map<String, dynamic> json) => Operating(
-        carrierCode: json['carrierCode'],
+        carrierCode: '${json['carrierCode']}',
       );
   final String? carrierCode;
 
@@ -664,7 +667,7 @@ class Operating {
 
 class FlightOfferPrice {
   FlightOfferPrice({
-    this.base,
+    this.basePrice,
     this.fees,
     this.total,
     this.currency,
@@ -674,16 +677,16 @@ class FlightOfferPrice {
 
   factory FlightOfferPrice.fromJson(Map<String, dynamic> json) =>
       FlightOfferPrice(
-        base: json['base'],
+        basePrice: '${json['base']}',
         fees: json['fees'] == null
             ? null
             : List<Fee>.from(json['fees']!.map((x) => Fee.fromJson(x))),
-        total: json['total'],
-        currency: json['currency'],
-        grandTotal: json['grandTotal'],
-        billingCurrency: json['billingCurrency'],
+        total: '${json['total']}',
+        currency: '${json['currency']}',
+        grandTotal: '${json['grandTotal']}',
+        billingCurrency: '${json['billingCurrency']}',
       );
-  final String? base;
+  final String? basePrice;
   final List<Fee>? fees;
   final String? total;
   final String? currency;
@@ -691,7 +694,7 @@ class FlightOfferPrice {
   final String? billingCurrency;
 
   Map<String, dynamic> toJson() => {
-        'base': base,
+        'base': basePrice,
         'fees': fees == null
             ? null
             : List<dynamic>.from(fees!.map((x) => x.toJson())),
@@ -709,8 +712,8 @@ class Fee {
   });
 
   factory Fee.fromJson(Map<String, dynamic> json) => Fee(
-        type: json['type'],
-        amount: json['amount'],
+        type: '${json['type']}',
+        amount: '${json['amount']}',
       );
   final String? type;
   final String? amount;
@@ -754,9 +757,9 @@ class TravelerPricing {
         price: json['price'] == null
             ? null
             : TravelerPricingPrice.fromJson(json['price']),
-        fareOption: json['fareOption'],
-        travelerId: json['travelerId'],
-        travelerType: json['travelerType'],
+        fareOption: '${json['fareOption']}',
+        travelerId: '${json['travelerId']}',
+        travelerType: '${json['travelerType']}',
         fareDetailsBySegment: json['fareDetailsBySegment'] == null
             ? null
             : List<FareDetailsBySegment>.from(json['fareDetailsBySegment']!
@@ -791,11 +794,11 @@ class FareDetailsBySegment {
 
   factory FareDetailsBySegment.fromJson(Map<String, dynamic> json) =>
       FareDetailsBySegment(
-        cabin: json['cabin'],
-        fareDetailsBySegmentClass: json['class'],
-        fareBasis: json['fareBasis'],
-        segmentId: json['segmentId'],
-        brandedFare: json['brandedFare'],
+        cabin: '${json['cabin']}',
+        fareDetailsBySegmentClass: '${json['class']}',
+        fareBasis: '${json['fareBasis']}',
+        segmentId: '${json['segmentId']}',
+        brandedFare: '${json['brandedFare']}',
         includedCheckedBags: json['includedCheckedBags'] == null
             ? null
             : IncludedCheckedBags.fromJson(json['includedCheckedBags']),
@@ -826,7 +829,7 @@ class IncludedCheckedBags {
   factory IncludedCheckedBags.fromJson(Map<String, dynamic> json) =>
       IncludedCheckedBags(
         weight: json['weight'],
-        weightUnit: json['weightUnit'],
+        weightUnit: '${json['weightUnit']}',
       );
   final int? weight;
   final String? weightUnit;
@@ -839,7 +842,7 @@ class IncludedCheckedBags {
 
 class TravelerPricingPrice {
   TravelerPricingPrice({
-    this.base,
+    this.basePrice,
     this.taxes,
     this.total,
     this.currency,
@@ -848,22 +851,22 @@ class TravelerPricingPrice {
 
   factory TravelerPricingPrice.fromJson(Map<String, dynamic> json) =>
       TravelerPricingPrice(
-        base: json['base'],
+        basePrice: '${json['base']}',
         taxes: json['taxes'] == null
             ? null
             : List<Tax>.from(json['taxes']!.map((x) => Tax.fromJson(x))),
-        total: json['total'],
-        currency: json['currency'],
-        refundableTaxes: json['refundableTaxes'],
+        total: '${json['total']}',
+        currency: '${json['currency']}',
+        refundableTaxes: '${json['refundableTaxes']}',
       );
-  final String? base;
+  final String? basePrice;
   final List<Tax>? taxes;
   final String? total;
   final String? currency;
   final String? refundableTaxes;
 
   Map<String, dynamic> toJson() => {
-        'base': base,
+        'base': basePrice,
         'taxes': taxes == null
             ? null
             : List<dynamic>.from(taxes!.map((x) => x.toJson())),
@@ -880,8 +883,8 @@ class Tax {
   });
 
   factory Tax.fromJson(Map<String, dynamic> json) => Tax(
-        code: json['code'],
-        amount: json['amount'],
+        code: '${json['code']}',
+        amount: '${json['amount']}',
       );
   final String? code;
   final String? amount;
@@ -919,8 +922,8 @@ class General {
   });
 
   factory General.fromJson(Map<String, dynamic> json) => General(
-        text: json['text'],
-        subType: json['subType'],
+        text: '${json['text']}',
+        subType: '${json['subType']}',
       );
   final String? text;
   final String? subType;
@@ -939,8 +942,8 @@ class TicketingAgreement {
 
   factory TicketingAgreement.fromJson(Map<String, dynamic> json) =>
       TicketingAgreement(
-        delay: json['delay'],
-        option: json['option'],
+        delay: '${json['delay']}',
+        option: '${json['option']}',
       );
   final String? delay;
   final String? option;
@@ -961,9 +964,9 @@ class Traveler {
   });
 
   factory Traveler.fromJson(Map<String, dynamic> json) => Traveler(
-        id: json['id'],
+        id: '${json['id']}',
         name: json['name'] == null ? null : Name.fromJson(json['name']),
-        gender: json['gender'],
+        gender: '${json['gender']}',
         contact: json['contact'] == null
             ? null
             : TravelerContact.fromJson(json['contact']),
@@ -999,8 +1002,8 @@ class TravelerContact {
         phones: json['phones'] == null
             ? null
             : List<Phone>.from(json['phones']!.map((x) => Phone.fromJson(x))),
-        purpose: json['purpose'],
-        emailAddress: json['emailAddress'],
+        purpose: '${json['purpose']}',
+        emailAddress: '${json['emailAddress']}',
       );
   final List<Phone>? phones;
   final String? purpose;
@@ -1022,8 +1025,8 @@ class Name {
   });
 
   factory Name.fromJson(Map<String, dynamic> json) => Name(
-        lastName: json['lastName'],
-        firstName: json['firstName'],
+        lastName: '${json['lastName']}',
+        firstName: '${json['firstName']}',
       );
   final String? lastName;
   final String? firstName;
@@ -1045,12 +1048,12 @@ class BillingAddress {
   });
 
   factory BillingAddress.fromJson(Map<String, dynamic> json) => BillingAddress(
-        city: json['city'],
-        state: json['state'],
-        country: json['country'],
-        pinCode: json['pinCode'],
-        addressLine1: json['addressLine1'],
-        addressLine2: json['addressLine2'],
+        city: '${json['city']}',
+        state: '${json['state']}',
+        country: '${json['country']}',
+        pinCode: '${json['pinCode']}',
+        addressLine1: '${json['addressLine1']}',
+        addressLine2: '${json['addressLine2']}',
       );
   final String? city;
   final String? state;
@@ -1078,20 +1081,21 @@ class CancellationPolicy {
 
   factory CancellationPolicy.fromJson(Map<String, dynamic> json) =>
       CancellationPolicy(
-        cancellationFee: json['cancellationFee'],
-        refundPercentage: json['refundPercentage'],
-        freeCancellationUntil: json['freeCancellationUntil'] == null
+        // Use string interpolation for safety before parsing
+        cancellationFee: double.parse('${json['cancellation_fee'] ?? 0.0}'),
+        refundPercentage: json['refund_percentage'],
+        freeCancellationUntil: json['free_cancellation_until'] == null
             ? null
-            : DateTime.parse(json['freeCancellationUntil']),
+            : DateTime.parse(json['free_cancellation_until']),
       );
-  final int? cancellationFee;
+  final double? cancellationFee;
   final int? refundPercentage;
   final DateTime? freeCancellationUntil;
 
   Map<String, dynamic> toJson() => {
-        'cancellationFee': cancellationFee,
-        'refundPercentage': refundPercentage,
-        'freeCancellationUntil': freeCancellationUntil?.toIso8601String(),
+        'cancellation_fee': cancellationFee,
+        'refund_percentage': refundPercentage,
+        'free_cancellation_until': freeCancellationUntil?.toIso8601String(),
       };
 }
 
@@ -1103,9 +1107,9 @@ class ContactDetails {
   });
 
   factory ContactDetails.fromJson(Map<String, dynamic> json) => ContactDetails(
-        email: json['email'],
-        countryCode: json['countryCode'],
-        phoneNumber: json['phoneNumber'],
+        email: '${json['email']}',
+        countryCode: '${json['countryCode']}',
+        phoneNumber: '${json['phoneNumber']}',
       );
   final String? email;
   final String? countryCode;
@@ -1132,25 +1136,26 @@ class FareDetails {
   });
 
   factory FareDetails.fromJson(Map<String, dynamic> json) => FareDetails(
-        taxes: json['taxes'],
-        markup: double.parse('${json['markup']}'),
-        baseFare: json['baseFare'],
-        discount: json['discount'],
-        totalFare: json['totalFare']?.toDouble(),
-        selectedFare: json['selectedFare'],
-        showTotalFare: json['showTotalFare'],
-        taxesWithMarkup: json['taxesWithMarkup']?.toDouble(),
-        originalSubtotal: json['originalSubtotal'],
+        // Use string interpolation for safety before parsing (fixes 'int' to 'double' error)
+        taxes: double.parse('${json['taxes'] ?? 0.0}'),
+        markup: double.parse('${json['markup'] ?? 0.0}'),
+        baseFare: double.parse('${json['baseFare'] ?? 0.0}'),
+        discount: double.parse('${json['discount'] ?? 0.0}'),
+        totalFare: double.parse('${json['totalFare'] ?? 0.0}'),
+        selectedFare: '${json['selectedFare']}',
+        showTotalFare: json['showTotalFare'] ?? false,
+        taxesWithMarkup: double.parse('${json['taxesWithMarkup'] ?? 0.0}'),
+        originalSubtotal: double.parse('${json['originalSubtotal'] ?? 0.0}'),
       );
-  final int? taxes;
+  final double? taxes;
   final double? markup;
-  final int? baseFare;
-  final int? discount;
+  final double? baseFare;
+  final double? discount;
   final double? totalFare;
   final String? selectedFare;
   final bool? showTotalFare;
   final double? taxesWithMarkup;
-  final int? originalSubtotal;
+  final double? originalSubtotal;
 
   Map<String, dynamic> toJson() => {
         'taxes': taxes,
@@ -1182,12 +1187,12 @@ class FlightData {
   });
 
   factory FlightData.fromJson(Map<String, dynamic> json) => FlightData(
-        id: json['id'],
-        type: json['type'],
+        id: '${json['id']}',
+        type: '${json['type']}',
         price: json['price'] == null
             ? null
             : FlightOfferPrice.fromJson(json['price']),
-        source: json['source'],
+        source: '${json['source']}',
         itineraries: json['itineraries'] == null
             ? null
             : List<Itinerary>.from(
@@ -1249,10 +1254,10 @@ class RefundPolicy {
 
   factory RefundPolicy.fromJson(Map<String, dynamic> json) => RefundPolicy(
         refundable: json['refundable'],
-        processingTime: json['processingTime'],
-        refundDeadline: json['refundDeadline'] == null
+        processingTime: '${json['processing_time']}',
+        refundDeadline: json['refund_deadline'] == null
             ? null
-            : DateTime.parse(json['refundDeadline']),
+            : DateTime.parse(json['refund_deadline']),
       );
   final bool? refundable;
   final String? processingTime;
@@ -1260,8 +1265,8 @@ class RefundPolicy {
 
   Map<String, dynamic> toJson() => {
         'refundable': refundable,
-        'processingTime': processingTime,
-        'refundDeadline': refundDeadline?.toIso8601String(),
+        'processing_time': processingTime,
+        'refund_deadline': refundDeadline?.toIso8601String(),
       };
 }
 
@@ -1312,13 +1317,13 @@ class Adult {
 
   factory Adult.fromJson(Map<String, dynamic> json) => Adult(
         open: json['open'],
-        title: json['title'],
-        lastName: json['lastName'],
-        firstName: json['firstName'],
+        title: '${json['title']}',
+        lastName: '${json['lastName']}',
+        firstName: '${json['firstName']}',
         dateOfBirth: json['dateOfBirth'] == null
             ? null
             : DateTime.parse(json['dateOfBirth']),
-        nationality: json['nationality'],
+        nationality: '${json['nationality']}',
       );
   final bool? open;
   final String? title;

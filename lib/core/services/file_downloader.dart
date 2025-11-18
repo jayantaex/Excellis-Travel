@@ -39,7 +39,6 @@ class FileDownloaderService {
         log('status: $status');
         if (status.isPermanentlyDenied) {
           await openAppSettings();
-          throw 'Permission denied';
         }
       }
       final String savePath = '${await _getPath()}$bokkingRefId.pdf';

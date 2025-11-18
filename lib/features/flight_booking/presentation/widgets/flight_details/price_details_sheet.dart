@@ -6,11 +6,13 @@ import '../../../models/flight_offer_price_model.dart';
 Future<void> showPriceDetailsSheet(
     {required BuildContext context,
     required FlightOffer flightOffer,
+    required bool offerFareEnabled,
     required MyMarkup myMarkup}) async {
   await showModalBottomSheet(
     backgroundColor: AppColors.white,
     context: context,
     builder: (BuildContext context) => PriceDetailsSheet(
+      offerFareEnabled: offerFareEnabled,
       flightOffer: flightOffer,
       myMarkup: myMarkup,
     ),
@@ -19,10 +21,13 @@ Future<void> showPriceDetailsSheet(
 
 class PriceDetailsSheet extends StatelessWidget {
   PriceDetailsSheet(
-      {super.key, required this.flightOffer, required this.myMarkup});
+      {super.key,
+      required this.flightOffer,
+      required this.myMarkup,
+      required this.offerFareEnabled});
   final FlightOffer flightOffer;
   final MyMarkup myMarkup;
-
+  final bool offerFareEnabled;
   final List<String> adult = <String>[];
   final List<String> child = <String>[];
   final List<String> infant = <String>[];
@@ -51,90 +56,84 @@ class PriceDetailsSheet extends StatelessWidget {
     }
     return SizedBox(
       width: AppHelpers.getScreenWidth(context),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                const SizedBox(height: 25, width: 20),
-                const Text(
-                  'Price details',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.black),
-                ),
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: const Icon(
-                    Icons.close,
-                    color: AppColors.black,
-                  ),
-                ),
-              ],
-            ),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.grey.withOpacity(0.05),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
           ),
-          const SizedBox(height: 12),
-          const Divider(),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                    'Total Travelers: ${adult.length + child.length + infant.length} person(s)'),
-                adult.isEmpty
-                    ? const SizedBox()
-                    : PriceCol(
-                        isIconRequired: false,
-                        titile: 'ADULT',
-                        value: '${adult.length}P'),
-                const SizedBox(height: 6),
-                child.isEmpty
-                    ? const SizedBox()
-                    : PriceCol(
-                        isIconRequired: false,
-                        titile: 'CHILD',
-                        value: '${adult.length}P'),
-                infant.isEmpty
-                    ? const SizedBox()
-                    : PriceCol(
-                        isIconRequired: false,
-                        titile: 'INFANT',
-                        value: '${adult.length}(INFANT)P'),
-                const SizedBox(height: 8),
-                PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
-                PriceCol(
-                    titile: 'Agent fee',
-                    value: (double.parse(getCalculatedPrice(
-                                basePrice: flightOffer.price!.markup!,
-                                type: myMarkup.type ?? 'Fixed',
-                                value: myMarkup.value ?? '0')) -
-                            double.parse(flightOffer.price!.markup!))
-                        .toStringAsFixed(2)),
-                const SizedBox(height: 6),
-                const Divider(),
-                const SizedBox(height: 12),
-                PriceCol(
-                  titile: 'Grand Total',
-                  value: getCalculatedPrice(
-                    basePrice: flightOffer.price!.markup!,
-                    type: myMarkup.type ?? 'Fixed',
-                    value: myMarkup.value ?? '0',
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Total Travelers: ${adult.length + child.length + infant.length} person(s)',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  isBold: true,
-                  isIconRequired: true,
-                ),
-                const SizedBox(height: 40),
-              ],
-            ),
-          )
-        ],
+                  const SizedBox(height: 12),
+                  adult.isEmpty
+                      ? const SizedBox()
+                      : PriceCol(
+                          isIconRequired: false,
+                          titile: 'ADULT',
+                          value: '${adult.length}P'),
+                  const SizedBox(height: 6),
+                  child.isEmpty
+                      ? const SizedBox()
+                      : PriceCol(
+                          isIconRequired: false,
+                          titile: 'CHILD',
+                          value: '${adult.length}P'),
+                  infant.isEmpty
+                      ? const SizedBox()
+                      : PriceCol(
+                          isIconRequired: false,
+                          titile: 'INFANT',
+                          value: '${adult.length}(INFANT)P'),
+                  const SizedBox(height: 8),
+                  PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
+                  PriceCol(
+                      titile: 'Booking charges',
+                      value: offerFareEnabled
+                          ? '0.00'
+                          : (double.parse(getCalculatedPrice(
+                                      basePrice: flightOffer.price!.markup!,
+                                      type: myMarkup.type ?? 'Fixed',
+                                      value: myMarkup.value ?? '0')) -
+                                  double.parse(flightOffer.price!.markup!))
+                              .toStringAsFixed(2)),
+                  const SizedBox(height: 6),
+                  const Divider(),
+                  const SizedBox(height: 12),
+                  PriceCol(
+                    titile: 'Grand Total',
+                    value: offerFareEnabled
+                        ? flightOffer.price!.markup!
+                        : getCalculatedPrice(
+                            basePrice: flightOffer.price!.markup!,
+                            type: myMarkup.type ?? 'Fixed',
+                            value: myMarkup.value ?? '0',
+                          ),
+                    isBold: true,
+                    isIconRequired: true,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
