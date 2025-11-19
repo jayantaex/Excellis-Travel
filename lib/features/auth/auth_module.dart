@@ -8,7 +8,7 @@ import '../../core/common/data/location_repository.dart';
 import '../../core/network/api_client.dart';
 import 'apis/auth_api.dart';
 import 'bloc/auth_bloc.dart';
-import 'data/auth_repository.dart';
+import 'data/repository/auth_repository.dart';
 import 'presentation/screens/login_screen.dart';
 import 'presentation/screens/registration_screen.dart';
 

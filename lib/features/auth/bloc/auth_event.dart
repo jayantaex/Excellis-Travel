@@ -87,3 +87,8 @@ final class ResetPasswordEvent extends AuthEvent {
   final String currentPassword;
   final String newPassword;
 }
+
+final class SendRecoverLinkEvent extends AuthEvent {
+  const SendRecoverLinkEvent({required this.email});
+  final String email;
+}

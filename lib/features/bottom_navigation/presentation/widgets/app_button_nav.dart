@@ -25,7 +25,8 @@ class AppButtonNav extends StatelessWidget {
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}home.svg',
-          colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          colorFilter:
+              const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
       ),
       icon: Container(
@@ -58,7 +59,8 @@ class AppButtonNav extends StatelessWidget {
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}ticket.svg',
-          colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          colorFilter:
+              const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
       ),
       icon: Container(
@@ -93,7 +95,8 @@ class AppButtonNav extends StatelessWidget {
           height: 25,
           width: 25,
           '${AppConstants.assetIcontUrl}sales.svg',
-          colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          colorFilter:
+              const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
       ),
       icon: Container(
@@ -128,7 +131,8 @@ class AppButtonNav extends StatelessWidget {
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}profile.svg',
-          colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          colorFilter:
+              const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
       ),
       icon: Container(

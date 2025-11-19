@@ -9,7 +9,7 @@ import '../../core/common/data/location_repository.dart';
 import '../../core/network/api_client.dart';
 import 'apis/profile_management_api.dart';
 import 'bloc/profile_bloc.dart';
-import 'data/profile_management_repository.dart';
+import 'data/repository/profile_management_repository.dart';
 import 'presentation/screens/city_search.dart';
 import 'presentation/screens/edit_profile_screen.dart';
 import 'presentation/screens/my_profile_screen.dart';
@@ -37,7 +37,8 @@ class ProfileManagementModule {
   static String editProfilePath = '/edit_profile';
   static String editProfileName = 'edit_profile';
 
-  static Widget editProfileBuilder(BuildContext context, GoRouterState state) => MultiBlocProvider(
+  static Widget editProfileBuilder(BuildContext context, GoRouterState state) =>
+      MultiBlocProvider(
         providers: [
           if (state.extra is ProfileBloc)
             BlocProvider<ProfileBloc>.value(

@@ -92,7 +92,7 @@ class _SalesScreenState extends State<SalesScreen> {
                           const Icon(Icons.filter_alt, color: AppColors.white)),
                 ),
                 token == null || token!.isEmpty
-                    ? const Center(child: NotLoginWidget())
+                    ? const Expanded(child: Center(child: NotLoginWidget()))
                     : BlocConsumer<SalesBloc, SalesState>(
                         listener: (context, state) {
                           log(state.toString());
