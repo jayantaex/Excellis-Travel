@@ -10,6 +10,7 @@ import '../../../legal/legal_module.dart';
 import '../../auth_module.dart';
 import '../../bloc/auth_bloc.dart';
 import 'auth_input_widget.dart';
+import 'recover_pass_confirmation.dart';
 
 class LoginSheet extends StatefulWidget {
   const LoginSheet({super.key, required this.isLoading});
@@ -22,10 +23,7 @@ class LoginSheet extends StatefulWidget {
 class _LoginSheetState extends State<LoginSheet> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final List<DropdownMenuItem<String>> _items = <DropdownMenuItem<String>>[
-    const DropdownMenuItem<String>(value: 'retailer', child: Text('Retailer')),
-    const DropdownMenuItem<String>(value: 'user', child: Text('User')),
-  ];
+
   String usertype = 'retailer';
   String errMsg = '';
 
@@ -118,8 +116,8 @@ class _LoginSheetState extends State<LoginSheet> {
                       isPassword: false,
                       maxCharacters: 100,
                       controller: _userNameController,
-                      label: 'Email or Username',
-                      hint: 'Enter your Email or Username'),
+                      label: 'Email',
+                      hint: 'Enter your email address'),
                 ),
                 const SizedBox(height: 12),
                 Padding(
@@ -138,7 +136,7 @@ class _LoginSheetState extends State<LoginSheet> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       const Text(
-                        'did you forget your password?',
+                        'Forget your password?',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
@@ -147,14 +145,23 @@ class _LoginSheetState extends State<LoginSheet> {
                       ),
                       const SizedBox(width: 8),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (_userNameController.text.isEmpty) {
-                            AppHelpers.showSnackBar(context,
+                            await AppHelpers.showSnackBar(context,
                                 'please enter your email to recover password');
+                            return;
                           }
+                          await recoverPassConfirmation(
+                              context, _userNameController.text, () {
+                            context.read<AuthBloc>().add(
+                                  SendRecoverLinkEvent(
+                                    email: _userNameController.text,
+                                  ),
+                                );
+                          });
                         },
                         child: const Text(
-                          "Recover Now",
+                          'Recover Now',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,

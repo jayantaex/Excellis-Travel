@@ -1,16 +1,17 @@
-import 'dart:developer';
-
+import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/services/local_db.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/utils/app_toast.dart';
 import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../auth/auth_module.dart';
+import '../../../auth/presentation/widgets/log_out_sheet.dart';
 import '../../../legal/legal_module.dart';
 import '../../../settings/settings_module.dart';
 import '../../bloc/profile_bloc.dart';
@@ -24,12 +25,19 @@ class MyProfileScreen extends StatefulWidget {
   State<MyProfileScreen> createState() => _MyProfileScreenState();
 }
 
+LocalDB _localDB = LocalDB();
+
 class _MyProfileScreenState extends State<MyProfileScreen> {
   final List<Map<String, String>> options = <Map<String, String>>[
     <String, String>{
       'title': 'Profile',
-      'iconPath': '${AppConstants.assetIcontUrl}my_profile.svg',
+      'iconPath': '${AppConstants.assetIcontUrl}profile.svg',
       'routeName': ProfileManagementModule.editProfileName
+    },
+    <String, String>{
+      'title': 'My Markup',
+      'iconPath': '${AppConstants.assetIcontUrl}markup.svg',
+      'routeName': ''
     },
     <String, String>{
       'title': 'Terms & Conditions',
@@ -38,7 +46,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     },
     <String, String>{
       'title': 'Privacy Policy',
-      'iconPath': '${AppConstants.assetIcontUrl}privacy_policy.svg',
+      'iconPath': '${AppConstants.assetIcontUrl}policy.svg',
       'routeName': LegalModule.policyName
     },
     <String, String>{
@@ -48,16 +56,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     },
     <String, String>{
       'title': 'Sign Out',
-      'iconPath': '${AppConstants.assetIcontUrl}sign_out.svg',
+      'iconPath': '${AppConstants.assetIcontUrl}logout.svg',
       'routeName': ''
     }
   ];
-   bool isLogedIn = false;
+  bool isLogedIn = false;
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
-      isLogedIn = await isLogedInFun(); 
+      isLogedIn = await isLogedInFun();
       if (context.mounted) {
         context.read<ProfileBloc>().add(const LoadProfileEvent());
       }
@@ -99,12 +107,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             ? state.profileData.firstName ?? 'Guest'
                             : 'Guest',
                       ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.light_mode,
-                            color: AppColors.white,
-                          ))
                     ],
                   ),
                 ),
@@ -124,10 +126,16 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       children: <Widget>[
                         const SizedBox(height: 20),
                         ...options.map((Map<String, String> option) => ListTile(
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: AppColors.primary,
+                              size: 12,
+                            ),
                             leading: SvgPicture.asset(
                               option['iconPath'] ?? '',
-                              height: 17,
-                              width: 17,
+                              height: 20,
+                              width: 20,
+                              color: AppColors.primary,
                             ),
                             title: Text(
                               option['title'] == 'Sign Out'
@@ -136,7 +144,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       : 'Login'
                                   : option['title'] ?? '',
                               style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w400),
+                                  fontSize: 14, fontWeight: FontWeight.w400),
                             ),
                             onTap: () async {
                               if (option['routeName'] == 'edit_profile') {
@@ -152,6 +160,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 showToast(
                                     message:
                                         'Please login to edit your profile');
+                                return;
                               }
 
                               if (option['routeName'] == 'settings') {
@@ -171,12 +180,23 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               }
 
                               if (option['title'] == 'Sign Out') {
-                        
                                 if (isLogedIn) {
-                                          log('${option['routeName']}');
-                                log('${option['title']}');
                                   if (context.mounted) {
-                                    await showLogoutSheet(context: context);
+                                    await showAppSheet(
+                                      context: context,
+                                      title: 'Logout',
+                                      child: LogOutSheet(),
+                                      submitButtonRequired: true,
+                                      submitButtonTitle: 'Logout',
+                                      onSubmitPressed: () async {
+                                        await StorageService.clearTokens();
+                                        await _localDB.clearAllLocalDB();
+                                        context.mounted
+                                            ? context
+                                                .goNamed(AuthModule.loginName)
+                                            : null;
+                                      },
+                                    );
                                   }
                                   return;
                                 }

@@ -6,8 +6,8 @@ import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/utils/storage_service.dart';
 import '../../../core/utils/validators.dart';
-import '../data/auth_repository.dart';
-import '../models/auth_resp_model.dart';
+import '../data/repository/auth_repository.dart';
+import '../data/models/auth_resp_model.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -18,6 +18,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterEvent>(_handleRegistrationEvent);
     on<LogoutEvent>(_handleLogoutEvent);
     on<ResetPasswordEvent>(_handleResetPasswordEvent);
+    on<SendRecoverLinkEvent>(_recoverPassword);
   }
   AuthRepository authRepository;
 
@@ -145,6 +146,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final ApiResponse<bool> res = await authRepository.resetPassword(
           currentPassword: event.currentPassword,
           newPassword: event.newPassword);
+      if (res.errorMessage != null) {
+        emit(PasswordResetFailure(message: res.errorMessage!));
+      } else {
+        emit(PasswordResetSuccess());
+      }
+    } catch (e) {
+      emit(PasswordResetFailure(message: e.toString()));
+    }
+  }
+
+  Future<void> _recoverPassword(
+      SendRecoverLinkEvent event, Emitter<AuthState> emit) async {
+    try {
+      emit(PasswordResetInProgress());
+      final ApiResponse<bool> res =
+          await authRepository.sendRecoverLink(email: event.email);
       if (res.errorMessage != null) {
         emit(PasswordResetFailure(message: res.errorMessage!));
       } else {

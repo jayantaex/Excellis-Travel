@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import '../../../core/common/models/profile_data_model.dart';
-import '../../../core/network/api_response.dart';
-import '../apis/profile_management_api.dart';
+import '../../../../core/common/models/profile_data_model.dart';
+import '../../../../core/network/api_response.dart';
+import '../../apis/profile_management_api.dart';
 
 class ProfileManagementRepository {
   ProfileManagementRepository({required this.profileManagementApi});

@@ -3,7 +3,7 @@ import 'dart:developer';
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
-import '../models/auth_resp_model.dart';
+import '../data/models/auth_resp_model.dart';
 
 class AuthApi {
   AuthApi({required this.apiClient});
@@ -81,6 +81,18 @@ class AuthApi {
 
     return apiClient.postRequest(
       endPoint: EndPoints.resetPassword,
+      reqModel: body,
+      fromJson: (Map<String, dynamic> jsonData) => jsonData['success'] ?? false,
+    );
+  }
+
+  Future<ApiResponse<bool>> sendRecoverLink({required String email}) async {
+    final Map<String, String> body = <String, String>{
+      'email': email,
+    };
+
+    return apiClient.postRequest(
+      endPoint: EndPoints.sendRecoverLink,
       reqModel: body,
       fromJson: (Map<String, dynamic> jsonData) => jsonData['success'] ?? false,
     );
