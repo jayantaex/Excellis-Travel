@@ -10,8 +10,7 @@ import 'features/profile_management/profile_management_module.dart';
 import 'features/settings/settings_module.dart';
 import 'features/splash/splash_module.dart';
 import 'features/ticket/ticket_module.dart';
-import 'features/wallet_management/wallet_module.dart';
-import 'features/wish_list/wish_list_module.dart';
+
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -43,12 +42,7 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) => BottomNavModule.builder(),
       ),
 
-      //wallet management
-      GoRoute(
-        path: WalletModule.myWalletPath,
-        name: WalletModule.myWalletName,
-        builder: (BuildContext context, GoRouterState state) => WalletModule.myWalletBuilder(),
-      ),
+    
       GoRoute(
           path: PaymentModule.paymentSucessPath,
           name: PaymentModule.paymentSucessName,
@@ -61,12 +55,7 @@ class AppRouter {
             PaymentModule.paymentFailedBuilder(context, state),
       ),
 
-      //Wish list
-      GoRoute(
-        path: WishListModule.routePath,
-        name: WishListModule.routeName,
-        builder: (BuildContext context, GoRouterState state) => WishListModule.builder(),
-      ),
+ 
 
       //ticket
       GoRoute(

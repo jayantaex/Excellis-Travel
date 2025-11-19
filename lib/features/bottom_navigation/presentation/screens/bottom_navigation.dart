@@ -9,7 +9,6 @@ import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../../profile_management/presentation/screens/my_profile_screen.dart';
 import '../../../sales/presentation/screens/sales_screen.dart';
 import '../../../ticket/presentation/screens/ticket_screen.dart';
-import '../../../wish_list/presentation/screens/wish_list_screen.dart';
 import '../widgets/app_button_nav.dart';
 import '../widgets/bottom_navigation_loading.dart';
 
