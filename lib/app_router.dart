@@ -7,10 +7,10 @@ import 'features/legal/legal_module.dart';
 import 'features/notifiaction/notification_module.dart';
 import 'features/payment/payment_module.dart';
 import 'features/profile_management/profile_management_module.dart';
+import 'features/sales/sales_module.dart';
 import 'features/settings/settings_module.dart';
 import 'features/splash/splash_module.dart';
 import 'features/ticket/ticket_module.dart';
-
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -20,29 +20,32 @@ class AppRouter {
       GoRoute(
         path: SplashModule.splashRoute,
         name: SplashModule.spashName,
-        builder: (BuildContext context, GoRouterState state) => SplashModule.builder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            SplashModule.builder(),
       ),
 
       //Auth
       GoRoute(
         path: AuthModule.loginPath,
         name: AuthModule.loginName,
-        builder: (BuildContext context, GoRouterState state) => AuthModule.loginBuilder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            AuthModule.loginBuilder(),
       ),
       GoRoute(
         path: AuthModule.registerPath,
         name: AuthModule.registerName,
-        builder: (BuildContext context, GoRouterState state) => AuthModule.registerBuilder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            AuthModule.registerBuilder(),
       ),
 
       //bottom navigation
       GoRoute(
         path: BottomNavModule.path,
         name: BottomNavModule.name,
-        builder: (BuildContext context, GoRouterState state) => BottomNavModule.builder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            BottomNavModule.builder(),
       ),
 
-    
       GoRoute(
           path: PaymentModule.paymentSucessPath,
           name: PaymentModule.paymentSucessName,
@@ -55,18 +58,18 @@ class AppRouter {
             PaymentModule.paymentFailedBuilder(context, state),
       ),
 
- 
-
       //ticket
       GoRoute(
         path: TicketModule.ticketsRoute,
         name: TicketModule.tickets,
-        builder: (BuildContext context, GoRouterState state) => TicketModule.ticketBuilder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            TicketModule.ticketBuilder(),
       ),
       GoRoute(
         path: TicketModule.ticketDetailsRoute,
         name: TicketModule.ticketDetails,
-        builder: (BuildContext context, GoRouterState state) => TicketModule.ticketDetailsBuilder(state),
+        builder: (BuildContext context, GoRouterState state) =>
+            TicketModule.ticketDetailsBuilder(state),
       ),
 
       //Flight Booking
@@ -79,14 +82,17 @@ class AppRouter {
       GoRoute(
         path: FlightBookingModule.seatSelection,
         name: FlightBookingModule.seatSelectionName,
-        builder: (BuildContext context, GoRouterState state) => FlightBookingModule.seatSelectionBuilder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            FlightBookingModule.seatSelectionBuilder(),
       ),
-      // GoRoute(
-      //   path: FlightBookingModule.passengerDetails,
-      //   name: FlightBookingModule.passengerDetailsName,
-      //   builder: (context, state) =>
-      //       FlightBookingModule.passengerDetailsBuilder(),
-      // ),
+
+      //sales
+      GoRoute(
+        path: SalesModule.myMarkupRoute,
+        name: SalesModule.myMarkupScreen,
+        builder: (context, state) => SalesModule.myMarkupBuilder(),
+      ),
+
       // GoRoute(
       //   path: FlightBookingModule.paymentDetails,
       //   name: FlightBookingModule.paymentDetailsName,
@@ -120,7 +126,8 @@ class AppRouter {
       GoRoute(
         path: FlightBookingModule.bookingPolicy,
         name: FlightBookingModule.bookingPolicyName,
-        builder: (BuildContext context, GoRouterState state) => FlightBookingModule.bookingPolicyBuilder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            FlightBookingModule.bookingPolicyBuilder(),
       ),
 
       //Profile Management
@@ -141,24 +148,28 @@ class AppRouter {
       GoRoute(
         path: LegalModule.termsRoute,
         name: LegalModule.termsName,
-        builder: (BuildContext context, GoRouterState state) => LegalModule.termsBuilder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            LegalModule.termsBuilder(),
       ),
       GoRoute(
         path: LegalModule.policyRoute,
         name: LegalModule.policyName,
-        builder: (BuildContext context, GoRouterState state) => LegalModule.policyBuilder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            LegalModule.policyBuilder(),
       ),
       //notification
       GoRoute(
         path: NotificationModule.routePath,
         name: NotificationModule.routeName,
-        builder: (BuildContext context, GoRouterState state) => NotificationModule.builder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            NotificationModule.builder(),
       ),
       //settings
       GoRoute(
         path: SettingsModule.routePath,
         name: SettingsModule.routeName,
-        builder: (BuildContext context, GoRouterState state) => SettingsModule.builder(),
+        builder: (BuildContext context, GoRouterState state) =>
+            SettingsModule.builder(),
       ),
     ],
     errorBuilder: (BuildContext context, GoRouterState state) => const Scaffold(

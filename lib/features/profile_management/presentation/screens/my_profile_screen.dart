@@ -13,10 +13,10 @@ import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../auth/auth_module.dart';
 import '../../../auth/presentation/widgets/log_out_sheet.dart';
 import '../../../legal/legal_module.dart';
+import '../../../sales/sales_module.dart';
 import '../../../settings/settings_module.dart';
 import '../../bloc/profile_bloc.dart';
 import '../../profile_management_module.dart';
-import '../widgets/log_out_sheet.dart';
 import '../widgets/user_content_widget.dart';
 
 class MyProfileScreen extends StatefulWidget {
@@ -179,13 +179,26 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                 }
                               }
 
+                              if (option['title'] == 'My Markup') {
+                                if (isLogedIn) {
+                                  if (context.mounted) {
+                                    context
+                                        .pushNamed(SalesModule.myMarkupScreen);
+                                  }
+                                  return;
+                                }
+                                showToast(
+                                    message: 'Please login to access markup');
+                                return;
+                              }
+
                               if (option['title'] == 'Sign Out') {
                                 if (isLogedIn) {
                                   if (context.mounted) {
                                     await showAppSheet(
                                       context: context,
                                       title: 'Logout',
-                                      child: LogOutSheet(),
+                                      child: const LogOutSheet(),
                                       submitButtonRequired: true,
                                       submitButtonTitle: 'Logout',
                                       onSubmitPressed: () async {

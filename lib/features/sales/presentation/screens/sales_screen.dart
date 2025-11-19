@@ -98,18 +98,18 @@ class _SalesScreenState extends State<SalesScreen> {
                               endDateController: _endDateController,
                               onStartDatePicked: (date) {
                                 _startDateController.text =
-                                    AppHelpers.formatDate(date);
+                                    AppHelpers.formatDate(date,
+                                        pattern: 'yyyy-MM-dd');
                               },
                               onEndDatePicked: (date) {
-                                _endDateController.text =
-                                    AppHelpers.formatDate(date);
+                                _endDateController.text = AppHelpers.formatDate(
+                                    date,
+                                    pattern: 'yyyy-MM-dd');
                               },
                             ),
                             onSubmitPressed: () {
                               Navigator.pop(context);
-                              log('bookingReferenceId: ${_bookingIdController.text}');
-                              log('startDate: ${_startDateController.text}');
-                              log('endDate: ${_endDateController.text}');
+                              callApi(page: page, limit: limit);
                             },
                             submitButtonRequired: true,
                             submitButtonTitle: 'Apply');
@@ -120,9 +120,7 @@ class _SalesScreenState extends State<SalesScreen> {
                 token == null || token!.isEmpty
                     ? const Expanded(child: Center(child: NotLoginWidget()))
                     : BlocConsumer<SalesBloc, SalesState>(
-                        listener: (context, state) {
-                          log(state.toString());
-                        },
+                        listener: (context, state) {},
                         builder: (context, state) {
                           if (state is SalesError) {
                             return Expanded(
@@ -138,6 +136,7 @@ class _SalesScreenState extends State<SalesScreen> {
                             );
                           }
                           if (state is SalesLoaded) {
+                            log('${state.sales.pagination?.toJson()}');
                             totalItems =
                                 state.sales.pagination?.totalItems ?? 0;
                             return Expanded(
@@ -146,8 +145,8 @@ class _SalesScreenState extends State<SalesScreen> {
                                   : Column(
                                       children: [
                                         const SizedBox(height: 35),
-                                        const Text('₹152500',
-                                            style: TextStyle(
+                                        Text('₹${state.sales.totalMarkup}',
+                                            style: const TextStyle(
                                                 fontSize: 45,
                                                 fontWeight: FontWeight.bold,
                                                 color: AppColors.white)),
@@ -178,13 +177,45 @@ class _SalesScreenState extends State<SalesScreen> {
                                               children: [
                                                 SizedBox(
                                                   height: 25,
-                                                  child: Text(
-                                                    'Bookings(${state.sales.pagination?.totalItems ?? 0})',
-                                                    style: const TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: AppColors.black),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        'Bookings(${state.sales.pagination?.totalItems ?? 0})',
+                                                        style: const TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: AppColors
+                                                                .black),
+                                                      ),
+                                                      _startDateController.text
+                                                                  .isNotEmpty ||
+                                                              _endDateController
+                                                                  .text
+                                                                  .isNotEmpty
+                                                          ? SizedBox(
+                                                              child: InkWell(
+                                                              onTap: () {
+                                                                _startDateController
+                                                                    .clear();
+                                                                _endDateController
+                                                                    .clear();
+                                                                callApi(
+                                                                    page: page,
+                                                                    limit:
+                                                                        limit);
+                                                              },
+                                                              child: const Text(
+                                                                  'Clear',
+                                                                  style: TextStyle(
+                                                                      color: AppColors
+                                                                          .primary)),
+                                                            ))
+                                                          : const SizedBox()
+                                                    ],
                                                   ),
                                                 ),
                                                 Expanded(
