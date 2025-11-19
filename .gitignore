@@ -48,3 +48,5 @@ android/gradle.properties
 # "JSON to Dart Model" generator tracker files locations.
 /.json_models/
 models.jsonc
+config.bat
+node_modules

@@ -4,7 +4,7 @@ import '../../core/network/amadeus_client.dart';
 import '../../core/network/api_client.dart';
 import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
-import '../profile_management/data/profile_management_repository.dart';
+import '../profile_management/data/repository/profile_management_repository.dart';
 import 'api/flight_booking_api.dart';
 import 'bloc/flight_bloc.dart';
 import 'data/flight_booking_repository.dart';

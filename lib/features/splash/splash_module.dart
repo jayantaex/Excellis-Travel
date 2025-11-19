@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/network/api_client.dart';
 import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
-import '../profile_management/data/profile_management_repository.dart';
+import '../profile_management/data/repository/profile_management_repository.dart';
 import 'screens/splash_screen.dart';
 
 class SplashModule {

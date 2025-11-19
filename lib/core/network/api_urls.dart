@@ -27,7 +27,8 @@ class EndPoints {
   static const String login = '/auth/login';
   static const String registration = '/auth/register';
   static const String refreshToken = '/auth/refresh-token';
-  static var resetPassword = '/auth/change-password';
+  static const String resetPassword = '/auth/change-password';
+  static const String sendRecoverLink = '/auth/request-password-reset';
 
   //location - state
   static const String state = '/location/states?limit=1000';

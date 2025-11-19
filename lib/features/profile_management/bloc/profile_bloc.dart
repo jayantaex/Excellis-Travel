@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../core/common/models/profile_data_model.dart';
 import '../../../core/network/api_response.dart';
-import '../data/profile_management_repository.dart';
+import '../data/repository/profile_management_repository.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';

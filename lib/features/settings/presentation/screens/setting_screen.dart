@@ -1,4 +1,4 @@
-
+import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +7,9 @@ import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../auth/bloc/auth_bloc.dart';
+import '../../../auth/presentation/widgets/delete_account_sheet.dart';
 import '../../../auth/presentation/widgets/reset_pass_sheet.dart';
+import '../../../profile_management/presentation/widgets/delete_account_sheet.dart';
 import '../widgets/faq_sheet.dart';
 import '../widgets/help_and_support_sheet.dart';
 
@@ -151,6 +153,35 @@ class _SettingScreenState extends State<SettingScreen> {
                                   color: AppColors.black,
                                 )),
                             subtitle: const Text('Reset your account password',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.grey,
+                                )),
+                            trailing: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: AppColors.primary,
+                              size: 16,
+                            ),
+                          ),
+                          ListTile(
+                            onTap: () async {
+                              await showAppSheet(
+                                  onSubmitPressed: () {},
+                                  submitButtonRequired: true,
+                                  submitButtonTitle: 'Delete',
+                                  context: context,
+                                  title: 'Delete Account',
+                                  child: const DeleteAccountSheet());
+                            },
+                            contentPadding: const EdgeInsets.all(0),
+                            title: const Text('Delete Account',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.error,
+                                )),
+                            subtitle: const Text('This action is irreversible.',
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,

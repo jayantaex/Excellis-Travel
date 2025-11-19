@@ -1,5 +1,5 @@
-import '../../../core/network/api_response.dart';
-import '../apis/auth_api.dart';
+import '../../../../core/network/api_response.dart';
+import '../../apis/auth_api.dart';
 import '../models/auth_resp_model.dart';
 
 class AuthRepository {
@@ -63,4 +63,7 @@ class AuthRepository {
         currentPassword: currentPassword,
         newPassword: newPassword,
       );
+
+  Future<ApiResponse<bool>> sendRecoverLink({required String email}) async =>
+      await authApi.sendRecoverLink(email: email);
 }

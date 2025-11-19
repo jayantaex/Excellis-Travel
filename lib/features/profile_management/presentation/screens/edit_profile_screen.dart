@@ -129,24 +129,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       state is ProfileImageUpdating) {
                     return Column(
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: AppCustomAppbar(
-                            centerTitle: 'Profile',
-                            trailing: CircleAvatar(
-                              backgroundColor: AppColors.black.withOpacity(0.1),
-                              child: IconButton(
-                                onPressed: () async {
-                                  await showDeleteAccountSheet(
-                                      context: context);
-                                },
-                                icon: const Icon(
-                                  Icons.more_horiz_rounded,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                            ),
-                          ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: AppCustomAppbar(centerTitle: 'Edit Profile'),
                         ),
                         const SizedBox(height: 20),
                         ProfileAvatarWidget(),
