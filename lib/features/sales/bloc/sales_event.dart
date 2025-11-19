@@ -11,7 +11,11 @@ class SalesFetchEvent extends SalesEvent {
   const SalesFetchEvent({
     required this.page,
     required this.limit,
+    required this.startDate,
+    required this.endDate,
   });
   final int page;
   final int limit;
+  final String startDate;
+  final String endDate;
 }

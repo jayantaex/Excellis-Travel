@@ -30,6 +30,10 @@ class _SalesScreenState extends State<SalesScreen> {
   int page = 1;
   int totalItems = 0;
 
+  final TextEditingController _bookingIdController = TextEditingController();
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
+
   @override
   void initState() {
     Future.microtask(() async {
@@ -47,6 +51,9 @@ class _SalesScreenState extends State<SalesScreen> {
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _bookingIdController.dispose();
+    _startDateController.dispose();
+    _endDateController.dispose();
     super.dispose();
   }
 
@@ -63,6 +70,8 @@ class _SalesScreenState extends State<SalesScreen> {
           SalesFetchEvent(
             page: page,
             limit: limit,
+            startDate: _startDateController.text,
+            endDate: _endDateController.text,
           ),
         );
   }
@@ -83,8 +92,25 @@ class _SalesScreenState extends State<SalesScreen> {
                         await showAppSheet(
                             context: context,
                             title: 'Filter Options',
-                            child: const FilterSheet(),
-                            onSubmitPressed: () {},
+                            child: FilterSheet(
+                              bookingIdController: _bookingIdController,
+                              startDateController: _startDateController,
+                              endDateController: _endDateController,
+                              onStartDatePicked: (date) {
+                                _startDateController.text =
+                                    AppHelpers.formatDate(date);
+                              },
+                              onEndDatePicked: (date) {
+                                _endDateController.text =
+                                    AppHelpers.formatDate(date);
+                              },
+                            ),
+                            onSubmitPressed: () {
+                              Navigator.pop(context);
+                              log('bookingReferenceId: ${_bookingIdController.text}');
+                              log('startDate: ${_startDateController.text}');
+                              log('endDate: ${_endDateController.text}');
+                            },
                             submitButtonRequired: true,
                             submitButtonTitle: 'Apply');
                       },

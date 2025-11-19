@@ -9,6 +9,9 @@ class SalesRepository {
   Future<ApiResponse<SalesDataModel>> fetchSales({
     required int page,
     required int limit,
+    required String startDate,
+    required String endDate,
   }) async =>
-      await salesApi.fetchSales(page: page, limit: limit);
+      await salesApi.fetchSales(
+          page: page, limit: limit, startDate: startDate, endDate: endDate);
 }

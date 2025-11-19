@@ -33,6 +33,8 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
         await salesRepository.fetchSales(
       page: event.page,
       limit: event.limit,
+      startDate: event.startDate,
+      endDate: event.endDate,
     );
 
     if (response.data != null) {
