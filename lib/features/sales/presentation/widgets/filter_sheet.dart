@@ -62,7 +62,8 @@ class FilterSheet extends StatelessWidget {
                 if (picked != null) {
                   startDate = picked;
                   onStartDatePicked(picked);
-                  startDateController.text = AppHelpers.formatDate(picked);
+                  startDateController.text =
+                      AppHelpers.formatDate(picked, pattern: 'yyyy-MM-dd');
                 }
               },
             ),
@@ -93,7 +94,8 @@ class FilterSheet extends StatelessWidget {
                     initialDate: DateTime.now());
                 if (picked != null) {
                   onEndDatePicked(picked);
-                  endDateController.text = AppHelpers.formatDate(picked);
+                  endDateController.text =
+                      AppHelpers.formatDate(picked, pattern: 'yyyy-MM-dd');
                 }
               },
             ),

@@ -31,6 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         body: BlocConsumer<ProfileBloc, ProfileState>(
           listener: (BuildContext context, ProfileState state) async {
             if (state is ProfileError) {
+              log("ProfileError");
               await StorageService.clearTokens();
               if (context.mounted) {
                 context.goNamed(AuthModule.loginName);
@@ -52,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _handleAuthentication() async {
     try {
       final String? asscessToken = await StorageService.getAccessToken();
-      final String? refreshToken = await StorageService.getAccessToken();
+      final String? refreshToken = await StorageService.getRefreshToken();
       if ((asscessToken != null && asscessToken.isNotEmpty) &&
           (refreshToken != null && refreshToken.isNotEmpty)) {
         if (context.mounted) {

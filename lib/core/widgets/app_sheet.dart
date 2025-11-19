@@ -13,6 +13,7 @@ Future<void> showAppSheet({
   VoidCallback? onSubmitPressed,
 }) =>
     showModalBottomSheet(
+      isScrollControlled: true,
       backgroundColor: AppColors.white,
       context: context,
       builder: (context) => SingleChildScrollView(
