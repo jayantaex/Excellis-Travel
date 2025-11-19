@@ -120,6 +120,7 @@ Future<void> showAddPassengerSheet(
             ),
             const SizedBox(height: 16),
             AppPrimaryInput(
+              keyboardType: TextInputType.number,
               controller: mobileNumberController,
               hint: 'Enter your Mobile number',
               label: 'Mobile Number',

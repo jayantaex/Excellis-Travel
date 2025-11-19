@@ -36,7 +36,11 @@ class FlightCardWidget extends StatelessWidget {
       child: ClipPath(
         clipper: TicketClipper(),
         child: Container(
-          height: hasFinalPrice ?? true ? 250 : 200,
+          height: hasFinalPrice ?? true
+              ? data.itineraries!.length > 1
+                  ? double.parse((152 * data.itineraries!.length).toString())
+                  : 250
+              : 200,
           width: customWidth ?? width * 0.95,
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -106,29 +110,101 @@ class FlightCardWidget extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    SizedBox(
+              ...data.itineraries!.map(
+                (Itinerary itinerary) => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      SizedBox(
+                          height: 90,
+                          width: width * 0.22,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                  itinerary.segments?.first.departure
+                                          ?.iataCode ??
+                                      'NO_CODE',
+                                  style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600)),
+                              Text(
+                                AppHelpers.formatDateTime(
+                                  DateTime.parse(
+                                    itinerary.segments?.first.departure?.at ??
+                                        DateTime.now().toString(),
+                                  ),
+                                  pattern: 'dd MMM, yyyy',
+                                ),
+                                style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.grey),
+                              ),
+                              //time
+                              Text(
+                                AppHelpers.formatDateTime(
+                                    DateTime.parse(
+                                      itinerary.segments?.first.departure?.at ??
+                                          DateTime.now().toString(),
+                                    ),
+                                    pattern: 'hh:mm:aa'),
+                                style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.grey),
+                              )
+                            ],
+                          )),
+                      SizedBox(
+                          width: width * 0.22,
+                          child: Column(
+                            children: <Widget>[
+                              AppHelpers.svgAsset(
+                                  assetName: 'flight', width: 100),
+                              Column(
+                                children: <Widget>[
+                                  Text(
+                                    getDuration(
+                                        duration: itinerary.duration ?? ''),
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  Divider(
+                                    thickness: 0.5,
+                                    color: AppColors.primary.withOpacity(0.3),
+                                  ),
+                                  Text(
+                                    itinerary.segments?.length == 1
+                                        ? 'Non-Stop'
+                                        : '${(itinerary.segments!.length - 1)} Stop(s)',
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )),
+                      SizedBox(
                         height: 90,
                         width: width * 0.22,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Text(
-                                data.itineraries?.first.segments?.first
-                                        .departure?.iataCode ??
+                                itinerary.segments?.last.arrival?.iataCode ??
                                     'NO_CODE',
                                 style: const TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.w600)),
                             Text(
                               AppHelpers.formatDateTime(
                                 DateTime.parse(
-                                  data.itineraries?.first.segments?.first
-                                          .departure?.at ??
+                                  itinerary.segments?.last.arrival?.at ??
                                       DateTime.now().toString(),
                                 ),
                                 pattern: 'dd MMM, yyyy',
@@ -138,12 +214,10 @@ class FlightCardWidget extends StatelessWidget {
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.grey),
                             ),
-                            //time
                             Text(
-                              AppHelpers.formatDateTime(
+                              AppHelpers.formatTime(
                                   DateTime.parse(
-                                    data.itineraries?.first.segments?.first
-                                            .departure?.at ??
+                                    itinerary.segments?.last.arrival?.at ??
                                         DateTime.now().toString(),
                                   ),
                                   pattern: 'hh:mm:aa'),
@@ -151,86 +225,12 @@ class FlightCardWidget extends StatelessWidget {
                                   fontSize: 11,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.grey),
-                            )
-                          ],
-                        )),
-                    SizedBox(
-                        width: width * 0.22,
-                        child: Column(
-                          children: <Widget>[
-                            AppHelpers.svgAsset(
-                                assetName: 'flight', width: 100),
-                            Column(
-                              children: <Widget>[
-                                Text(
-                                  getDuration(
-                                      duration:
-                                          data.itineraries?.first.duration ??
-                                              ''),
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                Divider(
-                                  thickness: 0.5,
-                                  color: AppColors.primary.withOpacity(0.3),
-                                ),
-                                Text(
-                                  data.itineraries?.first.segments?.length == 1
-                                      ? 'Non-Stop'
-                                      : '${(data.itineraries!.first.segments!.length - 1)} Stop(s)',
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ],
                             ),
                           ],
-                        )),
-                    SizedBox(
-                      height: 90,
-                      width: width * 0.22,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                              data.itineraries?.first.segments?.last.arrival
-                                      ?.iataCode ??
-                                  'NO_CODE',
-                              style: const TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w600)),
-                          Text(
-                            AppHelpers.formatDateTime(
-                              DateTime.parse(
-                                data.itineraries?.first.segments?.last.arrival
-                                        ?.at ??
-                                    DateTime.now().toString(),
-                              ),
-                              pattern: 'dd MMM, yyyy',
-                            ),
-                            style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.grey),
-                          ),
-                          Text(
-                            AppHelpers.formatTime(
-                                DateTime.parse(
-                                  data.itineraries?.first.segments?.last.arrival
-                                          ?.at ??
-                                      DateTime.now().toString(),
-                                ),
-                                pattern: 'hh:mm:aa'),
-                            style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.grey),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: hasFinalPrice ?? true ? 22 : 8),
