@@ -22,12 +22,11 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-      Widget build(BuildContext context) => MaterialApp.router(
+  Widget build(BuildContext context) => MaterialApp.router(
         title: 'Excellis Travel',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.lightTheme,
-        themeMode: ThemeMode.system,
         routerConfig: AppRouter.router,
       );
 }

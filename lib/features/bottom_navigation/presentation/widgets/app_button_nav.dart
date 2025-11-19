@@ -90,8 +90,8 @@ class AppButtonNav extends StatelessWidget {
           border: const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
-          height: 30,
-          width: 30,
+          height: 25,
+          width: 25,
           '${AppConstants.assetIcontUrl}sales.svg',
           colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
         ),
@@ -105,8 +105,8 @@ class AppButtonNav extends StatelessWidget {
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}sales.svg',
-          height: 30,
-          width: 30,
+          height: 25,
+          width: 25,
           colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
         ),
       ),
