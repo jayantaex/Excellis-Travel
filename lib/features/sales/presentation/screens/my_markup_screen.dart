@@ -55,7 +55,7 @@ class MyMarkupScreen extends StatelessWidget {
                               },
                               context: context,
                               title: 'Edit Markup',
-                              child: const EditMarkupSheet(
+                              child: const AddEditMarkUpSheet(
                                 initialType: 'International',
                                 initialProduct: 'Hotel',
                                 initialUnit: 'Fixed',

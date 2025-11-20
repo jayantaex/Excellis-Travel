@@ -3,8 +3,8 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/app_drop_down.dart';
 import '../../../../core/widgets/primary_input.dart';
 
-class EditMarkupSheet extends StatefulWidget {
-  const EditMarkupSheet({
+class AddEditMarkUpSheet extends StatefulWidget {
+  const AddEditMarkUpSheet({
     super.key,
     this.initialType,
     this.initialProduct,
@@ -19,10 +19,10 @@ class EditMarkupSheet extends StatefulWidget {
   final String? initialStatus;
 
   @override
-  State<EditMarkupSheet> createState() => _EditMarkupSheetState();
+  State<AddEditMarkUpSheet> createState() => _AddEditMarkUpSheetState();
 }
 
-class _EditMarkupSheetState extends State<EditMarkupSheet> {
+class _AddEditMarkUpSheetState extends State<AddEditMarkUpSheet> {
   late String selectedType;
   late String selectedProduct;
   late String selectedUnit;
