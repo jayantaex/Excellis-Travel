@@ -27,6 +27,8 @@ class FlightCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = AppHelpers.getScreenWidth(context);
+    final bool isRoundTrip = data.itineraries!.length != 1;
+    final bool isItRecentSeach = !(hasFinalPrice ?? true);
     return InkWell(
       focusColor: Colors.transparent,
       hoverColor: Colors.transparent,
@@ -46,17 +48,17 @@ class FlightCardWidget extends StatelessWidget {
             color: AppColors.white,
             borderRadius: BorderRadius.circular(24),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 9),
+          padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 9),
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: 35,
+                height: 45,
                 width: width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     SizedBox(
-                      height: 35,
+                      height: 30,
                       width: AppHelpers.getScreenWidth(context) * 0.4,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8),
@@ -117,7 +119,7 @@ class FlightCardWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       SizedBox(
-                          height: 90,
+                          height: 70,
                           width: width * 0.22,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -128,8 +130,8 @@ class FlightCardWidget extends StatelessWidget {
                                           ?.iataCode ??
                                       'NO_CODE',
                                   style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w600)),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w700)),
                               Text(
                                 AppHelpers.formatDateTime(
                                   DateTime.parse(
@@ -139,8 +141,8 @@ class FlightCardWidget extends StatelessWidget {
                                   pattern: 'dd MMM, yyyy',
                                 ),
                                 style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
                                     color: AppColors.grey),
                               ),
                               //time
@@ -152,8 +154,8 @@ class FlightCardWidget extends StatelessWidget {
                                     ),
                                     pattern: 'hh:mm:aa'),
                                 style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
                                     color: AppColors.grey),
                               )
                             ],
@@ -190,7 +192,7 @@ class FlightCardWidget extends StatelessWidget {
                             ],
                           )),
                       SizedBox(
-                        height: 90,
+                        height: 70,
                         width: width * 0.22,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -200,7 +202,7 @@ class FlightCardWidget extends StatelessWidget {
                                 itinerary.segments?.last.arrival?.iataCode ??
                                     'NO_CODE',
                                 style: const TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w600)),
+                                    fontSize: 22, fontWeight: FontWeight.w700)),
                             Text(
                               AppHelpers.formatDateTime(
                                 DateTime.parse(
@@ -210,20 +212,18 @@ class FlightCardWidget extends StatelessWidget {
                                 pattern: 'dd MMM, yyyy',
                               ),
                               style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
                                   color: AppColors.grey),
                             ),
                             Text(
-                              AppHelpers.formatTime(
-                                  DateTime.parse(
-                                    itinerary.segments?.last.arrival?.at ??
-                                        DateTime.now().toString(),
-                                  ),
-                                  pattern: 'hh:mm:aa'),
+                              AppHelpers.formatTime(DateTime.parse(
+                                itinerary.segments?.last.arrival?.at ??
+                                    DateTime.now().toString(),
+                              )),
                               style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
                                   color: AppColors.grey),
                             ),
                           ],
@@ -233,64 +233,77 @@ class FlightCardWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: hasFinalPrice ?? true ? 22 : 8),
-              DottedBorder(
-                  dashPattern: const <double>[8, 4],
-                  customPath: (Size size) => Path()
-                    ..moveTo(0, size.height)
-                    ..relativeLineTo(size.width, 0),
-                  color: AppColors.grey,
-                  strokeWidth: 0.5,
-                  child: const SizedBox(height: 1, width: double.infinity)),
+              SizedBox(
+                  height: isRoundTrip
+                      ? 0
+                      : isItRecentSeach
+                          ? 18
+                          : 35),
+              ((isRoundTrip) && (isItRecentSeach))
+                  ? const SizedBox()
+                  : DottedBorder(
+                      dashPattern: const <double>[8, 4],
+                      customPath: (Size size) => Path()
+                        ..moveTo(0, size.height)
+                        ..relativeLineTo(size.width, 0),
+                      color: AppColors.grey,
+                      strokeWidth: 0.5,
+                      child: const SizedBox(height: 1, width: double.infinity)),
               const Spacer(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Text(
-                      'Cabin Class',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.grey,
+              if ((isRoundTrip && !isItRecentSeach) ||
+                  (isItRecentSeach && !isRoundTrip) ||
+                  (!isRoundTrip && !isItRecentSeach))
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const Text(
+                        'Cabin Class',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.grey,
+                        ),
                       ),
-                    ),
-                    hasFinalPrice ?? true
-                        ? Text(
-                            'Price | ${data.itineraries!.length > 1 ? 'Round Trip' : 'One Way'}',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.grey,
-                            ),
-                          )
-                        : const SizedBox(),
-                  ],
+                      hasFinalPrice ?? true
+                          ? Text(
+                              'Price | ${data.itineraries!.length > 1 ? 'Round Trip' : 'One Way'}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.grey,
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      data.travelerPricings?.first.fareDetailsBySegment?.first
-                              .cabin ??
-                          'NO_CABIN',
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w500),
-                    ),
-                    hasFinalPrice ?? true
-                        ? Text(
-                            '₹${data.price?.markupPrice ?? 0.00}',
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                          )
-                        : const SizedBox(),
-                  ],
+              if ((isRoundTrip && !isItRecentSeach) ||
+                  (isItRecentSeach && !isRoundTrip) ||
+                  (!isRoundTrip && !isItRecentSeach))
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        data.travelerPricings?.first.fareDetailsBySegment?.first
+                                .cabin ??
+                            'NO_CABIN',
+                        style: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                      hasFinalPrice ?? true
+                          ? Text(
+                              '₹${data.price?.markupPrice ?? 0.00}',
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
                 ),
-              ),
             ],
           ),
         ),
