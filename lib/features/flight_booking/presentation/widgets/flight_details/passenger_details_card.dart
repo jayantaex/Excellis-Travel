@@ -39,7 +39,7 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
       if (e.travelerType == 'CHILD') {
         _allowedChild = _allowedChild + 1;
       }
-      if (e.travelerType == 'INFANT') {
+      if (e.travelerType == 'HELD_INFANT') {
         _allowedInfant = _allowedInfant + 1;
       }
     }

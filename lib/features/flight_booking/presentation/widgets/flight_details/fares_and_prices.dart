@@ -61,7 +61,7 @@ class _FaresAndPricesState extends State<FaresAndPrices> {
                     ...userType.map(
                       (String e) => InkWell(
                         onTap: () {
-                          filter(e);
+                          filter(e == 'INFANT' ? 'HELD_INFANT' : e);
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -123,7 +123,7 @@ class _FaresAndPricesState extends State<FaresAndPrices> {
         filteredTravelerPricings.add(element);
       }
     }
-    selectedTab = travellerType;
+    selectedTab = travellerType == 'HELD_INFANT' ? 'INFANT' : travellerType;
     setState(() {});
   }
 }

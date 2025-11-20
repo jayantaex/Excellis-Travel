@@ -20,7 +20,7 @@ import '../widgets/launge_access_widget.dart';
 
 class PassDownloadScreen extends StatefulWidget {
   const PassDownloadScreen({super.key, required this.data});
-  final PaymentVerifiedModel data;
+  final PaymentVarifiedDataModel data;
 
   @override
   State<PassDownloadScreen> createState() => _PassDownloadScreenState();
@@ -31,12 +31,13 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
 
   @override
   void initState() {
+    log('${widget.data}');
     Future.delayed(Duration.zero, () async {
       barCodeSvg = BarcodeService.buildBarcode(
         Barcode.code39(),
-        widget.data.booking?.bookingReference ?? 'No-ref-id',
-        width: 300,
-        height: 80,
+        widget.data.bookingReference ?? 'No-ref-id',
+        width: 250,
+        height: 60,
       );
       setState(() {});
     });
@@ -90,7 +91,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                   color: AppColors.grey,
                                 ),
                                 Text(
-                                  '${widget.data.payment?.paymentReference}'
+                                  '${widget.data.bookingReference}'
                                       .toUpperCase(),
                                   style: const TextStyle(
                                     fontSize: 12,
@@ -101,7 +102,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          ...?widget.data.booking?.flightData?.itineraries!.map(
+                          ...?widget.data.flightData?.itineraries!.map(
                             (e) => Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -245,9 +246,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                             strokeWidth: 0.5,
                             child: Column(
                               children: [
-                                ...?widget
-                                    .data.booking?.travellerDetails?.adults!
-                                    .map(
+                                ...?widget.data.travellerDetails?.adults!.map(
                                   (e) => ListTile(
                                     contentPadding: const EdgeInsets.all(0),
                                     leading: CircleAvatar(
@@ -272,9 +271,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                     ),
                                   ),
                                 ),
-                                ...?widget
-                                    .data.booking?.travellerDetails?.children!
-                                    .map(
+                                ...?widget.data.travellerDetails?.children!.map(
                                   (e) => ListTile(
                                     contentPadding: const EdgeInsets.all(0),
                                     leading: CircleAvatar(
@@ -299,9 +296,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                     ),
                                   ),
                                 ),
-                                ...?widget
-                                    .data.booking?.travellerDetails?.infants!
-                                    .map(
+                                ...?widget.data.travellerDetails?.infants!.map(
                                   (e) => ListTile(
                                     contentPadding: const EdgeInsets.all(0),
                                     leading: CircleAvatar(
@@ -400,12 +395,11 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                   try {
                     Fluttertoast.showToast(msg: 'Downloading...');
                     final bool res = await FileDownloaderService.saveFile(
-                      baseFare: '${widget.data.booking?.fareDetails?.baseFare}',
-                      totalFare:
-                          '${widget.data.booking?.fareDetails?.totalFare}',
+                      baseFare: '${widget.data.fareDetails?.baseFare}',
+                      totalFare: '${widget.data.fareDetails?.totalFare}',
                       markupPrice:
-                          '${(widget.data.booking?.fareDetails?.totalFare ?? 0.00) - (widget.data.booking?.fareDetails?.baseFare ?? 0.00)}',
-                      bokkingRefId: '${widget.data.booking?.bookingReference}',
+                          '${(widget.data.fareDetails?.totalFare ?? 0.00) - (widget.data.fareDetails?.baseFare ?? 0.00)}',
+                      bokkingRefId: '${widget.data.bookingReference}',
                       showDownloadProgress: (count, total) {
                         log('$count $total');
                         log('${(count / total) * 100}');

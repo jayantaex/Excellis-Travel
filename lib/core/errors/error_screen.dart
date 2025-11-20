@@ -1,14 +1,20 @@
+import 'package:excellistravel/core/constants/app_styles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ErrorScreen extends StatelessWidget {
-  const ErrorScreen({super.key, this.errorMessage, this.errorDesc});
+  const ErrorScreen({super.key, this.errorMessage, this.errorDesc, this.bg});
   final String? errorMessage;
   final String? errorDesc;
+  final Color? bg;
 
   @override
-  Widget build(BuildContext context) => Padding(
+  Widget build(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(32),
+        ),
         padding: const EdgeInsets.all(16),
         child: Column(
           children: <Widget>[

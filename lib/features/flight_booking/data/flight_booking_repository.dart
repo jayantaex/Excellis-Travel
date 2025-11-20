@@ -31,7 +31,7 @@ class FlightBookingRepository {
           {required Map<String, dynamic> body}) async =>
       await api.createPayment(body: body);
 
-  Future<ApiResponse<PaymentVerifiedModel>> verifyPayment(
+  Future<ApiResponse<PaymentVarifiedDataModel>> verifyPayment(
           {required Map<String, dynamic> body}) async =>
       await api.verifyPayment(body: body);
 

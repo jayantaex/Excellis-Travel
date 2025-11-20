@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/utils/app_toast.dart';
@@ -13,14 +14,14 @@ Future<void> showAddPassengerSheet(
     {required BuildContext context,
     required String travellerType,
     required Function(PassengerModel passenger) onDone}) async {
-  final TextEditingController firstNameController =
-      TextEditingController(text: kDebugMode ? 'Jayanta' : '');
-  final TextEditingController lastNameController =
-      TextEditingController(text: kDebugMode ? 'Mahato' : '');
-  final TextEditingController mobileNumberController =
-      TextEditingController(text: kDebugMode ? '9064187130' : '');
-  final TextEditingController emailController =
-      TextEditingController(text: kDebugMode ? 'jayanta@gmail.com' : '');
+  final TextEditingController firstNameController = TextEditingController(
+      text: AppConstants.env == 'development' ? 'Jhon' : '');
+  final TextEditingController lastNameController = TextEditingController(
+      text: AppConstants.env == 'development' ? 'Doe' : '');
+  final TextEditingController mobileNumberController = TextEditingController(
+      text: AppConstants.env == 'development' ? '9064187130' : '');
+  final TextEditingController emailController = TextEditingController(
+      text: AppConstants.env == 'development' ? 'jhon@apptest.com' : '');
   final TextEditingController dobController = TextEditingController();
   DateTime? dob;
   String selectedGender = 'Male';
@@ -54,7 +55,6 @@ Future<void> showAddPassengerSheet(
       break;
     default:
   }
-
   await showModalBottomSheet(
     backgroundColor: AppColors.white,
     isScrollControlled: true,
@@ -131,7 +131,17 @@ Future<void> showAddPassengerSheet(
               controller: dobController,
               onTap: () async {
                 dob = await showDatePicker(
-                    context: context, firstDate: firstDate, lastDate: lastDate);
+                    builder: (context, child) => Theme(
+                          data: Theme.of(context).copyWith(
+                            colorScheme: const ColorScheme.light(
+                              primary: AppColors.primary,
+                            ),
+                          ),
+                          child: child!,
+                        ),
+                    context: context,
+                    firstDate: firstDate,
+                    lastDate: lastDate);
                 dobController.text =
                     AppHelpers.formatDate(dob ?? DateTime.parse('2000-01-01'));
               },

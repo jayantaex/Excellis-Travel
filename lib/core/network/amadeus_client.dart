@@ -3,6 +3,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:flutter/foundation.dart';
 import '../constants/app_constants.dart';
 import '../utils/storage_service.dart';
+import 'alice_helper.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
 
@@ -14,7 +15,8 @@ class AmadeusClient {
     _dio.options.receiveTimeout = const Duration(seconds: 60);
     _dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (RequestOptions options, RequestInterceptorHandler handler) async {
+        onRequest:
+            (RequestOptions options, RequestInterceptorHandler handler) async {
           final String token = await StorageService.getAmadeusToken() ?? '';
           if (token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
@@ -37,9 +39,18 @@ class AmadeusClient {
       ),
     );
     if (!kReleaseMode) {
+      // Add Alice interceptor for network inspection
+      _dio.interceptors.add(AliceHelper.dioInterceptor);
+
+      // Add Pretty Dio Logger for console logs
       _dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
         requestBody: true,
+        responseBody: true,
+        responseHeader: true,
+        error: true,
+        compact: true,
+        maxWidth: 90,
       ));
     }
   }
@@ -231,7 +242,8 @@ class AmadeusClient {
   }
 
   Future<Response> _retry(RequestOptions requestOptions) async {
-    final Map<String, dynamic> updatedHeaders = Map<String, dynamic>.from(requestOptions.headers);
+    final Map<String, dynamic> updatedHeaders =
+        Map<String, dynamic>.from(requestOptions.headers);
 
     String newToken = await StorageService.getAmadeusToken() ?? '';
     if (newToken.isEmpty) {

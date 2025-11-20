@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:flutter/foundation.dart';
 import '../utils/storage_service.dart';
+import 'alice_helper.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
 import 'authentication_interceptor.dart';
@@ -14,6 +15,12 @@ class ApiClient {
     _dio.options.baseUrl = EndPoints.baseUrl;
     _dio.options.connectTimeout = const Duration(seconds: 60);
     _dio.options.receiveTimeout = const Duration(seconds: 60);
+
+    // Enable network traffic monitoring in Flutter DevTools
+    if (!kReleaseMode) {
+      // This is not a valid Dio option - see alternative below
+      // We'll use HttpClientAdapter instead
+    }
     _dio.interceptors.add(InterceptorsWrapper(onRequest:
         (RequestOptions options, RequestInterceptorHandler handler) async {
       final String? token = await StorageService.getAccessToken();
@@ -27,10 +34,18 @@ class ApiClient {
     }));
 
     if (!kReleaseMode) {
+      // Add Alice interceptor for network inspection
+      _dio.interceptors.add(AliceHelper.dioInterceptor);
+
+      // Add Pretty Dio Logger for console logs
       _dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
         requestBody: true,
-        responseBody: false,
+        responseBody: true,
+        responseHeader: true,
+        error: true,
+        compact: true,
+        maxWidth: 90,
       ));
     }
     _dio.interceptors.add(AuthenticationInterceptor(_dio));

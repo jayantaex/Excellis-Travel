@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
-
 import '../../../../core/errors/error_screen.dart';
 import '../../../../core/services/local_db.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -53,21 +52,18 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
 
       depurtureDate = paramData['depurtureDate'];
       cabinClass = paramData['cabinClass'];
-      final List<int> totalTravelers = [
-        paramData['travellers']['adult'],
-        paramData['travellers']['child'],
-        paramData['travellers']['infant']
-      ];
+
       Future.delayed(const Duration(microseconds: 100), () {
         body = getBody(
-          depurture: paramData['depurture'],
-          arrival: paramData['arrival'],
-          depurtureDate: depurtureDate,
-          returnDate: paramData['returnDate'],
-          cabinClass: cabinClass,
-          isRoundTrip: paramData['isRoundTrip'],
-          travellersArr: totalTravelers,
-        );
+            depurture: paramData['depurture'],
+            arrival: paramData['arrival'],
+            depurtureDate: depurtureDate,
+            returnDate: paramData['returnDate'],
+            cabinClass: cabinClass,
+            isRoundTrip: paramData['isRoundTrip'],
+            adultCount: paramData['travellers']['adult'],
+            childCount: paramData['travellers']['child'],
+            infantCount: paramData['travellers']['infant']);
         context.read<FlightBloc>().add(SearchFlightsEvent(body: body!));
       });
     });
@@ -124,18 +120,18 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                                 depurtureDate = AppHelpers.formatDate(date,
                                     pattern: 'yyyy-MM-dd');
                                 body = getBody(
-                                  depurture: widget.data['depurture'],
-                                  arrival: widget.data['arrival'],
-                                  depurtureDate: depurtureDate,
-                                  returnDate: widget.data['returnDate'],
-                                  cabinClass: cabinClass,
-                                  isRoundTrip: widget.data['isRoundTrip'],
-                                  travellersArr: <int>[
-                                    widget.data['travellers']['adult'],
-                                    widget.data['travellers']['child'],
-                                    widget.data['travellers']['infant']
-                                  ],
-                                );
+                                    depurture: widget.data['depurture'],
+                                    arrival: widget.data['arrival'],
+                                    depurtureDate: depurtureDate,
+                                    returnDate: widget.data['returnDate'],
+                                    cabinClass: cabinClass,
+                                    isRoundTrip: widget.data['isRoundTrip'],
+                                    adultCount: widget.data['travellers']
+                                        ['adult'],
+                                    childCount: widget.data['travellers']
+                                        ['child'],
+                                    infantCount: widget.data['travellers']
+                                        ['infant']);
                                 context
                                     .read<FlightBloc>()
                                     .add(SearchFlightsEvent(body: body!));
@@ -234,45 +230,59 @@ Map<String, dynamic> getBody({
   String? returnDate,
   required String cabinClass,
   required bool isRoundTrip,
-  required List<int> travellersArr,
+  required int adultCount,
+  required int infantCount,
+  required int childCount,
 }) =>
     {
       'currencyCode': 'INR',
-      'originDestinations': [
-        {
-          'id': '1',
-          'originLocationCode': depurture,
-          'destinationLocationCode': arrival,
-          'departureDateTimeRange': {'date': depurtureDate}
-        },
-        if (isRoundTrip)
-          {
-            'id': '2',
-            'originLocationCode': arrival,
-            'destinationLocationCode': depurture,
-            'departureDateTimeRange': {
-              'date': returnDate,
-            }
-          }
-      ],
-      'travelers': getTravellers(travellersArr: travellersArr),
-      'sources': ['GDS'],
-      'searchCriteria': {
-        'maxFlightOffers': kDebugMode ? 4 : 100,
-        'flightFilters': {
-          'cabinRestrictions': [
-            {
-              'cabin': cabinClass.toUpperCase(),
-              'coverage': 'MOST_SEGMENTS',
-              'originDestinationIds': ['1']
-            }
-          ],
-          'carrierRestrictions': {
-            'excludedCarrierCodes': ['AA', 'TP', 'AZ']
-          }
-        }
-      }
+      'originLocationCode': depurture,
+      'destinationLocationCode': arrival,
+      'departureDate': depurtureDate,
+      'returnDate': isRoundTrip ? returnDate : null,
+      'adults': adultCount,
+      'infants': infantCount,
+      'children': childCount,
+      'max': kDebugMode ? 5 : 100
     };
+// {
+//   'currencyCode': 'INR',
+//   'originDestinations': [
+//     {
+//       'id': '1',
+//       'originLocationCode': depurture,
+//       'destinationLocationCode': arrival,
+//       'departureDateTimeRange': {'date': depurtureDate}
+//     },
+//     if (isRoundTrip)
+//       {
+//         'id': '2',
+//         'originLocationCode': arrival,
+//         'destinationLocationCode': depurture,
+//         'departureDateTimeRange': {
+//           'date': returnDate,
+//         }
+//       }
+//   ],
+//   'travelers': getTravellers(travellersArr: travellersArr),
+//   'sources': ['GDS'],
+//   'searchCriteria': {
+//     'maxFlightOffers': kDebugMode ? 4 : 100,
+//     'flightFilters': {
+//       'cabinRestrictions': [
+//         {
+//           'cabin': cabinClass.toUpperCase(),
+//           'coverage': 'MOST_SEGMENTS',
+//           'originDestinationIds': ['1']
+//         }
+//       ],
+//       'carrierRestrictions': {
+//         'excludedCarrierCodes': ['AA', 'TP', 'AZ']
+//       }
+//     }
+//   }
+
+// };
 
 List<Map<String, dynamic>> getTravellers({required List<int> travellersArr
 

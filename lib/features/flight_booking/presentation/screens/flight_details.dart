@@ -1,9 +1,11 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/errors/error_loger.dart';
 import '../../../../core/errors/error_screen.dart';
 import '../../../../core/services/razorpay.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -46,26 +48,23 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   ];
   List<PassengerModel> passengers = <PassengerModel>[];
   bool isOfferEnabled = false;
-  Map<String, dynamic> offerData = {};
+
   final RazorpayService _razorpayService = RazorpayService();
 
   @override
   void initState() {
-    offerData = widget.data.toJson();
     super.initState();
     Future.microtask(() {
       if (mounted) {
         context.read<ProfileBloc>().add(const LoadProfileEvent());
-        context
-            .read<FlightBloc>()
-            .add(GetFlightsOfferPriceEvent(offerData: offerData));
+        context.read<FlightBloc>().add(GetFlightsOfferPriceEvent(
+            offerData: getOfferPriceBody(data: widget.data.toJson())));
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    
     final double width = AppHelpers.getScreenWidth(context);
 
     return Scaffold(
@@ -92,13 +91,33 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                         topRight: Radius.circular(32),
                       ),
                     ),
-                    child: BlocBuilder<FlightBloc, FlightState>(
-                      buildWhen: (previous, current) =>
-                          current is FlightOfferPriceLoading ||
-                          current is FlightOfferPriceLoaded ||
-                          current is FlightOfferPriceError ||
-                          current is FlightPaymentVerificationFailed ||
-                          current is FlightOrderLoading,
+                    child: BlocConsumer<FlightBloc, FlightState>(
+                      listener: (context, state) async {
+                        if (state is FlightOrderCreated) {
+                          final int amount = state.data.amount ?? 0;
+                          final String description =
+                              'initiated this payment for booking no ${state.data.notes?.bookingId} and reference no ${state.data.notes?.bookingReference}';
+                          final String orderId = state.data.id ?? '';
+                          const String mobile = '';
+                          const String email = '';
+
+                          await _razorpayService.initatePayment(
+                              amount: amount,
+                              description: description,
+                              orderId: orderId,
+                              mobile: mobile,
+                              email: email,
+                              onSuccess: _handlePaymentSuccess,
+                              onError: _handlePaymentError);
+                        }
+                        if (state is FlightPaymentVerified) {
+                          if (context.mounted) {
+                            context.goNamed(
+                                FlightBookingModule.passDownloadName,
+                                extra: {'data': state.data});
+                          }
+                        }
+                      },
                       builder: (context, flightState) {
                         if (flightState is FlightOfferPriceLoading) {
                           return const FlightDetailsLoadingWidet();
@@ -111,6 +130,14 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                         }
                         if (flightState is FlightPaymentVerificationFailed) {
                           return ErrorScreen(
+                              bg: AppColors.primary.withOpacity(0.3),
+                              errorDesc: flightState.error,
+                              errorMessage: 'Flight Payment Error');
+                        }
+
+                        if (flightState is FlightOrderCreationError) {
+                          return ErrorScreen(
+                              bg: AppColors.primary.withOpacity(0.3),
                               errorDesc: flightState.error,
                               errorMessage: 'Flight Payment Error');
                         }
@@ -120,10 +147,9 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               .data.data!.flightOffers!.first.itineraries!;
                           final travelerPricings = flightState
                               .data.data!.flightOffers!.first.travelerPricings!;
-                          final grandTotal = double.parse(
-                              flightState.data.data!.flightOffers!.first.price!
-                                      .grandTotal ??
-                                  '0.0');
+                          final grandTotal = double.parse(flightState.data.data!
+                                  .flightOffers!.first.price!.grandTotal ??
+                              '0.0');
                           return CustomScrollView(
                             slivers: [
                               const SliverToBoxAdapter(
@@ -183,8 +209,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                 ),
                               ),
                               SliverToBoxAdapter(
-                                child:
-                                    BlocBuilder<ProfileBloc, ProfileState>(
+                                child: BlocBuilder<ProfileBloc, ProfileState>(
                                   buildWhen: (prev, curr) =>
                                       curr is ProfileLoaded ||
                                       curr is ProfileError,
@@ -206,9 +231,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                           ListTile(
                                             leading: CircleAvatar(
                                               child: Text(
-                                                (state
-                                                            .profileData
-                                                            .firstName
+                                                (state.profileData.firstName
                                                             ?.isNotEmpty ??
                                                         false)
                                                     ? state.profileData
@@ -313,32 +336,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BlocConsumer<FlightBloc, FlightState>(
-        listener: (context, state) async {
-          if (state is FlightOrderCreated) {
-            final int amount = state.data.amount ?? 0;
-            final String description =
-                'initiated this payment for booking no ${state.data.notes?.bookingId} and reference no ${state.data.notes?.bookingReference}';
-            final String orderId = state.data.id ?? '';
-            const String mobile = '';
-            const String email = '';
-
-            await _razorpayService.initatePayment(
-                amount: amount,
-                description: description,
-                orderId: orderId,
-                mobile: mobile,
-                email: email,
-                onSuccess: _handlePaymentSuccess,
-                onError: _handlePaymentError);
-          }
-          if (state is FlightPaymentVerified) {
-            if (context.mounted) {
-              context.goNamed(FlightBookingModule.passDownloadName,
-                  extra: {'data': state.data});
-            }
-          }
-        },
+      bottomNavigationBar: BlocBuilder<FlightBloc, FlightState>(
         builder: (context, flightState) {
           if (flightState is FlightOfferPriceLoaded) {
             return BlocBuilder<ProfileBloc, ProfileState>(
@@ -362,7 +360,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
               },
             );
           }
-          return const SizedBox();
+          return const SizedBox.shrink();
         },
       ),
     );
@@ -374,12 +372,30 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
       'razorpay_payment_id': response.paymentId,
       'razorpay_signature': response.signature
     };
+    ErrorLoger().remoteLog(body: {
+      'message': response.orderId,
+      'stackTrace': 'Razorpay Error',
+      'error': response.paymentId,
+    });
     context.read<FlightBloc>().add(VerifyPayment(body: verifyPaymentBody));
   }
 
   Future<void> _handlePaymentError(PaymentFailureResponse response) async {
-    log('Payment error: ${response.code} - ${response.message}');
+    ErrorLoger().remoteLog(body: {
+      'message': response.message,
+      'stackTrace': 'Razorpay Error',
+      'error': response.error,
+    });
     context.pushNamed(PaymentModule.paymentFailedName,
         pathParameters: {'errorMsg': '${response.message}'});
   }
+}
+
+Map<String, dynamic> getOfferPriceBody({required Map<String, dynamic> data}) {
+  data['travelerPricings'].forEach((traveller) {
+    if (traveller['travelerType'] == 'HELD_INFANT') {
+      traveller['associatedAdultId'] = '1';
+    }
+  });
+  return data;
 }

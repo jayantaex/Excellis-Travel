@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class AppConstants {
+  static const String env = 'development';
   // API
   static const String baseUrl = 'https://api.excellistravel.com';
   static const String amaduesUrl = 'https://api.amadeus.com';

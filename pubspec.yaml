@@ -61,6 +61,7 @@ dependencies:
   webview_flutter: ^4.10.0
   # Network logger
   pretty_dio_logger: ^1.4.0
+  alice_lightweight: ^3.9.0
 
   #toaster
   fluttertoast: ^8.2.14

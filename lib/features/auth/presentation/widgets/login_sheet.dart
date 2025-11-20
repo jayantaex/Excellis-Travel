@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -29,9 +29,9 @@ class _LoginSheetState extends State<LoginSheet> {
 
   @override
   void initState() {
-    kDebugMode
+    AppConstants.env == 'development'
         ? <String>{
-            _userNameController.text = 'superadmin@reiselab.com',
+            _userNameController.text = 'agent@reiselab.com',
             _passwordController.text = 'SuperAdmin123!'
           }
         : null;

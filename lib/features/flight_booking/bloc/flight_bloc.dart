@@ -132,11 +132,11 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
 
   Future<void> _handleVerifyPayment(
       VerifyPayment event, Emitter<FlightState> emit) async {
-    final ApiResponse<PaymentVerifiedModel> res =
+    final ApiResponse<PaymentVarifiedDataModel> res =
         await repository.verifyPayment(body: event.body);
 
     if (res.data == null) {
-      emit(FlightOrderCreationError(
+      emit(FlightPaymentVerificationFailed(
           error: res.errorMessage ?? 'Something went wrong'));
       return;
     }

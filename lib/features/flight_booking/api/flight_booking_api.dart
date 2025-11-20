@@ -40,8 +40,8 @@ class FlightBookingApi {
       {required Map<String, dynamic> body}) async {
     try {
       final ApiResponse<FlightsDataModel> response =
-          await amadeusClient.postRequest(
-        reqModel: body,
+          await amadeusClient.getRequest(
+        queryParameters: body,
         endPoint: EndPoints.flightSearch,
         fromJson: (Map<String, dynamic> jsonData) =>
             FlightsDataModel.fromJson(jsonData),
@@ -49,8 +49,7 @@ class FlightBookingApi {
 
       return response;
     } catch (e) {
-      return ApiResponse(
-          errorMessage: e.toString(), statusCode: 400);
+      return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
   }
 
@@ -71,8 +70,7 @@ class FlightBookingApi {
                   FlightOfferPriceDataModel.fromJson(jsonData));
       return response;
     } catch (e) {
-      return ApiResponse(
-          errorMessage: e.toString(), statusCode: 400);
+      return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
   }
 
@@ -86,25 +84,24 @@ class FlightBookingApi {
               OrderModel.fromJson(jsonData['data']['order']));
       return resp;
     } catch (e) {
-      return ApiResponse(
-          errorMessage: e.toString(), statusCode: 400);
+      return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
   }
 
-  Future<ApiResponse<PaymentVerifiedModel>> verifyPayment(
+  Future<ApiResponse<PaymentVarifiedDataModel>> verifyPayment(
       {required Map<String, dynamic> body}) async {
     try {
-      final ApiResponse<PaymentVerifiedModel> response = await apiClient!
+      final ApiResponse<PaymentVarifiedDataModel> response = await apiClient!
           .postRequest(
               reqModel: body,
               endPoint: EndPoints.verifyPayment,
               fromJson: (Map<String, dynamic> jsonData) =>
-                  PaymentVerifiedModel.fromJson(jsonData['data']));
+                  PaymentVarifiedDataModel.fromJson(
+                      jsonData['data']['booking']));
 
       return response;
     } catch (e) {
-      return ApiResponse(
-          errorMessage: e.toString(), statusCode: 400);
+      return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
   }
 
