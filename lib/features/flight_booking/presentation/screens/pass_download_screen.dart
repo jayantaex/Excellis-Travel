@@ -344,12 +344,16 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                             padding: const EdgeInsets.all(20),
                             width: width,
                             height: 120,
-                            child: SizedBox(
-                              height: 73,
-                              child: SvgPicture.string(
-                                barCodeSvg,
-                                width: 200,
-                                height: 80,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: SizedBox(
+                                height: 73,
+                                child: SvgPicture.string(
+                                  barCodeSvg,
+                                  width: 200,
+                                  height: 80,
+                                ),
                               ),
                             )),
                       ),

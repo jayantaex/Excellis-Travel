@@ -599,10 +599,18 @@ class TravellerDetails {
   factory TravellerDetails.fromJson(Map<String, dynamic> json) =>
       TravellerDetails(
         adults: json['adults'] != null
-            ? (json['adults'] as List).map((e) => Adult.fromJson(e)).toList()
+            ? (json['adults'] as List).map((e) => Traveler.fromJson(e)).toList()
             : null,
-        infants: json['infants'] ?? [],
-        children: json['children'] ?? [],
+        infants: json['infants'] != null
+            ? (json['infants'] as List)
+                .map((e) => Traveler.fromJson(e))
+                .toList()
+            : null,
+        children: json['children'] != null
+            ? (json['children'] as List)
+                .map((e) => Traveler.fromJson(e))
+                .toList()
+            : null,
       );
   TravellerDetails({
     this.adults,
@@ -610,9 +618,9 @@ class TravellerDetails {
     this.children,
   });
 
-  final List<Adult>? adults;
-  final List<dynamic>? infants;
-  final List<dynamic>? children;
+  final List<Traveler>? adults;
+  final List<Traveler>? infants;
+  final List<Traveler>? children;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -629,8 +637,8 @@ class TravellerDetails {
   }
 }
 
-class Adult {
-  factory Adult.fromJson(Map<String, dynamic> json) => Adult(
+class Traveler {
+  factory Traveler.fromJson(Map<String, dynamic> json) => Traveler(
         open: json['open'],
         title: json['title'],
         lastName: json['lastName'],
@@ -640,7 +648,7 @@ class Adult {
             : null,
         nationality: json['nationality'],
       );
-  Adult({
+  Traveler({
     this.open,
     this.title,
     this.lastName,
