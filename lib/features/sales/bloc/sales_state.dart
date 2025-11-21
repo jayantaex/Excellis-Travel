@@ -46,7 +46,10 @@ final class MarkupLoadError extends SalesState {
   final String message;
 }
 
-final class MarkupLoaded extends SalesState {}
+final class MarkupLoaded extends SalesState {
+  const MarkupLoaded({required this.markUpData});
+  final MarkupDataModel markUpData;
+}
 
 final class MarkupUpdating extends SalesState {}
 

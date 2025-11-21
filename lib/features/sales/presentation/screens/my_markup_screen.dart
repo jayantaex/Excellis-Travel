@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
 import '../../bloc/sales_bloc.dart';
+import '../../data/models/markup_data_model.dart';
 import '../widgets/delete_confirmation_dialog.dart';
 import '../widgets/edit_markup_sheet.dart';
 import '../widgets/my_markup_card.dart';
@@ -46,14 +47,23 @@ class _MyMarkupScreenState extends State<MyMarkupScreen> {
                         backgroundColor: AppColors.black.withOpacity(0.1),
                         child: IconButton(
                           onPressed: () {
+                            final sheetKey =
+                                GlobalKey<AddEditMarkUpSheetState>();
                             showAppSheet(
                                 submitButtonRequired: true,
                                 onSubmitPressed: () {
-                                  // TODO: Implement add markup logic
+                                  final body = sheetKey.currentState?.getBody();
+                                  if (body != null) {
+                                    context.read<SalesBloc>().add(
+                                          SalesAddMarkupEvent(
+                                            body: body,
+                                          ),
+                                        );
+                                  }
                                 },
                                 context: context,
                                 title: 'Add New Markup',
-                                child: const AddEditMarkUpSheet());
+                                child: AddEditMarkUpSheet(key: sheetKey));
                           },
                           icon: const Icon(
                             Icons.add_circle_outline_rounded,
@@ -121,90 +131,77 @@ class _MyMarkupScreenState extends State<MyMarkupScreen> {
                           }
 
                           if (state is MarkupLoaded) {
-                            // TODO: Display actual markup data from state
-                            // For now, showing placeholder data
                             return ListView(
                               children: [
-                                MyMarkUpCard(
-                                  id: '1',
-                                  type: 'Domestic',
-                                  product: 'Airline',
-                                  unit: 'Percentage',
-                                  value: 3.45,
-                                  createdBy: 'Self',
-                                  status: 'active',
-                                  onEdit: () {
-                                    showAppSheet(
-                                      submitButtonRequired: true,
-                                      submitButtonTitle: 'Update',
-                                      onSubmitPressed: () {
-                                        // TODO: Implement update logic
-                                        print('Update markup');
-                                      },
-                                      context: context,
-                                      title: 'Edit Markup',
-                                      child: const AddEditMarkUpSheet(
-                                        initialType: 'Domestic',
-                                        initialProduct: 'Airline',
-                                        initialUnit: 'Percentage',
-                                        initialValue: 3.45,
-                                        initialStatus: 'active',
+                                ...state.markUpData.markups!
+                                    .map(
+                                      (Markups e) => MyMarkUpCard(
+                                        id: e.id.toString(),
+                                        type: '${e.type}',
+                                        product: '${e.product}',
+                                        unit: '${e.fareType}',
+                                        value: double.parse('${e.value}'),
+                                        createdBy:
+                                            '${e.owner?.firstName} ${e.owner?.lastName}',
+                                        status: e.isActive ?? false
+                                            ? 'active'
+                                            : 'inActive',
+                                        onEdit: () {
+                                          final sheetKey = GlobalKey<
+                                              AddEditMarkUpSheetState>();
+                                          showAppSheet(
+                                            submitButtonRequired: true,
+                                            submitButtonTitle: 'Update',
+                                            onSubmitPressed: () {
+                                              final body = sheetKey.currentState
+                                                  ?.getBody();
+                                              if (body != null &&
+                                                  e.id != null) {
+                                                context.read<SalesBloc>().add(
+                                                      SalesUpdateMarkupEvent(
+                                                        id: e.id!,
+                                                        body: body,
+                                                      ),
+                                                    );
+                                              }
+                                            },
+                                            context: context,
+                                            title: 'Edit Markup',
+                                            child: AddEditMarkUpSheet(
+                                              key: sheetKey,
+                                              id: e.id,
+                                              initialType: e.type,
+                                              initialProduct: e.product,
+                                              initialUnit: e.fareType,
+                                              initialValue: e.value != null
+                                                  ? double.tryParse(e.value!)
+                                                  : null,
+                                              initialStatus: e.isActive ?? false
+                                                  ? 'active'
+                                                  : 'inactive',
+                                            ),
+                                          );
+                                        },
+                                        onDelete: () {
+                                          showDeleteConfirmationDialog(
+                                            context: context,
+                                            title: 'Delete Markup',
+                                            message:
+                                                'Are you sure you want to delete this markup? This action cannot be undone.',
+                                            onConfirm: () {
+                                              if (e.id != null) {
+                                                context.read<SalesBloc>().add(
+                                                      DeleteMarkupEvent(
+                                                        id: e.id!,
+                                                      ),
+                                                    );
+                                              }
+                                            },
+                                          );
+                                        },
                                       ),
-                                    );
-                                  },
-                                  onDelete: () {
-                                    showDeleteConfirmationDialog(
-                                      context: context,
-                                      title: 'Delete Markup',
-                                      message:
-                                          'Are you sure you want to delete this markup? This action cannot be undone.',
-                                      onConfirm: () {
-                                        // TODO: Implement actual delete logic
-                                        print('Markup ID: 1 deleted');
-                                      },
-                                    );
-                                  },
-                                ),
-                                MyMarkUpCard(
-                                  id: '2',
-                                  type: 'International',
-                                  product: 'Hotel',
-                                  unit: 'Fixed',
-                                  value: 250.00,
-                                  createdBy: 'Admin',
-                                  status: 'active',
-                                  onEdit: () {
-                                    showAppSheet(
-                                      submitButtonRequired: true,
-                                      submitButtonTitle: 'Update',
-                                      onSubmitPressed: () {
-                                        // TODO: Implement update logic
-                                        print('Update markup');
-                                      },
-                                      context: context,
-                                      title: 'Edit Markup',
-                                      child: const AddEditMarkUpSheet(
-                                        initialType: 'International',
-                                        initialProduct: 'Hotel',
-                                        initialUnit: 'Fixed',
-                                        initialValue: 250.00,
-                                        initialStatus: 'active',
-                                      ),
-                                    );
-                                  },
-                                  onDelete: () {
-                                    showDeleteConfirmationDialog(
-                                      context: context,
-                                      title: 'Delete Markup',
-                                      message:
-                                          'Are you sure you want to delete this markup? This action cannot be undone.',
-                                      onConfirm: () {
-                                        // TODO: Implement actual delete logic
-                                        print('Markup ID: 2 deleted');
-                                      },
-                                    );
-                                  },
-                                ),
+                                    )
+                                    .toList(),
                               ],
                             );
                           }

@@ -6,12 +6,14 @@ import '../../../../core/widgets/primary_input.dart';
 class AddEditMarkUpSheet extends StatefulWidget {
   const AddEditMarkUpSheet({
     super.key,
+    this.id,
     this.initialType,
     this.initialProduct,
     this.initialUnit,
     this.initialValue,
     this.initialStatus,
   });
+  final int? id;
   final String? initialType;
   final String? initialProduct;
   final String? initialUnit;
@@ -19,10 +21,10 @@ class AddEditMarkUpSheet extends StatefulWidget {
   final String? initialStatus;
 
   @override
-  State<AddEditMarkUpSheet> createState() => _AddEditMarkUpSheetState();
+  State<AddEditMarkUpSheet> createState() => AddEditMarkUpSheetState();
 }
 
-class _AddEditMarkUpSheetState extends State<AddEditMarkUpSheet> {
+class AddEditMarkUpSheetState extends State<AddEditMarkUpSheet> {
   late String selectedType;
   late String selectedProduct;
   late String selectedUnit;
@@ -195,4 +197,15 @@ class _AddEditMarkUpSheetState extends State<AddEditMarkUpSheet> {
           ],
         ),
       );
+
+  Map<String, dynamic> getBody() => {
+        'product': selectedProduct,
+        'type': selectedType,
+        'operator': ['All'],
+        'fareType': selectedUnit,
+        'value': valueController.text,
+        'isActive': selectedStatus == 'active',
+        'currency': 'INR',
+        'forRole': 'self'
+      };
 }

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/network/api_response.dart';
+import '../data/models/markup_data_model.dart';
 import '../data/models/sates_data_model.dart';
 import '../data/repository/sales_repository.dart';
 
@@ -43,9 +44,12 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
     );
 
     if (response.data != null) {
-      if (event.startDate.isNotEmpty ||
-          event.endDate.isNotEmpty ||
-          event.keyword.isNotEmpty) {
+      // Only clear old data if it's the first page (page 1) with filters
+      // This allows pagination to work correctly with filters
+      if (event.page == 1 &&
+          (event.startDate.isNotEmpty ||
+              event.endDate.isNotEmpty ||
+              event.keyword.isNotEmpty)) {
         oldCommissions.clear();
       }
 
@@ -68,13 +72,14 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
       GetMarkupEvent event, Emitter<SalesState> emit) async {
     emit(MarkupLoading());
 
-    final response = await salesRepository.fetchMarkUp(
+    final ApiResponse<MarkupDataModel> response =
+        await salesRepository.fetchMarkUp(
       page: 1,
       limit: 100,
     );
 
     if (response.data != null) {
-      emit(MarkupLoaded());
+      emit(MarkupLoaded(markUpData: response.data ?? MarkupDataModel()));
     } else {
       emit(MarkupLoadError(
           message: response.errorMessage ?? 'Failed to load markup'));

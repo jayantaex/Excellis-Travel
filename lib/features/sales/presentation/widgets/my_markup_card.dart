@@ -33,20 +33,13 @@ class MyMarkUpCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header Section
           Container(
-            padding: const EdgeInsets.all(AppSizes.md),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -156,7 +149,7 @@ class MyMarkUpCard extends StatelessWidget {
 
           // Commission Value Section
           Container(
-            padding: const EdgeInsets.all(AppSizes.md),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             child: Column(
               children: [
                 Row(
@@ -175,7 +168,7 @@ class MyMarkUpCard extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                'Commission',
+                                'Markup',
                                 style: AppTextStyles.bodySmall.copyWith(
                                   color: AppColors.textSecondary,
                                 ),
@@ -192,12 +185,6 @@ class MyMarkUpCard extends StatelessWidget {
                                       : AppColors.success.withOpacity(0.15),
                                   borderRadius:
                                       BorderRadius.circular(AppSizes.radiusXs),
-                                  border: Border.all(
-                                    color: unit.toLowerCase() == 'percentage'
-                                        ? AppColors.info
-                                        : AppColors.success,
-                                    width: 1,
-                                  ),
                                 ),
                                 child: Text(
                                   unit,
@@ -205,7 +192,7 @@ class MyMarkUpCard extends StatelessWidget {
                                     color: unit.toLowerCase() == 'percentage'
                                         ? AppColors.info
                                         : AppColors.success,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w400,
                                     fontSize: 10,
                                   ),
                                 ),
@@ -248,7 +235,7 @@ class MyMarkUpCard extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: AppSizes.md),
+                const SizedBox(height: 8),
 
                 // Divider
                 Container(
@@ -413,7 +400,7 @@ class MyMarkUpCard extends StatelessWidget {
                     value,
                     style: AppTextStyles.bodyMedium.copyWith(
                       color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: 13,
                     ),
                     overflow: TextOverflow.ellipsis,
