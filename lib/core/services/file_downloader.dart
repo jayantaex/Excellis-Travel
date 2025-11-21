@@ -37,6 +37,10 @@ class FileDownloaderService {
     required String markupPrice,
     required String bokkingRefId,
   }) async {
+    log('Downloading file for booking ref id: $bokkingRefId');
+    log('Base fare: $baseFare');
+    log('Total fare: $totalFare');
+    log('Markup price: $markupPrice');
     try {
       if (Platform.isAndroid) {
         const Permission permission = Permission.manageExternalStorage;
@@ -55,7 +59,7 @@ class FileDownloaderService {
         queryParameters: {
           'baseFare': baseFare,
           'totalFare': totalFare,
-          'markupPrice': markupPrice,
+          'markup': markupPrice,
         },
         options: Options(headers: {
           'Authorization': 'Bearer $accessToken',

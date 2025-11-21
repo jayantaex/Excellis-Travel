@@ -31,16 +31,18 @@ Future<void> showAddPassengerSheet(
   switch (travellerType) {
     case 'Adult':
       {
-        firstDate = DateTime(1900);
+        firstDate = DateTime.now().subtract(
+          const Duration(days: 365 * 120),
+        );
         lastDate = DateTime.now().subtract(
-          const Duration(days: 365 * 10),
+          const Duration(days: 365 * 12),
         );
       }
       break;
     case 'Child':
       {
         firstDate = DateTime.now().subtract(
-          const Duration(days: 365 * 10),
+          const Duration(days: 365 * 12),
         );
         lastDate = DateTime.now().subtract(
           const Duration(days: 365 * 2),
@@ -50,7 +52,7 @@ Future<void> showAddPassengerSheet(
     case 'Infant':
       {
         firstDate = DateTime.now().subtract(const Duration(days: 365 * 2));
-        lastDate = DateTime.now();
+        lastDate = DateTime.now().subtract(const Duration(days: 1));
       }
       break;
     default:

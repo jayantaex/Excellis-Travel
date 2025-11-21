@@ -314,7 +314,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                           fontWeight: FontWeight.w400),
                                     ),
                                     subtitle: Text(
-                                      'DOB: ${e.dateOfBirth} | Nationality: ${e.nationality}',
+                                      'DOB: ${AppHelpers.formatDate(e.dateOfBirth ?? DateTime.now(), pattern: 'dd MMM yyy')} | Nationality: ${e.nationality}',
                                       style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w400),
@@ -404,10 +404,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                       markupPrice:
                           '${(widget.data.fareDetails?.totalFare ?? 0.00) - (widget.data.fareDetails?.baseFare ?? 0.00)}',
                       bokkingRefId: '${widget.data.bookingReference}',
-                      showDownloadProgress: (count, total) {
-                        log('$count $total');
-                        log('${(count / total) * 100}');
-                      },
+                      showDownloadProgress: (count, total) {},
                     );
 
                     if (res) {
