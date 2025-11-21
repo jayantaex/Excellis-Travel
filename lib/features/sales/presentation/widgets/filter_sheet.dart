@@ -89,10 +89,20 @@ class FilterSheet extends StatelessWidget {
                           child: child!,
                         ),
                     context: context,
-                    firstDate: DateTime(2025),
+                    firstDate: startDate ?? DateTime(2025),
                     lastDate: DateTime(2100),
-                    initialDate: DateTime.now());
+                    initialDate: startDate ?? DateTime.now());
                 if (picked != null) {
+                  if (startDate != null && picked.isBefore(startDate!)) {
+                    // Show error if end date is before start date
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('End date cannot be before start date'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
                   onEndDatePicked(picked);
                   endDateController.text =
                       AppHelpers.formatDate(picked, pattern: 'yyyy-MM-dd');

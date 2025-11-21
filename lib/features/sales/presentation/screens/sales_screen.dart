@@ -14,7 +14,7 @@ import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/sales_bloc.dart';
 import '../widgets/filter_sheet.dart';
 import '../widgets/no_sales.dart';
-import '../widgets/trasaction_tile.dart';
+import '../widgets/sale_tile.dart';
 
 class SalesScreen extends StatefulWidget {
   const SalesScreen({super.key});
@@ -68,11 +68,11 @@ class _SalesScreenState extends State<SalesScreen> {
   Future<void> callApi({required int page, required int limit}) async {
     context.read<SalesBloc>().add(
           SalesFetchEvent(
-            page: page,
-            limit: limit,
-            startDate: _startDateController.text,
-            endDate: _endDateController.text,
-          ),
+              page: page,
+              limit: limit,
+              startDate: _startDateController.text,
+              endDate: _endDateController.text,
+              keyword: _bookingIdController.text),
         );
   }
 
@@ -109,6 +109,7 @@ class _SalesScreenState extends State<SalesScreen> {
                             ),
                             onSubmitPressed: () {
                               Navigator.pop(context);
+                              page = 1; // Reset page when applying filters
                               callApi(page: page, limit: limit);
                             },
                             submitButtonRequired: true,
@@ -195,6 +196,9 @@ class _SalesScreenState extends State<SalesScreen> {
                                                                   .isNotEmpty ||
                                                               _endDateController
                                                                   .text
+                                                                  .isNotEmpty ||
+                                                              _bookingIdController
+                                                                  .text
                                                                   .isNotEmpty
                                                           ? SizedBox(
                                                               child: InkWell(
@@ -203,6 +207,10 @@ class _SalesScreenState extends State<SalesScreen> {
                                                                     .clear();
                                                                 _endDateController
                                                                     .clear();
+                                                                _bookingIdController
+                                                                    .clear();
+                                                                page =
+                                                                    1; // Reset page when clearing filters
                                                                 callApi(
                                                                     page: page,
                                                                     limit:
@@ -239,7 +247,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                                   .commissions
                                                                   ?.length ??
                                                               0)) {
-                                                        return TrasactionTile(
+                                                        return SaleTile(
                                                             commission: state
                                                                     .sales
                                                                     .commissions![

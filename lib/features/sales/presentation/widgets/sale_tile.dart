@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
@@ -6,8 +7,8 @@ import 'sale_details_sheet.dart';
 
 import '../../data/models/sates_data_model.dart';
 
-class TrasactionTile extends StatelessWidget {
-  const TrasactionTile({super.key, required this.commission});
+class SaleTile extends StatelessWidget {
+  const SaleTile({super.key, required this.commission});
 
   final Commissions commission;
 
@@ -30,10 +31,13 @@ class TrasactionTile extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: AppColors.black)),
-        subtitle: Text(commission.createdAt ?? '',
+        subtitle: Text(
+            AppHelpers.formatDate(
+                DateTime.parse('${commission.createdAt ?? DateTime.now()}'),
+                pattern: 'dd MMM yyy'),
             style: const TextStyle(fontSize: 12, color: AppColors.grey)),
         trailing: Text(
-          '₹${commission.baseAmount}',
+          '₹${commission.booking?.totalAmount}',
           style: const TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w600,

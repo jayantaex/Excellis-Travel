@@ -264,7 +264,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                           fontWeight: FontWeight.w400),
                                     ),
                                     subtitle: Text(
-                                      'DOB: ${e.dateOfBirth} | Nationality: ${e.nationality}',
+                                      'DOB: ${AppHelpers.formatDate(e.dateOfBirth ?? DateTime.now(), pattern: 'dd MMM yyy')} | Nationality: ${e.nationality}',
                                       style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w400),
@@ -289,7 +289,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                           fontWeight: FontWeight.w400),
                                     ),
                                     subtitle: Text(
-                                      'DOB: ${e.dateOfBirth} | Nationality: ${e.nationality}',
+                                      'DOB: ${AppHelpers.formatDate(e.dateOfBirth ?? DateTime.now(), pattern: 'dd MMM yyy')} | Nationality: ${e.nationality}',
                                       style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w400),
@@ -399,10 +399,10 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                   try {
                     Fluttertoast.showToast(msg: 'Downloading...');
                     final bool res = await FileDownloaderService.saveFile(
-                      baseFare: '${widget.data.fareDetails?.baseFare}',
+                      baseFare:
+                          '${(widget.data.fareDetails?.totalFare ?? 0.00) - (widget.data.fareDetails?.markup ?? 0.00)}',
                       totalFare: '${widget.data.fareDetails?.totalFare}',
-                      markupPrice:
-                          '${(widget.data.fareDetails?.totalFare ?? 0.00) - (widget.data.fareDetails?.baseFare ?? 0.00)}',
+                      markupPrice: '${widget.data.fareDetails?.markup ?? 0.00}',
                       bokkingRefId: '${widget.data.bookingReference}',
                       showDownloadProgress: (count, total) {},
                     );

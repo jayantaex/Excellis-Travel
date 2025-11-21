@@ -388,11 +388,12 @@ class TicketDetailsScreen extends StatelessWidget {
                             Fluttertoast.showToast(msg: 'Downloading...');
                             final bool res =
                                 await FileDownloaderService.saveFile(
-                              baseFare: '${ticketData?.fareDetails?.baseFare}',
+                              baseFare:
+                                  '${(ticketData?.fareDetails?.totalFare ?? 0.0) - (ticketData?.fareDetails?.markup ?? 0.0)}',
                               totalFare:
                                   '${ticketData?.fareDetails?.totalFare}',
                               markupPrice:
-                                  '${(ticketData?.fareDetails?.totalFare ?? 0.00) - (ticketData?.fareDetails?.baseFare ?? 0.00)}',
+                                  '${(ticketData?.fareDetails?.markup ?? 0.00)}',
                               bokkingRefId: '${ticketData?.bookingReference}',
                               showDownloadProgress: (count, total) {
                                 log('$count $total');

@@ -56,4 +56,6 @@ class EndPoints {
   static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
 
   static const String sales = '/commissions/transactions-auto';
+  //markup
+  static const String markup = '/markups';
 }
