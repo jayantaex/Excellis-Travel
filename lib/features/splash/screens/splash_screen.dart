@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_styles.dart';
+import '../../../core/constants/app_updater.dart';
 import '../../../core/utils/storage_service.dart';
+import '../../../core/widgets/updating_sheet.dart';
 import '../../auth/auth_module.dart';
 import '../../bottom_navigation/bottom_nav_module.dart';
 import '../../profile_management/bloc/profile_bloc.dart';
@@ -19,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // await _handleAppUpdate();
       await _handleAuthentication();
     });
     super.initState();
@@ -31,7 +34,6 @@ class _SplashScreenState extends State<SplashScreen> {
         body: BlocConsumer<ProfileBloc, ProfileState>(
           listener: (BuildContext context, ProfileState state) async {
             if (state is ProfileError) {
-              log("ProfileError");
               await StorageService.clearTokens();
               if (context.mounted) {
                 context.goNamed(AuthModule.loginName);
@@ -65,6 +67,18 @@ class _SplashScreenState extends State<SplashScreen> {
         context.goNamed(AuthModule.loginName);
       }
       return;
+    } catch (e) {
+      log('Error: $e');
+    }
+  }
+
+  Future<void> _handleAppUpdate() async {
+    try {
+      final bool isUpdateAvailable = await AppUpdater().isUpdateAvailable();
+      if (isUpdateAvailable) {
+        showUpdatingSheet(context: context);
+        await AppUpdater().updateApp();
+      }
     } catch (e) {
       log('Error: $e');
     }

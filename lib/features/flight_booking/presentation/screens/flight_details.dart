@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/errors/error_loger.dart';
 import '../../../../core/errors/error_screen.dart';
 import '../../../../core/services/razorpay.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -372,20 +369,11 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
       'razorpay_payment_id': response.paymentId,
       'razorpay_signature': response.signature
     };
-    ErrorLoger().remoteLog(body: {
-      'message': response.orderId,
-      'stackTrace': 'Razorpay Error',
-      'error': response.paymentId,
-    });
+
     context.read<FlightBloc>().add(VerifyPayment(body: verifyPaymentBody));
   }
 
   Future<void> _handlePaymentError(PaymentFailureResponse response) async {
-    ErrorLoger().remoteLog(body: {
-      'message': response.message,
-      'stackTrace': 'Razorpay Error',
-      'error': response.error,
-    });
     context.pushNamed(PaymentModule.paymentFailedName,
         pathParameters: {'errorMsg': '${response.message}'});
   }

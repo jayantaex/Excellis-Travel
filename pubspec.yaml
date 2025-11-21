@@ -70,10 +70,10 @@ dependencies:
   #local DB
   hive_flutter: ^1.1.0
   hive: ^2.2.3
-  #pdf generator
-  pdf: ^3.11.3
   #permission handler
   permission_handler: ^11.2.0
+  #local  app update
+  # r_upgrade: ^0.4.2
 
   
 
