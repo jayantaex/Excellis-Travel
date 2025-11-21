@@ -22,7 +22,6 @@ Future<void> showPassengerSelectionSheet(
 }
 
 class PassengerSelectionSheet extends StatefulWidget {
-
   const PassengerSelectionSheet(
       {super.key,
       required this.onDone,
@@ -54,149 +53,149 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
 
   @override
   Widget build(BuildContext context) => Container(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 40),
-      width: AppHelpers.getScreenWidth(context),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(width: 20),
-              const Text(
-                'Select Passengers',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 40),
+        width: AppHelpers.getScreenWidth(context),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 20),
+                const Text(
+                  'Select Passengers',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      color: AppColors.grey,
+                    ))
+              ],
+            ),
+            const SizedBox(height: 10),
+            const Divider(
+              thickness: 0.5,
+            ),
+            const SizedBox(height: 15),
+            ListTile(
+              title: const Text(
+                'Adults',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.black),
               ),
-              IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.close_rounded,
-                    color: AppColors.grey,
-                  ))
-            ],
-          ),
-          const SizedBox(height: 10),
-          const Divider(
-            thickness: 0.5,
-          ),
-          const SizedBox(height: 15),
-          ListTile(
-            title: const Text(
-              'Adult',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.black),
-            ),
-            subtitle: const Text(
-              'Age above 18',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.grey),
-            ),
-            trailing: InCrementDecrementButton(
-              value: adult,
-              onIncrement: () {
-                if (adult < 9) {
-                  adult++;
-                }
-                setState(() {});
-              },
-              onDecrement: () {
-                if (adult > 1) {
-                  adult--;
-                }
-                setState(() {});
-              },
-              title: 'Adult',
-              subtitle: 'Age 12 years and above',
-            ),
-          ),
-          ListTile(
-            title: const Text(
-              'Children',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.black),
-            ),
-            subtitle: const Text(
-              'Age 2 to 12 years',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.grey),
-            ),
-            trailing: InCrementDecrementButton(
-              value: child,
-              onIncrement: () {
-                if (child < 9) {
-                  child++;
-                }
-                setState(() {});
-              },
-              onDecrement: () {
-                if (child > 0) {
-                  child--;
-                }
-                setState(() {});
-              },
-              title: 'Adult',
-              subtitle: 'Age above 18',
-            ),
-          ),
-          ListTile(
-            title: const Text(
-              'Infant',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.black),
-            ),
-            subtitle: const Text(
-              'Age below 2 years',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.grey),
-            ),
-            trailing: InCrementDecrementButton(
-              value: infant,
-              onIncrement: () {
-                if (infant < 9) {
-                  if (infant < adult) {
-                    infant++;
+              subtitle: const Text(
+                'Age above 12',
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.grey),
+              ),
+              trailing: InCrementDecrementButton(
+                value: adult,
+                onIncrement: () {
+                  if (adult < 9) {
+                    adult++;
                   }
-                }
-                setState(() {});
-              },
-              onDecrement: () {
-                if (infant > 0) {
-                  infant--;
-                }
-                setState(() {});
-              },
-              title: 'Adult',
-              subtitle: 'Age above 18',
+                  setState(() {});
+                },
+                onDecrement: () {
+                  if (adult > 1) {
+                    adult--;
+                  }
+                  setState(() {});
+                },
+                title: 'Adult',
+                subtitle: 'Age 12 years and above',
+              ),
             ),
-          ),
-          const SizedBox(height: 55),
-          AppPrimaryButton(
-            title: 'Done',
-            isLoading: false,
-            onPressed: () {
-              widget.onDone(adult, child, infant);
-              Navigator.pop(context);
-            },
-          )
-        ],
-      ),
-    );
+            ListTile(
+              title: const Text(
+                'Children',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.black),
+              ),
+              subtitle: const Text(
+                'Age 2 to 12 years',
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.grey),
+              ),
+              trailing: InCrementDecrementButton(
+                value: child,
+                onIncrement: () {
+                  if (child < 9) {
+                    child++;
+                  }
+                  setState(() {});
+                },
+                onDecrement: () {
+                  if (child > 0) {
+                    child--;
+                  }
+                  setState(() {});
+                },
+                title: 'Adult',
+                subtitle: 'Age above 18',
+              ),
+            ),
+            ListTile(
+              title: const Text(
+                'Infants',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.black),
+              ),
+              subtitle: const Text(
+                'Age below 2 years',
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.grey),
+              ),
+              trailing: InCrementDecrementButton(
+                value: infant,
+                onIncrement: () {
+                  if (infant < 9) {
+                    if (infant < adult) {
+                      infant++;
+                    }
+                  }
+                  setState(() {});
+                },
+                onDecrement: () {
+                  if (infant > 0) {
+                    infant--;
+                  }
+                  setState(() {});
+                },
+                title: 'Adult',
+                subtitle: 'Age above 18',
+              ),
+            ),
+            const SizedBox(height: 55),
+            AppPrimaryButton(
+              title: 'Done',
+              isLoading: false,
+              onPressed: () {
+                widget.onDone(adult, child, infant);
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+      );
 }
 
 class InCrementDecrementButton extends StatelessWidget {
-
   const InCrementDecrementButton(
       {super.key,
       required this.value,
@@ -212,46 +211,46 @@ class InCrementDecrementButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-        width: 120,
-        decoration: BoxDecoration(
-          color: AppColors.grey.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              borderRadius: BorderRadius.circular(8),
-              onTap: onDecrement,
-              child: const SizedBox(
-                height: 35,
-                width: 35,
-                child: Icon(
-                  Icons.remove,
-                  size: 18,
-                ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      width: 120,
+      decoration: BoxDecoration(
+        color: AppColors.grey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            borderRadius: BorderRadius.circular(8),
+            onTap: onDecrement,
+            child: const SizedBox(
+              height: 35,
+              width: 35,
+              child: Icon(
+                Icons.remove,
+                size: 18,
               ),
             ),
-            Text(
-              '$value',
-              style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.black),
-            ),
-            InkWell(
-              borderRadius: BorderRadius.circular(8),
-              onTap: onIncrement,
-              child: const SizedBox(
-                height: 35,
-                width: 35,
-                child: Icon(
-                  Icons.add,
-                  size: 18,
-                ),
+          ),
+          Text(
+            '$value',
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: AppColors.black),
+          ),
+          InkWell(
+            borderRadius: BorderRadius.circular(8),
+            onTap: onIncrement,
+            child: const SizedBox(
+              height: 35,
+              width: 35,
+              child: Icon(
+                Icons.add,
+                size: 18,
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ));
 }

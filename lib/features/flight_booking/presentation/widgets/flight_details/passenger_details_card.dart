@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../core/utils/app_toast.dart';
 import '../../../models/flights_data_model.dart';
 import '../../../models/passenger_model.dart';
 import 'add_passenger_sheet.dart';
@@ -71,7 +74,9 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                   passenger: e,
                   onDelete: () {
                     _adultPassengers.remove(e);
+                    widget.onPassengerRemove(e);
                     setState(() {});
+                    showToast(message: '${e.firstName} ${e.lastName} removed');
                   },
                 )),
 
@@ -93,7 +98,9 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                   passenger: e,
                   onDelete: () {
                     _childPassengers.remove(e);
+                    widget.onPassengerRemove(e);
                     setState(() {});
+                    showToast(message: '${e.firstName} ${e.lastName} removed');
                   },
                 )),
             _allowedChild == 0 ? const SizedBox() : const Divider(),
@@ -116,6 +123,8 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                   onDelete: () {
                     _infantPassengers.remove(e);
                     widget.onPassengerRemove(e);
+                    setState(() {});
+                    showToast(message: '${e.firstName} ${e.lastName} removed');
                   },
                 )),
             const SizedBox(height: 10),
