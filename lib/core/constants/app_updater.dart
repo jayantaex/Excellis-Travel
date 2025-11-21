@@ -1,20 +1,46 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
+import 'package:excellistravel/core/constants/app_constants.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:r_upgrade/r_upgrade.dart';
-
-import 'app_constants.dart';
 
 class AppUpdater {
   AppUpdater() {
     _dio.options.baseUrl =
-        'https://res.cloudinary.com/detjdvs7r/raw/upload/version_kajdzf.json';
+        'https://api.jsonsilo.com/public/e11e3b59-c395-42e9-801f-14b2724ae799';
   }
   final Dio _dio = Dio();
+
+  static Future<String> _getPath() async {
+    String directory;
+    if (Platform.isIOS) {
+      directory = (await getDownloadsDirectory())?.path ??
+          (await getTemporaryDirectory()).path;
+    } else {
+      directory = '/storage/emulated/0/Download/';
+      bool dirDownloadExists = true;
+      dirDownloadExists = await Directory(directory).exists();
+      if (!dirDownloadExists) {
+        directory = '/storage/emulated/0/Downloads/';
+        dirDownloadExists = await Directory(directory).exists();
+        if (!dirDownloadExists) {
+          directory = (await getTemporaryDirectory()).path;
+        }
+      }
+    }
+    return directory;
+  }
+
   Future<Map<String, dynamic>> getLatestVersion() async {
     try {
       final Response res = await _dio.get('');
-      return res.data;
+      final Map<String, dynamic> resp = {
+        'version': '${res.data['version']}',
+        'url': '${res.data['url']}'
+      };
+
+      return resp;
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -23,46 +49,26 @@ class AppUpdater {
 
   Future<bool> isUpdateAvailable() async {
     try {
-      final Map<String, dynamic> latestVersion = await getLatestVersion();
-
-      log('${latestVersion}');
-      final double remoteVersion =
-          double.parse(latestVersion['version'].toString());
-      // final double currentVersion = double.parse(AppConstants.appVersion);
-      // log("Remote  Version: $remoteVersion");
-      // log("Current Version: $currentVersion");
-      // return remoteVersion > currentVersion;
-      return true;
+      final latestVersion = await getLatestVersion();
+      return latestVersion['version'] != AppConstants.appVersion;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Map<String, dynamic>> getLatestInfo() async {
+  Future<String> downloadApp(
+      {required String url,
+      required String latestVersion,
+      required ProgressCallback? onReceiveProgress}) async {
     try {
-      final Map<String, dynamic> latestVersion = await getLatestVersion();
-      return latestVersion;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> updateApp() async {
-    try {
-      final Map<String, dynamic> latestInfo = await getLatestInfo();
-      final String url = latestInfo['url'] ?? '';
-      // final String version = latestInfo['version'] ?? '';
-      // final appDocDir = await getTemporaryDirectory();
-      // final String savePath = '${appDocDir.path}/Excellis_Travel_v$version.apk';
-      // await _dio.download(
-      //   url,
-      //   savePath,
-      //   onReceiveProgress: onReceiveProgress,
-      // );
-      // bool? isSuccess = await RUpgrade.upgradeFromUrl(url);
-      // if ( false) {
-      // }
-      throw Exception('Error while download and updating');
+      final String savePath = '${await _getPath()}ext_v_$latestVersion.apk';
+      await _dio.download(
+        url,
+        savePath,
+        onReceiveProgress: onReceiveProgress,
+      );
+      log('App is on path $savePath');
+      return savePath;
     } catch (e) {
       rethrow;
     }

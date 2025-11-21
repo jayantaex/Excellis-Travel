@@ -72,6 +72,7 @@ dependencies:
   hive: ^2.2.3
   #permission handler
   permission_handler: ^11.2.0
+  open_filex: ^4.7.0
   #local  app update
   # r_upgrade: ^0.4.2
 

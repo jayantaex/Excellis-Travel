@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_styles.dart';
 import '../../../core/constants/app_updater.dart';
+import '../../../core/utils/app_helpers.dart';
 import '../../../core/utils/storage_service.dart';
-import '../../../core/widgets/updating_sheet.dart';
 import '../../auth/auth_module.dart';
 import '../../bottom_navigation/bottom_nav_module.dart';
 import '../../profile_management/bloc/profile_bloc.dart';
@@ -21,8 +21,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // await _handleAppUpdate();
-      await _handleAuthentication();
+      final bool hasUpdate = await _handleAppUpdate();
+      // Only proceed with authentication if no update is available
+      if (!hasUpdate) {
+        await _handleAuthentication();
+      }
     });
     super.initState();
   }
@@ -49,6 +52,15 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Image.asset('assets/images/app_logo.png'),
           ),
         ),
+        bottomNavigationBar: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            'Checking app version...',
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(color: AppColors.white, fontWeight: FontWeight.w400),
+          ),
+        ),
       );
 
   // landle authentication
@@ -72,15 +84,22 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  Future<void> _handleAppUpdate() async {
+  Future<bool> _handleAppUpdate() async {
     try {
       final bool isUpdateAvailable = await AppUpdater().isUpdateAvailable();
+      final info = await AppUpdater().getLatestVersion();
+
       if (isUpdateAvailable) {
-        showUpdatingSheet(context: context);
-        await AppUpdater().updateApp();
+        if (context.mounted) {
+          context.goNamed('update',
+              extra: {'url': info['url'], 'version': info['version']});
+        }
+        return true; // Update is available
       }
+      return false; // No update available
     } catch (e) {
       log('Error: $e');
+      return false; // On error, proceed with normal flow
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/constants/app_constants.dart';
 import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  String appVersion = '1.0.0';
+  String appVersion = AppConstants.appVersion;
   bool notificationOn = false;
 
   @override

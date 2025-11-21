@@ -9,6 +9,7 @@ import 'features/payment/payment_module.dart';
 import 'features/profile_management/profile_management_module.dart';
 import 'features/sales/sales_module.dart';
 import 'features/settings/settings_module.dart';
+import 'features/splash/screens/app_updater.dart';
 import 'features/splash/splash_module.dart';
 import 'features/ticket/ticket_module.dart';
 
@@ -171,6 +172,21 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) =>
             SettingsModule.builder(),
       ),
+
+      //updator
+      GoRoute(
+          path: '/update',
+          name: 'update',
+          builder: (BuildContext context, GoRouterState state) {
+            final Map<String, dynamic> data =
+                state.extra as Map<String, dynamic>;
+            final String url = data['url'];
+            final String version = data['version'];
+            return AppUpdaterScreen(
+              downloadUrl: url,
+              latestVersion: version,
+            );
+          })
     ],
     errorBuilder: (BuildContext context, GoRouterState state) => const Scaffold(
       body: Center(
