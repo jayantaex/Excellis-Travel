@@ -14,6 +14,10 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
   SalesBloc(this.salesRepository) : super(SalesInitial()) {
     on<SalesEvent>((event, emit) {});
     on<SalesFetchEvent>(_handleSalesFetchEvent);
+    on<GetMarkupEvent>(_handleGetMarkup);
+    on<DeleteMarkupEvent>(_handleDeleteMarkup);
+    on<SalesUpdateMarkupEvent>(_handleUpdateMarkup);
+    on<SalesAddMarkupEvent>(_handleAddMarkup);
   }
   final SalesRepository salesRepository;
 
@@ -35,9 +39,16 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
       limit: event.limit,
       startDate: event.startDate,
       endDate: event.endDate,
+      keyword: event.keyword,
     );
 
     if (response.data != null) {
+      if (event.startDate.isNotEmpty ||
+          event.endDate.isNotEmpty ||
+          event.keyword.isNotEmpty) {
+        oldCommissions.clear();
+      }
+
       final newSales = response.data!;
       if (currentState is SalesLoaded) {
         newSales.commissions = [...oldCommissions, ...?newSales.commissions];
@@ -50,6 +61,68 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
       } else {
         emit(SalesError(response.errorMessage ?? 'Unknown error'));
       }
+    }
+  }
+
+  Future<void> _handleGetMarkup(
+      GetMarkupEvent event, Emitter<SalesState> emit) async {
+    emit(MarkupLoading());
+
+    final response = await salesRepository.fetchMarkUp(
+      page: 1,
+      limit: 100,
+    );
+
+    if (response.data != null) {
+      emit(MarkupLoaded());
+    } else {
+      emit(MarkupLoadError(
+          message: response.errorMessage ?? 'Failed to load markup'));
+    }
+  }
+
+  Future<void> _handleAddMarkup(
+      SalesAddMarkupEvent event, Emitter<SalesState> emit) async {
+    emit(MarkupAdding());
+
+    final response = await salesRepository.addMarkUp(body: event.body);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      emit(MarkupAdded());
+    } else {
+      emit(MarkupAddError(
+          message: response.errorMessage ?? 'Failed to add markup'));
+    }
+  }
+
+  Future<void> _handleUpdateMarkup(
+      SalesUpdateMarkupEvent event, Emitter<SalesState> emit) async {
+    emit(MarkupUpdating());
+
+    final response = await salesRepository.editMarkUp(
+      body: event.body,
+      id: event.id,
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      emit(MarkupUpdated());
+    } else {
+      emit(MarkupUpdateError(
+          message: response.errorMessage ?? 'Failed to update markup'));
+    }
+  }
+
+  Future<void> _handleDeleteMarkup(
+      DeleteMarkupEvent event, Emitter<SalesState> emit) async {
+    emit(MarkupUpdating()); // Using updating state for delete as well
+
+    final response = await salesRepository.deleteMarkUp(id: event.id);
+
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      emit(MarkupUpdated()); // Using updated state for successful delete
+    } else {
+      emit(MarkupUpdateError(
+          message: response.errorMessage ?? 'Failed to delete markup'));
     }
   }
 }

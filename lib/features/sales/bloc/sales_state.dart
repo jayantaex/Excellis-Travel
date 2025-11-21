@@ -29,3 +29,30 @@ final class SalesError extends SalesState {
   @override
   List<Object> get props => [message];
 }
+
+final class MarkupAdding extends SalesState {}
+
+final class MarkupAddError extends SalesState {
+  const MarkupAddError({required this.message});
+  final String message;
+}
+
+final class MarkupAdded extends SalesState {}
+
+final class MarkupLoading extends SalesState {}
+
+final class MarkupLoadError extends SalesState {
+  const MarkupLoadError({required this.message});
+  final String message;
+}
+
+final class MarkupLoaded extends SalesState {}
+
+final class MarkupUpdating extends SalesState {}
+
+final class MarkupUpdateError extends SalesState {
+  const MarkupUpdateError({required this.message});
+  final String message;
+}
+
+final class MarkupUpdated extends SalesState {}

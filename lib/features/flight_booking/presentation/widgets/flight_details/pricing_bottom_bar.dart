@@ -92,6 +92,7 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
                   showTotalFare: widget.offerFareEnabled,
                   myMarkupType: widget.myMarkup.fareType ?? 'Fixed',
                 );
+                log('${fareDetails}');
 
                 createPaymentBody = getCreatePaymentBody(
                   markupPrice: widget.markup,
@@ -193,13 +194,13 @@ Map<String, dynamic> calculateFareDetails(
   double tax = 0.0;
   if (taxes != null || taxes!.isNotEmpty) {
     for (Fee element in taxes) {
-      tax += double.parse(element.amount ?? '0.0');
+      tax = tax + double.parse(element.amount ?? '0.0');
     }
   }
 
   return <String, dynamic>{
     'selectedFare': 'selection',
-    'baseFare': double.parse(markupPrice),
+    'baseFare': double.parse(grandTotal),
     'totalFare': showTotalFare
         ? (double.parse(markupPrice))
         : (double.parse(getCalculatedPrice(
@@ -208,13 +209,15 @@ Map<String, dynamic> calculateFareDetails(
     'taxesWithMarkup': double.parse(getCalculatedPrice(
             basePrice: markupPrice, type: myMarkupType, value: myMarkupPrice)) +
         tax,
-    'markup': double.parse(getCalculatedPrice(
-        basePrice: markupPrice, type: myMarkupType, value: myMarkupPrice)),
+    'markup': showTotalFare
+        ? 0.0
+        : double.parse(getCalculatedPrice(
+                basePrice: markupPrice,
+                type: myMarkupType,
+                value: myMarkupPrice)) -
+            double.parse(markupPrice),
     'discount': 0,
-    'originalSubtotal': showTotalFare
-        ? (double.parse(markupPrice))
-        : (double.parse(getCalculatedPrice(
-            basePrice: markupPrice, type: myMarkupType, value: myMarkupPrice))),
+    'originalSubtotal': double.parse(grandTotal),
     'showTotalFare': showTotalFare
   };
 }
