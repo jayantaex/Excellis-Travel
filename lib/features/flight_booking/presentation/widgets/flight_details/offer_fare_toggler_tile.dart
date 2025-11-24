@@ -30,8 +30,10 @@ class _OfferFareTogglerTileState extends State<OfferFareTogglerTile> {
               backgroundColor: AppColors.success.withOpacity(0.9),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child:
-                    AppHelpers.svgAsset(assetName: 'offerIcon', isIcon: true),
+                child: AppHelpers.svgAsset(
+                    assetName: 'offerIcon',
+                    isIcon: true,
+                    color: AppColors.white),
               ),
             ),
             title: const Text('Offer Fare',

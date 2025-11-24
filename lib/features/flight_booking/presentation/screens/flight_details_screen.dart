@@ -63,7 +63,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final double width = AppHelpers.getScreenWidth(context);
-
+    final bool isDark = AppHelpers.isDarkMode(context);
     return Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
@@ -81,9 +81,9 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.only(top: 20, bottom: 20),
-                    decoration: const BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.secondaryDark : AppColors.white,
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(32),
                         topRight: Radius.circular(32),
                       ),

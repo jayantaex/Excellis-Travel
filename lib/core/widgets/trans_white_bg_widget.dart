@@ -9,14 +9,21 @@ class TransWhiteBgWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-      height: AppHelpers.getScreenHeight(context),
-      width: AppHelpers.getScreenWidth(context),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: <Color>[AppColors.transparent, AppColors.white]),
-      ),
-      child: child,
-    );
+        height: AppHelpers.getScreenHeight(context),
+        width: AppHelpers.getScreenWidth(context),
+        decoration: AppHelpers.isDarkMode(context)
+            ? const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: <Color>[AppColors.black, AppColors.black]),
+              )
+            : const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: <Color>[AppColors.transparent, AppColors.white]),
+              ),
+        child: child,
+      );
 }

@@ -177,19 +177,23 @@ class _LoginSheetState extends State<LoginSheet> {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: AppPrimaryButton(
-                    title: 'LOGIN',
-                    isLoading: widget.isLoading,
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                            LoginEvent(
-                              fcmToken: '',
-                              userName: _userNameController.text,
-                              password: _passwordController.text,
-                              userType: usertype,
-                            ),
-                          );
-                    },
+                  child: SizedBox(
+                    height: 45,
+                    width: AppHelpers.getScreenWidth(context),
+                    child: AppPrimaryButton(
+                      title: 'LOGIN',
+                      isLoading: widget.isLoading,
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                              LoginEvent(
+                                fcmToken: '',
+                                userName: _userNameController.text,
+                                password: _passwordController.text,
+                                userType: usertype,
+                              ),
+                            );
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),

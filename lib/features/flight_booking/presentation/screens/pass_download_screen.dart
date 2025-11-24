@@ -389,31 +389,36 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
               const SizedBox(
                 height: 8,
               ),
-              AppPrimaryButton(
-                title: 'Download Pass',
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                isLoading: false,
-                bgColor: AppColors.primary,
-                onPressed: () async {
-                  try {
-                    Fluttertoast.showToast(msg: 'Downloading...');
-                    final bool res = await FileDownloaderService.saveFile(
-                      baseFare:
-                          '${(widget.data.fareDetails?.totalFare ?? 0.00) - (widget.data.fareDetails?.markup ?? 0.00)}',
-                      totalFare: '${widget.data.fareDetails?.totalFare}',
-                      markupPrice: '${widget.data.fareDetails?.markup ?? 0.00}',
-                      bokkingRefId: '${widget.data.bookingReference}',
-                      showDownloadProgress: (count, total) {},
-                    );
+              SizedBox(
+                height: 45,
+                width: AppHelpers.getScreenWidth(context),
+                child: AppPrimaryButton(
+                  title: 'Download Pass',
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w500),
+                  isLoading: false,
+                  bgColor: AppColors.primary,
+                  onPressed: () async {
+                    try {
+                      Fluttertoast.showToast(msg: 'Downloading...');
+                      final bool res = await FileDownloaderService.saveFile(
+                        baseFare:
+                            '${(widget.data.fareDetails?.totalFare ?? 0.00) - (widget.data.fareDetails?.markup ?? 0.00)}',
+                        totalFare: '${widget.data.fareDetails?.totalFare}',
+                        markupPrice:
+                            '${widget.data.fareDetails?.markup ?? 0.00}',
+                        bokkingRefId: '${widget.data.bookingReference}',
+                        showDownloadProgress: (count, total) {},
+                      );
 
-                    if (res) {
-                      Fluttertoast.showToast(msg: 'Downloaded successfully');
+                      if (res) {
+                        Fluttertoast.showToast(msg: 'Downloaded successfully');
+                      }
+                    } catch (e) {
+                      Fluttertoast.showToast(msg: '$e');
                     }
-                  } catch (e) {
-                    Fluttertoast.showToast(msg: '$e');
-                  }
-                },
+                  },
+                ),
               ),
               const SizedBox(height: 8),
               TextButton(

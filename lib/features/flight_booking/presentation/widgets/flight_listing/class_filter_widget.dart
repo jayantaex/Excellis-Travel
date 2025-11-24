@@ -67,7 +67,13 @@ class SearchFilterWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(168),
-            color: isSelected ? AppColors.black : AppColors.white,
+            color: isSelected
+                ? AppHelpers.isDarkMode(context)
+                    ? AppColors.primaryDark
+                    : AppColors.black
+                : AppHelpers.isDarkMode(context)
+                    ? AppColors.secondaryDark
+                    : AppColors.white,
           ),
           child: Text(
             title,

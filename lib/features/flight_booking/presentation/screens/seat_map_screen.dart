@@ -152,13 +152,17 @@ class _SeatMapScreenState extends State<SeatMapScreen> {
             ),
             SizedBox(
               height: 50,
-              child: AppPrimaryButton(
-                onPressed: () {
-                  // context.pushNamed(FlightBookingModule.passengerDetailsName);
-                },
-                title: 'Done',
-                isLoading: false,
-                bgColor: AppColors.primary,
+              child: SizedBox(
+                height: 45,
+                width: AppHelpers.getScreenWidth(context),
+                child: AppPrimaryButton(
+                  onPressed: () {
+                    // context.pushNamed(FlightBookingModule.passengerDetailsName);
+                  },
+                  title: 'Done',
+                  isLoading: false,
+                  bgColor: AppColors.primary,
+                ),
               ),
             ),
           ],

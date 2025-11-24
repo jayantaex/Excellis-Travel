@@ -280,6 +280,7 @@ class AppHelpers {
     bool? isIcon,
     double? width,
     double? height,
+    Color? color,
   }) =>
       SvgPicture.asset(
         isIcon == true
@@ -287,5 +288,12 @@ class AppHelpers {
             : '${AppConstants.assetImageUrl}$assetName.svg',
         width: width,
         height: height,
+        colorFilter: ColorFilter.mode(
+          color ?? AppColors.primaryDark,
+          BlendMode.srcIn,
+        ),
       );
+
+  static bool isDarkMode(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark;
 }

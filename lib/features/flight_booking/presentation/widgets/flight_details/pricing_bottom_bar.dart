@@ -48,12 +48,17 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
   @override
   Widget build(BuildContext context) => Container(
         height: 65,
-        color: AppColors.white,
+        color: AppHelpers.isDarkMode(context)
+            ? AppColors.secondaryDark
+            : AppColors.white,
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
         child: SizedBox(
           height: 45,
           width: AppHelpers.getScreenWidth(context),
           child: AppPrimaryButton(
+            bgColor: AppHelpers.isDarkMode(context)
+                ? AppColors.primaryDark
+                : AppColors.black,
             onPressed: () async {
               try {
                 // isLoading = true;

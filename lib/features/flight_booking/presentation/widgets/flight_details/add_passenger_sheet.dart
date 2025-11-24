@@ -187,30 +187,35 @@ Future<void> showAddPassengerSheet(
             const SizedBox(height: 27),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: AppPrimaryButton(
-                  onPressed: () {
-                    if (firstNameController.text.isEmpty ||
-                        lastNameController.text.isEmpty ||
-                        dob == null) {
-                      showToast(message: 'Please fill all the required fields');
-                      return;
-                    }
+              child: SizedBox(
+                height: 45,
+                width: AppHelpers.getScreenWidth(context),
+                child: AppPrimaryButton(
+                    onPressed: () {
+                      if (firstNameController.text.isEmpty ||
+                          lastNameController.text.isEmpty ||
+                          dob == null) {
+                        showToast(
+                            message: 'Please fill all the required fields');
+                        return;
+                      }
 
-                    Navigator.pop(context);
-                    onDone(
-                      PassengerModel(
-                        firstName: firstNameController.text,
-                        lastName: lastNameController.text,
-                        dateOfBirth: dob,
-                        emailAddress: emailController.text,
-                        number: mobileNumberController.text,
-                        gender: selectedGender,
-                        type: travellerType,
-                      ),
-                    );
-                  },
-                  title: 'Confirm',
-                  isLoading: false),
+                      Navigator.pop(context);
+                      onDone(
+                        PassengerModel(
+                          firstName: firstNameController.text,
+                          lastName: lastNameController.text,
+                          dateOfBirth: dob,
+                          emailAddress: emailController.text,
+                          number: mobileNumberController.text,
+                          gender: selectedGender,
+                          type: travellerType,
+                        ),
+                      );
+                    },
+                    title: 'Confirm',
+                    isLoading: false),
+              ),
             ),
             const SizedBox(height: 12),
           ],

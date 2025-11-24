@@ -26,6 +26,7 @@ class FlightCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = AppHelpers.isDarkMode(context);
     final double width = AppHelpers.getScreenWidth(context);
     final bool isRoundTrip = (data.itineraries?.length ?? 0) > 1;
     final bool isItRecentSeach = !(hasFinalPrice ?? true);
@@ -46,7 +47,7 @@ class FlightCardWidget extends StatelessWidget {
               : 200,
           width: customWidth ?? width * 0.95,
           decoration: BoxDecoration(
-            color: AppColors.white,
+            color: isDarkMode ? AppColors.secondaryDark : AppColors.white,
             borderRadius: BorderRadius.circular(24),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 9),
@@ -78,7 +79,6 @@ class FlightCardWidget extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.black,
                               ),
                             ),
                           ],

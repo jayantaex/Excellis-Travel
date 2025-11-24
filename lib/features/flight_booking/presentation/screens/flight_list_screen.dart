@@ -244,7 +244,7 @@ Map<String, dynamic> getBody({
       'adults': adultCount,
       'infants': infantCount,
       'children': childCount,
-      'max': kDebugMode ? 100 : 100
+      'max': kDebugMode ? 2 : 100
     };
 
 List<Map<String, dynamic>> getTravellers({required List<int> travellersArr

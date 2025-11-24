@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -157,7 +158,9 @@ class AppButtonNav extends StatelessWidget {
         useLegacyColorScheme: false,
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: AppColors.grey,
-        selectedItemColor: AppColors.black,
+        selectedItemColor: AppHelpers.isDarkMode(context)
+            ? AppColors.primary
+            : AppColors.black,
         selectedFontSize: 12,
         elevation: 0,
         currentIndex: currentIndex,

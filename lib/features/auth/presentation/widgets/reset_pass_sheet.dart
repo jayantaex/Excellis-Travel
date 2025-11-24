@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 
@@ -100,50 +101,55 @@ class _ResetPassState extends State<ResetPass> {
                 ),
               ),
               const SizedBox(height: 24),
-              AppPrimaryButton(
-                title: 'Reset',
-                isLoading: false,
-                onPressed: () async {
-                  if (_oldPassController.text == _newPassController.text) {
-                    errMessage =
-                        'Old password and new password cannot be the same';
-                    setState(() {});
+              SizedBox(
+                height: 45,
+                width: AppHelpers.getScreenWidth(context),
+                child: AppPrimaryButton(
+                  title: 'Reset',
+                  isLoading: false,
+                  onPressed: () async {
+                    if (_oldPassController.text == _newPassController.text) {
+                      errMessage =
+                          'Old password and new password cannot be the same';
+                      setState(() {});
 
-                    return;
-                  }
-                  if (_oldPassController.text.isEmpty ||
-                      _oldPassController.text.length < 8) {
-                    errMessage = 'Please enter a valid old password';
-                    setState(() {});
+                      return;
+                    }
+                    if (_oldPassController.text.isEmpty ||
+                        _oldPassController.text.length < 8) {
+                      errMessage = 'Please enter a valid old password';
+                      setState(() {});
 
-                    return;
-                  }
+                      return;
+                    }
 
-                  if (_newPassController.text.isEmpty ||
-                      _newPassController.text.length < 8) {
-                    errMessage = 'Please enter a valid new password';
-                    setState(() {});
+                    if (_newPassController.text.isEmpty ||
+                        _newPassController.text.length < 8) {
+                      errMessage = 'Please enter a valid new password';
+                      setState(() {});
 
-                    return;
-                  }
+                      return;
+                    }
 
-                  if (_confirmPassController.text.isEmpty ||
-                      _confirmPassController.text.length < 8) {
-                    errMessage = 'Please enter a valid confirm password';
-                    setState(() {});
+                    if (_confirmPassController.text.isEmpty ||
+                        _confirmPassController.text.length < 8) {
+                      errMessage = 'Please enter a valid confirm password';
+                      setState(() {});
 
-                    return;
-                  }
+                      return;
+                    }
 
-                  if (_newPassController.text != _confirmPassController.text) {
-                    errMessage =
-                        'New password and confirm password do not match';
-                    setState(() {});
-                    return;
-                  }
-                  widget.onDone
-                      ?.call(_oldPassController.text, _newPassController.text);
-                },
+                    if (_newPassController.text !=
+                        _confirmPassController.text) {
+                      errMessage =
+                          'New password and confirm password do not match';
+                      setState(() {});
+                      return;
+                    }
+                    widget.onDone?.call(
+                        _oldPassController.text, _newPassController.text);
+                  },
+                ),
               ),
             ],
           ),

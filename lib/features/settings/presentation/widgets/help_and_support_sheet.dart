@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_drop_down.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
@@ -112,12 +113,16 @@ class HelpAndSupportSheet extends StatelessWidget {
                 hint: 'Enter your query',
               ),
               const SizedBox(height: 45),
-              AppPrimaryButton(
-                title: 'Submit',
-                isLoading: false,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+              SizedBox(
+                height: 45,
+                width: AppHelpers.getScreenWidth(context),
+                child: AppPrimaryButton(
+                  title: 'Submit',
+                  isLoading: false,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               )
             ],
           )
