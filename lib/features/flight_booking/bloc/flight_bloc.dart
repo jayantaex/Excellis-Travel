@@ -190,15 +190,15 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
 
         case 'Lowest Price':
           {
-            flightData.datam!.sort((a, b) =>
-                a.price!.markupPrice!.compareTo(b.price!.markupPrice!));
+            flightData.datam!.sort((a, b) => double.parse(a.price!.markupPrice!)
+                .compareTo(double.parse(b.price!.markupPrice!)));
             emit(FlightLoaded(data: flightData));
           }
           break;
         case 'Highest Price':
           {
-            flightData.datam!.sort((a, b) =>
-                b.price!.markupPrice!.compareTo(a.price!.markupPrice!));
+            flightData.datam!.sort((a, b) => double.parse(b.price!.markupPrice!)
+                .compareTo(double.parse(a.price!.markupPrice!)));
             emit(FlightLoaded(data: flightData));
           }
           break;

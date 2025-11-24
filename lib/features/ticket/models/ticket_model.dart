@@ -270,20 +270,18 @@ class AssociatedRecord {
   factory AssociatedRecord.fromJson(Map<String, dynamic> json) =>
       AssociatedRecord(
         reference: '${json['reference']}',
-        creationDate: json['creationDate'] == null
-            ? null
-            : DateTime.parse(json['creationDate']),
+        creationDate: json['creationDate'] ?? '',
         flightOfferId: '${json['flightOfferId']}',
         originSystemCode: '${json['originSystemCode']}',
       );
   final String? reference;
-  final DateTime? creationDate;
+  final String? creationDate;
   final String? flightOfferId;
   final String? originSystemCode;
 
   Map<String, dynamic> toJson() => {
         'reference': reference,
-        'creationDate': creationDate?.toIso8601String(),
+        'creationDate': creationDate ?? '',
         'flightOfferId': flightOfferId,
         'originSystemCode': originSystemCode,
       };
@@ -472,9 +470,7 @@ class FlightOffer {
             ? null
             : List<TravelerPricing>.from(json['travelerPricings']!
                 .map((x) => TravelerPricing.fromJson(x))),
-        lastTicketingDate: json['lastTicketingDate'] == null
-            ? null
-            : DateTime.parse(json['lastTicketingDate']),
+        lastTicketingDate: '${json['lastTicketingDate']}',
         validatingAirlineCodes: json['validatingAirlineCodes'],
       );
   final String? id;
@@ -485,7 +481,7 @@ class FlightOffer {
   final bool? nonHomogeneous;
   final PricingOptions? pricingOptions;
   final List<TravelerPricing>? travelerPricings;
-  final DateTime? lastTicketingDate;
+  final String? lastTicketingDate;
   final List<dynamic>? validatingAirlineCodes;
 
   Map<String, dynamic> toJson() => {
@@ -501,7 +497,7 @@ class FlightOffer {
         'travelerPricings': travelerPricings == null
             ? null
             : List<dynamic>.from(travelerPricings!.map((x) => x.toJson())),
-        'lastTicketingDate': lastTicketingDate?.toIso8601String(),
+        'lastTicketingDate': lastTicketingDate ?? '',
         'validatingAirlineCodes': validatingAirlineCodes,
       };
 }
@@ -970,23 +966,20 @@ class Traveler {
         contact: json['contact'] == null
             ? null
             : TravelerContact.fromJson(json['contact']),
-        dateOfBirth: json['dateOfBirth'] == null
-            ? null
-            : DateTime.parse(json['dateOfBirth']),
+        dateOfBirth: json['dateOfBirth'] ?? '',
       );
   final String? id;
   final Name? name;
   final String? gender;
   final TravelerContact? contact;
-  final DateTime? dateOfBirth;
+  final String? dateOfBirth;
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name?.toJson(),
         'gender': gender,
         'contact': contact?.toJson(),
-        'dateOfBirth':
-            "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
+        'dateOfBirth': dateOfBirth ?? '',
       };
 }
 
@@ -1084,18 +1077,16 @@ class CancellationPolicy {
         // Use string interpolation for safety before parsing
         cancellationFee: double.parse('${json['cancellation_fee'] ?? 0.0}'),
         refundPercentage: json['refund_percentage'],
-        freeCancellationUntil: json['free_cancellation_until'] == null
-            ? null
-            : DateTime.parse(json['free_cancellation_until']),
+        freeCancellationUntil: json['free_cancellation_until'] ?? '',
       );
   final double? cancellationFee;
   final int? refundPercentage;
-  final DateTime? freeCancellationUntil;
+  final String? freeCancellationUntil;
 
   Map<String, dynamic> toJson() => {
         'cancellation_fee': cancellationFee,
         'refund_percentage': refundPercentage,
-        'free_cancellation_until': freeCancellationUntil?.toIso8601String(),
+        'free_cancellation_until': freeCancellationUntil ?? '',
       };
 }
 
@@ -1205,9 +1196,7 @@ class FlightData {
             ? null
             : List<TravelerPricing>.from(json['travelerPricings']!
                 .map((x) => TravelerPricing.fromJson(x))),
-        lastTicketingDate: json['lastTicketingDate'] == null
-            ? null
-            : DateTime.parse(json['lastTicketingDate']),
+        lastTicketingDate: json['lastTicketingDate'] ?? '',
         paymentCardRequired: json['paymentCardRequired'],
         validatingAirlineCodes: json['validatingAirlineCodes'],
         instantTicketingRequired: json['instantTicketingRequired'],
@@ -1220,7 +1209,7 @@ class FlightData {
   final bool? nonHomogeneous;
   final PricingOptions? pricingOptions;
   final List<TravelerPricing>? travelerPricings;
-  final DateTime? lastTicketingDate;
+  final String? lastTicketingDate;
   final bool? paymentCardRequired;
   final List<dynamic>? validatingAirlineCodes;
   final bool? instantTicketingRequired;
@@ -1238,7 +1227,7 @@ class FlightData {
         'travelerPricings': travelerPricings == null
             ? null
             : List<dynamic>.from(travelerPricings!.map((x) => x.toJson())),
-        'lastTicketingDate': lastTicketingDate?.toIso8601String(),
+        'lastTicketingDate': lastTicketingDate ?? '',
         'paymentCardRequired': paymentCardRequired,
         'validatingAirlineCodes': validatingAirlineCodes,
         'instantTicketingRequired': instantTicketingRequired,
@@ -1255,18 +1244,16 @@ class RefundPolicy {
   factory RefundPolicy.fromJson(Map<String, dynamic> json) => RefundPolicy(
         refundable: json['refundable'],
         processingTime: '${json['processing_time']}',
-        refundDeadline: json['refund_deadline'] == null
-            ? null
-            : DateTime.parse(json['refund_deadline']),
+        refundDeadline: json['refund_deadline'] ?? '',
       );
   final bool? refundable;
   final String? processingTime;
-  final DateTime? refundDeadline;
+  final String? refundDeadline;
 
   Map<String, dynamic> toJson() => {
         'refundable': refundable,
         'processing_time': processingTime,
-        'refund_deadline': refundDeadline?.toIso8601String(),
+        'refund_deadline': refundDeadline ?? '',
       };
 }
 
@@ -1320,16 +1307,14 @@ class Adult {
         title: '${json['title']}',
         lastName: '${json['lastName']}',
         firstName: '${json['firstName']}',
-        dateOfBirth: json['dateOfBirth'] == null
-            ? null
-            : DateTime.parse(json['dateOfBirth']),
+        dateOfBirth: json['dateOfBirth'] ?? '',
         nationality: '${json['nationality']}',
       );
   final bool? open;
   final String? title;
   final String? lastName;
   final String? firstName;
-  final DateTime? dateOfBirth;
+  final String? dateOfBirth;
   final String? nationality;
 
   Map<String, dynamic> toJson() => {
@@ -1337,8 +1322,7 @@ class Adult {
         'title': title,
         'lastName': lastName,
         'firstName': firstName,
-        'dateOfBirth':
-            "${dateOfBirth!.year.toString().padLeft(4, '0')}-${dateOfBirth!.month.toString().padLeft(2, '0')}-${dateOfBirth!.day.toString().padLeft(2, '0')}",
+        'dateOfBirth': dateOfBirth ?? '',
         'nationality': nationality,
       };
 }
