@@ -20,7 +20,7 @@ class AppConstants {
 
   // App Info
   static const String appName = 'Flutter Starter';
-  static const String appVersion = '8.0.0';
+  static const String appVersion = '9.0.0';
 
   // Pagination
   static const int defaultPageSize = 20;
