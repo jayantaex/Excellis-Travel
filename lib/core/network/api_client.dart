@@ -41,11 +41,7 @@ class ApiClient {
       _dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
         requestBody: true,
-        responseBody: true,
         responseHeader: true,
-        error: true,
-        compact: true,
-        maxWidth: 90,
       ));
     }
     _dio.interceptors.add(AuthenticationInterceptor(_dio));
