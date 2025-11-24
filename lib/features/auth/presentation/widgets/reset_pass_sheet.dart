@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -30,12 +29,13 @@ class _ResetPassState extends State<ResetPass> {
   final TextEditingController _confirmPassController = TextEditingController();
   String errMessage = '';
 
-  dispose() {
+  @override
+  void dispose() {
     _oldPassController.dispose();
     _newPassController.dispose();
     _confirmPassController.dispose();
     super.dispose();
-  } 
+  }
 
   @override
   Widget build(BuildContext selfContext) => Padding(
@@ -108,35 +108,36 @@ class _ResetPassState extends State<ResetPass> {
                     errMessage =
                         'Old password and new password cannot be the same';
                     setState(() {});
-          
+
                     return;
                   }
                   if (_oldPassController.text.isEmpty ||
                       _oldPassController.text.length < 8) {
                     errMessage = 'Please enter a valid old password';
                     setState(() {});
-          
+
                     return;
                   }
-          
+
                   if (_newPassController.text.isEmpty ||
                       _newPassController.text.length < 8) {
                     errMessage = 'Please enter a valid new password';
                     setState(() {});
-          
+
                     return;
                   }
-          
+
                   if (_confirmPassController.text.isEmpty ||
                       _confirmPassController.text.length < 8) {
                     errMessage = 'Please enter a valid confirm password';
                     setState(() {});
-          
+
                     return;
                   }
-          
+
                   if (_newPassController.text != _confirmPassController.text) {
-                    errMessage = 'New password and confirm password do not match';
+                    errMessage =
+                        'New password and confirm password do not match';
                     setState(() {});
                     return;
                   }

@@ -117,6 +117,18 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     required DateTime firstDate,
   }) async =>
       await showDatePicker(
+        builder: (context, child) => Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: AppColors.primary,
+              onPrimary: AppColors.white,
+              surface: AppColors.white,
+              onSurface: AppColors.black,
+            ),
+            dialogBackgroundColor: AppColors.white,
+          ),
+          child: child!,
+        ),
         context: context,
         firstDate: firstDate,
         lastDate: DateTime.now().add(
@@ -159,7 +171,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                         horizontal: 16, vertical: 12),
                     width: AppHelpers.getScreenWidth(context),
                     decoration: BoxDecoration(
-                      
                       color: AppColors.white,
                       borderRadius: BorderRadius.circular(24),
                     ),

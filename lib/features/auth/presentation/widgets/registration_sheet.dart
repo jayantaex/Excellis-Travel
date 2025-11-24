@@ -61,12 +61,6 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
   String selectedStatCode = '';
   int selectedStateId = 0;
 
-  final List<DropdownMenuItem<String>> _items = <DropdownMenuItem<String>>[
-    const DropdownMenuItem<String>(
-        value: 'retailer', child: Text('Become a Retailer')),
-    const DropdownMenuItem<String>(value: 'user', child: Text('Become a User')),
-  ];
-
   final List<DropdownMenuItem<String>> _states = <DropdownMenuItem<String>>[];
   final List<DropdownMenuItem<String>> _cities = <DropdownMenuItem<String>>[];
 

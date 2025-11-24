@@ -14,13 +14,20 @@ import '../../models/air_port_model.dart';
 import '../widgets/airport_search/airport_card.dart';
 import '../widgets/loading/airport_card_loading_widget.dart';
 
-class AirportSearchScreen extends StatelessWidget {
-  AirportSearchScreen(
+class AirportSearchScreen extends StatefulWidget {
+  const AirportSearchScreen(
       {super.key, this.selectedAirport, this.type, this.onAirportSelected});
   final String? selectedAirport;
   final String? type;
   final void Function(AirportModel airport)? onAirportSelected;
+
+  @override
+  State<AirportSearchScreen> createState() => _AirportSearchScreenState();
+}
+
+class _AirportSearchScreenState extends State<AirportSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+
   final List<DropdownMenuItem<String>> items = <DropdownMenuItem<String>>[];
   String _selectedCountyCode = 'IN';
 
@@ -34,10 +41,10 @@ class AirportSearchScreen extends StatelessWidget {
         ),
       );
     }
-    if (selectedAirport != null && selectedAirport!.isNotEmpty) {
-      _searchController.text = selectedAirport!;
+    if (widget.selectedAirport != null && widget.selectedAirport!.isNotEmpty) {
+      _searchController.text = widget.selectedAirport!;
       context.read<FlightBloc>().add(SearchAirportEvent(
-            keyword: selectedAirport!,
+            keyword: widget.selectedAirport!,
             countryCode: 'IN',
             subType: 'AIRPORT',
           ));
@@ -88,7 +95,7 @@ class AirportSearchScreen extends StatelessWidget {
                                       },
                                     );
                                   },
-                                  label: type ?? 'Airport',
+                                  label: widget.type ?? 'Airport',
                                   hint: 'Enter city name here or airport code',
                                   maxCharacters: 20,
                                   controller: _searchController,
@@ -142,7 +149,7 @@ class AirportSearchScreen extends StatelessWidget {
                                       airportName:
                                           state.airports[index].name ?? '',
                                       onAirportSelected: () {
-                                        onAirportSelected!(
+                                        widget.onAirportSelected!(
                                             state.airports[index]);
                                         Navigator.pop(context);
                                       },

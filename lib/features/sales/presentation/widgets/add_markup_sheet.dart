@@ -4,7 +4,5 @@ class AddMarkupSheet extends StatelessWidget {
   const AddMarkupSheet({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
+  Widget build(BuildContext context) => const Placeholder();
 }

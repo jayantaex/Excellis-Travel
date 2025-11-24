@@ -46,11 +46,7 @@ class AmadeusClient {
       _dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
         requestBody: true,
-        responseBody: true,
         responseHeader: true,
-        error: true,
-        compact: true,
-        maxWidth: 90,
       ));
     }
   }

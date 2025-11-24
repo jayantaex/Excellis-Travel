@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:excellistravel/core/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -9,12 +10,15 @@ import '../constants/app_constants.dart';
 
 class AppHelpers {
   // Date formatting
-  static String formatDate(DateTime date, {String pattern = 'dd/MM/yyyy'}) => DateFormat(pattern).format(date);
+  static String formatDate(DateTime date, {String pattern = 'dd/MM/yyyy'}) =>
+      DateFormat(pattern).format(date);
 
   static String formatDateTime(DateTime date,
-      {String pattern = 'dd/MM/yyyy HH:mm'}) => DateFormat(pattern).format(date);
+          {String pattern = 'dd/MM/yyyy HH:mm'}) =>
+      DateFormat(pattern).format(date);
 
-  static String formatTime(DateTime date, {String pattern = 'HH:mm'}) => DateFormat(pattern).format(date);
+  static String formatTime(DateTime date, {String pattern = 'HH:mm'}) =>
+      DateFormat(pattern).format(date);
 
   static String timeAgo(DateTime date) {
     final DateTime now = DateTime.now();
@@ -36,11 +40,14 @@ class AppHelpers {
   }
 
   // Number formatting
-  static String formatCurrency(double amount, {String symbol = '\$'}) => '$symbol${amount.toStringAsFixed(2)}';
+  static String formatCurrency(double amount, {String symbol = '\$'}) =>
+      '$symbol${amount.toStringAsFixed(2)}';
 
-  static String formatNumber(num number) => NumberFormat('#,###').format(number);
+  static String formatNumber(num number) =>
+      NumberFormat('#,###').format(number);
 
-  static String formatPercentage(double value) => '${(value * 100).toStringAsFixed(1)}%';
+  static String formatPercentage(double value) =>
+      '${(value * 100).toStringAsFixed(1)}%';
 
   // String helpers
   static String capitalize(String text) {
@@ -48,7 +55,8 @@ class AppHelpers {
     return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
 
-  static String capitalizeWords(String text) => text.split(' ').map((String word) => capitalize(word)).join(' ');
+  static String capitalizeWords(String text) =>
+      text.split(' ').map((String word) => capitalize(word)).join(' ');
 
   static String truncateText(String text, int maxLength) {
     if (text.length <= maxLength) return text;
@@ -71,7 +79,8 @@ class AppHelpers {
   }
 
   // Color helpers
-  static String colorToHex(Color color) => '#${color.value.toRadixString(16).substring(2).toUpperCase()}';
+  static String colorToHex(Color color) =>
+      '#${color.value.toRadixString(16).substring(2).toUpperCase()}';
 
   static Color hexToColor(String hex) {
     hex = hex.replaceAll('#', '');
@@ -130,11 +139,14 @@ class AppHelpers {
     return data.size.shortestSide >= 600;
   }
 
-  static bool isLandscape(BuildContext context) => MediaQuery.of(context).orientation == Orientation.landscape;
+  static bool isLandscape(BuildContext context) =>
+      MediaQuery.of(context).orientation == Orientation.landscape;
 
-  static double getScreenWidth(BuildContext context) => MediaQuery.of(context).size.width;
+  static double getScreenWidth(BuildContext context) =>
+      MediaQuery.of(context).size.width;
 
-  static double getScreenHeight(BuildContext context) => MediaQuery.of(context).size.height;
+  static double getScreenHeight(BuildContext context) =>
+      MediaQuery.of(context).size.height;
 
   // Navigation helpers
   static void hideKeyboard(BuildContext context) {
@@ -169,23 +181,25 @@ class AppHelpers {
     required String content,
     String confirmText = 'Confirm',
     String cancelText = 'Cancel',
-  }) => showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(cancelText),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(confirmText),
-          ),
-        ],
-      ),
-    );
+  }) =>
+      showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          backgroundColor: AppColors.white,
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(cancelText),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(confirmText),
+            ),
+          ],
+        ),
+      );
 
   // get value from JSON string by key
   static String? getStringFromMap(String? data, String key) {
@@ -243,29 +257,35 @@ class AppHelpers {
   }
 
   static Image assetImage(
-      {required String assetName, double? width, double? height, String? ext}) => Image.asset(
-      '${AppConstants.assetImageUrl}$assetName.${ext ?? 'png'}',
-      width: width,
-      height: height,
-    );
+          {required String assetName,
+          double? width,
+          double? height,
+          String? ext}) =>
+      Image.asset(
+        '${AppConstants.assetImageUrl}$assetName.${ext ?? 'png'}',
+        width: width,
+        height: height,
+      );
 
   static Image networkImage(
-      {required String url, double? width, double? height, String? ext}) => Image.network(
-      url,
-      width: width,
-      height: height,
-    );
+          {required String url, double? width, double? height, String? ext}) =>
+      Image.network(
+        url,
+        width: width,
+        height: height,
+      );
 
   static SvgPicture svgAsset({
     required String assetName,
     bool? isIcon,
     double? width,
     double? height,
-  }) => SvgPicture.asset(
-      isIcon == true
-          ? '${AppConstants.assetIcontUrl}$assetName.svg'
-          : '${AppConstants.assetImageUrl}$assetName.svg',
-      width: width,
-      height: height,
-    );
+  }) =>
+      SvgPicture.asset(
+        isIcon == true
+            ? '${AppConstants.assetIcontUrl}$assetName.svg'
+            : '${AppConstants.assetImageUrl}$assetName.svg',
+        width: width,
+        height: height,
+      );
 }

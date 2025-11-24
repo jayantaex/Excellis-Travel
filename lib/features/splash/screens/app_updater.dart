@@ -4,14 +4,13 @@ import 'package:excellistravel/core/constants/app_constants.dart';
 import 'package:open_filex/open_filex.dart';
 
 class AppUpdaterScreen extends StatefulWidget {
-  final String latestVersion;
-  final String downloadUrl;
-
   const AppUpdaterScreen({
     super.key,
     required this.latestVersion,
     required this.downloadUrl,
   });
+  final String latestVersion;
+  final String downloadUrl;
 
   @override
   State<AppUpdaterScreen> createState() => _AppUpdaterScreenState();

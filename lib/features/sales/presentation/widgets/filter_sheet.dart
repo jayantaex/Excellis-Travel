@@ -19,9 +19,9 @@ class FilterSheet extends StatelessWidget {
   final Function(DateTime) onStartDatePicked;
   final Function(DateTime) onEndDatePicked;
 
-  @override
   DateTime? startDate;
 
+  @override
   Widget build(BuildContext context) => SizedBox(
         width: AppHelpers.getScreenWidth(context),
         child: Column(

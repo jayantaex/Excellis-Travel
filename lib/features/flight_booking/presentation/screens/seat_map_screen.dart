@@ -10,14 +10,14 @@ import '../../models/seat_map_data_model.dart';
 import '../widgets/seat_map/facility_box.dart';
 import '../widgets/seat_map/seat_box.dart';
 
-class SeatSelection extends StatefulWidget {
-  const SeatSelection({super.key});
+class SeatMapScreen extends StatefulWidget {
+  const SeatMapScreen({super.key});
 
   @override
-  State<SeatSelection> createState() => _SeatSelectionState();
+  State<SeatMapScreen> createState() => _SeatMapScreenState();
 }
 
-class _SeatSelectionState extends State<SeatSelection> {
+class _SeatMapScreenState extends State<SeatMapScreen> {
   SeatMapDataModel? _seatData;
   List<DateTime> dates = <DateTime>[
     DateTime.now(),

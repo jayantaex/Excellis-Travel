@@ -16,7 +16,6 @@ import '../../../flight_booking/flight_booking_module.dart';
 import '../../../flight_booking/presentation/widgets/flight_search/app_drop_down.dart';
 import '../../bloc/profile_bloc.dart';
 import '../../profile_management_module.dart';
-import '../widgets/delete_account_sheet.dart';
 import '../widgets/profile_avatar_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {

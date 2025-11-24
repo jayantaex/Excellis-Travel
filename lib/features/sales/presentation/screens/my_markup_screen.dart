@@ -133,75 +133,72 @@ class _MyMarkupScreenState extends State<MyMarkupScreen> {
                           if (state is MarkupLoaded) {
                             return ListView(
                               children: [
-                                ...state.markUpData.markups!
-                                    .map(
-                                      (Markups e) => MyMarkUpCard(
-                                        id: e.id.toString(),
-                                        type: '${e.type}',
-                                        product: '${e.product}',
-                                        unit: '${e.fareType}',
-                                        value: double.parse('${e.value}'),
-                                        createdBy:
-                                            '${e.owner?.firstName} ${e.owner?.lastName}',
-                                        status: e.isActive ?? false
-                                            ? 'active'
-                                            : 'inActive',
-                                        onEdit: () {
-                                          final sheetKey = GlobalKey<
-                                              AddEditMarkUpSheetState>();
-                                          showAppSheet(
-                                            submitButtonRequired: true,
-                                            submitButtonTitle: 'Update',
-                                            onSubmitPressed: () {
-                                              final body = sheetKey.currentState
-                                                  ?.getBody();
-                                              if (body != null &&
-                                                  e.id != null) {
-                                                context.read<SalesBloc>().add(
-                                                      SalesUpdateMarkupEvent(
-                                                        id: e.id!,
-                                                        body: body,
-                                                      ),
-                                                    );
-                                              }
-                                            },
-                                            context: context,
-                                            title: 'Edit Markup',
-                                            child: AddEditMarkUpSheet(
-                                              key: sheetKey,
-                                              id: e.id,
-                                              initialType: e.type,
-                                              initialProduct: e.product,
-                                              initialUnit: e.fareType,
-                                              initialValue: e.value != null
-                                                  ? double.tryParse(e.value!)
-                                                  : null,
-                                              initialStatus: e.isActive ?? false
-                                                  ? 'active'
-                                                  : 'inactive',
-                                            ),
-                                          );
+                                ...state.markUpData.markups!.map(
+                                  (Markups e) => MyMarkUpCard(
+                                    id: e.id.toString(),
+                                    type: '${e.type}',
+                                    product: '${e.product}',
+                                    unit: '${e.fareType}',
+                                    value: double.parse('${e.value}'),
+                                    createdBy:
+                                        '${e.owner?.firstName} ${e.owner?.lastName}',
+                                    status: e.isActive ?? false
+                                        ? 'active'
+                                        : 'inActive',
+                                    onEdit: () {
+                                      final sheetKey =
+                                          GlobalKey<AddEditMarkUpSheetState>();
+                                      showAppSheet(
+                                        submitButtonRequired: true,
+                                        submitButtonTitle: 'Update',
+                                        onSubmitPressed: () {
+                                          final body =
+                                              sheetKey.currentState?.getBody();
+                                          if (body != null && e.id != null) {
+                                            context.read<SalesBloc>().add(
+                                                  SalesUpdateMarkupEvent(
+                                                    id: e.id!,
+                                                    body: body,
+                                                  ),
+                                                );
+                                          }
                                         },
-                                        onDelete: () {
-                                          showDeleteConfirmationDialog(
-                                            context: context,
-                                            title: 'Delete Markup',
-                                            message:
-                                                'Are you sure you want to delete this markup? This action cannot be undone.',
-                                            onConfirm: () {
-                                              if (e.id != null) {
-                                                context.read<SalesBloc>().add(
-                                                      DeleteMarkupEvent(
-                                                        id: e.id!,
-                                                      ),
-                                                    );
-                                              }
-                                            },
-                                          );
+                                        context: context,
+                                        title: 'Edit Markup',
+                                        child: AddEditMarkUpSheet(
+                                          key: sheetKey,
+                                          id: e.id,
+                                          initialType: e.type,
+                                          initialProduct: e.product,
+                                          initialUnit: e.fareType,
+                                          initialValue: e.value != null
+                                              ? double.tryParse(e.value!)
+                                              : null,
+                                          initialStatus: e.isActive ?? false
+                                              ? 'active'
+                                              : 'inactive',
+                                        ),
+                                      );
+                                    },
+                                    onDelete: () {
+                                      showDeleteConfirmationDialog(
+                                        context: context,
+                                        title: 'Delete Markup',
+                                        message:
+                                            'Are you sure you want to delete this markup? This action cannot be undone.',
+                                        onConfirm: () {
+                                          if (e.id != null) {
+                                            context.read<SalesBloc>().add(
+                                                  DeleteMarkupEvent(
+                                                    id: e.id!,
+                                                  ),
+                                                );
+                                          }
                                         },
-                                      ),
-                                    )
-                                    .toList(),
+                                      );
+                                    },
+                                  ),
+                                ),
                               ],
                             );
                           }

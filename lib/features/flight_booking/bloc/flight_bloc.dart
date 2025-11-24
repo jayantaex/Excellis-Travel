@@ -25,6 +25,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     on<CreateFlightOrder>(_handleCreateFlightOrder);
     on<VerifyPayment>(_handleVerifyPayment);
     on<ToggleFareOption>(_handleOfferFareToggle);
+    on<FilterFlightEvent>(_handleFilterFlight);
   }
   final FlightBookingRepository repository;
 
@@ -159,12 +160,70 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     }
   }
 
-  FutureOr<void> _handleOfferFareToggle(
-      ToggleFareOption event, Emitter<FlightState> emit) {
+  Future<void> _handleOfferFareToggle(
+      ToggleFareOption event, Emitter<FlightState> emit) async {
     if (state is OfferPriceEnabledState) {
       emit(OfferPriceDisabledState());
     } else {
       emit(OfferPriceEnabledState());
+    }
+  }
+
+  Future<void> _handleFilterFlight(
+      FilterFlightEvent event, Emitter<FlightState> emit) async {
+    try {
+      final currentState = state;
+      log('currentState $currentState');
+      FlightsDataModel flightData = FlightsDataModel();
+      flightData = event.flightData;
+      emit(FlightSearching());
+
+      switch (event.filterName) {
+        case 'All':
+          {
+            flightData.datam!.sort((a, b) => a
+                .itineraries!.first.segments!.first.arrival!.at!
+                .compareTo(b.itineraries!.first.segments!.first.arrival!.at!));
+            emit(FlightLoaded(data: flightData));
+          }
+          break;
+
+        case 'Lowest Price':
+          {
+            flightData.datam!.sort((a, b) =>
+                a.price!.markupPrice!.compareTo(b.price!.markupPrice!));
+            emit(FlightLoaded(data: flightData));
+          }
+          break;
+        case 'Highest Price':
+          {
+            flightData.datam!.sort((a, b) =>
+                b.price!.markupPrice!.compareTo(a.price!.markupPrice!));
+            emit(FlightLoaded(data: flightData));
+          }
+          break;
+        case 'Non Stop First':
+          {
+            flightData.datam!.sort((a, b) => a
+                .itineraries!.first.segments!.length
+                .compareTo(b.itineraries!.first.segments!.length));
+            emit(FlightLoaded(data: flightData));
+          }
+          break;
+        case 'Non Stop Last':
+          {
+            flightData.datam!.sort((a, b) => b
+                .itineraries!.first.segments!.length
+                .compareTo(a.itineraries!.first.segments!.length));
+            emit(FlightLoaded(data: flightData));
+          }
+          break;
+
+        default:
+          emit(FlightLoaded(data: flightData));
+      }
+    } catch (e) {
+      emit(FlightSearchingError(message: '$e'));
     }
   }
 }

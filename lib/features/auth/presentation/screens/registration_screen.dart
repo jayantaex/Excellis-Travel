@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/app_exit_sheet.dart';
+import '../../../../core/widgets/app_sheet.dart';
 import '../widgets/registration_sheet.dart';
 
 class RegistrationScreen extends StatelessWidget {
@@ -12,7 +14,15 @@ class RegistrationScreen extends StatelessWidget {
         canPop: false,
         onPopInvokedWithResult: (bool didPop, Object? result) async {
           if (!didPop) {
-            await showAppExitSheet(context: context);
+            await showAppSheet(
+                onSubmitPressed: () async {
+                  SystemNavigator.pop();
+                },
+                submitButtonRequired: true,
+                submitButtonTitle: 'Yes',
+                context: context,
+                title: 'Exit',
+                child: const AppExitSheet());
           }
         },
         child: Scaffold(

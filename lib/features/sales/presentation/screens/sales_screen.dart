@@ -87,36 +87,39 @@ class _SalesScreenState extends State<SalesScreen> {
                 AppCustomAppbar(
                   isBackButtonRequired: false,
                   centerTitle: 'My Sales',
-                  trailing: IconButton(
-                      onPressed: () async {
-                        await showAppSheet(
-                            context: context,
-                            title: 'Filter Options',
-                            child: FilterSheet(
-                              bookingIdController: _bookingIdController,
-                              startDateController: _startDateController,
-                              endDateController: _endDateController,
-                              onStartDatePicked: (date) {
-                                _startDateController.text =
-                                    AppHelpers.formatDate(date,
-                                        pattern: 'yyyy-MM-dd');
+                  trailing: SizedBox(
+                    width: 45,
+                    child: IconButton(
+                        onPressed: () async {
+                          await showAppSheet(
+                              context: context,
+                              title: 'Filter Options',
+                              child: FilterSheet(
+                                bookingIdController: _bookingIdController,
+                                startDateController: _startDateController,
+                                endDateController: _endDateController,
+                                onStartDatePicked: (date) {
+                                  _startDateController.text =
+                                      AppHelpers.formatDate(date,
+                                          pattern: 'yyyy-MM-dd');
+                                },
+                                onEndDatePicked: (date) {
+                                  _endDateController.text =
+                                      AppHelpers.formatDate(date,
+                                          pattern: 'yyyy-MM-dd');
+                                },
+                              ),
+                              onSubmitPressed: () {
+                                Navigator.pop(context);
+                                page = 1; // Reset page when applying filters
+                                callApi(page: page, limit: limit);
                               },
-                              onEndDatePicked: (date) {
-                                _endDateController.text = AppHelpers.formatDate(
-                                    date,
-                                    pattern: 'yyyy-MM-dd');
-                              },
-                            ),
-                            onSubmitPressed: () {
-                              Navigator.pop(context);
-                              page = 1; // Reset page when applying filters
-                              callApi(page: page, limit: limit);
-                            },
-                            submitButtonRequired: true,
-                            submitButtonTitle: 'Apply');
-                      },
-                      icon:
-                          const Icon(Icons.filter_alt, color: AppColors.white)),
+                              submitButtonRequired: true,
+                              submitButtonTitle: 'Apply');
+                        },
+                        icon: const Icon(Icons.filter_alt,
+                            color: AppColors.white)),
+                  ),
                 ),
                 token == null || token!.isEmpty
                     ? const Expanded(child: Center(child: NotLoginWidget()))

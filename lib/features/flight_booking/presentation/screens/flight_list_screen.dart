@@ -19,24 +19,24 @@ import '../widgets/flight_card_widget.dart';
 import '../widgets/flight_listing/date_filter_widget.dart';
 import '../widgets/loading/flight_list_loadding_widget.dart';
 
-class FlightSearchResultScreen extends StatefulWidget {
-  const FlightSearchResultScreen({super.key, required this.data});
+class FlightListScreen extends StatefulWidget {
+  const FlightListScreen({super.key, required this.data});
   final Map<String, dynamic> data;
 
   @override
-  State<FlightSearchResultScreen> createState() =>
-      _FlightSearchResultScreenState();
+  State<FlightListScreen> createState() => _FlightListScreenState();
 }
 
-class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
+class _FlightListScreenState extends State<FlightListScreen> {
   List<DateTime> dates = [
     DateTime.now(),
   ];
   List<String> filters = [
     'All',
-    'Cheapest',
-    'Discounted Price',
+    'Lowest Price',
+    'Highest Price',
     'Non Stop First',
+    'Non Stop Last',
   ];
   int dateDuration = 20; //days
   String selectedFilter = 'All';
@@ -55,15 +55,16 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
 
       Future.delayed(const Duration(microseconds: 100), () {
         body = getBody(
-            depurture: paramData['depurture'],
-            arrival: paramData['arrival'],
-            depurtureDate: depurtureDate,
-            returnDate: paramData['returnDate'],
-            cabinClass: cabinClass,
-            isRoundTrip: paramData['isRoundTrip'],
-            adultCount: paramData['travellers']['adult'],
-            childCount: paramData['travellers']['child'],
-            infantCount: paramData['travellers']['infant']);
+          depurture: paramData['depurture'],
+          arrival: paramData['arrival'],
+          depurtureDate: depurtureDate,
+          returnDate: paramData['returnDate'],
+          cabinClass: cabinClass,
+          isRoundTrip: paramData['isRoundTrip'],
+          adultCount: paramData['travellers']['adult'],
+          childCount: paramData['travellers']['child'],
+          infantCount: paramData['travellers']['infant'],
+        );
         context.read<FlightBloc>().add(SearchFlightsEvent(body: body!));
       });
     });
@@ -160,7 +161,6 @@ class _FlightSearchResultScreenState extends State<FlightSearchResultScreen> {
                                       flightDictionary:
                                           state.data.dictionaries!,
                                     );
-
                                     context.pushNamed(
                                       FlightBookingModule.flightDetailsName,
                                       extra: {
@@ -245,44 +245,6 @@ Map<String, dynamic> getBody({
       'children': childCount,
       'max': kDebugMode ? 5 : 100
     };
-// {
-//   'currencyCode': 'INR',
-//   'originDestinations': [
-//     {
-//       'id': '1',
-//       'originLocationCode': depurture,
-//       'destinationLocationCode': arrival,
-//       'departureDateTimeRange': {'date': depurtureDate}
-//     },
-//     if (isRoundTrip)
-//       {
-//         'id': '2',
-//         'originLocationCode': arrival,
-//         'destinationLocationCode': depurture,
-//         'departureDateTimeRange': {
-//           'date': returnDate,
-//         }
-//       }
-//   ],
-//   'travelers': getTravellers(travellersArr: travellersArr),
-//   'sources': ['GDS'],
-//   'searchCriteria': {
-//     'maxFlightOffers': kDebugMode ? 4 : 100,
-//     'flightFilters': {
-//       'cabinRestrictions': [
-//         {
-//           'cabin': cabinClass.toUpperCase(),
-//           'coverage': 'MOST_SEGMENTS',
-//           'originDestinationIds': ['1']
-//         }
-//       ],
-//       'carrierRestrictions': {
-//         'excludedCarrierCodes': ['AA', 'TP', 'AZ']
-//       }
-//     }
-//   }
-
-// };
 
 List<Map<String, dynamic>> getTravellers({required List<int> travellersArr
 

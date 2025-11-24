@@ -99,7 +99,7 @@ class Booking {
         confirmationNumber: '${json['confirmation_number']}',
         ticketNumbers: json['ticket_numbers'] == null
             ? null
-            : List<String>.from(json['ticket_numbers']!.map((x) => '${x}')),
+            : List<String>.from(json['ticket_numbers']!.map((x) => '$x')),
         pnrNumber: '${json['pnr_number']}',
         cancellationPolicy: json['cancellation_policy'] == null
             ? null

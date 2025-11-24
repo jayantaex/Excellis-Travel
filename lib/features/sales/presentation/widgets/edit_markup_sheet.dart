@@ -167,7 +167,6 @@ class AddEditMarkUpSheetState extends State<AddEditMarkUpSheet> {
                 borderRadius: BorderRadius.circular(AppSizes.radiusSm),
                 border: Border.all(
                   color: AppColors.info.withOpacity(0.3),
-                  width: 1,
                 ),
               ),
               child: Row(

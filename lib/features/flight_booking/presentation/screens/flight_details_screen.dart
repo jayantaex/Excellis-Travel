@@ -380,9 +380,11 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
 }
 
 Map<String, dynamic> getOfferPriceBody({required Map<String, dynamic> data}) {
+  int associatedAdultId = 1;
   data['travelerPricings'].forEach((traveller) {
     if (traveller['travelerType'] == 'HELD_INFANT') {
-      traveller['associatedAdultId'] = '1';
+      traveller['associatedAdultId'] = associatedAdultId.toString();
+      associatedAdultId++;
     }
   });
   return data;

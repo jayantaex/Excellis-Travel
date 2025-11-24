@@ -275,7 +275,6 @@ class MyMarkUpCard extends StatelessWidget {
                 border: Border(
                   top: BorderSide(
                     color: AppColors.divider,
-                    width: 1,
                   ),
                 ),
               ),

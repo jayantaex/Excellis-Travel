@@ -46,4 +46,10 @@ class GetMarkupPrice extends FlightEvent {
   final double baseAmount;
 }
 
+class FilterFlightEvent extends FlightEvent {
+  const FilterFlightEvent({required this.flightData, required this.filterName});
+  final String filterName;
+  final FlightsDataModel flightData;
+}
+
 class ToggleFareOption extends FlightEvent {}

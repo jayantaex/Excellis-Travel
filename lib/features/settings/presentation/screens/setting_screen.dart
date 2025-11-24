@@ -10,7 +10,6 @@ import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../auth/bloc/auth_bloc.dart';
 import '../../../auth/presentation/widgets/delete_account_sheet.dart';
 import '../../../auth/presentation/widgets/reset_pass_sheet.dart';
-import '../../../profile_management/presentation/widgets/delete_account_sheet.dart';
 import '../widgets/faq_sheet.dart';
 import '../widgets/help_and_support_sheet.dart';
 
@@ -89,8 +88,11 @@ class _SettingScreenState extends State<SettingScreen> {
                             ),
                           ),
                           ListTile(
-                            onTap: () {
-                              showHelpAndSupportSheet(context: context);
+                            onTap: () async {
+                              await showAppSheet(
+                                  context: context,
+                                  title: 'Help & Support',
+                                  child: HelpAndSupportSheet());
                             },
                             contentPadding: const EdgeInsets.all(0),
                             title: const Text('Help & Support',

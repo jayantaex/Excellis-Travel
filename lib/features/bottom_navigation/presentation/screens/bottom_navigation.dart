@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/app_exit_sheet.dart';
@@ -61,7 +63,15 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             log('pop result $result');
             if (!didPop) {
               if (_currentIndex == 0) {
-                await showAppExitSheet(context: context);
+                await showAppSheet(
+                    onSubmitPressed: () async {
+                      SystemNavigator.pop();
+                    },
+                    submitButtonRequired: true,
+                    submitButtonTitle: 'Yes',
+                    context: context,
+                    title: 'Exit',
+                    child: const AppExitSheet());
               }
               setState(() {
                 _currentIndex = 0;

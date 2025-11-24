@@ -12,10 +12,10 @@ import 'models/air_port_model.dart';
 import 'models/payment_verify_res_model.dart';
 import 'presentation/screens/airport_search_screen.dart';
 import 'presentation/screens/booking_policy.dart';
-import 'presentation/screens/flight_details.dart';
-import 'presentation/screens/flight_search_result_screen.dart';
+import 'presentation/screens/flight_details_screen.dart';
+import 'presentation/screens/flight_list_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
-import 'presentation/screens/seat_selection_screen.dart';
+import 'presentation/screens/seat_map_screen.dart';
 
 class FlightBookingModule {
   static final AmadeusClient _amadeusClient = AmadeusClient();
@@ -64,14 +64,14 @@ class FlightBookingModule {
           create: (context) => FlightBloc(repository: _repository),
         ),
       ],
-      child: FlightSearchResultScreen(data: extra ?? {}),
+      child: FlightListScreen(data: extra ?? {}),
     );
   }
 
   //seat selection
   static const String seatSelection = '/seat-selection';
   static const String seatSelectionName = 'seatSelection';
-  static Widget seatSelectionBuilder() => const SeatSelection();
+  static Widget seatSelectionBuilder() => const SeatMapScreen();
 
   // // passenger details
   // static const String passengerDetails = '/passenger-details';
