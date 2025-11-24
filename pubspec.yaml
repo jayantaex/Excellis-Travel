@@ -56,12 +56,12 @@ dependencies:
   barcode: ^2.2.9
   # image picker
   image_picker: ^1.1.2
+  #path_provider
   path_provider: ^2.1.4
   # Web view
   webview_flutter: ^4.10.0
   # Network logger
   pretty_dio_logger: ^1.4.0
-  alice_lightweight: ^3.9.0
 
   #toaster
   fluttertoast: ^8.2.14
@@ -72,8 +72,9 @@ dependencies:
   hive: ^2.2.3
   #permission handler
   permission_handler: ^11.2.0
-  open_filex: ^4.7.0
   #local  app update
+  open_filex: ^4.7.0
+  #url_launcher
   url_launcher: ^6.3.1
 
   

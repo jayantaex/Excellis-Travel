@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/utils/app_toast.dart';
-import '../../../models/flights_data_model.dart';
-import '../../../models/passenger_model.dart';
+import '../../../data/models/flights_data_model.dart';
+import '../../../data/models/passenger_model.dart';
 import 'add_passenger_sheet.dart';
 
 class PassengerDetailsCard extends StatefulWidget {

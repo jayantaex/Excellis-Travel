@@ -7,8 +7,8 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/services/local_db.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../flight_booking_module.dart';
-import '../../../models/flights_data_model.dart';
-import '../../../models/hive/flight_hive_data_model.dart';
+import '../../../data/models/flights_data_model.dart';
+import '../../../data/models/hive/flight_hive_data_model.dart';
 import '../flight_card_widget.dart';
 
 class RecentSearchWidget extends StatefulWidget {

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
-import '../../../models/seat_map_data_model.dart';
+import '../../../data/models/seat_map_data_model.dart';
 
 class SeatBox extends StatefulWidget {
-
   const SeatBox({super.key, this.data});
   final SeatElement? data;
 
@@ -17,8 +16,9 @@ class _SeatBoxState extends State<SeatBox> {
   List<String> selectedSeat = [];
   @override
   Widget build(BuildContext context) {
-    final bool isBlocked = widget.data?.travelerPricing[0].seatAvailabilityStatus ==
-        SeatAvailabilityStatus.BLOCKED;
+    final bool isBlocked =
+        widget.data?.travelerPricing[0].seatAvailabilityStatus ==
+            SeatAvailabilityStatus.BLOCKED;
     final int allowedToSelect = widget.data?.travelerPricing.length ?? 0;
     return SizedBox(
       height: AppHelpers.getScreenWidth(context) * 0.12,

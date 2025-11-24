@@ -6,8 +6,8 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../bloc/flight_bloc.dart';
-import '../../../models/flight_offer_price_model.dart';
-import '../../../models/passenger_model.dart';
+import '../../../data/models/flight_offer_price_model.dart';
+import '../../../data/models/passenger_model.dart';
 
 class PricingBottomBar extends StatefulWidget {
   const PricingBottomBar({

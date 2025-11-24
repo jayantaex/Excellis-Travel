@@ -12,8 +12,9 @@ import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
-import '../../models/flights_data_model.dart';
-import '../../models/hive/flight_hive_data_model.dart' show FlightHiveDataModel;
+import '../../data/models/flights_data_model.dart';
+import '../../data/models/hive/flight_hive_data_model.dart'
+    show FlightHiveDataModel;
 import '../widgets/flight_listing/class_filter_widget.dart';
 import '../widgets/flight_card_widget.dart';
 import '../widgets/flight_listing/date_filter_widget.dart';

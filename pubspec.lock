@@ -22,14 +22,6 @@ packages:
     description: dart
     source: sdk
     version: "0.3.2"
-  alice_lightweight:
-    dependency: "direct main"
-    description:
-      name: alice_lightweight
-      sha256: "91fae02c74ba3db300c26935eaba43bf0ed1c67a547ac85efca25b48e8eadb5d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.9.0"
   analyzer:
     dependency: transitive
     description:
@@ -1061,22 +1053,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
-  share_plus:
-    dependency: transitive
-    description:
-      name: share_plus
-      sha256: fce43200aa03ea87b91ce4c3ac79f0cecd52e2a7a56c7a4185023c271fbfa6da
-      url: "https://pub.dev"
-    source: hosted
-    version: "10.1.4"
-  share_plus_platform_interface:
-    dependency: transitive
-    description:
-      name: share_plus_platform_interface
-      sha256: cc012a23fc2d479854e6c80150696c4a5f5bb62cb89af4de1c505cf78d0a5d0b
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.2"
   shared_preferences:
     dependency: "direct main"
     description:
