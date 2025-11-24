@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:excellistravel/core/constants/app_updater.dart';
 import 'package:excellistravel/core/constants/app_constants.dart';
 import 'package:open_filex/open_filex.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../core/constants/app_styles.dart';
 
 class AppUpdaterScreen extends StatefulWidget {
   const AppUpdaterScreen({
@@ -171,6 +174,22 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                           value: AppConstants.appVersion,
                           valueColor: Colors.white.withOpacity(0.8),
                         ),
+                        const SizedBox(height: 16),
+
+                        InkWell(
+                          onTap: () async {
+                            await launchUrl(Uri.parse(widget.downloadUrl));
+                          },
+                          child: Text(
+                            widget.downloadUrl,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
                       ],
                     ),
                   ),

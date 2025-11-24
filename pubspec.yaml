@@ -74,7 +74,7 @@ dependencies:
   permission_handler: ^11.2.0
   open_filex: ^4.7.0
   #local  app update
-  # r_upgrade: ^0.4.2
+  url_launcher: ^6.3.1
 
   
 
