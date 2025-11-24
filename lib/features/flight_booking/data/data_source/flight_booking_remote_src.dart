@@ -1,15 +1,15 @@
-import '../../../core/network/amadeus_client.dart';
-import '../../../core/network/api_client.dart';
-import '../../../core/network/api_response.dart';
-import '../../../core/network/api_urls.dart';
+import '../../../../core/network/amadeus_client.dart';
+import '../../../../core/network/api_client.dart';
+import '../../../../core/network/api_response.dart';
+import '../../../../core/network/api_urls.dart';
 import '../models/air_port_model.dart';
 import '../models/create_order_res.dart';
 import '../models/flight_offer_price_model.dart';
 import '../models/flights_data_model.dart';
 import '../models/payment_verify_res_model.dart';
 
-class FlightBookingApi {
-  FlightBookingApi(this.amadeusClient, {this.apiClient});
+class FlightBookingRemoteSrc {
+  FlightBookingRemoteSrc(this.amadeusClient, {this.apiClient});
   final AmadeusClient amadeusClient;
   ApiClient? apiClient;
 

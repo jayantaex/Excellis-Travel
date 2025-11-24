@@ -6,7 +6,7 @@ import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/utils/app_toast.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../../core/widgets/primary_input.dart';
-import '../../../models/passenger_model.dart';
+import '../../../data/models/passenger_model.dart';
 import '../flight_search/app_drop_down.dart';
 
 Future<void> showAddPassengerSheet(

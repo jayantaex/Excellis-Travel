@@ -14,7 +14,9 @@ class AppConstants {
   static const String userDataKey = 'user_data';
   static const String isFirstTimeKey = 'is_first_time';
   static const String amadeusKey = 'amadeus_key';
+  //hive
   static const String flightBox = 'flight_data';
+  static String airPortBox = 'air_port_data';
 
   // App Info
   static const String appName = 'Flutter Starter';

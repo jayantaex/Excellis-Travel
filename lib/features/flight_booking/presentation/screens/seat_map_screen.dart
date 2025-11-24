@@ -6,7 +6,7 @@ import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../data/seat_data_tmp.dart';
-import '../../models/seat_map_data_model.dart';
+import '../../data/models/seat_map_data_model.dart';
 import '../widgets/seat_map/facility_box.dart';
 import '../widgets/seat_map/seat_box.dart';
 

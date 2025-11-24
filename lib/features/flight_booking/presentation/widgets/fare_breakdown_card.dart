@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
-import '../../models/flights_data_model.dart';
+import '../../data/models/flights_data_model.dart';
 
 class FareBreakdownCard extends StatelessWidget {
   const FareBreakdownCard({super.key, this.data});

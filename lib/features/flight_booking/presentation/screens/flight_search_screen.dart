@@ -14,7 +14,7 @@ import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../flight_booking_module.dart';
-import '../../models/air_port_model.dart';
+import '../../data/models/air_port_model.dart';
 import '../widgets/flight_search/greeting_widget.dart';
 import '../widgets/flight_search/passenger_selection_sheet.dart';
 import '../widgets/flight_search/app_drop_down.dart';

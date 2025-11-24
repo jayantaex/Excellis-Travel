@@ -10,7 +10,7 @@ import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
-import '../../models/air_port_model.dart';
+import '../../data/models/air_port_model.dart';
 import '../widgets/airport_search/airport_card.dart';
 import '../widgets/loading/airport_card_loading_widget.dart';
 
@@ -85,10 +85,9 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                   child: AppPrimaryInput(
                                     onChange: (String query) {
                                       AppHelpers.debounce(
-                                        delay:
-                                            const Duration(milliseconds: 200),
-                                        () {
-                                          _handleAirportSearch(keyword: query);
+                                        () async {
+                                          await _handleAirportSearch(
+                                              keyword: query);
                                         },
                                       );
                                     },

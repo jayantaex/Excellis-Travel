@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/network/amadeus_client.dart';
 import '../../core/network/api_client.dart';
+import '../../core/services/local_db.dart';
 import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
-import 'api/flight_booking_api.dart';
 import 'bloc/flight_bloc.dart';
-import 'data/flight_booking_repository.dart';
-import 'models/air_port_model.dart';
-import 'models/payment_verify_res_model.dart';
+import 'data/data_source/flight_booking_local_src.dart';
+import 'data/data_source/flight_booking_remote_src.dart';
+import 'data/repository/flight_booking_repository.dart';
+import 'data/models/air_port_model.dart';
+import 'data/models/payment_verify_res_model.dart';
 import 'presentation/screens/airport_search_screen.dart';
 import 'presentation/screens/booking_policy.dart';
 import 'presentation/screens/flight_details_screen.dart';
@@ -19,10 +21,15 @@ import 'presentation/screens/seat_map_screen.dart';
 
 class FlightBookingModule {
   static final AmadeusClient _amadeusClient = AmadeusClient();
-  static final _apiClient = ApiClient();
-  static final _remoteSrc =
-      FlightBookingApi(_amadeusClient, apiClient: _apiClient);
-  static final _repository = FlightBookingRepository(api: _remoteSrc);
+  static final ApiClient _apiClient = ApiClient();
+  static final LocalDB _localDB = LocalDB();
+  static final FlightBookingRemoteSrc _flightBookingRemoteSrc =
+      FlightBookingRemoteSrc(_amadeusClient, apiClient: _apiClient);
+  static final FlightBookingLocalSrc _flightBookingLocalSrc =
+      FlightBookingLocalSrc(localDB: _localDB);
+  static final FlightBookingRepository _flightBookingRepository =
+      FlightBookingRepository(
+          remoteSrc: _flightBookingRemoteSrc, localSrc: _flightBookingLocalSrc);
   static final _profileApi = ProfileManagementApi(apiClient: _apiClient);
   static final _profileRepo =
       ProfileManagementRepository(profileManagementApi: _profileApi);
@@ -44,7 +51,7 @@ class FlightBookingModule {
     final selectedAirport = extra?['selectedAirport'] as String?;
 
     return BlocProvider(
-      create: (context) => FlightBloc(repository: _repository),
+      create: (context) => FlightBloc(repository: _flightBookingRepository),
       child: AirportSearchScreen(
         type: airportType,
         selectedAirport: selectedAirport,
@@ -61,7 +68,7 @@ class FlightBookingModule {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => FlightBloc(repository: _repository),
+          create: (context) => FlightBloc(repository: _flightBookingRepository),
         ),
       ],
       child: FlightListScreen(data: extra ?? {}),
@@ -84,7 +91,7 @@ class FlightBookingModule {
   // static Widget paymentDetailsBuilder(context, state) {
   //   final extra = state.extra;
   //   return BlocProvider(
-  //     create: (context) => FlightBloc(repository: _repository),
+  //     create: (context) => FlightBloc(repository: _flightBookingRepository),
   //     child: PaymentDetailsScreen(
   //       data: extra['data'],
   //       selectedPlan: extra['selectedPlan'],
@@ -108,7 +115,7 @@ class FlightBookingModule {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => FlightBloc(repository: _repository),
+          create: (context) => FlightBloc(repository: _flightBookingRepository),
         ),
         BlocProvider(
           create: (context) => ProfileBloc(profileRepository: _profileRepo),

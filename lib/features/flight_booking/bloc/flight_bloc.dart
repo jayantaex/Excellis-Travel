@@ -4,13 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/network/api_response.dart';
-import '../data/flight_booking_repository.dart';
-import '../models/air_port_model.dart';
-import '../models/create_order_res.dart';
-import '../models/flight_offer_price_model.dart'
+import '../data/repository/flight_booking_repository.dart';
+import '../data/models/air_port_model.dart';
+import '../data/models/create_order_res.dart';
+import '../data/models/flight_offer_price_model.dart'
     show FlightOfferPriceDataModel, MyMarkup;
-import '../models/flights_data_model.dart' show Datam, FlightsDataModel;
-import '../models/payment_verify_res_model.dart';
+import '../data/models/flights_data_model.dart' show Datam, FlightsDataModel;
+import '../data/models/payment_verify_res_model.dart';
 part 'flight_event.dart';
 part 'flight_state.dart';
 
@@ -33,6 +33,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       SearchAirportEvent event, Emitter<FlightState> emit) async {
     try {
       emit(AirportSearching());
+
       final List<AirportModel> airportList = await repository.getAirport(
           keyword: event.keyword, country: event.countryCode);
       emit(AirportLoaded(airports: airportList));

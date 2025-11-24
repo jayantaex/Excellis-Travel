@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:flutter/foundation.dart';
 import '../utils/storage_service.dart';
-import 'alice_helper.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
 import 'authentication_interceptor.dart';
@@ -34,9 +33,6 @@ class ApiClient {
     }));
 
     if (!kReleaseMode) {
-      // Add Alice interceptor for network inspection
-      _dio.interceptors.add(AliceHelper.dioInterceptor);
-
       // Add Pretty Dio Logger for console logs
       _dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
