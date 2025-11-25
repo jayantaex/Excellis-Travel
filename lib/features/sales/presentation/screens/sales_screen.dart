@@ -109,10 +109,11 @@ class _SalesScreenState extends State<SalesScreen> {
                                           pattern: 'yyyy-MM-dd');
                                 },
                               ),
-                              onSubmitPressed: () {
+                              onSubmitPressed: () async {
+                                log('${_bookingIdController.text}');
                                 Navigator.pop(context);
-                                page = 1; // Reset page when applying filters
-                                callApi(page: page, limit: limit);
+                                page = 1;
+                                await callApi(page: page, limit: limit);
                               },
                               submitButtonRequired: true,
                               submitButtonTitle: 'Apply');
@@ -145,7 +146,25 @@ class _SalesScreenState extends State<SalesScreen> {
                                 state.sales.pagination?.totalItems ?? 0;
                             return Expanded(
                               child: totalItems == 0
-                                  ? const NoSales()
+                                  ? (_bookingIdController.text.isNotEmpty ||
+                                          _startDateController
+                                              .text.isNotEmpty ||
+                                          _endDateController.text.isNotEmpty)
+                                      ? NoSales(
+                                          onFilter: () async {
+                                            _bookingIdController.clear();
+                                            _startDateController.clear();
+                                            _endDateController.clear();
+                                            page = 1;
+                                            await callApi(
+                                                page: page, limit: limit);
+                                          },
+                                          isForFilter: true,
+                                        )
+                                      : NoSales(
+                                          onFilter: () {},
+                                          isForFilter: false,
+                                        )
                                   : Column(
                                       children: [
                                         const SizedBox(height: 35),
@@ -277,7 +296,10 @@ class _SalesScreenState extends State<SalesScreen> {
                             );
                           }
                           return const Expanded(
-                              child: Center(child: NoSales()));
+                            child: Center(
+                              child: NoSales(),
+                            ),
+                          );
                         },
                       )
               ],

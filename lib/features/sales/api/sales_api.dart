@@ -24,7 +24,7 @@ class SalesApi {
             'limit': limit,
             'fromDate': startDate.isEmpty ? null : startDate,
             'toDate': endDate.isEmpty ? null : endDate,
-            'keyword': keyword?.isEmpty ?? true ? null : keyword,
+            'searchText': keyword?.isEmpty ?? true ? null : keyword,
           },
           fromJson: (json) => SalesDataModel.fromJson(json['data']));
     } catch (e) {
