@@ -11,11 +11,10 @@ final class TicketInitial extends TicketState {}
 
 final class TicketLoading extends TicketState {}
 
-final class MoreTicketLoading extends TicketState {}
-
 final class TicketLoaded extends TicketState {
-  const TicketLoaded({required this.tickets});
+  const TicketLoaded({required this.tickets, required this.isLoadingMore});
   final BookingListModel tickets;
+  final bool isLoadingMore;
 }
 
 final class TicketError extends TicketState {

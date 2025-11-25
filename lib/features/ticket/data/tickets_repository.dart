@@ -1,11 +1,26 @@
 import '../../../core/network/api_response.dart';
-import '../api/ticket_api.dart';
-import '../models/ticket_model.dart';
+import 'models/ticket_model.dart';
+import 'src/ticket_remote_data_src.dart';
 
 class TicketsRepository {
-  TicketsRepository({required this.ticketApi});
-  final TicketApi ticketApi;
-  Future<ApiResponse<BookingListModel>> fetchTickets(
-          {required int page, required int limit}) async =>
-      await ticketApi.getAllBookedTickets(page: page, limit: limit);
+  TicketsRepository({
+    required this.ticketRemoteDataSrc,
+  });
+  final TicketRemoteDataSrc ticketRemoteDataSrc;
+  Future<ApiResponse<BookingListModel>> fetchTickets({
+    required int page,
+    required int limit,
+    required String status,
+    required String startDate,
+    required String endDate,
+    required String bookingId,
+  }) async =>
+      await ticketRemoteDataSrc.getAllBookedTickets(
+        page: page,
+        limit: limit,
+        status: status,
+        bookingId: bookingId,
+        endDate: endDate,
+        startDate: startDate,
+      );
 }

@@ -8,16 +8,20 @@ sealed class TicketEvent extends Equatable {
 }
 
 class FetchTickets extends TicketEvent {
-  const FetchTickets();
-}
-
-class FetchMoreTickets extends TicketEvent {
-  const FetchMoreTickets({
+  const FetchTickets({
     required this.page,
     required this.limit,
+    required this.startDate,
+    required this.endDate,
+    required this.status,
+    required this.bookingId,
   });
   final int page;
   final int limit;
+  final String startDate;
+  final String endDate;
+  final String status;
+  final String bookingId;
 }
 
 class RefreshTickets extends TicketEvent {}

@@ -1,14 +1,17 @@
+import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
+import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/ticket_bloc.dart';
-import '../../models/ticket_model.dart' show Booking;
+import '../../data/models/ticket_model.dart' show Booking;
+import '../widgets/ticket_filter_sheet.dart';
 import '../widgets/ticket_widget.dart';
 
 class TicketScreen extends StatefulWidget {
@@ -23,6 +26,10 @@ class _TicketScreenState extends State<TicketScreen> {
   final int limit = 10;
   int totalItems = 10;
   final ScrollController _scrollController = ScrollController();
+
+  final TextEditingController _bookingIdController = TextEditingController();
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
   List<Booking>? tickets;
   @override
   void initState() {
@@ -52,6 +59,9 @@ class _TicketScreenState extends State<TicketScreen> {
   @override
   void dispose() {
     _scrollController.removeListener(onScroll);
+    _bookingIdController.dispose();
+    _startDateController.dispose();
+    _endDateController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -64,9 +74,49 @@ class _TicketScreenState extends State<TicketScreen> {
             child: Column(
               children: <Widget>[
                 //app bar
-                const AppCustomAppbar(
+                AppCustomAppbar(
                   isBackButtonRequired: false,
                   centerTitle: 'My Tickets',
+                  trailing: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: CircleAvatar(
+                      backgroundColor: AppColors.white.withOpacity(0.1),
+                      child: IconButton(
+                        onPressed: () async {
+                          await showAppSheet(
+                            context: context,
+                            title: 'Filter',
+                            child: TicketFilterSheet(
+                              bookingIdController: _bookingIdController,
+                              startDateController: _startDateController,
+                              endDateController: _endDateController,
+                              onStartDatePicked: (DateTime picked) {
+                                setState(() {
+                                  _startDateController.text =
+                                      AppHelpers.formatDate(picked,
+                                          pattern: 'dd-MM-yyyy');
+                                });
+                              },
+                              onEndDatePicked: (DateTime picked) {
+                                setState(() {
+                                  _endDateController.text =
+                                      AppHelpers.formatDate(picked,
+                                          pattern: 'dd-MM-yyyy');
+                                });
+                              },
+                            ),
+                            submitButtonRequired: true,
+                            onSubmitPressed: () {},
+                            submitButtonTitle: 'Apply',
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.filter_alt_rounded,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
 
                 const SizedBox(height: 24),
@@ -109,6 +159,7 @@ class _TicketScreenState extends State<TicketScreen> {
                                   errorDesc: state.err,
                                 );
                               }
+
                               if (state is TicketLoaded) {
                                 totalItems =
                                     state.tickets.pagination?.totalItems ?? 0;
@@ -116,30 +167,55 @@ class _TicketScreenState extends State<TicketScreen> {
                                   tickets ??= <Booking>[];
                                   tickets!.add(element);
                                 });
-                                return ListView.builder(
-                                  controller: _scrollController,
-                                  itemCount: tickets?.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) =>
-                                          TicketWidget(
-                                    isLast: false,
-                                    ticketData: tickets?[index],
-                                  ),
+                                return Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 8),
+                                      child: SizedBox(
+                                        height: 25,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              ' Tickets (${state.tickets.pagination?.totalItems})',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppColors.white,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 45,
+                                              child: Text(
+                                                'Clear',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppColors.white,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: ListView.builder(
+                                        controller: _scrollController,
+                                        itemCount: tickets?.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) =>
+                                                TicketWidget(
+                                          isLast: false,
+                                          ticketData: tickets?[index],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 );
                               }
 
-                              if (state is MoreTicketLoading) {
-                                return ListView.builder(
-                                  controller: _scrollController,
-                                  itemCount: tickets?.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) =>
-                                          TicketWidget(
-                                    isLast: index == tickets!.length - 1,
-                                    ticketData: tickets?[index],
-                                  ),
-                                );
-                              }
                               return const ErrorScreen();
                             },
                           ),
@@ -156,7 +232,14 @@ class _TicketScreenState extends State<TicketScreen> {
   Future<void> fetchTickets() async {
     if (context.mounted) {
       context.read<TicketBloc>().add(
-            const FetchTickets(),
+            FetchTickets(
+              page: page,
+              limit: limit,
+              startDate: _startDateController.text,
+              endDate: _endDateController.text,
+              status: '',
+              bookingId: _bookingIdController.text,
+            ),
           );
     }
   }
