@@ -58,8 +58,8 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
               try {
                 // isLoading = true;
                 if (widget.travellersCount != widget.passengers.length) {
-                  AppHelpers.showSnackBar(
-                      context, 'Please add all the travellers');
+                  AppHelpers.showSnackBar(context,
+                      'Add all the travellers to proceed with flight booking');
                   return;
                 }
                 for (int i = 0; i < widget.passengers.length; i++) {

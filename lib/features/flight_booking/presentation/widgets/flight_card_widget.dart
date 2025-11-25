@@ -89,8 +89,8 @@ class FlightCardWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          height: 25,
+                          margin: const EdgeInsets.only(right: 8),
+                          height: 22,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
@@ -102,7 +102,7 @@ class FlightCardWidget extends StatelessWidget {
                                 .toUpperCase(),
                             style: TextStyle(
                               fontSize: 10,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w500,
                               color: getColorByStatus('fastest'),
                             ),
                           ),

@@ -163,12 +163,12 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               ),
                               const SliverToBoxAdapter(
                                   child: SizedBox(height: 12)),
-                              SliverToBoxAdapter(
-                                child: FaresAndPrices(
-                                  allTravelerPricings: travelerPricings,
-                                  grandPrice: grandTotal,
-                                ),
-                              ),
+                              // SliverToBoxAdapter(
+                              //   child: FaresAndPrices(
+                              //     allTravelerPricings: travelerPricings,
+                              //     grandPrice: grandTotal,
+                              //   ),
+                              // ),
                               const SliverToBoxAdapter(
                                   child: SizedBox(height: 8)),
                               const SliverToBoxAdapter(

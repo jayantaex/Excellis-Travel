@@ -130,7 +130,7 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                 passenger: e,
               ),
             ),
-            const Divider(),
+            if (_allowedChild > 0 || _allowedInfant > 0) const Divider(),
             // Child
             _allowedChild == 0
                 ? const SizedBox()

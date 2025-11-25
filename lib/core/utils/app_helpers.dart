@@ -288,4 +288,15 @@ class AppHelpers {
         width: width,
         height: height,
       );
+
+  static bool validateEmail(String text) {
+    final RegExp emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    return emailRegex.hasMatch(text);
+  }
+
+  static bool validateMobileNumber(String text) {
+    final RegExp mobileRegex = RegExp(r'^[0-9]{10}$');
+    return mobileRegex.hasMatch(text);
+  }
 }

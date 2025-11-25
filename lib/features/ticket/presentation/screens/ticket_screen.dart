@@ -96,8 +96,8 @@ class _TicketScreenState extends State<TicketScreen> {
                             startDateController: _startDateController,
                             endDateController: _endDateController,
                             selectedStatus: _selectedStatus,
-                            onStatusChanged: (String status) {
-                              _selectedStatus = status;
+                            onStatusChanged: (String? status) {
+                              _selectedStatus = status ?? '';
                             },
                             onStartDatePicked: (DateTime picked) {
                               _pickedStartDate = AppHelpers.formatDate(picked,

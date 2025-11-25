@@ -172,31 +172,31 @@ Future<void> showAddAndEditPassengerSheet({
                   )
                   .toList(),
             ),
-            // const SizedBox(height: 16),
-            // AppDropDown(
-            //   onChanged: (p0) {
-            //     cityzenship = p0!;
-            //   },
-            //   label: 'Citizenship',
-            //   title: 'Select Citizenship',
-            //   value: 'India',
-            //   items: citizenshipData
-            //       .map(
-            //         (String e) => DropdownMenuItem(
-            //           value: e,
-            //           child: Text(e),
-            //         ),
-            //       )
-            //       .toList(),
-            // ),
             const SizedBox(height: 27),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: AppPrimaryButton(
                   onPressed: () {
-                    if (firstNameController.text.isEmpty ||
-                        lastNameController.text.isEmpty) {
-                      showToast(message: 'Please fill all the required fields');
+                    if (firstNameController.text.length < 3) {
+                      showToast(message: 'Please enter valid first name');
+                      return;
+                    }
+
+                    if (lastNameController.text.length < 3) {
+                      showToast(message: 'Please enter valid last name');
+                      return;
+                    }
+
+                    if (emailController.text.isNotEmpty &&
+                        !AppHelpers.validateEmail(emailController.text)) {
+                      showToast(message: 'Please enter a valid email address');
+                      return;
+                    }
+
+                    if (mobileNumberController.text.isNotEmpty &&
+                        !AppHelpers.validateMobileNumber(
+                            mobileNumberController.text)) {
+                      showToast(message: 'Please enter a valid mobile number');
                       return;
                     }
 

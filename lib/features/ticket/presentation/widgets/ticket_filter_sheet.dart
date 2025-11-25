@@ -22,7 +22,7 @@ class TicketFilterSheet extends StatefulWidget {
   final Function(DateTime) onStartDatePicked;
   final Function(DateTime) onEndDatePicked;
   final String selectedStatus;
-  final Function(String) onStatusChanged;
+  final void Function(String?) onStatusChanged;
 
   @override
   State<TicketFilterSheet> createState() => _TicketFilterSheetState();
@@ -127,6 +127,7 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
           const SizedBox(height: 16),
           // Status Filter Dropdown
           AppDropDown(
+            onChanged: widget.onStatusChanged,
             title: 'Status',
             value: _selectedStatus,
             label: 'Select status',

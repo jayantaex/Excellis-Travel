@@ -5,24 +5,8 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 
-Future<void> showPriceDetailsSheet(
-    {required BuildContext context,
-    required FlightOffer flightOffer,
-    required bool offerFareEnabled,
-    required MyMarkup myMarkup}) async {
-  await showModalBottomSheet(
-    backgroundColor: AppColors.white,
-    context: context,
-    builder: (BuildContext context) => PriceDetailsSheet(
-      offerFareEnabled: offerFareEnabled,
-      flightOffer: flightOffer,
-      myMarkup: myMarkup,
-    ),
-  );
-}
-
-class PriceDetailsSheet extends StatelessWidget {
-  PriceDetailsSheet(
+class PricingDetails extends StatelessWidget {
+  PricingDetails(
       {super.key,
       required this.flightOffer,
       required this.myMarkup,
@@ -49,7 +33,7 @@ class PriceDetailsSheet extends StatelessWidget {
             child.add(element.price!.total!);
           }
           break;
-        case 'INFANT':
+        case 'HELD_INFANT':
           {
             infant.add(element.price!.total!);
           }
@@ -90,20 +74,20 @@ class PriceDetailsSheet extends StatelessWidget {
                       : PriceCol(
                           isIconRequired: false,
                           titile: 'ADULT',
-                          value: '${adult.length}P'),
+                          value: '${adult.length} Person(s)'),
                   const SizedBox(height: 6),
                   child.isEmpty
                       ? const SizedBox()
                       : PriceCol(
                           isIconRequired: false,
                           titile: 'CHILD',
-                          value: '${adult.length}P'),
+                          value: '${adult.length} Person(s)'),
                   infant.isEmpty
                       ? const SizedBox()
                       : PriceCol(
                           isIconRequired: false,
                           titile: 'INFANT',
-                          value: '${adult.length}(INFANT)P'),
+                          value: '${adult.length} Person(s)'),
                   const SizedBox(height: 8),
                   PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
                   PriceCol(
