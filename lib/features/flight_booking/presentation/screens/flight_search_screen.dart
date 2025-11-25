@@ -183,9 +183,11 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                             child: Column(
                               children: <Widget>[
                                 AppPrimaryInput(
+                                  showCursor: false,
                                   isMultiline: true,
                                   controller: _depurtureController,
                                   enable: true,
+                                  keyboardType: TextInputType.none,
                                   maxCharacters: 10,
                                   hint: 'Enter your departure airport',
                                   label: 'Departure',
@@ -213,6 +215,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                                 airport.iataCode ?? '';
                                             _depurtureController.text =
                                                 '${airport.iataCode}(${airport.address!.cityName})\n${airport.name}';
+                                            //unfocus
                                           },
                                         });
                                   },

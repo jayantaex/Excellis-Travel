@@ -10,6 +10,7 @@ class AppPrimaryInput extends StatelessWidget {
     this.hint,
     this.controller,
     this.keyboardType,
+    this.showCursor,
     required this.maxCharacters,
     this.suffixIcon,
     this.isPassword,
@@ -31,6 +32,7 @@ class AppPrimaryInput extends StatelessWidget {
   final bool? enable;
   final bool? isMultiline;
   final bool? isPassword;
+  final bool? showCursor;
   final TextStyle? style;
   final VoidCallback? onTap;
   final FocusNode? focusNode;
@@ -38,6 +40,7 @@ class AppPrimaryInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TextField(
+        cursorColor: AppColors.primary,
         obscureText: isPassword == true ? true : false,
         enabled: enable ?? true,
         maxLines: isMultiline == true ? null : 1,
@@ -52,6 +55,7 @@ class AppPrimaryInput extends StatelessWidget {
             LengthLimitingTextInputFormatter(maxCharacters),
         ],
         cursorWidth: onTap == null ? 2 : 0,
+        showCursor: showCursor,
         decoration: InputDecoration(
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
