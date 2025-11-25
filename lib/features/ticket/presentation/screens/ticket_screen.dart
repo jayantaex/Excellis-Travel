@@ -31,12 +31,8 @@ class _TicketScreenState extends State<TicketScreen> {
       if (token.isEmpty) {
         return;
       }
+      fetchTickets();
       _scrollController.addListener(onScroll);
-      if (context.mounted) {
-        context.read<TicketBloc>().add(
-              const FetchTickets(),
-            );
-      }
     });
     super.initState();
   }
@@ -49,12 +45,7 @@ class _TicketScreenState extends State<TicketScreen> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       page++;
-      context.read<TicketBloc>().add(
-            FetchMoreTickets(
-              page: page,
-              limit: limit,
-            ),
-          );
+      fetchTickets();
     }
   }
 
@@ -162,4 +153,11 @@ class _TicketScreenState extends State<TicketScreen> {
           ),
         ),
       );
+  Future<void> fetchTickets() async {
+    if (context.mounted) {
+      context.read<TicketBloc>().add(
+            const FetchTickets(),
+          );
+    }
+  }
 }
