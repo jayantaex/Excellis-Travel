@@ -147,7 +147,7 @@ Future<void> showAddPassengerSheet(
                     AppHelpers.formatDate(dob ?? DateTime.parse('2000-01-01'));
               },
               hint: 'Enter your date of birth',
-              label: 'Date of Birth*',
+              label: 'Date of Birth',
               maxCharacters: 10,
             ),
             const SizedBox(height: 16),
@@ -155,7 +155,7 @@ Future<void> showAddPassengerSheet(
               onChanged: (String? p0) {
                 selectedGender = p0!;
               },
-              label: 'Gender',
+              label: 'Gender*',
               title: 'Select Gender',
               value: 'Male',
               items: genderList
@@ -190,8 +190,7 @@ Future<void> showAddPassengerSheet(
               child: AppPrimaryButton(
                   onPressed: () {
                     if (firstNameController.text.isEmpty ||
-                        lastNameController.text.isEmpty ||
-                        dob == null) {
+                        lastNameController.text.isEmpty) {
                       showToast(message: 'Please fill all the required fields');
                       return;
                     }

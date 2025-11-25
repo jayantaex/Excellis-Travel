@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/widgets/no_login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -246,44 +247,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       );
                                     }
                                     if (state is ProfileError) {
-                                      return SizedBox(
-                                        height: 300,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Text(
-                                              'It seems you are not logged in \n please login to continue',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.grey,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            InkWell(
-                                              onTap: () {
-                                                context.pushNamed(
-                                                    AuthModule.loginName);
-                                              },
-                                              child: const Text(
-                                                'LOGIN',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: AppColors.primary,
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                  decorationColor:
-                                                      AppColors.primary,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
+                                      return const NotLoginWidget();
                                     }
                                     return const SizedBox();
                                   },

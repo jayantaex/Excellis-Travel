@@ -112,9 +112,9 @@ class ItineraryCard extends StatelessWidget {
                         AppHelpers.formatDateTime(DateTime.now(),
                             pattern: 'dd MMM, yyyy'),
                         style: const TextStyle(
-                            fontSize: 11,
+                            fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.grey),
+                            color: AppColors.black),
                       ),
                       Text(
                         '${data.segments?.last.arrival?.iataCode} (T${data.segments?.last.arrival?.terminal ?? '1'})',
