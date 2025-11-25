@@ -201,11 +201,11 @@ class PassengerTypeCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             )),
         subtitle: Text(
-            passengerType == 'Adult'
+            passengerType == 'ADULT'
                 ? 'Age 12 years or above'
-                : passengerType == 'Child'
+                : passengerType == 'CHILD'
                     ? 'Between age 2 to 12 years'
-                    : 'Between age 15 days to 2 years',
+                    : 'Between age 1 days to 2 years',
             style: const TextStyle(
               fontSize: 10,
               color: AppColors.grey,
