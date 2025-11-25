@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/widgets/app_drop_down.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
@@ -47,7 +48,7 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
             label: 'Booking Reference ID',
             controller: widget.bookingIdController,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           AppPrimaryInput(
             controller: widget.startDateController,
             suffixIcon: const Icon(
@@ -81,7 +82,7 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
               }
             },
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           AppPrimaryInput(
             controller: widget.endDateController,
             maxCharacters: 50,
@@ -123,49 +124,17 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
               }
             },
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           // Status Filter Dropdown
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Status',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.grey.withOpacity(0.3)),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    value: _selectedStatus,
-                    hint: const Text('Select status'),
-                    items: const [
-                      DropdownMenuItem(value: '', child: Text('All')),
-                      DropdownMenuItem(
-                          value: 'confirmed', child: Text('Confirmed')),
-                      DropdownMenuItem(
-                          value: 'pending', child: Text('Pending')),
-                      DropdownMenuItem(
-                          value: 'cancel', child: Text('Cancelled')),
-                    ],
-                    onChanged: (String? value) {
-                      setState(() {
-                        _selectedStatus = value ?? '';
-                      });
-                      widget.onStatusChanged(value ?? '');
-                    },
-                  ),
-                ),
-              ),
+          AppDropDown(
+            title: 'Status',
+            value: _selectedStatus,
+            label: 'Select status',
+            items: const [
+              DropdownMenuItem(value: '', child: Text('All')),
+              DropdownMenuItem(value: 'confirmed', child: Text('Confirmed')),
+              DropdownMenuItem(value: 'pending', child: Text('Pending')),
+              DropdownMenuItem(value: 'cancel', child: Text('Cancelled')),
             ],
           ),
         ],

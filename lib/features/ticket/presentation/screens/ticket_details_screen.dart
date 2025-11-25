@@ -303,9 +303,13 @@ class TicketDetailsScreen extends StatelessWidget {
                               title: Text(
                                 '${adult.firstName ?? 'N/A'} ${adult.lastName ?? 'N/A'}',
                               ),
-                              subtitle: Text(
-                                '${AppHelpers.formatDate(DateTime.parse(adult.dateOfBirth ?? DateTime.now().toString()), pattern: 'dd MMM yyy')} | ${adult.open ?? 'N/A'}',
-                              ),
+                              subtitle: adult.dateOfBirth?.isEmpty ?? true
+                                  ? const Text(
+                                      'N/A',
+                                    )
+                                  : Text(
+                                      '${AppHelpers.formatDate(DateTime.parse(adult.dateOfBirth ?? DateTime.now().toString()), pattern: 'dd MMM yyy')} | ${adult.open ?? 'N/A'}',
+                                    ),
                             ),
                           ),
                           const SizedBox(height: 8),
