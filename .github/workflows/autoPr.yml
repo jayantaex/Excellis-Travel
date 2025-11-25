@@ -39,7 +39,7 @@ jobs:
             needs-review
           reviewers: |
             jayantaex
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
 
       # If PR exists → update it with new commits
       - name: Update existing PR
@@ -56,4 +56,4 @@ jobs:
             The PR has been automatically updated.
           labels: auto-updated
           update-pull-request-branch: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
