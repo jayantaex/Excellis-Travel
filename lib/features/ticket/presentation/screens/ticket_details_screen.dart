@@ -10,7 +10,7 @@ import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../models/ticket_model.dart';
+import '../../data/models/ticket_model.dart';
 import '../widgets/billing_info_widget.dart';
 
 class TicketDetailsScreen extends StatelessWidget {
