@@ -10,7 +10,6 @@ import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../../auth/auth_module.dart';
 import '../../../payment/payment_module.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/flight_bloc.dart';
@@ -190,16 +189,14 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               ),
                               SliverToBoxAdapter(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
                                   child: PassengerDetailsCard(
                                     onAddPassenger: (passenger) {
                                       passengers.add(passenger);
                                     },
                                     onPassengerRemove: (passenger) {
-                                      setState(() {
-                                        passengers.remove(passenger);
-                                      });
+                                      passengers.remove(passenger);
                                     },
                                     travelerPricing:
                                         widget.data.travelerPricings ?? [],

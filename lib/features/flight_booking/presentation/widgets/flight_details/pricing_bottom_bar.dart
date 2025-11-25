@@ -67,13 +67,13 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
                     passenger: widget.passengers[i],
                   );
                   log('${widget.passengers[i].type}');
-                  if (widget.passengers[i].type == 'Adult') {
+                  if (widget.passengers[i].type == 'ADULT') {
                     travellers['adults']?.add(data);
                   }
-                  if (widget.passengers[i].type == 'Child') {
+                  if (widget.passengers[i].type == 'CHILD') {
                     travellers['children']?.add(data);
                   }
-                  if (widget.passengers[i].type == 'Infant') {
+                  if (widget.passengers[i].type == 'HELD_INFANT') {
                     travellers['infants']?.add(data);
                   }
                 }
@@ -92,7 +92,6 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
                   showTotalFare: widget.offerFareEnabled,
                   myMarkupType: widget.myMarkup.fareType ?? 'Fixed',
                 );
-                log('${fareDetails}');
 
                 createPaymentBody = getCreatePaymentBody(
                   markupPrice: widget.markup,
@@ -105,7 +104,6 @@ class _PricingBottomBarState extends State<PricingBottomBar> {
                   fareDetails: fareDetails,
                   isOfferEnabled: widget.offerFareEnabled,
                 );
-                // log('createPaymentBody $createPaymentBody');
                 context
                     .read<FlightBloc>()
                     .add(CreateFlightOrder(body: createPaymentBody));
@@ -174,13 +172,15 @@ Map<String, dynamic> getContactDetails(
 
 Map<String, dynamic> getPassengetDetails({required PassengerModel passenger}) =>
     <String, dynamic>{
-      'title': passenger.gender == 'male' ? 'Mr' : 'Ms',
+      'title': passenger.gender == 'Male' ? 'Mr' : 'Ms',
+      'gender': passenger.gender,
       'firstName': passenger.firstName,
       'lastName': passenger.lastName,
       'nationality': 'India',
-      'dateOfBirth': AppHelpers.formatDate(
-          DateTime.parse('${passenger.dateOfBirth}'),
-          pattern: 'yyyy-MM-dd'),
+      'dateOfBirth': (passenger.dateOfBirth != null)
+          ? AppHelpers.formatDate(DateTime.parse('${passenger.dateOfBirth}'),
+              pattern: 'yyyy-MM-dd')
+          : null,
       'open': true
     };
 

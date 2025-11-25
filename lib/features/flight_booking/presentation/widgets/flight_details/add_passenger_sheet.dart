@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/utils/app_toast.dart';
@@ -9,26 +7,32 @@ import '../../../../../core/widgets/primary_input.dart';
 import '../../../data/models/passenger_model.dart';
 import '../flight_search/app_drop_down.dart';
 
-Future<void> showAddPassengerSheet(
-    {required BuildContext context,
-    required String travellerType,
-    required Function(PassengerModel passenger) onDone}) async {
-  final TextEditingController firstNameController = TextEditingController(
-      text: AppConstants.env == 'development' ? 'Jhon' : '');
-  final TextEditingController lastNameController = TextEditingController(
-      text: AppConstants.env == 'development' ? 'Doe' : '');
-  final TextEditingController mobileNumberController = TextEditingController(
-      text: AppConstants.env == 'development' ? '9064187130' : '');
-  final TextEditingController emailController = TextEditingController(
-      text: AppConstants.env == 'development' ? 'jhon@apptest.com' : '');
-  final TextEditingController dobController = TextEditingController();
+Future<void> showAddAndEditPassengerSheet({
+  required BuildContext context,
+  required String travellerType,
+  required Function(PassengerModel passenger) onDone,
+  PassengerModel? passenger,
+}) async {
+  final TextEditingController firstNameController =
+      TextEditingController(text: passenger?.firstName);
+  final TextEditingController lastNameController =
+      TextEditingController(text: passenger?.lastName);
+  final TextEditingController mobileNumberController =
+      TextEditingController(text: passenger?.number);
+  final TextEditingController emailController =
+      TextEditingController(text: passenger?.emailAddress);
+  final TextEditingController dobController = TextEditingController(
+    text: passenger?.dateOfBirth != null
+        ? AppHelpers.formatDate(passenger!.dateOfBirth!)
+        : '',
+  );
   DateTime? dob;
-  String selectedGender = 'Male';
+  String selectedGender = passenger?.gender ?? 'Male';
   final List<String> genderList = <String>['Male', 'Female'];
   DateTime firstDate = DateTime(2000);
   DateTime lastDate = DateTime.now();
   switch (travellerType) {
-    case 'Adult':
+    case 'ADULT':
       {
         firstDate = DateTime.now().subtract(
           const Duration(days: 365 * 120),
@@ -38,7 +42,7 @@ Future<void> showAddPassengerSheet(
         );
       }
       break;
-    case 'Child':
+    case 'CHILD':
       {
         firstDate = DateTime.now().subtract(
           const Duration(days: 365 * 12),
@@ -48,7 +52,7 @@ Future<void> showAddPassengerSheet(
         );
       }
       break;
-    case 'Infant':
+    case 'HELD_INFANT':
       {
         firstDate = DateTime.now().subtract(const Duration(days: 365 * 2));
         lastDate = DateTime.now().subtract(const Duration(days: 1));
@@ -132,19 +136,20 @@ Future<void> showAddPassengerSheet(
               controller: dobController,
               onTap: () async {
                 dob = await showDatePicker(
-                    builder: (context, child) => Theme(
-                          data: Theme.of(context).copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: AppColors.primary,
-                            ),
-                          ),
-                          child: child!,
-                        ),
-                    context: context,
-                    firstDate: firstDate,
-                    lastDate: lastDate);
+                  builder: (context, child) => Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: const ColorScheme.light(
+                        primary: AppColors.primary,
+                      ),
+                    ),
+                    child: child!,
+                  ),
+                  context: context,
+                  firstDate: firstDate,
+                  lastDate: lastDate,
+                );
                 dobController.text =
-                    AppHelpers.formatDate(dob ?? DateTime.parse('2000-01-01'));
+                    dob != null ? AppHelpers.formatDate(dob!) : '';
               },
               hint: 'Enter your date of birth',
               label: 'Date of Birth',
