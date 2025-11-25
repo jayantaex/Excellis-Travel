@@ -4,12 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 
-
 class AppButtonNav extends StatelessWidget {
+  AppButtonNav({super.key, required this.currentIndex, required this.onTap});
   final int currentIndex;
   final Function(int) onTap;
-  AppButtonNav({super.key, required this.currentIndex, required this.onTap});
-  final List<BottomNavigationBarItem> items = [
+  final List<BottomNavigationBarItem> items = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       activeIcon: Container(
         padding: const EdgeInsets.all(8),
@@ -18,16 +17,16 @@ class AppButtonNav extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
+              colors: <Color>[
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
-          border:
-              const Border(top: BorderSide(color: AppColors.black, width: 2)),
+          border: const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}home.svg',
-          colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          colorFilter:
+              const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
       ),
       icon: Container(
@@ -52,16 +51,16 @@ class AppButtonNav extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
+              colors: <Color>[
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
-          border:
-              const Border(top: BorderSide(color: AppColors.black, width: 2)),
+          border: const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}ticket.svg',
-          colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          colorFilter:
+              const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
       ),
       icon: Container(
@@ -86,16 +85,18 @@ class AppButtonNav extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
+              colors: <Color>[
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
-          border:
-              const Border(top: BorderSide(color: AppColors.black, width: 2)),
+          border: const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
-          '${AppConstants.assetIcontUrl}wish_list.svg',
-          colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          height: 25,
+          width: 25,
+          '${AppConstants.assetIcontUrl}sales.svg',
+          colorFilter:
+              const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
       ),
       icon: Container(
@@ -106,11 +107,13 @@ class AppButtonNav extends StatelessWidget {
               Border(top: BorderSide(color: AppColors.transparent, width: 2)),
         ),
         child: SvgPicture.asset(
-          '${AppConstants.assetIcontUrl}wish_list.svg',
+          '${AppConstants.assetIcontUrl}sales.svg',
+          height: 25,
+          width: 25,
           colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
         ),
       ),
-      label: 'Wishlist',
+      label: 'Sales',
     ),
     BottomNavigationBarItem(
       activeIcon: Container(
@@ -120,16 +123,16 @@ class AppButtonNav extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
+              colors: <Color>[
                 AppColors.black.withOpacity(0.05),
                 AppColors.transparent
               ]),
-          border:
-              const Border(top: BorderSide(color: AppColors.black, width: 2)),
+          border: const Border(top: BorderSide(width: 2)),
         ),
         child: SvgPicture.asset(
           '${AppConstants.assetIcontUrl}profile.svg',
-          colorFilter: const ColorFilter.mode(AppColors.black, BlendMode.srcIn),
+          colorFilter:
+              const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
       ),
       icon: Container(
@@ -149,19 +152,16 @@ class AppButtonNav extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      enableFeedback: false,
-      useLegacyColorScheme: false,
-      type: BottomNavigationBarType.fixed,
-      unselectedItemColor: AppColors.grey,
-      selectedItemColor: AppColors.black,
-      selectedFontSize: 12,
-      unselectedFontSize: 12,
-      elevation: 0,
-      currentIndex: currentIndex,
-      onTap: onTap,
-      items: items,
-    );
-  }
+  Widget build(BuildContext context) => BottomNavigationBar(
+        enableFeedback: false,
+        useLegacyColorScheme: false,
+        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: AppColors.grey,
+        selectedItemColor: AppColors.black,
+        selectedFontSize: 12,
+        elevation: 0,
+        currentIndex: currentIndex,
+        onTap: onTap,
+        items: items,
+      );
 }

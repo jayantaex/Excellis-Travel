@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1041807847441",
+    "project_id": "excellis-travel",
+    "storage_bucket": "excellis-travel.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041807847441:android:d5a763c815683e507181b0",
+        "android_client_info": {
+          "package_name": "com.excellistravel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwYNluBGHyGdBU-rPU8YDra-iY9GgFJzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

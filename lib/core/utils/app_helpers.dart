@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:excellistravel/core/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -9,22 +10,19 @@ import '../constants/app_constants.dart';
 
 class AppHelpers {
   // Date formatting
-  static String formatDate(DateTime date, {String pattern = 'dd/MM/yyyy'}) {
-    return DateFormat(pattern).format(date);
-  }
+  static String formatDate(DateTime date, {String pattern = 'dd/MM/yyyy'}) =>
+      DateFormat(pattern).format(date);
 
   static String formatDateTime(DateTime date,
-      {String pattern = 'dd/MM/yyyy HH:mm'}) {
-    return DateFormat(pattern).format(date);
-  }
+          {String pattern = 'dd/MM/yyyy HH:mm'}) =>
+      DateFormat(pattern).format(date);
 
-  static String formatTime(DateTime date, {String pattern = 'HH:mm'}) {
-    return DateFormat(pattern).format(date);
-  }
+  static String formatTime(DateTime date, {String pattern = 'HH:mm'}) =>
+      DateFormat(pattern).format(date);
 
   static String timeAgo(DateTime date) {
-    final now = DateTime.now();
-    final difference = now.difference(date);
+    final DateTime now = DateTime.now();
+    final Duration difference = now.difference(date);
 
     if (difference.inDays > 365) {
       return '${(difference.inDays / 365).floor()} year${(difference.inDays / 365).floor() > 1 ? 's' : ''} ago';
@@ -42,17 +40,14 @@ class AppHelpers {
   }
 
   // Number formatting
-  static String formatCurrency(double amount, {String symbol = '\$'}) {
-    return '$symbol${amount.toStringAsFixed(2)}';
-  }
+  static String formatCurrency(double amount, {String symbol = '\$'}) =>
+      '$symbol${amount.toStringAsFixed(2)}';
 
-  static String formatNumber(num number) {
-    return NumberFormat('#,###').format(number);
-  }
+  static String formatNumber(num number) =>
+      NumberFormat('#,###').format(number);
 
-  static String formatPercentage(double value) {
-    return '${(value * 100).toStringAsFixed(1)}%';
-  }
+  static String formatPercentage(double value) =>
+      '${(value * 100).toStringAsFixed(1)}%';
 
   // String helpers
   static String capitalize(String text) {
@@ -60,9 +55,8 @@ class AppHelpers {
     return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
 
-  static String capitalizeWords(String text) {
-    return text.split(' ').map((word) => capitalize(word)).join(' ');
-  }
+  static String capitalizeWords(String text) =>
+      text.split(' ').map((String word) => capitalize(word)).join(' ');
 
   static String truncateText(String text, int maxLength) {
     if (text.length <= maxLength) return text;
@@ -85,9 +79,8 @@ class AppHelpers {
   }
 
   // Color helpers
-  static String colorToHex(Color color) {
-    return '#${color.value.toRadixString(16).substring(2).toUpperCase()}';
-  }
+  static String colorToHex(Color color) =>
+      '#${color.value.toRadixString(16).substring(2).toUpperCase()}';
 
   static Color hexToColor(String hex) {
     hex = hex.replaceAll('#', '');
@@ -97,7 +90,7 @@ class AppHelpers {
 
   // URL helpers
   static bool isValidUrl(String url) {
-    const urlRegex =
+    const String urlRegex =
         r'^https?:\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?$';
     return RegExp(urlRegex).hasMatch(url);
   }
@@ -110,12 +103,10 @@ class AppHelpers {
   }
 
   // List helpers
-  static List<T> removeDuplicates<T>(List<T> list) {
-    return list.toSet().toList();
-  }
+  static List<T> removeDuplicates<T>(List<T> list) => list.toSet().toList();
 
   static List<List<T>> chunk<T>(List<T> list, int chunkSize) {
-    final List<List<T>> chunks = [];
+    final List<List<T>> chunks = <List<T>>[];
     for (int i = 0; i < list.length; i += chunkSize) {
       chunks.add(list.sublist(
           i, i + chunkSize > list.length ? list.length : i + chunkSize));
@@ -125,11 +116,11 @@ class AppHelpers {
 
   // Random generators
   static String generateRandomString(int length) {
-    const chars =
+    const String chars =
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     return List.generate(
         length,
-        (index) =>
+        (int index) =>
             chars[DateTime.now().millisecondsSinceEpoch % chars.length]).join();
   }
 
@@ -144,21 +135,18 @@ class AppHelpers {
 
   // Device info
   static bool isTablet(BuildContext context) {
-    final data = MediaQuery.of(context);
+    final MediaQueryData data = MediaQuery.of(context);
     return data.size.shortestSide >= 600;
   }
 
-  static bool isLandscape(BuildContext context) {
-    return MediaQuery.of(context).orientation == Orientation.landscape;
-  }
+  static bool isLandscape(BuildContext context) =>
+      MediaQuery.of(context).orientation == Orientation.landscape;
 
-  static double getScreenWidth(BuildContext context) {
-    return MediaQuery.of(context).size.width;
-  }
+  static double getScreenWidth(BuildContext context) =>
+      MediaQuery.of(context).size.width;
 
-  static double getScreenHeight(BuildContext context) {
-    return MediaQuery.of(context).size.height;
-  }
+  static double getScreenHeight(BuildContext context) =>
+      MediaQuery.of(context).size.height;
 
   // Navigation helpers
   static void hideKeyboard(BuildContext context) {
@@ -193,25 +181,25 @@ class AppHelpers {
     required String content,
     String confirmText = 'Confirm',
     String cancelText = 'Cancel',
-  }) {
-    return showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(cancelText),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(confirmText),
-          ),
-        ],
-      ),
-    );
-  }
+  }) =>
+      showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          backgroundColor: AppColors.white,
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(cancelText),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(confirmText),
+            ),
+          ],
+        ),
+      );
 
   // get value from JSON string by key
   static String? getStringFromMap(String? data, String key) {
@@ -226,9 +214,7 @@ class AppHelpers {
   }
 
   // convert Map to JSON string
-  static String mapToJson(Map<String, dynamic> map) {
-    return jsonEncode(map);
-  }
+  static String mapToJson(Map<String, dynamic> map) => jsonEncode(map);
 
   // convert JSON string back to Map
   static Map<String, dynamic>? jsonToMap(String? data) {
@@ -244,12 +230,11 @@ class AppHelpers {
   // logout helper
   static Future<void> logout(
       BuildContext context, VoidCallback onLoggedOut) async {
-    final confirmed = await showConfirmDialog(
+    final bool? confirmed = await showConfirmDialog(
       context,
       title: 'Logout',
       content: 'Are you sure you want to logout?',
       confirmText: 'Logout',
-      cancelText: 'Cancel',
     );
     if (confirmed == true) {
       onLoggedOut();
@@ -272,35 +257,35 @@ class AppHelpers {
   }
 
   static Image assetImage(
-      {required String assetName, double? width, double? height, String? ext}) {
-    return Image.asset(
-      '${AppConstants.assetImageUrl}$assetName.${ext ?? 'png'}',
-      width: width,
-      height: height,
-    );
-  }
+          {required String assetName,
+          double? width,
+          double? height,
+          String? ext}) =>
+      Image.asset(
+        '${AppConstants.assetImageUrl}$assetName.${ext ?? 'png'}',
+        width: width,
+        height: height,
+      );
 
   static Image networkImage(
-      {required String url, double? width, double? height, String? ext}) {
-    return Image.network(
-      url,
-      width: width,
-      height: height,
-    );
-  }
+          {required String url, double? width, double? height, String? ext}) =>
+      Image.network(
+        url,
+        width: width,
+        height: height,
+      );
 
   static SvgPicture svgAsset({
     required String assetName,
     bool? isIcon,
     double? width,
     double? height,
-  }) {
-    return SvgPicture.asset(
-      isIcon == true
-          ? '${AppConstants.assetIcontUrl}$assetName.svg'
-          : '${AppConstants.assetImageUrl}$assetName.svg',
-      width: width,
-      height: height,
-    );
-  }
+  }) =>
+      SvgPicture.asset(
+        isIcon == true
+            ? '${AppConstants.assetIcontUrl}$assetName.svg'
+            : '${AppConstants.assetImageUrl}$assetName.svg',
+        width: width,
+        height: height,
+      );
 }

@@ -1,9 +1,8 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../bloc/auth_bloc.dart';
+import '../../../../core/widgets/app_exit_sheet.dart';
+import '../../../../core/widgets/app_sheet.dart';
 import '../widgets/registration_sheet.dart';
 
 class RegistrationScreen extends StatelessWidget {
@@ -11,25 +10,33 @@ class RegistrationScreen extends StatelessWidget {
 
   @override
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.black,
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          log('Auth states :::: $state');
+  Widget build(BuildContext context) => PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (bool didPop, Object? result) async {
+          if (!didPop) {
+            await showAppSheet(
+                onSubmitPressed: () async {
+                  SystemNavigator.pop();
+                },
+                submitButtonRequired: true,
+                submitButtonTitle: 'Yes',
+                context: context,
+                title: 'Exit',
+                child: const AppExitSheet());
+          }
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Center(
-                child: Image.asset('assets/images/app_logo.png'),
+        child: Scaffold(
+          backgroundColor: AppColors.black,
+          body: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Center(
+                  child: Image.asset('assets/images/app_logo.png'),
+                ),
               ),
-            ),
-            Expanded(
-              child: Container(
+              Expanded(
+                child: Container(
                   alignment: Alignment.bottomCenter,
                   decoration: const BoxDecoration(
                     color: AppColors.white,
@@ -38,21 +45,11 @@ class RegistrationScreen extends StatelessWidget {
                       topRight: Radius.circular(30),
                     ),
                   ),
-                  child: BlocConsumer<AuthBloc, AuthState>(
-                    listener: (context, state) {
-                      if (state is RegistrationFailure) {
-                        AppHelpers.showSnackBar(context, state.message,
-                            backgroundColor: AppColors.error);
-                      }
-                    },
-                    builder: (context, state) {
-                      return AgencyRegistrationSheet();
-                    },
-                  )),
-            ),
-          ],
+                  child: const AgencyRegistrationSheet(),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

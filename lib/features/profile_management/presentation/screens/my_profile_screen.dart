@@ -1,131 +1,224 @@
+import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/services/local_db.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/app_toast.dart';
+import '../../../../core/utils/storage_service.dart';
+import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../auth/auth_module.dart';
+import '../../../auth/presentation/widgets/log_out_sheet.dart';
 import '../../../legal/legal_module.dart';
+import '../../../sales/sales_module.dart';
+import '../../../settings/settings_module.dart';
+import '../../bloc/profile_bloc.dart';
 import '../../profile_management_module.dart';
-import '../widgets/log_out_sheet.dart';
 import '../widgets/user_content_widget.dart';
 
-class MyProfileScreen extends StatelessWidget {
-  MyProfileScreen({super.key});
+class MyProfileScreen extends StatefulWidget {
+  const MyProfileScreen({super.key});
+  @override
+  State<MyProfileScreen> createState() => _MyProfileScreenState();
+}
 
-  final List<Map<String, dynamic>> options = [
-    {
+LocalDB _localDB = LocalDB();
+
+class _MyProfileScreenState extends State<MyProfileScreen> {
+  final List<Map<String, String>> options = <Map<String, String>>[
+    <String, String>{
       'title': 'Profile',
-      'iconPath': '${AppConstants.assetIcontUrl}my_profile.svg',
+      'iconPath': '${AppConstants.assetIcontUrl}profile.svg',
       'routeName': ProfileManagementModule.editProfileName
     },
-    {
+    <String, String>{
+      'title': 'My Markup',
+      'iconPath': '${AppConstants.assetIcontUrl}markup.svg',
+      'routeName': ''
+    },
+    <String, String>{
       'title': 'Terms & Conditions',
       'iconPath': '${AppConstants.assetIcontUrl}terms.svg',
       'routeName': LegalModule.termsName
     },
-    {
+    <String, String>{
       'title': 'Privacy Policy',
-      'iconPath': '${AppConstants.assetIcontUrl}privacy_policy.svg',
+      'iconPath': '${AppConstants.assetIcontUrl}policy.svg',
       'routeName': LegalModule.policyName
     },
-    {
+    <String, String>{
       'title': 'Settings',
       'iconPath': '${AppConstants.assetIcontUrl}settings.svg',
-      'routeName': ProfileManagementModule.editProfileName
+      'routeName': SettingsModule.routeName
     },
-    {
+    <String, String>{
       'title': 'Sign Out',
-      'iconPath': '${AppConstants.assetIcontUrl}sign_out.svg',
+      'iconPath': '${AppConstants.assetIcontUrl}logout.svg',
       'routeName': ''
     }
   ];
+  bool isLogedIn = false;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      isLogedIn = await isLogedInFun();
+      if (context.mounted) {
+        context.read<ProfileBloc>().add(const LoadProfileEvent());
+      }
+    });
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.transparent,
-      appBar: AppBar(
-        centerTitle: false,
-        backgroundColor: AppColors.transparent,
-        title: const Text(
-          'Profile',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
-                '${AppConstants.assetIcontUrl}whatsapp.svg',
-                height: 31,
-                width: 31,
-              ))
-        ],
-      ),
-      body: TransWhiteBgWidget(
-        child: Column(
-          children: [
-            //profile components
-            SizedBox(
-              width: AppHelpers.getScreenWidth(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const UserContentWidget(
-                    userImage: '${AppConstants.assetImageUrl}user.jpg',
-                    userName: 'John Doe',
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.light_mode,
-                        color: AppColors.white,
-                      ))
-                ],
+  Widget build(BuildContext context) => TransWhiteBgWidget(
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (BuildContext context, ProfileState state) => Column(
+            children: <Widget>[
+              const AppCustomAppbar(
+                isBackButtonRequired: false,
+                centerTitle: 'My Profile',
               ),
-            ),
-
-            //links
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(top: 25),
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    ...options.map((option) => ListTile(
-                        leading: SvgPicture.asset(
-                          option['iconPath'],
-                          height: 17,
-                          width: 17,
-                        ),
-                        title: Text(
-                          option['title'],
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w400),
-                        ),
-                        onTap: () async {
-                          if (option['routeName'] == '' &&
-                              option['title'] == 'Sign Out') {
-                            showLogoutSheet(context: context);
-                          }
-                          if (option['routeName'] != '') {
-                            context.pushNamed(option['routeName']);
-                          }
-                        }))
+              //profile components
+              SizedBox(
+                width: AppHelpers.getScreenWidth(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    UserContentWidget(
+                      userImage: '',
+                      userName: state is ProfileLoaded
+                          ? state.profileData.firstName ?? 'Guest'
+                          : 'Guest',
+                    ),
                   ],
                 ),
               ),
-            )
-          ],
+
+              //links
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 25),
+                  decoration: const BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 20),
+                      ...options.map(
+                        (Map<String, String> option) => ListTile(
+                          trailing: const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: AppColors.primary,
+                            size: 12,
+                          ),
+                          leading: SvgPicture.asset(
+                            option['iconPath'] ?? '',
+                            height: 20,
+                            width: 20,
+                            color: AppColors.primary,
+                          ),
+                          title: Text(
+                            option['title'] == 'Sign Out'
+                                ? isLogedIn
+                                    ? 'Logout'
+                                    : 'Login'
+                                : option['title'] ?? '',
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w400),
+                          ),
+                          onTap: () async {
+                            if (option['routeName'] == 'edit_profile') {
+                              if (isLogedIn) {
+                                if (context.mounted) {
+                                  context.pushNamed(
+                                    option['routeName'] ?? '',
+                                    extra: context.read<ProfileBloc>(),
+                                  );
+                                }
+                                return;
+                              }
+                              showToast(
+                                  message: 'Please login to edit your profile');
+                              return;
+                            }
+
+                            if (option['routeName'] == 'settings') {
+                              if (!isLogedIn) {
+                                showToast(
+                                    message: 'Please login to access settings');
+                                return;
+                              }
+
+                              if (context.mounted) {
+                                context.pushNamed(
+                                  option['routeName'] ?? '',
+                                );
+                                return;
+                              }
+                            }
+
+                            if (option['title'] == 'My Markup') {
+                              if (isLogedIn) {
+                                if (context.mounted) {
+                                  context.pushNamed(SalesModule.myMarkupScreen);
+                                }
+                                return;
+                              }
+                              showToast(
+                                  message: 'Please login to access markup');
+                              return;
+                            }
+
+                            if (option['title'] == 'Sign Out') {
+                              if (isLogedIn) {
+                                if (context.mounted) {
+                                  await showAppSheet(
+                                    context: context,
+                                    title: 'Logout',
+                                    child: const LogOutSheet(),
+                                    submitButtonRequired: true,
+                                    submitButtonTitle: 'Logout',
+                                    onSubmitPressed: () async {
+                                      await StorageService.clearTokens();
+                                      await _localDB.clearAllLocalDB();
+                                      context.mounted
+                                          ? context
+                                              .goNamed(AuthModule.loginName)
+                                          : null;
+                                    },
+                                  );
+                                }
+                                return;
+                              }
+                              if (context.mounted) {
+                                context.goNamed(AuthModule.loginName);
+                                return;
+                              }
+                            }
+
+                            context.pushNamed(option['routeName'] ?? '');
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+
+  Future<bool> isLogedInFun() async {
+    final String? token = await StorageService.getAccessToken();
+    return token != null && token.isNotEmpty;
   }
 }

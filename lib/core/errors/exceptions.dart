@@ -1,36 +1,36 @@
 class ServerException implements Exception {
-  final String message;
-  final int? statusCode;
 
   ServerException(this.message, {this.statusCode});
+  final String message;
+  final int? statusCode;
 }
 
 class NetworkException implements Exception {
-  final String message;
 
   NetworkException(this.message);
+  final String message;
 }
 
 class CacheException implements Exception {
-  final String message;
 
   CacheException(this.message);
+  final String message;
 }
 
 class ValidationException implements Exception {
-  final String message;
 
   ValidationException(this.message);
+  final String message;
 }
 
 class AuthException implements Exception {
-  final String message;
 
   AuthException(this.message);
+  final String message;
 }
 
 class UnknownException implements Exception {
-  final String message;
 
   UnknownException(this.message);
+  final String message;
 }

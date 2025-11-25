@@ -1,12 +1,18 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
 }
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} 
+
 
 android {
-    namespace = "com.reiselab"
+    namespace = "com.excellistravel"
     compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
@@ -16,24 +22,56 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "1.8"
+    }
+
+    signingConfigs {
+
+        release {
+            if (keystorePropertiesFile.exists()) {
+                storeFile file(keystoreProperties["storeFile"])
+                storePassword keystoreProperties["storePassword"]
+                keyAlias keystoreProperties["keyAlias"]
+                keyPassword keystoreProperties["keyPassword"]
+            }
+        }
     }
 
     defaultConfig {
-        applicationId = "com.reiselab"
+        applicationId = "com.excellistravel"
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        resConfigs "en"
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
+    // splits {
+    //     abi {
+    //         enable true
+    //         reset()
+    //         include 'armeabi-v7a', 'arm64-v8a'
+    //         universalApk false
+    //     }
+    // }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation platform("com.google.firebase:firebase-bom:34.4.0")
+    implementation "com.google.firebase:firebase-analytics"
 }

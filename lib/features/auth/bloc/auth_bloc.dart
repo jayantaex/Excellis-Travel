@@ -1,65 +1,74 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import '../../../core/utils/validators.dart';
-import '../data/auth_repository.dart';
 
+import '../../../core/network/api_response.dart';
+import '../../../core/utils/storage_service.dart';
+import '../../../core/utils/validators.dart';
+import '../data/repository/auth_repository.dart';
+import '../data/models/auth_resp_model.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthRepository authRepository;
   AuthBloc({required this.authRepository}) : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) {});
+    on<AuthEvent>((AuthEvent event, Emitter<AuthState> emit) {});
     on<LoginEvent>(_handleLoginEvent);
     on<RegisterEvent>(_handleRegistrationEvent);
     on<LogoutEvent>(_handleLogoutEvent);
+    on<ResetPasswordEvent>(_handleResetPasswordEvent);
+    on<SendRecoverLinkEvent>(_recoverPassword);
   }
+  AuthRepository authRepository;
 
   Future<void> _handleLoginEvent(
       LoginEvent event, Emitter<AuthState> emit) async {
     try {
       emit(AuthLoading());
-
       if (event.userName.isEmpty || event.password.isEmpty) {
-        emit(const AuthError(message: "Please enter username and password"));
+        emit(const AuthError(message: 'Please enter username and password'));
         return;
       }
 
       if (event.userType == '') {
-        emit(const AuthError(message: "Please select user type"));
+        emit(const AuthError(message: 'Please select user type'));
       }
 
-      String? passwordError = Validators.password(event.password, 8);
+      final String? passwordError = Validators.password(event.password, 8);
       if (passwordError != null) {
         emit(AuthError(message: passwordError));
         return;
       }
 
       if (event.userName.contains('@')) {
-        String? emailError = Validators.email(event.userName);
+        final String? emailError = Validators.email(event.userName);
         if (emailError != null) {
           emit(AuthError(message: emailError));
           return;
         }
       } else {
-        String? usernameError = Validators.username(event.userName);
+        final String? usernameError = Validators.username(event.userName);
         if (usernameError != null) {
           emit(AuthError(message: usernameError));
           return;
         }
       }
 
-      final user = await authRepository.login(
+      final ApiResponse<AuthResponseModel> res = await authRepository.login(
         username: event.userName,
         password: event.password,
         fcmToken: event.fcmToken,
         userType: event.userType,
       );
-      if (user.errorMessage != null) {
-        emit(AuthError(message: user.errorMessage!));
+      if (res.errorMessage != null) {
+        emit(AuthError(message: res.errorMessage!));
         return;
       }
-      emit(Authenticated(token: user.data!));
+      //save token into local
+      await StorageService.saveTokens(
+          res.data?.data?.token ?? '', res.data?.data?.token ?? '');
+      emit(Authenticated());
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
@@ -69,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       RegisterEvent event, Emitter<AuthState> emit) async {
     try {
       emit(RegistrationInProgress());
-      String? errMessage = validateRegisTration(
+      final String? errMessage = validateRegisTration(
         userType: event.userType,
         companyName: event.companyName,
         firstName: event.firstName,
@@ -91,7 +100,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (errMessage != null) {
         emit(RegistrationFailure(message: errMessage));
       } else {
-        emit(RegistrationSuccess());
+        final ApiResponse<AuthResponseModel> res =
+            await authRepository.register(
+                firstName: event.firstName,
+                lastName: event.lastName,
+                email: event.emailId,
+                phone: event.phoneNumber,
+                role: event.userType,
+                officeAddress: event.officeAddress,
+                pinCode: event.pinCode,
+                state: event.state,
+                city: event.city,
+                nearByAirport: event.nearByAirport,
+                gstNumber: event.gstNumber,
+                aadhaarNumber: event.aadhaarNumber,
+                password: event.password,
+                commissionRate: 5,
+                isDirectBooking: true);
+
+        if (res.errorMessage != null) {
+          emit(RegistrationFailure(message: res.errorMessage!));
+        } else {
+          emit(RegistrationSuccess());
+        }
       }
     } catch (e) {
       emit(RegistrationFailure(message: e.toString()));
@@ -105,6 +136,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(LoggedOutSucess());
     } catch (e) {
       emit(LoggedOutFailure(message: e.toString()));
+    }
+  }
+
+  Future<void> _handleResetPasswordEvent(
+      ResetPasswordEvent event, Emitter<AuthState> emit) async {
+    try {
+      emit(PasswordResetInProgress());
+      final ApiResponse<bool> res = await authRepository.resetPassword(
+          currentPassword: event.currentPassword,
+          newPassword: event.newPassword);
+      if (res.errorMessage != null) {
+        emit(PasswordResetFailure(message: res.errorMessage!));
+      } else {
+        emit(PasswordResetSuccess());
+      }
+    } catch (e) {
+      emit(PasswordResetFailure(message: e.toString()));
+    }
+  }
+
+  Future<void> _recoverPassword(
+      SendRecoverLinkEvent event, Emitter<AuthState> emit) async {
+    try {
+      emit(PasswordResetInProgress());
+      final ApiResponse<bool> res =
+          await authRepository.sendRecoverLink(email: event.email);
+      if (res.errorMessage != null) {
+        emit(PasswordResetFailure(message: res.errorMessage!));
+      } else {
+        emit(PasswordResetSuccess());
+      }
+    } catch (e) {
+      emit(PasswordResetFailure(message: e.toString()));
     }
   }
 }
@@ -149,10 +213,6 @@ String? validateRegisTration(
       return 'Last name must be at least 3 characters long';
     }
 
-    if (panNumber.isEmpty || panNumber.length < 10) {
-      return 'PAN number must be at least 10 characters long';
-    }
-
     if (emailId.isEmpty || !emailId.contains('@')) {
       return 'Please enter a valid email address';
     }
@@ -161,32 +221,16 @@ String? validateRegisTration(
       return 'Phone number must be at least 10 characters long';
     }
 
-    if (officeAddress.isEmpty || officeAddress.length < 3) {
-      return 'Office address must be at least 3 characters long';
+    if (password.isEmpty || password.length < 8) {
+      return 'Password must be at least 8 characters long';
     }
 
-    if (pinCode.isEmpty || pinCode.length < 6) {
-      return 'Pin code must be at least 6 characters long';
+    if (confirmPassword.isEmpty || confirmPassword.length < 8) {
+      return 'Confirm password must be at least 8 characters long';
     }
 
-    if (state.isEmpty || state.length < 3) {
-      return 'State must be at least 3 characters long';
-    }
-
-    if (city.isEmpty || city.length < 3) {
-      return 'City must be at least 3 characters long';
-    }
-
-    if (nearByAirport.isEmpty || nearByAirport.length < 3) {
-      return 'Nearby airport must be at least 3 characters long';
-    }
-
-    if (gstNumber.isEmpty || gstNumber.length < 15) {
-      return 'GST number must be at least 15 characters long';
-    }
-
-    if (aadhaarNumber.isEmpty || aadhaarNumber.length < 12) {
-      return 'Aadhaar number must be at least 12 characters long';
+    if (password != confirmPassword) {
+      return 'Passwords do not match';
     }
   } else {
     if (firstName.isEmpty || firstName.length < 3) {

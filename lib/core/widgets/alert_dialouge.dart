@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 
-showAlertDialog(
+void showAlertDialog(
     {required BuildContext context,
     required String message,
     required String title,
     required VoidCallback onOk}) {
   // set up the buttons
-  Widget okButton = TextButton(
+  final Widget okButton = TextButton(
     onPressed: onOk,
-    child: const Text("OK"),
+    child: const Text('OK'),
   );
   //cancel button
 
-  Widget cancelButton = TextButton(
+  final Widget cancelButton = TextButton(
     onPressed: () {
       Navigator.of(context).pop(); // dismiss dialog
     },
     child: const Text(
-      "Cancel",
+      'Cancel',
       style: TextStyle(color: Colors.red),
     ),
   );
 
   // set up the AlertDialog
-  AlertDialog alert = AlertDialog.adaptive(
+  final AlertDialog alert = AlertDialog.adaptive(
     title: Text(title),
     content: Text(message),
     actions: [
@@ -35,8 +35,6 @@ showAlertDialog(
   // show the dialog
   showDialog(
     context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
+    builder: (BuildContext context) => alert,
   );
 }

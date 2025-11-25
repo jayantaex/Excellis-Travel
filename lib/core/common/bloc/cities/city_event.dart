@@ -1,0 +1,15 @@
+part of 'city_bloc.dart';
+
+sealed class CityEvent extends Equatable {
+  const CityEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+final class GetCityEvent extends CityEvent {
+
+  const GetCityEvent({required this.stateId, required this.stateCode});
+  final int stateId;
+  final String stateCode;
+}

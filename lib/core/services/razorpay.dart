@@ -4,29 +4,31 @@ import '../constants/app_constants.dart';
 
 class RazorpayService {
   final Razorpay _razorpay = Razorpay();
-  final Map<String, dynamic> _options = {
+
+  final Map<String, dynamic> _options = <String, dynamic>{
     'key': AppConstants.razorpayKey,
     'name': AppConstants.razorpayUserName,
-    'theme': {'color': '#800080'}
+    'theme': <String, String>{'color': '#f25a12'}
   };
 
   Future<void> initatePayment({
-    required double amount,
+    required int amount,
     required String description,
+    required String orderId,
     required String mobile,
     required String email,
     required Function(PaymentSuccessResponse) onSuccess,
     required Function(PaymentFailureResponse) onError,
   }) async {
-    _options['amount'] = (amount * 100).toInt();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, onSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, onError);
+    _options['amount'] = amount;
     _options['description'] = description;
-    _options['prefill'] = {
+    _options['order_id'] = orderId;
+    _options['prefill'] = <String, String>{
       'contact': mobile,
       'email': email,
     };
-
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, onSuccess);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, onError);
 
     _razorpay.open(_options);
   }

@@ -4,12 +4,11 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 
 class LaungeAccessWidget extends StatelessWidget {
-  final Color? bgColor;
   const LaungeAccessWidget({super.key, this.bgColor});
+  final Color? bgColor;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) => Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
       decoration: BoxDecoration(
         color: bgColor ?? AppColors.grey.withOpacity(0.1),
@@ -34,5 +33,4 @@ class LaungeAccessWidget extends StatelessWidget {
         ),
       ),
     );
-  }
 }

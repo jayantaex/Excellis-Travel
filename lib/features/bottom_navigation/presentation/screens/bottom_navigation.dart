@@ -1,14 +1,16 @@
+import 'dart:developer';
+import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/storage_service.dart';
+import '../../../../core/widgets/app_exit_sheet.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../flight_booking/presentation/screens/flight_search_screen.dart';
-import '../../../profile/bloc/profile_bloc.dart';
-import '../../../profile/bloc/profile_event.dart';
+import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../../profile_management/presentation/screens/my_profile_screen.dart';
+import '../../../sales/presentation/screens/sales_screen.dart';
 import '../../../ticket/presentation/screens/ticket_screen.dart';
-import '../../../wish_list/presentation/screens/wish_list_screen.dart';
 import '../widgets/app_button_nav.dart';
 import '../widgets/bottom_navigation_loading.dart';
 
@@ -21,49 +23,73 @@ class BottomNavigationScreen extends StatefulWidget {
 
 class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   int _currentIndex = 0;
-  bool isLoading = false;
-  final List<Widget> _screens = [
-    const FlightSearchScreen(),
-    TicketScreen(),
-    WishListScreen(),
-    MyProfileScreen()
-  ];
+  bool isLoading = true;
+
+  List<Widget> _screens = <Widget>[];
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 0), () {
-      if (context.mounted) context.read<ProfileBloc>().add(FetchProfile());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      {
+        final String? accessToken = await StorageService.getAccessToken();
+        if (context.mounted) {
+          if (accessToken != null && accessToken.isNotEmpty) {
+            if (context.mounted) {
+              context.read<ProfileBloc>().add(const LoadProfileEvent());
+            }
+          }
+        }
+        _screens = const <Widget>[
+          FlightSearchScreen(),
+          TicketScreen(),
+          SalesScreen(),
+          MyProfileScreen()
+        ];
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return isLoading
-        ? BottomNavigationLoading()
-        : Scaffold(
-            backgroundColor: AppColors.primary,
-            body: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [AppColors.primary, AppColors.secondary]),
-                borderRadius: BorderRadiusDirectional.only(
-                  topStart: Radius.circular(18),
-                  topEnd: Radius.circular(18),
-                ),
-              ),
-              height: AppHelpers.percenHeight(context: context),
-              width: AppHelpers.percenWidth(context: context),
-              child: _screens[_currentIndex],
+  Widget build(BuildContext context) => isLoading
+      ? const BottomNavigationLoading()
+      : PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (bool didPop, Object? result) async {
+            log('didPop $didPop');
+            log('pop result $result');
+            if (!didPop) {
+              if (_currentIndex == 0) {
+                await showAppSheet(
+                    onSubmitPressed: () async {
+                      SystemNavigator.pop();
+                    },
+                    submitButtonRequired: true,
+                    submitButtonTitle: 'Yes',
+                    context: context,
+                    title: 'Exit',
+                    child: const AppExitSheet());
+              }
+              setState(() {
+                _currentIndex = 0;
+              });
+            }
+          },
+          child: Scaffold(
+            body: AppGradientBg(
+              child: SafeArea(child: _screens[_currentIndex]),
             ),
             bottomNavigationBar: AppButtonNav(
               currentIndex: _currentIndex,
-              onTap: (index) {
+              onTap: (int index) {
                 setState(() {
                   _currentIndex = index;
                 });
               },
             ),
-          );
-  }
+          ),
+        );
 }

@@ -1,32 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../core/network/api_client.dart';
-import '../profile/api/profile_api.dart';
-import '../profile/bloc/profile_bloc.dart';
-import '../profile/data/profile_repository.dart';
-import '../todo/api/todo_api.dart';
-import '../todo/bloc/bloc/todo_bloc.dart';
-import '../todo/data/todo_repository.dart';
+import '../profile_management/apis/profile_management_api.dart';
+import '../profile_management/bloc/profile_bloc.dart';
+import '../profile_management/data/repository/profile_management_repository.dart';
+import '../sales/api/sales_api.dart';
+import '../sales/bloc/sales_bloc.dart';
+import '../sales/data/repository/sales_repository.dart';
+import '../ticket/api/ticket_api.dart';
+import '../ticket/bloc/ticket_bloc.dart';
+import '../ticket/data/tickets_repository.dart';
 import 'presentation/screens/bottom_navigation.dart';
 
 class BottomNavModule {
   static const String path = '/bottom_nav';
   static const String name = 'bottom_nav_screen';
   static Widget builder() {
-    final apiClient = ApiClient();
-    final profileApi = ProfileApi(apiClient);
-    final profileRepo = ProfileRepository(profileApi);
-    final todoApi = TodoApi(apiClient);
-    final todoRepo = TodoRepository(api: todoApi);
+    final ApiClient apiClient = ApiClient();
+    final ProfileManagementApi profileApi =
+        ProfileManagementApi(apiClient: apiClient);
+    final ProfileManagementRepository profileRepo =
+        ProfileManagementRepository(profileManagementApi: profileApi);
+
+    final TicketApi ticketApi = TicketApi(apiClient: apiClient);
+    final TicketsRepository ticketRepository =
+        TicketsRepository(ticketApi: ticketApi);
+    final SalesApi salesApi = SalesApi(apiClient);
+    final SalesRepository salesRepository = SalesRepository(salesApi);
+
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => ProfileBloc(profileRepo),
+        BlocProvider<ProfileBloc>(
+          create: (_) => ProfileBloc(profileRepository: profileRepo),
         ),
-        BlocProvider(
-          create: (_) => TodoBloc(todoRepo),
-        ),
+        BlocProvider<TicketBloc>(
+            create: (_) => TicketBloc(repository: ticketRepository)),
+        BlocProvider<SalesBloc>(create: (_) => SalesBloc(salesRepository)),
       ],
       child: const BottomNavigationScreen(),
     );

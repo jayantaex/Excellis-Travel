@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:reiselab/core/constants/app_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
@@ -44,9 +44,7 @@ class _TermsScreenState extends State<TermsScreen> {
             log(error.description.toString());
             log(error.errorCode.toString());
           },
-          onNavigationRequest: (NavigationRequest request) {
-            return NavigationDecision.navigate;
-          },
+          onNavigationRequest: (NavigationRequest request) => NavigationDecision.navigate,
         ),
       )
       ..loadRequest(Uri.parse(termsUrl));
@@ -55,12 +53,10 @@ class _TermsScreenState extends State<TermsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: AppGradientBg(
         child: TransWhiteBgWidget(
           child: SafeArea(
-            bottom: true,
             child: Column(
               children: [
                 const Padding(
@@ -81,7 +77,7 @@ class _TermsScreenState extends State<TermsScreen> {
                             child: CircularProgressIndicator.adaptive())
                         : ClipRRect(
                             borderRadius: const BorderRadius.all(
-                              const Radius.circular(24),
+                              Radius.circular(24),
                             ),
                             child: WebViewWidget(controller: controller!)),
                   ),
@@ -92,5 +88,4 @@ class _TermsScreenState extends State<TermsScreen> {
         ),
       ),
     );
-  }
 }

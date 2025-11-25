@@ -1,0 +1,94 @@
+import 'package:excellistravel/core/utils/app_helpers.dart';
+import 'package:excellistravel/core/widgets/primary_button.dart';
+import 'package:flutter/material.dart';
+
+import '../constants/app_styles.dart';
+
+Future<void> showAppSheet({
+  required BuildContext context,
+  required String title,
+  required Widget child,
+  bool? submitButtonRequired = false,
+  String submitButtonTitle = 'Submit',
+  VoidCallback? onSubmitPressed,
+}) =>
+    showModalBottomSheet(
+      isScrollControlled: true,
+      backgroundColor: AppColors.white,
+      context: context,
+      builder: (context) => SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(
+                height: 45,
+                width: AppHelpers.getScreenWidth(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          size: 20,
+                          color: AppColors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Divider(
+                thickness: 1,
+                color: AppColors.grey.withOpacity(0.2),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 25),
+                child: child,
+              ),
+              if (submitButtonRequired == true)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: SizedBox(
+                    height: 50,
+                    width: AppHelpers.getScreenWidth(context),
+                    child: AppPrimaryButton(
+                      onPressed: onSubmitPressed,
+                      title: submitButtonTitle,
+                      isLoading: false,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.white,
+                      ),
+                    ),
+                  ),
+                )
+            ],
+          ),
+        ),
+      ),
+    );
