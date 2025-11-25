@@ -5,18 +5,23 @@ import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/primary_input.dart';
 
 class TicketFilterSheet extends StatefulWidget {
-  const TicketFilterSheet(
-      {super.key,
-      required this.bookingIdController,
-      required this.startDateController,
-      required this.endDateController,
-      required this.onStartDatePicked,
-      required this.onEndDatePicked});
+  const TicketFilterSheet({
+    super.key,
+    required this.bookingIdController,
+    required this.startDateController,
+    required this.endDateController,
+    required this.onStartDatePicked,
+    required this.onEndDatePicked,
+    required this.selectedStatus,
+    required this.onStatusChanged,
+  });
   final TextEditingController bookingIdController;
   final TextEditingController startDateController;
   final TextEditingController endDateController;
   final Function(DateTime) onStartDatePicked;
   final Function(DateTime) onEndDatePicked;
+  final String selectedStatus;
+  final Function(String) onStatusChanged;
 
   @override
   State<TicketFilterSheet> createState() => _TicketFilterSheetState();
@@ -24,6 +29,13 @@ class TicketFilterSheet extends StatefulWidget {
 
 class _TicketFilterSheetState extends State<TicketFilterSheet> {
   DateTime? startDate;
+  late String _selectedStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedStatus = widget.selectedStatus;
+  }
 
   @override
   Widget build(BuildContext context) => Column(
@@ -58,7 +70,7 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                 ),
                 context: context,
                 firstDate: DateTime(2025),
-                lastDate: DateTime(2100),
+                lastDate: DateTime.now(),
                 initialDate: DateTime.now(),
               );
               if (picked != null) {
@@ -92,8 +104,8 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                       ),
                   context: context,
                   firstDate: startDate ?? DateTime(2025),
-                  lastDate: DateTime(2100),
-                  initialDate: startDate ?? DateTime.now());
+                  lastDate: DateTime.now(),
+                  initialDate: DateTime.now());
               if (picked != null) {
                 if (startDate != null && picked.isBefore(startDate!)) {
                   // Show error if end date is before start date
@@ -110,6 +122,51 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                     AppHelpers.formatDate(picked, pattern: 'dd-MM-yyyy');
               }
             },
+          ),
+          const SizedBox(height: 8),
+          // Status Filter Dropdown
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Status',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.black,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.grey.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: _selectedStatus,
+                    hint: const Text('Select status'),
+                    items: const [
+                      DropdownMenuItem(value: '', child: Text('All')),
+                      DropdownMenuItem(
+                          value: 'confirmed', child: Text('Confirmed')),
+                      DropdownMenuItem(
+                          value: 'pending', child: Text('Pending')),
+                      DropdownMenuItem(
+                          value: 'cancel', child: Text('Cancelled')),
+                    ],
+                    onChanged: (String? value) {
+                      setState(() {
+                        _selectedStatus = value ?? '';
+                      });
+                      widget.onStatusChanged(value ?? '');
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       );

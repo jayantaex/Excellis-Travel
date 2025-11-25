@@ -30,6 +30,9 @@ class _TicketScreenState extends State<TicketScreen> {
   final TextEditingController _bookingIdController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
+  String _selectedStatus = '';
+  String _pickedStartDate = '';
+  String _pickedEndDate = '';
   List<Booking>? tickets;
   @override
   void initState() {
@@ -46,6 +49,10 @@ class _TicketScreenState extends State<TicketScreen> {
 
   void onScroll() {
     final TicketState ticketState = context.read<TicketBloc>().state;
+    // Check if already loading more or if we've reached the end
+    if (ticketState is TicketLoaded && ticketState.isLoadingMore) {
+      return;
+    }
     if (ticketState is TicketLoading || tickets!.length >= totalItems) {
       return;
     }
@@ -67,165 +74,200 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.transparent,
-        body: TransWhiteBgWidget(
-          child: SafeArea(
-            child: Column(
-              children: <Widget>[
-                //app bar
-                AppCustomAppbar(
-                  isBackButtonRequired: false,
-                  centerTitle: 'My Tickets',
-                  trailing: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: CircleAvatar(
-                      backgroundColor: AppColors.white.withOpacity(0.1),
-                      child: IconButton(
-                        onPressed: () async {
-                          await showAppSheet(
-                            context: context,
-                            title: 'Filter',
-                            child: TicketFilterSheet(
-                              bookingIdController: _bookingIdController,
-                              startDateController: _startDateController,
-                              endDateController: _endDateController,
-                              onStartDatePicked: (DateTime picked) {
-                                setState(() {
-                                  _startDateController.text =
-                                      AppHelpers.formatDate(picked,
-                                          pattern: 'dd-MM-yyyy');
-                                });
-                              },
-                              onEndDatePicked: (DateTime picked) {
-                                setState(() {
-                                  _endDateController.text =
-                                      AppHelpers.formatDate(picked,
-                                          pattern: 'dd-MM-yyyy');
-                                });
-                              },
-                            ),
-                            submitButtonRequired: true,
-                            onSubmitPressed: () {},
-                            submitButtonTitle: 'Apply',
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.filter_alt_rounded,
-                          color: AppColors.white,
-                        ),
+  Widget build(BuildContext context) => TransWhiteBgWidget(
+        child: SafeArea(
+          child: Column(
+            children: <Widget>[
+              //app bar
+              AppCustomAppbar(
+                isBackButtonRequired: false,
+                centerTitle: 'My Tickets',
+                trailing: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: CircleAvatar(
+                    backgroundColor: AppColors.white.withOpacity(0.1),
+                    child: IconButton(
+                      onPressed: () async {
+                        await showAppSheet(
+                          context: context,
+                          title: 'Filter',
+                          child: TicketFilterSheet(
+                            bookingIdController: _bookingIdController,
+                            startDateController: _startDateController,
+                            endDateController: _endDateController,
+                            selectedStatus: _selectedStatus,
+                            onStatusChanged: (String status) {
+                              _selectedStatus = status;
+                            },
+                            onStartDatePicked: (DateTime picked) {
+                              _pickedStartDate = AppHelpers.formatDate(picked,
+                                  pattern: 'yyyy-MM-dd');
+                            },
+                            onEndDatePicked: (DateTime picked) {
+                              _pickedEndDate = AppHelpers.formatDate(picked,
+                                  pattern: 'yyyy-MM-dd');
+                            },
+                          ),
+                          submitButtonRequired: true,
+                          onSubmitPressed: () {
+                            // Reset pagination when applying filters
+                            page = 1;
+                            tickets = null;
+                            fetchTickets();
+                            Navigator.pop(context); // Close the filter sheet
+                          },
+                          submitButtonTitle: 'Apply',
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.filter_alt_rounded,
+                        color: AppColors.white,
                       ),
                     ),
                   ),
                 ),
+              ),
 
-                const SizedBox(height: 24),
-                Expanded(
-                  child: BlocConsumer<ProfileBloc, ProfileState>(
-                    bloc: context.read<ProfileBloc>(),
-                    listener: (BuildContext context, ProfileState state) {},
-                    builder: (BuildContext context, ProfileState state) {
-                      if (state is ProfileInitial) {
-                        return const NotLoginWidget();
-                      }
-                      if (state is ProfileError) {
-                        return ErrorScreen(
-                          errorDesc: '${state.message}/n Screen: Ticket Screen',
-                          errorMessage: 'Profile Error',
-                        );
-                      }
+              Expanded(
+                child: BlocConsumer<ProfileBloc, ProfileState>(
+                  bloc: context.read<ProfileBloc>(),
+                  listener: (BuildContext context, ProfileState state) {},
+                  builder: (BuildContext context, ProfileState state) {
+                    if (state is ProfileInitial) {
+                      return const NotLoginWidget();
+                    }
+                    if (state is ProfileError) {
+                      return ErrorScreen(
+                        errorDesc: '${state.message}/n Screen: Ticket Screen',
+                        errorMessage: 'Profile Error',
+                      );
+                    }
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: BlocConsumer<TicketBloc, TicketState>(
-                            bloc: context.read<TicketBloc>(),
-                            listener: (BuildContext context,
-                                TicketState state) async {},
-                            builder: (BuildContext context, TicketState state) {
-                              if (state is TicketLoading ||
-                                  state is TicketInitial) {
-                                return const Center(
-                                  child: CircularProgressIndicator.adaptive(
-                                    backgroundColor: AppColors.white,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: BlocConsumer<TicketBloc, TicketState>(
+                          bloc: context.read<TicketBloc>(),
+                          listener: (BuildContext context,
+                              TicketState state) async {},
+                          builder: (BuildContext context, TicketState state) {
+                            if (state is TicketLoading ||
+                                state is TicketInitial) {
+                              return const Center(
+                                child: CircularProgressIndicator.adaptive(
+                                  backgroundColor: AppColors.white,
+                                ),
+                              );
+                            }
+
+                            if (state is TicketError) {
+                              return ErrorScreen(
+                                errorMessage: 'Ticket Error',
+                                errorDesc: state.err,
+                              );
+                            }
+
+                            if (state is TicketLoaded) {
+                              totalItems =
+                                  state.tickets.pagination?.totalItems ?? 0;
+                              // Use the bookings directly from the state
+                              // The bloc already handles merging for pagination
+                              tickets = state.tickets.bookings;
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: 8, top: 8),
+                                    child: SizedBox(
+                                      height: 25,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            ' Tickets (${state.tickets.pagination?.totalItems})',
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.white,
+                                            ),
+                                          ),
+                                          _bookingIdController.text.isEmpty &&
+                                                  _startDateController
+                                                      .text.isEmpty &&
+                                                  _endDateController
+                                                      .text.isEmpty &&
+                                                  _selectedStatus.isEmpty
+                                              ? const SizedBox()
+                                              : GestureDetector(
+                                                  onTap: () async {
+                                                    _bookingIdController
+                                                        .clear();
+                                                    _startDateController
+                                                        .clear();
+                                                    _endDateController.clear();
+                                                    _selectedStatus = '';
+                                                    _pickedStartDate = '';
+                                                    _pickedEndDate = '';
+                                                    page = 1;
+                                                    tickets = null;
+                                                    await fetchTickets();
+                                                  },
+                                                  child: const SizedBox(
+                                                    height: 45,
+                                                    child: Text(
+                                                      'Clear',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: AppColors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                );
-                              }
-
-                              if (state is TicketError) {
-                                return ErrorScreen(
-                                  errorMessage: 'Ticket Error',
-                                  errorDesc: state.err,
-                                );
-                              }
-
-                              if (state is TicketLoaded) {
-                                totalItems =
-                                    state.tickets.pagination?.totalItems ?? 0;
-                                state.tickets.bookings?.forEach((element) {
-                                  tickets ??= <Booking>[];
-                                  tickets!.add(element);
-                                });
-                                return Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                      child: SizedBox(
-                                        height: 25,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              ' Tickets (${state.tickets.pagination?.totalItems})',
-                                              style: const TextStyle(
-                                                fontSize: 14,
+                                  Expanded(
+                                    child: tickets?.isEmpty ?? true
+                                        ? const Center(
+                                            child: Text(
+                                              'No Data Found',
+                                              style: TextStyle(
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w600,
                                                 color: AppColors.white,
                                               ),
                                             ),
-                                            const SizedBox(
-                                              height: 45,
-                                              child: Text(
-                                                'Clear',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: AppColors.white,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: ListView.builder(
-                                        controller: _scrollController,
-                                        itemCount: tickets?.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) =>
+                                          )
+                                        : ListView.builder(
+                                            controller: _scrollController,
+                                            itemCount: tickets?.length,
+                                            itemBuilder: (BuildContext context,
+                                                    int index) =>
                                                 TicketWidget(
-                                          isLast: false,
-                                          ticketData: tickets?[index],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }
+                                              isLast:
+                                                  index == tickets!.length - 1,
+                                              ticketData: tickets?[index],
+                                            ),
+                                          ),
+                                  ),
+                                ],
+                              );
+                            }
 
-                              return const ErrorScreen();
-                            },
-                          ),
+                            return const ErrorScreen();
+                          },
                         ),
-                      );
-                    },
-                  ),
-                )
-              ],
-            ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
           ),
         ),
       );
@@ -235,9 +277,9 @@ class _TicketScreenState extends State<TicketScreen> {
             FetchTickets(
               page: page,
               limit: limit,
-              startDate: _startDateController.text,
-              endDate: _endDateController.text,
-              status: '',
+              startDate: _pickedStartDate,
+              endDate: _pickedEndDate,
+              status: _selectedStatus,
               bookingId: _bookingIdController.text,
             ),
           );
