@@ -78,7 +78,7 @@ class FlightBookingModule {
   //seat selection
   static const String seatSelection = '/seat-selection';
   static const String seatSelectionName = 'seatSelection';
-  static Widget seatSelectionBuilder() => const SeatMapScreen();
+  // static Widget seatSelectionBuilder() => const SeatMapScreen();
 
   // // passenger details
   // static const String passengerDetails = '/passenger-details';

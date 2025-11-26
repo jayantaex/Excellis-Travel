@@ -6,8 +6,8 @@ import '../../../../../core/utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import 'pricing_details.dart';
 
-class OfferFareTogglerTile extends StatefulWidget {
-  const OfferFareTogglerTile(
+class OfferFareTogglerWidget extends StatefulWidget {
+  const OfferFareTogglerWidget(
       {super.key,
       this.onToggle,
       required this.flightOffer,
@@ -17,10 +17,10 @@ class OfferFareTogglerTile extends StatefulWidget {
   final MyMarkup myMarkup;
 
   @override
-  State<OfferFareTogglerTile> createState() => _OfferFareTogglerTileState();
+  State<OfferFareTogglerWidget> createState() => _OfferFareTogglerWidgetState();
 }
 
-class _OfferFareTogglerTileState extends State<OfferFareTogglerTile> {
+class _OfferFareTogglerWidgetState extends State<OfferFareTogglerWidget> {
   bool offerFare = false;
   @override
   Widget build(BuildContext context) => Column(
