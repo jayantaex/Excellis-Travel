@@ -16,6 +16,7 @@ import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart' show FlightDictionary, Datam;
 import '../../data/models/passenger_model.dart';
+import '../widgets/flight_details/fares_and_prices.dart';
 import '../widgets/flight_details/offer_fare_toggler_widget.dart';
 import '../widgets/loading/flight_details_loading_widget.dart';
 import '../widgets/flight_details/prceed_to_pay_widget.dart';
@@ -165,12 +166,18 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               ),
                               const SliverToBoxAdapter(
                                   child: SizedBox(height: 12)),
-                              // SliverToBoxAdapter(
-                              //   child: FaresAndPrices(
-                              //     allTravelerPricings: travelerPricings,
-                              //     grandPrice: grandTotal,
-                              //   ),
-                              // ),
+                              SliverToBoxAdapter(
+                                child: FaresAndPrices(
+                                  allTravelerPricings: flightState
+                                          .data
+                                          .data
+                                          ?.flightOffers!
+                                          .first
+                                          .travelerPricings ??
+                                      [],
+                                  grandPrice: 20.22,
+                                ),
+                              ),
                               const SliverToBoxAdapter(
                                   child: SizedBox(height: 8)),
                               const SliverToBoxAdapter(

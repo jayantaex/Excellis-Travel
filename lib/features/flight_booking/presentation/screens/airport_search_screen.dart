@@ -98,6 +98,17 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                         'Enter city name here or airport code',
                                     maxCharacters: 20,
                                     controller: _searchController,
+                                    suffixIcon:
+                                        _searchController.text.isNotEmpty
+                                            ? IconButton(
+                                                onPressed: () {
+                                                  _searchController.clear();
+                                                },
+                                                icon: const Icon(
+                                                  Icons.close,
+                                                  size: 14,
+                                                ))
+                                            : null,
                                   ),
                                 ),
                                 SizedBox(
@@ -105,7 +116,6 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                       AppHelpers.getScreenWidth(context) * 0.3,
                                   child: AppDropDown(
                                     onChanged: (String? value) {
-                                      log(value ?? 'IN');
                                       _selectedCountyCode = value ?? 'IN';
                                     },
                                     title: 'Country',

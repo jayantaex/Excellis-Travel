@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
-import 'fare_breakdown_card.dart';
 
 class FareCard extends StatelessWidget {
   const FareCard({super.key, required this.data});
@@ -10,8 +9,8 @@ class FareCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: AppColors.grey.withOpacity(0.05),
@@ -21,56 +20,62 @@ class FareCard extends StatelessWidget {
         ),
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                '${data.fareOption} ${data.travelerType} (${data.price?.currency})',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+            Text(
+              '${data.fareOption} ${data.travelerType} (${data.price?.currency})',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             Divider(
               color: AppColors.grey.withOpacity(0.3),
               thickness: 0.5,
+              height: 1,
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 8),
             const FeatureCard(
               title: 'Cabin Baggage',
               iconName: 'baggage',
               allowance: '7KG (1 bag only)/Adult',
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 6),
             Divider(
               color: AppColors.grey.withOpacity(0.3),
               thickness: 0.5,
+              height: 1,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 6),
             ...data.fareDetailsBySegment!.map(
               (FareDetailsBySegment e) => Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                margin: const EdgeInsets.only(bottom: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(6),
                     color: AppColors.white),
                 child: Column(
                   children: <Widget>[
                     ListTile(
-                      contentPadding: const EdgeInsets.all(0),
+                      dense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 0),
+                      visualDensity:
+                          const VisualDensity(horizontal: 0, vertical: -4),
                       title: Text(
-                          '${e.brandedFare} - ${e.fareDetailsBySegmentClass}'),
+                        '${e.brandedFare} - ${e.fareDetailsBySegmentClass}',
+                        style: const TextStyle(fontSize: 11),
+                      ),
                       subtitle: Text(
                         '${e.fareBasis} - ${e.fareDetailsBySegmentClass}',
                         style: const TextStyle(
-                            color: AppColors.grey, fontSize: 12),
+                            color: AppColors.grey, fontSize: 10),
                       ),
                       trailing: Text(
                         '${e.cabin}',
                         style: const TextStyle(
                             color: AppColors.warning,
                             fontWeight: FontWeight.w600,
-                            fontSize: 10),
+                            fontSize: 9),
                       ),
                     ),
                     FeatureCard(
@@ -83,9 +88,7 @@ class FareCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-            FareBreakdownCard(data: data.price),
-            const SizedBox(height: 24),
+            const SizedBox(height: 4),
           ],
         ),
       );
@@ -103,23 +106,25 @@ class FeatureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-        contentPadding: const EdgeInsets.all(0),
+        dense: true,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
         leading: CircleAvatar(
-            radius: 16,
+            radius: 14,
             backgroundColor: AppColors.grey.withOpacity(0.1),
             child: AppHelpers.svgAsset(
-                assetName: iconName, isIcon: true, height: 20, width: 20)),
+                assetName: iconName, isIcon: true, height: 16, width: 16)),
         title: Text(
           title,
           style: const TextStyle(
-            fontSize: 11,
+            fontSize: 10,
             fontWeight: FontWeight.w600,
           ),
         ),
         trailing: Text(
           allowance,
           style: const TextStyle(
-            fontSize: 10,
+            fontSize: 9,
             fontWeight: FontWeight.w400,
           ),
         ),

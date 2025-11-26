@@ -39,10 +39,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   final TextEditingController _arrivalController = TextEditingController(
     text: 'DEL(DELHI)\nINDRA GANDHI INTL',
   );
+  String departureAirport = 'SUBHASH CHANDRA BOSE INTL';
   String departureCode = 'CCU';
-  String departureCity = '';
+  String departureCity = 'KOLKATA';
   String arrivalCode = 'DEL';
-  String arrivalCity = '';
+  String arrivalCity = 'DELHI';
+  String arrivalAirport = 'INDRA GANDHI INTL';
   //mock data
   String _selectedSeatType = 'Economy';
   String _selectedFareType = 'Regular';
@@ -213,6 +215,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                                 airport.address?.cityName ?? '';
                                             departureCode =
                                                 airport.iataCode ?? '';
+                                            departureAirport =
+                                                airport.name ?? '';
                                             _depurtureController.text =
                                                 '${airport.iataCode}(${airport.address!.cityName})\n${airport.name}';
                                             //unfocus
@@ -245,6 +249,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           'selectedAirport': arrivalCity.trim(),
                                           'onAirportSelected':
                                               (AirportModel airport) {
+                                            arrivalAirport = airport.name ?? '';
                                             arrivalCity =
                                                 airport.address?.cityName ?? '';
                                             arrivalCode =
@@ -483,8 +488,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         return;
                                       }
 
-                                      if (_arrivalController.text ==
-                                          _depurtureController.text) {
+                                      if (arrivalCode == departureCode) {
                                         showToast(
                                             message:
                                                 'Please enter different arrival and depurture');
@@ -517,6 +521,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           },
                                           'fareType': _selectedFareType,
                                           'cabinClass': _selectedSeatType,
+                                          'departureAirport': departureAirport,
+                                          'arrivalAirport': arrivalAirport,
+                                          'departureCity': departureCity,
+                                          'arrivalCity': arrivalCity,
                                         };
                                         final String? token =
                                             await StorageService

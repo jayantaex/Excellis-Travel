@@ -159,7 +159,7 @@ class ItineraryCard extends StatelessWidget {
       );
 }
 
-getDuration({required String duration}) {
+String getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
   final String hr = duration.split('H')[0].trim();

@@ -34,7 +34,7 @@ class SegmentCard extends StatelessWidget {
             ),
             subtitle: Text(
               '${flightDictionary.dictionaries.aircraft![data.aircraft?.code ?? '']} | '
-              '${data.number ?? ''}',
+              '${data.co2Emissions!.first.cabin ?? ''}',
               style: const TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
@@ -108,11 +108,23 @@ class SegmentCard extends StatelessWidget {
       );
 }
 
-getDuration({required String duration}) {
+String getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
   final String hr = duration.split('H')[0].trim();
   final String mn = duration.split('H')[1].split('M')[0].trim();
-
   return '${hr}H ${mn}M';
+}
+
+Color getColorByCabinClass({required String cabinClass}) {
+  switch (cabinClass) {
+    case 'PREMIUM_ECONOMY':
+      return AppColors.info;
+    case 'ECONOMY':
+      return AppColors.success;
+    case 'FIRST':
+      return AppColors.primary;
+    default:
+      return AppColors.warning;
+  }
 }
