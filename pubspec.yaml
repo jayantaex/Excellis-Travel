@@ -77,6 +77,7 @@ dependencies:
   #url_launcher
   url_launcher: ^6.3.1
 
+
   
 
 
@@ -88,7 +89,12 @@ dev_dependencies:
   # Code Generation
   build_runner: ^2.4.12
   json_serializable: ^6.8.0
+  flutter_launcher_icons: ^0.14.4
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/applogo.jpg"
   
 flutter:
   uses-material-design: true
