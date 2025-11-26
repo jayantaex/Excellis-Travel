@@ -45,15 +45,21 @@ class _FlightListScreenState extends State<FlightListScreen> {
   Map<String, dynamic>? body;
   String depurtureDate = '';
   String cabinClass = '';
+  List<int> totalTravelers = [];
+  Map<String, dynamic> paramData = {};
 
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      final Map<String, dynamic> paramData = widget.data;
-
+      paramData = widget.data;
+      log('paratData ${paramData}');
       depurtureDate = paramData['depurtureDate'];
       cabinClass = paramData['cabinClass'];
-
+      totalTravelers = [
+        paramData['travellers']['adult'],
+        paramData['travellers']['child'],
+        paramData['travellers']['infant']
+      ];
       Future.delayed(const Duration(microseconds: 100), () {
         body = getBody(
           depurture: paramData['depurture'],
@@ -62,9 +68,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
           returnDate: paramData['returnDate'],
           cabinClass: cabinClass,
           isRoundTrip: paramData['isRoundTrip'],
-          adultCount: paramData['travellers']['adult'],
-          childCount: paramData['travellers']['child'],
-          infantCount: paramData['travellers']['infant'],
+          travellersArr: totalTravelers,
         );
         context.read<FlightBloc>().add(SearchFlightsEvent(body: body!));
       });
@@ -83,100 +87,122 @@ class _FlightListScreenState extends State<FlightListScreen> {
                 child: BlocBuilder<FlightBloc, FlightState>(
                   builder: (context, state) {
                     if (state is FlightSearching) {
-                      return const FlightListLoaddingWidget();
+                      return FlightListLoaddingWidget(
+                        arrival: widget.data['arrival'],
+                        departure: widget.data['depurture'],
+                      );
                     }
 
                     if (state is FlightLoaded) {
-                      return Column(
-                        children: [
-                          //nav Controller
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: AppCustomAppbar(
-                              start: widget.data['depurture'],
-                              end: widget.data['arrival'],
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: DateFilterWidget(
-                              selectedDate: DateTime.parse(depurtureDate),
-                              onDateSelected: (date) async {
-                                if (widget.data['isRoundTrip']) {
-                                  final bool? res =
-                                      await AppHelpers.showConfirmDialog(
-                                    confirmText: 'Got it',
-                                    context,
-                                    title: 'It is a round trip',
-                                    content:
-                                        'You can not change the date for round trip. Get you flight information from previous screen',
-                                  );
-                                  if (res == true) {
-                                    if (context.mounted) {
-                                      Navigator.pop(context);
-                                    }
-                                  }
-                                  return;
-                                }
-                                depurtureDate = AppHelpers.formatDate(date,
-                                    pattern: 'yyyy-MM-dd');
-                                body = getBody(
-                                    depurture: widget.data['depurture'],
-                                    arrival: widget.data['arrival'],
-                                    depurtureDate: depurtureDate,
-                                    returnDate: widget.data['returnDate'],
-                                    cabinClass: cabinClass,
-                                    isRoundTrip: widget.data['isRoundTrip'],
-                                    adultCount: widget.data['travellers']
-                                        ['adult'],
-                                    childCount: widget.data['travellers']
-                                        ['child'],
-                                    infantCount: widget.data['travellers']
-                                        ['infant']);
-                                context
-                                    .read<FlightBloc>()
-                                    .add(SearchFlightsEvent(body: body!));
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: ClassFilterWidget(
-                              filters: filters,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            margin: const EdgeInsets.only(top: 16),
-                            height: AppHelpers.getScreenHeight(context) * 0.69,
-                            child: ListView.builder(
-                              itemCount: state.data.datam?.length,
-                              itemBuilder: (context, index) => Container(
-                                margin: const EdgeInsets.only(bottom: 16),
-                                child: FlightCardWidget(
-                                  onTap: () async {
-                                    await _saveToLocal(
-                                      data: state.data.datam![index],
-                                      flightDictionary:
-                                          state.data.dictionaries!,
-                                    );
-                                    context.pushNamed(
-                                      FlightBookingModule.flightDetailsName,
-                                      extra: {
-                                        'data': state.data.datam![index],
-                                        'flightDictionary':
-                                            state.data.dictionaries
-                                      },
-                                    );
-                                  },
-                                  data: state.data.datam![index],
-                                  dictionaries: state.data.dictionaries,
-                                ),
+                      return CustomScrollView(
+                        slivers: [
+                          // App Bar
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: AppCustomAppbar(
+                                start: widget.data['depurture'],
+                                end: widget.data['arrival'],
                               ),
                             ),
-                          )
+                          ),
+
+                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+
+                          // Date Filter
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: DateFilterWidget(
+                                selectedDate: DateTime.parse(depurtureDate),
+                                onDateSelected: (date) async {
+                                  if (widget.data['isRoundTrip']) {
+                                    final bool? res =
+                                        await AppHelpers.showConfirmDialog(
+                                      confirmText: 'Got it',
+                                      context,
+                                      title: 'It is a round trip',
+                                      content:
+                                          'You can not change the date for round trip. Get you flight information from previous screen',
+                                    );
+                                    if (res == true) {
+                                      if (context.mounted) {
+                                        Navigator.pop(context);
+                                      }
+                                    }
+                                    return;
+                                  }
+                                  depurtureDate = AppHelpers.formatDate(date,
+                                      pattern: 'yyyy-MM-dd');
+                                  body = getBody(
+                                      depurture: widget.data['depurture'],
+                                      arrival: widget.data['arrival'],
+                                      depurtureDate: depurtureDate,
+                                      returnDate: widget.data['returnDate'],
+                                      cabinClass: cabinClass,
+                                      isRoundTrip: widget.data['isRoundTrip'],
+                                      travellersArr: totalTravelers);
+                                  context
+                                      .read<FlightBloc>()
+                                      .add(SearchFlightsEvent(body: body!));
+                                },
+                              ),
+                            ),
+                          ),
+
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 16),
+                          ),
+
+                          // Class Filter
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: ClassFilterWidget(
+                                filters: filters,
+                              ),
+                            ),
+                          ),
+
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 16),
+                          ),
+
+                          // Flight List
+                          SliverPadding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            sliver: SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) => Container(
+                                  margin: const EdgeInsets.only(bottom: 16),
+                                  child: FlightCardWidget(
+                                    departureCity: paramData['departureCity'],
+                                    arrivalCity: paramData['arrivalCity'],
+                                    isAnimated: true,
+                                    onTap: () async {
+                                      await _saveToLocal(
+                                        data: state.data.datam![index],
+                                        flightDictionary:
+                                            state.data.dictionaries!,
+                                      );
+                                      context.pushNamed(
+                                        FlightBookingModule.flightDetailsName,
+                                        extra: {
+                                          'data': state.data.datam![index],
+                                          'flightDictionary':
+                                              state.data.dictionaries
+                                        },
+                                      );
+                                    },
+                                    data: state.data.datam![index],
+                                    dictionaries: state.data.dictionaries,
+                                  ),
+                                ),
+                                childCount: state.data.datam?.length ?? 0,
+                              ),
+                            ),
+                          ),
                         ],
                       );
                     }
@@ -231,27 +257,51 @@ Map<String, dynamic> getBody({
   String? returnDate,
   required String cabinClass,
   required bool isRoundTrip,
-  required int adultCount,
-  required int infantCount,
-  required int childCount,
+  required List<int> travellersArr,
 }) =>
     {
       'currencyCode': 'INR',
-      'originLocationCode': depurture,
-      'destinationLocationCode': arrival,
-      'departureDate': depurtureDate,
-      'returnDate': isRoundTrip ? returnDate : null,
-      'adults': adultCount,
-      'infants': infantCount,
-      'children': childCount,
-      'max': kDebugMode ? 5 : 100
+      'originDestinations': [
+        {
+          'id': '1',
+          'originLocationCode': depurture,
+          'destinationLocationCode': arrival,
+          'departureDateTimeRange': {'date': depurtureDate}
+        },
+        if (isRoundTrip)
+          {
+            'id': '2',
+            'originLocationCode': arrival,
+            'destinationLocationCode': depurture,
+            'departureDateTimeRange': {
+              'date': returnDate,
+            }
+          }
+      ],
+      'travelers': getTravellers(travellersArr: travellersArr),
+      'sources': ['GDS'],
+      'searchCriteria': {
+        'maxFlightOffers': kDebugMode ? 4 : 100,
+        'flightFilters': {
+          'cabinRestrictions': [
+            {
+              'cabin': getCabinClasses(cabinClass: cabinClass),
+              'coverage': 'MOST_SEGMENTS',
+              'originDestinationIds': isRoundTrip ? ['1', '2'] : ['1']
+            }
+          ],
+          'carrierRestrictions': {
+            'excludedCarrierCodes': ['TP']
+          }
+        }
+      }
     };
 
 List<Map<String, dynamic>> getTravellers({required List<int> travellersArr
 
     /// [adult, child, infant]
     }) {
-  final List<Map<String, dynamic>> listOfTravellers = [];
+  List<Map<String, dynamic>> listOfTravellers = [];
   int travellerId = 1;
   for (int i = 0; i < travellersArr.length; i++) {
     if (travellersArr[i] > 0) {
@@ -262,8 +312,8 @@ List<Map<String, dynamic>> getTravellers({required List<int> travellersArr
               ? 'ADULT'
               : i == 1
                   ? 'CHILD'
-                  : 'INFANT',
-          'fareOptions': ['STANDARD']
+                  : 'HELD_INFANT',
+          'fareOptions': ['STANDARD'],
         };
         listOfTravellers.add(traveller);
         travellerId++;
@@ -271,5 +321,39 @@ List<Map<String, dynamic>> getTravellers({required List<int> travellersArr
     }
   }
 
+  listOfTravellers = assignAssociateIdToInfants(
+      listOfTravellers: listOfTravellers, adultTravelers: travellersArr[0]);
+
   return listOfTravellers;
+}
+
+List<Map<String, dynamic>> assignAssociateIdToInfants(
+    {required List<Map<String, dynamic>> listOfTravellers,
+    required int adultTravelers}) {
+  for (int i = 0; i < listOfTravellers.length; i++) {
+    if (listOfTravellers[i]['travelerType'] == 'HELD_INFANT') {
+      listOfTravellers[i]['associatedAdultId'] = adultTravelers;
+    }
+    if (listOfTravellers[i]['travelerType'] == 'HELD_INFANT') {
+      adultTravelers--;
+    }
+  }
+
+  log('listOfTravellers $listOfTravellers');
+  return listOfTravellers;
+}
+
+String getCabinClasses({required String cabinClass}) {
+  switch (cabinClass) {
+    case 'Economy':
+      return 'ECONOMY';
+    case 'Premium Economy':
+      return 'PREMIUM_ECONOMY';
+    case 'Business':
+      return 'BUSINESS';
+    case 'First Class':
+      return 'FIRST';
+    default:
+      return 'ECONOMY';
+  }
 }

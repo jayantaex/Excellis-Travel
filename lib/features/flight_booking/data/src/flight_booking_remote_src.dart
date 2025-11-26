@@ -40,8 +40,8 @@ class FlightBookingRemoteSrc {
       {required Map<String, dynamic> body}) async {
     try {
       final ApiResponse<FlightsDataModel> response =
-          await amadeusClient.getRequest(
-        queryParameters: body,
+          await amadeusClient.postRequest(
+        reqModel: body,
         endPoint: EndPoints.flightSearch,
         fromJson: (Map<String, dynamic> jsonData) =>
             FlightsDataModel.fromJson(jsonData),
