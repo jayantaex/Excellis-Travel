@@ -1,7 +1,7 @@
 class PassengerModel {
-
   PassengerModel(
-      {this.dateOfBirth,
+      {this.id,
+      this.dateOfBirth,
       this.firstName,
       this.lastName,
       this.emailAddress,
@@ -10,6 +10,7 @@ class PassengerModel {
       this.number});
 
   PassengerModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     dateOfBirth = json['dateOfBirth'];
     firstName = json['firstName'];
     lastName = json['lastName'];
@@ -18,6 +19,7 @@ class PassengerModel {
     number = json['number'];
     type = json['type'];
   }
+  String? id;
   DateTime? dateOfBirth;
   String? firstName;
   String? lastName;
@@ -28,6 +30,7 @@ class PassengerModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['dateOfBirth'] = dateOfBirth;
     data['firstName'] = firstName;
     data['lastName'] = lastName;

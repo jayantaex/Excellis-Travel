@@ -10,7 +10,7 @@ import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../models/ticket_model.dart';
+import '../../data/models/ticket_model.dart';
 import '../widgets/billing_info_widget.dart';
 
 class TicketDetailsScreen extends StatelessWidget {
@@ -303,9 +303,13 @@ class TicketDetailsScreen extends StatelessWidget {
                               title: Text(
                                 '${adult.firstName ?? 'N/A'} ${adult.lastName ?? 'N/A'}',
                               ),
-                              subtitle: Text(
-                                '${AppHelpers.formatDate(DateTime.parse(adult.dateOfBirth ?? DateTime.now().toString()), pattern: 'dd MMM yyy')} | ${adult.open ?? 'N/A'}',
-                              ),
+                              subtitle: adult.dateOfBirth?.isEmpty ?? true
+                                  ? const Text(
+                                      'N/A',
+                                    )
+                                  : Text(
+                                      '${AppHelpers.formatDate(DateTime.parse(adult.dateOfBirth ?? DateTime.now().toString()), pattern: 'dd MMM yyy')} | ${adult.open ?? 'N/A'}',
+                                    ),
                             ),
                           ),
                           const SizedBox(height: 8),

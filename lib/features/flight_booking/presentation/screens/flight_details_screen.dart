@@ -8,18 +8,17 @@ import '../../../../core/services/razorpay.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
+import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../../auth/auth_module.dart';
 import '../../../payment/payment_module.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart' show FlightDictionary, Datam;
 import '../../data/models/passenger_model.dart';
-import '../widgets/flight_details/fares_and_prices.dart';
-import '../widgets/flight_details/offer_fare_toggler_tile.dart';
-import '../widgets/loading/flight_details_loading_widet.dart';
-import '../widgets/flight_details/pricing_bottom_bar.dart';
+import '../widgets/flight_details/offer_fare_toggler_widget.dart';
+import '../widgets/loading/flight_details_loading_widget.dart';
+import '../widgets/flight_details/prceed_to_pay_widget.dart';
 import '../widgets/flight_details/itinerary_card_widget.dart';
 import '../widgets/flight_details/passenger_details_card.dart';
 
@@ -37,8 +36,8 @@ class FlightDetailsScreen extends StatefulWidget {
 }
 
 class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
-  String seletedTab = 'ADULT';
-  List<String> userType = <String>[
+  String selectedTab = 'ADULT';
+  List<String> passengerTypes = <String>[
     'ADULT',
     'CHILD',
     'INFANT',
@@ -58,6 +57,11 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
             offerData: getOfferPriceBody(data: widget.data.toJson())));
       }
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -117,7 +121,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                       },
                       builder: (context, flightState) {
                         if (flightState is FlightOfferPriceLoading) {
-                          return const FlightDetailsLoadingWidet();
+                          return const FlightDetailsLoadingWidget();
                         }
                         if (flightState is FlightOfferPriceError) {
                           return ErrorScreen(
@@ -142,10 +146,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                         if (flightState is FlightOfferPriceLoaded) {
                           final itineraries = flightState
                               .data.data!.flightOffers!.first.itineraries!;
-                          final travelerPricings = flightState
-                              .data.data!.flightOffers!.first.travelerPricings!;
-                          final grandTotal = double.parse(flightState.data.data!
-                                  .flightOffers!.first.price!.grandTotal ??
+                          double.parse(flightState.data.data!.flightOffers!
+                                  .first.price!.grandTotal ??
                               '0.0');
                           return CustomScrollView(
                             slivers: [
@@ -163,12 +165,12 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               ),
                               const SliverToBoxAdapter(
                                   child: SizedBox(height: 12)),
-                              SliverToBoxAdapter(
-                                child: FaresAndPrices(
-                                  allTravelerPricings: travelerPricings,
-                                  grandPrice: grandTotal,
-                                ),
-                              ),
+                              // SliverToBoxAdapter(
+                              //   child: FaresAndPrices(
+                              //     allTravelerPricings: travelerPricings,
+                              //     grandPrice: grandTotal,
+                              //   ),
+                              // ),
                               const SliverToBoxAdapter(
                                   child: SizedBox(height: 8)),
                               const SliverToBoxAdapter(
@@ -189,16 +191,14 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               ),
                               SliverToBoxAdapter(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
                                   child: PassengerDetailsCard(
                                     onAddPassenger: (passenger) {
                                       passengers.add(passenger);
                                     },
                                     onPassengerRemove: (passenger) {
-                                      setState(() {
-                                        passengers.remove(passenger);
-                                      });
+                                      passengers.remove(passenger);
                                     },
                                     travelerPricing:
                                         widget.data.travelerPricings ?? [],
@@ -214,11 +214,9 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     if (state is ProfileLoaded) {
                                       return Column(
                                         children: [
-                                          OfferFareTogglerTile(
+                                          OfferFareTogglerWidget(
                                             onToggle: (bool value) {
-                                              setState(() {
-                                                isOfferEnabled = value;
-                                              });
+                                              isOfferEnabled = value;
                                             },
                                             flightOffer: flightState
                                                 .data.data!.flightOffers!.first,
@@ -246,44 +244,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       );
                                     }
                                     if (state is ProfileError) {
-                                      return SizedBox(
-                                        height: 300,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Text(
-                                              'It seems you are not logged in \n please login to continue',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.grey,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            InkWell(
-                                              onTap: () {
-                                                context.pushNamed(
-                                                    AuthModule.loginName);
-                                              },
-                                              child: const Text(
-                                                'LOGIN',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: AppColors.primary,
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                  decorationColor:
-                                                      AppColors.primary,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
+                                      return const NotLoginWidget();
                                     }
                                     return const SizedBox();
                                   },
@@ -333,32 +294,9 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BlocBuilder<FlightBloc, FlightState>(
-        builder: (context, flightState) {
-          if (flightState is FlightOfferPriceLoaded) {
-            return BlocBuilder<ProfileBloc, ProfileState>(
-              builder: (context, profileState) {
-                if (profileState is ProfileLoaded) {
-                  return PricingBottomBar(
-                    myMarkup: flightState.data.data!.myMarkup!,
-                    markup: flightState
-                        .data.data!.flightOffers!.first.price!.markup!,
-                    travellersCount: flightState.data.data!.flightOffers!.first
-                        .travelerPricings!.length,
-                    passengers: passengers,
-                    flightOffer: flightState.data.data!.flightOffers!.first,
-                    grandTotal: flightState
-                        .data.data!.flightOffers!.first.price!.grandTotal!,
-                    profile: profileState.profileData,
-                    offerFareEnabled: isOfferEnabled,
-                  );
-                }
-                return const SizedBox();
-              },
-            );
-          }
-          return const SizedBox.shrink();
-        },
+      bottomNavigationBar: ProceedToPayWidget(
+        passengers: passengers,
+        offerFareEnabled: isOfferEnabled,
       ),
     );
   }

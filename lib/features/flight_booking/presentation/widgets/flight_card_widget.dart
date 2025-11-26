@@ -62,23 +62,30 @@ class FlightCardWidget extends StatelessWidget {
                       height: 30,
                       width: AppHelpers.getScreenWidth(context) * 0.4,
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 8),
+                        padding: const EdgeInsets.only(left: 2),
                         child: Row(
                           children: <Widget>[
                             CircleAvatar(
+                              backgroundColor: AppColors.white,
                               radius: 15,
                               backgroundImage: AssetImage(
                                   'assets/images/airlines/${(data.itineraries?.isNotEmpty ?? false) && (data.itineraries!.first.segments?.isNotEmpty ?? false) ? data.itineraries!.first.segments!.first.carrierCode : ""}.png'),
                             ),
                             const SizedBox(width: 5),
-                            Text(
-                              dictionaries?.dictionaries.carriers?[
-                                      '${(data.itineraries?.isNotEmpty ?? false) && (data.itineraries!.first.segments?.isNotEmpty ?? false) ? data.itineraries!.first.segments!.first.carrierCode : ""}'] ??
-                                  'NO-NAME',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.black,
+                            SizedBox(
+                              width: AppHelpers.getScreenWidth(context) * 0.31,
+                              child: Text(
+                                dictionaries?.dictionaries.carriers?[
+                                        '${(data.itineraries?.isNotEmpty ?? false) && (data.itineraries!.first.segments?.isNotEmpty ?? false) ? data.itineraries!.first.segments!.first.carrierCode : ""}'] ??
+                                    'NO-NAME',
+                                softWrap: true,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.black,
+                                ),
                               ),
                             ),
                           ],
@@ -89,8 +96,8 @@ class FlightCardWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          height: 25,
+                          margin: const EdgeInsets.only(right: 8),
+                          height: 22,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
@@ -102,7 +109,7 @@ class FlightCardWidget extends StatelessWidget {
                                 .toUpperCase(),
                             style: TextStyle(
                               fontSize: 10,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w500,
                               color: getColorByStatus('fastest'),
                             ),
                           ),

@@ -7,8 +7,8 @@ import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
 import 'bloc/flight_bloc.dart';
-import 'data/data_source/flight_booking_local_src.dart';
-import 'data/data_source/flight_booking_remote_src.dart';
+import 'data/src/flight_booking_local_src.dart';
+import 'data/src/flight_booking_remote_src.dart';
 import 'data/repository/flight_booking_repository.dart';
 import 'data/models/air_port_model.dart';
 import 'data/models/payment_verify_res_model.dart';
@@ -78,7 +78,7 @@ class FlightBookingModule {
   //seat selection
   static const String seatSelection = '/seat-selection';
   static const String seatSelectionName = 'seatSelection';
-  static Widget seatSelectionBuilder() => const SeatMapScreen();
+  // static Widget seatSelectionBuilder() => const SeatMapScreen();
 
   // // passenger details
   // static const String passengerDetails = '/passenger-details';

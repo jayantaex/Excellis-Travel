@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../core/constants/app_constants.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/utils/app_toast.dart';
@@ -9,26 +7,32 @@ import '../../../../../core/widgets/primary_input.dart';
 import '../../../data/models/passenger_model.dart';
 import '../flight_search/app_drop_down.dart';
 
-Future<void> showAddPassengerSheet(
-    {required BuildContext context,
-    required String travellerType,
-    required Function(PassengerModel passenger) onDone}) async {
-  final TextEditingController firstNameController = TextEditingController(
-      text: AppConstants.env == 'development' ? 'Jhon' : '');
-  final TextEditingController lastNameController = TextEditingController(
-      text: AppConstants.env == 'development' ? 'Doe' : '');
-  final TextEditingController mobileNumberController = TextEditingController(
-      text: AppConstants.env == 'development' ? '9064187130' : '');
-  final TextEditingController emailController = TextEditingController(
-      text: AppConstants.env == 'development' ? 'jhon@apptest.com' : '');
-  final TextEditingController dobController = TextEditingController();
+Future<void> showAddAndEditPassengerSheet({
+  required BuildContext context,
+  required String travellerType,
+  required Function(PassengerModel passenger) onDone,
+  PassengerModel? passenger,
+}) async {
+  final TextEditingController firstNameController =
+      TextEditingController(text: passenger?.firstName);
+  final TextEditingController lastNameController =
+      TextEditingController(text: passenger?.lastName);
+  final TextEditingController mobileNumberController =
+      TextEditingController(text: passenger?.number);
+  final TextEditingController emailController =
+      TextEditingController(text: passenger?.emailAddress);
+  final TextEditingController dobController = TextEditingController(
+    text: passenger?.dateOfBirth != null
+        ? AppHelpers.formatDate(passenger!.dateOfBirth!)
+        : '',
+  );
   DateTime? dob;
-  String selectedGender = 'Male';
+  String selectedGender = passenger?.gender ?? 'Male';
   final List<String> genderList = <String>['Male', 'Female'];
   DateTime firstDate = DateTime(2000);
   DateTime lastDate = DateTime.now();
   switch (travellerType) {
-    case 'Adult':
+    case 'ADULT':
       {
         firstDate = DateTime.now().subtract(
           const Duration(days: 365 * 120),
@@ -38,7 +42,7 @@ Future<void> showAddPassengerSheet(
         );
       }
       break;
-    case 'Child':
+    case 'CHILD':
       {
         firstDate = DateTime.now().subtract(
           const Duration(days: 365 * 12),
@@ -48,7 +52,7 @@ Future<void> showAddPassengerSheet(
         );
       }
       break;
-    case 'Infant':
+    case 'HELD_INFANT':
       {
         firstDate = DateTime.now().subtract(const Duration(days: 365 * 2));
         lastDate = DateTime.now().subtract(const Duration(days: 1));
@@ -83,6 +87,38 @@ Future<void> showAddPassengerSheet(
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
             ),
             const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.info.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: AppColors.info.withOpacity(0.3),
+                ),
+              ),
+              child: const Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: AppColors.info,
+                    size: 20,
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Please ensure all details match your government-issued ID (Passport, Driver\'s License, Aadhaar, etc.) as they will be verified during check-in.',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppColors.info,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
             SizedBox(
               height: 50,
               width: AppHelpers.getScreenWidth(context),
@@ -132,22 +168,23 @@ Future<void> showAddPassengerSheet(
               controller: dobController,
               onTap: () async {
                 dob = await showDatePicker(
-                    builder: (context, child) => Theme(
-                          data: Theme.of(context).copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: AppColors.primary,
-                            ),
-                          ),
-                          child: child!,
-                        ),
-                    context: context,
-                    firstDate: firstDate,
-                    lastDate: lastDate);
+                  builder: (context, child) => Theme(
+                    data: Theme.of(context).copyWith(
+                      colorScheme: const ColorScheme.light(
+                        primary: AppColors.primary,
+                      ),
+                    ),
+                    child: child!,
+                  ),
+                  context: context,
+                  firstDate: firstDate,
+                  lastDate: lastDate,
+                );
                 dobController.text =
-                    AppHelpers.formatDate(dob ?? DateTime.parse('2000-01-01'));
+                    dob != null ? AppHelpers.formatDate(dob!) : '';
               },
               hint: 'Enter your date of birth',
-              label: 'Date of Birth*',
+              label: 'Date of Birth',
               maxCharacters: 10,
             ),
             const SizedBox(height: 16),
@@ -155,7 +192,7 @@ Future<void> showAddPassengerSheet(
               onChanged: (String? p0) {
                 selectedGender = p0!;
               },
-              label: 'Gender',
+              label: 'Gender*',
               title: 'Select Gender',
               value: 'Male',
               items: genderList
@@ -167,32 +204,31 @@ Future<void> showAddPassengerSheet(
                   )
                   .toList(),
             ),
-            // const SizedBox(height: 16),
-            // AppDropDown(
-            //   onChanged: (p0) {
-            //     cityzenship = p0!;
-            //   },
-            //   label: 'Citizenship',
-            //   title: 'Select Citizenship',
-            //   value: 'India',
-            //   items: citizenshipData
-            //       .map(
-            //         (String e) => DropdownMenuItem(
-            //           value: e,
-            //           child: Text(e),
-            //         ),
-            //       )
-            //       .toList(),
-            // ),
             const SizedBox(height: 27),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: AppPrimaryButton(
                   onPressed: () {
-                    if (firstNameController.text.isEmpty ||
-                        lastNameController.text.isEmpty ||
-                        dob == null) {
-                      showToast(message: 'Please fill all the required fields');
+                    if (firstNameController.text.length < 3) {
+                      showToast(message: 'Please enter valid first name');
+                      return;
+                    }
+
+                    if (lastNameController.text.length < 3) {
+                      showToast(message: 'Please enter valid last name');
+                      return;
+                    }
+
+                    if (emailController.text.isNotEmpty &&
+                        !AppHelpers.validateEmail(emailController.text)) {
+                      showToast(message: 'Please enter a valid email address');
+                      return;
+                    }
+
+                    if (mobileNumberController.text.isNotEmpty &&
+                        !AppHelpers.validateMobileNumber(
+                            mobileNumberController.text)) {
+                      showToast(message: 'Please enter a valid mobile number');
                       return;
                     }
 

@@ -15,6 +15,7 @@ migrate_working_dir/
 *.ipr
 *.iws
 .idea/
+.gemini/
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -48,3 +49,4 @@ android/gradle.properties
 # "JSON to Dart Model" generator tracker files locations.
 /.json_models/
 models.jsonc
+

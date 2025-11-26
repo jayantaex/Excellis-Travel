@@ -48,6 +48,64 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
     super.initState();
   }
 
+  void _addPassenger(PassengerModel passenger) {
+    // Generate unique ID if not exists
+    passenger.id ??= DateTime.now().millisecondsSinceEpoch.toString();
+
+    widget.onAddPassenger(passenger);
+    if (passenger.type == 'ADULT') {
+      _adultPassengers.add(passenger);
+    } else if (passenger.type == 'CHILD') {
+      _childPassengers.add(passenger);
+    } else if (passenger.type == 'HELD_INFANT') {
+      _infantPassengers.add(passenger);
+    }
+    setState(() {});
+  }
+
+  void _removePassenger(PassengerModel passenger) {
+    widget.onPassengerRemove(passenger);
+    if (passenger.type == 'ADULT') {
+      _adultPassengers.removeWhere((p) => p.id == passenger.id);
+    } else if (passenger.type == 'CHILD') {
+      _childPassengers.removeWhere((p) => p.id == passenger.id);
+    } else if (passenger.type == 'HELD_INFANT') {
+      _infantPassengers.removeWhere((p) => p.id == passenger.id);
+    }
+    setState(() {});
+  }
+
+  void _updatePassenger(
+      PassengerModel oldPassenger, PassengerModel newPassenger) {
+    // Keep the same ID
+    newPassenger.id = oldPassenger.id;
+
+    if (oldPassenger.type == 'ADULT') {
+      final index = _adultPassengers.indexWhere((p) => p.id == oldPassenger.id);
+      if (index != -1) {
+        _adultPassengers[index] = newPassenger;
+        widget.onPassengerRemove(oldPassenger);
+        widget.onAddPassenger(newPassenger);
+      }
+    } else if (oldPassenger.type == 'CHILD') {
+      final index = _childPassengers.indexWhere((p) => p.id == oldPassenger.id);
+      if (index != -1) {
+        _childPassengers[index] = newPassenger;
+        widget.onPassengerRemove(oldPassenger);
+        widget.onAddPassenger(newPassenger);
+      }
+    } else if (oldPassenger.type == 'HELD_INFANT') {
+      final index =
+          _infantPassengers.indexWhere((p) => p.id == oldPassenger.id);
+      if (index != -1) {
+        _infantPassengers[index] = newPassenger;
+        widget.onPassengerRemove(oldPassenger);
+        widget.onAddPassenger(newPassenger);
+      }
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -61,45 +119,32 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
             PassengerTypeCard(
               allowedPassenger: _allowedAdult,
               currentPassenger: _adultPassengers.length,
-              passengerType: 'Adult',
-              onDone: (PassengerModel passenger) {
-                _adultPassengers.add(passenger);
-                widget.onAddPassenger(passenger);
-                setState(() {});
-              },
+              passengerType: 'ADULT',
+              onAddPassenger: _addPassenger,
+              onPassengerRemove: _removePassenger,
             ),
-            ..._adultPassengers.map((PassengerModel e) => PassengerCard(
-                  passenger: e,
-                  onDelete: () {
-                    _adultPassengers.remove(e);
-                    widget.onPassengerRemove(e);
-                    setState(() {});
-                    showToast(message: '${e.firstName} ${e.lastName} removed');
-                  },
-                )),
-
-            const Divider(),
+            ..._adultPassengers.map(
+              (PassengerModel e) => PassengerCard(
+                onPassengerRemove: _removePassenger,
+                onPassengerUpdate: _updatePassenger,
+                passenger: e,
+              ),
+            ),
+            if (_allowedChild > 0 || _allowedInfant > 0) const Divider(),
             // Child
             _allowedChild == 0
                 ? const SizedBox()
                 : PassengerTypeCard(
                     allowedPassenger: _allowedChild,
                     currentPassenger: _childPassengers.length,
-                    passengerType: 'Child',
-                    onDone: (PassengerModel passenger) {
-                      _childPassengers.add(passenger);
-                      widget.onAddPassenger(passenger);
-                      setState(() {});
-                    },
+                    passengerType: 'CHILD',
+                    onAddPassenger: _addPassenger,
+                    onPassengerRemove: _removePassenger,
                   ),
             ..._childPassengers.map((PassengerModel e) => PassengerCard(
+                  onPassengerRemove: _removePassenger,
+                  onPassengerUpdate: _updatePassenger,
                   passenger: e,
-                  onDelete: () {
-                    _childPassengers.remove(e);
-                    widget.onPassengerRemove(e);
-                    setState(() {});
-                    showToast(message: '${e.firstName} ${e.lastName} removed');
-                  },
                 )),
             _allowedChild == 0 ? const SizedBox() : const Divider(),
 
@@ -109,21 +154,14 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                 : PassengerTypeCard(
                     allowedPassenger: _allowedInfant,
                     currentPassenger: _infantPassengers.length,
-                    passengerType: 'Infant',
-                    onDone: (PassengerModel passenger) {
-                      _infantPassengers.add(passenger);
-                      widget.onAddPassenger(passenger);
-                      setState(() {});
-                    },
+                    passengerType: 'HELD_INFANT',
+                    onAddPassenger: _addPassenger,
+                    onPassengerRemove: _removePassenger,
                   ),
             ..._infantPassengers.map((PassengerModel e) => PassengerCard(
                   passenger: e,
-                  onDelete: () {
-                    _infantPassengers.remove(e);
-                    widget.onPassengerRemove(e);
-                    setState(() {});
-                    showToast(message: '${e.firstName} ${e.lastName} removed');
-                  },
+                  onPassengerRemove: _removePassenger,
+                  onPassengerUpdate: _updatePassenger,
                 )),
             const SizedBox(height: 10),
           ],
@@ -134,17 +172,28 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
 class PassengerTypeCard extends StatelessWidget {
   const PassengerTypeCard(
       {super.key,
-      required this.onDone,
       required this.allowedPassenger,
       required this.currentPassenger,
-      required this.passengerType});
+      required this.passengerType,
+      required this.onAddPassenger,
+      required this.onPassengerRemove});
   final int allowedPassenger;
   final int currentPassenger;
   final String passengerType;
-  final Function(PassengerModel passenger) onDone;
+  final Function(PassengerModel passenger) onAddPassenger;
+  final Function(PassengerModel passenger) onPassengerRemove;
 
   @override
   Widget build(BuildContext context) => ListTile(
+        onTap: allowedPassenger > currentPassenger
+            ? () async {
+                await showAddAndEditPassengerSheet(
+                  context: context,
+                  onDone: onAddPassenger,
+                  travellerType: passengerType,
+                );
+              }
+            : null,
         contentPadding: const EdgeInsets.all(0),
         title: Text('$passengerType ($currentPassenger/$allowedPassenger)',
             style: const TextStyle(
@@ -152,11 +201,11 @@ class PassengerTypeCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             )),
         subtitle: Text(
-            passengerType == 'Adult'
+            passengerType == 'ADULT'
                 ? 'Age 12 years or above'
-                : passengerType == 'Child'
+                : passengerType == 'CHILD'
                     ? 'Between age 2 to 12 years'
-                    : 'Between age 15 days to 2 years',
+                    : 'Between age 1 days to 2 years',
             style: const TextStyle(
               fontSize: 10,
               color: AppColors.grey,
@@ -164,13 +213,15 @@ class PassengerTypeCard extends StatelessWidget {
             )),
         trailing: allowedPassenger > currentPassenger
             ? InkWell(
-                onTap: () async {
-                  await showAddPassengerSheet(
-                    context: context,
-                    onDone: onDone,
-                    travellerType: passengerType,
-                  );
-                },
+                onTap: allowedPassenger > currentPassenger
+                    ? () async {
+                        await showAddAndEditPassengerSheet(
+                          context: context,
+                          onDone: onAddPassenger,
+                          travellerType: passengerType,
+                        );
+                      }
+                    : null,
                 child: const CircleAvatar(
                   radius: 16,
                   child: Icon(Icons.add, size: 18, color: AppColors.secondary),
@@ -182,12 +233,27 @@ class PassengerTypeCard extends StatelessWidget {
 
 class PassengerCard extends StatelessWidget {
   const PassengerCard(
-      {super.key, required this.passenger, required this.onDelete});
+      {super.key,
+      required this.passenger,
+      required this.onPassengerUpdate,
+      required this.onPassengerRemove});
   final PassengerModel passenger;
-  final Function onDelete;
+  final Function(PassengerModel oldPassenger, PassengerModel newPassenger)
+      onPassengerUpdate;
+  final Function(PassengerModel passenger) onPassengerRemove;
 
   @override
   Widget build(BuildContext context) => ListTile(
+        onTap: () async {
+          await showAddAndEditPassengerSheet(
+            context: context,
+            onDone: (PassengerModel newPassenger) {
+              onPassengerUpdate(passenger, newPassenger);
+            },
+            travellerType: passenger.type ?? 'ADULT',
+            passenger: passenger,
+          );
+        },
         contentPadding: const EdgeInsets.all(0),
         leading: CircleAvatar(
           radius: 18,
@@ -207,7 +273,7 @@ class PassengerCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             )),
         subtitle: Text(
-          '${passenger.gender} | ${AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now())}',
+          'Gender: ${passenger.gender} | DOB: ${passenger.dateOfBirth != null ? AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now()) : 'N/A'}',
           style: const TextStyle(
             fontSize: 12,
             color: AppColors.grey,
@@ -215,11 +281,20 @@ class PassengerCard extends StatelessWidget {
           ),
         ),
         trailing: InkWell(
-          onTap: () => onDelete(),
-          child: const Icon(
-            Icons.remove_circle_outline_rounded,
-            size: 18,
-            color: AppColors.error,
+          onTap: () {
+            onPassengerRemove(passenger);
+            showToast(
+                message:
+                    '${passenger.firstName} ${passenger.lastName} removed');
+          },
+          child: CircleAvatar(
+            radius: 16,
+            backgroundColor: AppColors.error.withOpacity(0.1),
+            child: const Icon(
+              Icons.delete,
+              size: 14,
+              color: AppColors.error,
+            ),
           ),
         ),
       );
