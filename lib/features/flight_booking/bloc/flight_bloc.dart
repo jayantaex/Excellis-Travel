@@ -33,7 +33,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       SearchAirportEvent event, Emitter<FlightState> emit) async {
     try {
       emit(AirportSearching());
-
       final List<AirportModel> airportList = await repository.getAirport(
           keyword: event.keyword, country: event.countryCode);
       emit(AirportLoaded(airports: airportList));
