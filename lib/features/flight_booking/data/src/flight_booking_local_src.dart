@@ -26,12 +26,17 @@ class FlightBookingLocalSrc {
       }
       //filter by city or iata code
       final List<AirportModel> filteredAirportList = airportList
-          .where((element) =>
-              element.address!.cityName!
-                  .toLowerCase()
-                  .contains(keyword.toLowerCase()) ||
-              element.name!.toLowerCase().contains(keyword.toLowerCase()) ||
-              element.iataCode!.toLowerCase().contains(keyword.toLowerCase()))
+          .where(
+            (element) => (element.address!.cityName!
+                    .toLowerCase()
+                    .contains(keyword.toLowerCase()) ||
+                element.name!.toLowerCase().contains(keyword.toLowerCase()) ||
+                element.iataCode!
+                        .toLowerCase()
+                        .contains(keyword.toLowerCase()) &&
+                    (element.address!.countryCode!.toLowerCase() ==
+                        country.toLowerCase())),
+          )
           .toList();
 
       return filteredAirportList;
