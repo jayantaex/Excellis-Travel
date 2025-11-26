@@ -1,37 +1,58 @@
-name: Flutter Dev Build & Firebase Distribution
+name: Build & Release APK (Flutter 3.24.5)
 
 on:
   push:
-    branches: [ "development" ]
+    branches:
+      - main               
+    tags:
+      - 'v*'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main              
 
 jobs:
   build:
+    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Flutter
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.5'
+          channel: 'stable'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: flutter pub get
 
-      - name: Build release APK
+      - name: Build Release APK
         run: flutter build apk --release
 
-      - name: Decode Firebase service account
-        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > firebase-service-account.json
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Distribute to Firebase App Distribution
-        run: |
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-            --app ${{ secrets.FIREBASE_APP_ID }} \
-            --groups "excellis-testers" \
-            --service-account-file firebase-service-account.json \
-            --release-notes "Automated build from development branch"
+  release:
+    name: Publish GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download APK Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-release-apk
+          path: ./release_files
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release_files/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
