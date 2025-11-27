@@ -1,8 +1,9 @@
-import 'dart:developer';
+import 'package:excellistravel/core/constants/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_styles.dart';
+import '../../../core/utils/app_toast.dart';
 import '../../../core/utils/app_updater.dart';
 import '../../../core/utils/storage_service.dart';
 import '../../auth/auth_module.dart';
@@ -20,8 +21,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final bool hasUpdate = await _handleAppUpdate();
-      // Only proceed with authentication if no update is available
+      final bool hasUpdate =
+          AppConstants.env == 'development' ? await _handleAppUpdate() : false;
       if (!hasUpdate) {
         await _handleAuthentication();
       }
@@ -37,14 +38,10 @@ class _SplashScreenState extends State<SplashScreen> {
           listener: (BuildContext context, ProfileState state) async {
             if (state is ProfileError) {
               await StorageService.clearTokens();
-              if (context.mounted) {
-                context.goNamed(AuthModule.loginName);
-              }
+              _navigateToLogin();
             }
             if (state is ProfileLoaded) {
-              if (context.mounted) {
-                context.goNamed(BottomNavModule.name);
-              }
+              _navigateToBottomNav();
             }
           },
           builder: (BuildContext context, ProfileState state) => Center(
@@ -69,17 +66,13 @@ class _SplashScreenState extends State<SplashScreen> {
       final String? refreshToken = await StorageService.getRefreshToken();
       if ((asscessToken != null && asscessToken.isNotEmpty) &&
           (refreshToken != null && refreshToken.isNotEmpty)) {
-        if (context.mounted) {
-          context.read<ProfileBloc>().add(const LoadProfileEvent());
-        }
+        _fetchProfile();
         return;
       }
-      if (context.mounted) {
-        context.goNamed(AuthModule.loginName);
-      }
+      _navigateToLogin();
       return;
     } catch (e) {
-      log('Error: $e');
+      showToast(message: 'Failed to authenticate');
     }
   }
 
@@ -89,16 +82,33 @@ class _SplashScreenState extends State<SplashScreen> {
       final info = await AppUpdater().getLatestVersion();
 
       if (isUpdateAvailable) {
-        if (context.mounted) {
-          context.goNamed('update',
-              extra: {'url': info['url'], 'version': info['version']});
-        }
+        _navigateToUpdate(url: info['url'], version: info['version']);
         return true; // Update is available
       }
       return false; // No update available
     } catch (e) {
-      log('Error: $e');
+      showToast(message: 'Failed to check for updates');
       return false; // On error, proceed with normal flow
     }
+  }
+
+  void _navigateToLogin() {
+    context.goNamed(AuthModule.loginName);
+  }
+
+  void _navigateToBottomNav() {
+    if (context.mounted) {
+      context.goNamed(BottomNavModule.name);
+    }
+  }
+
+  void _navigateToUpdate({required String url, required String version}) {
+    if (context.mounted) {
+      context.goNamed('update', extra: {'url': url, 'version': version});
+    }
+  }
+
+  void _fetchProfile() {
+    context.read<ProfileBloc>().add(const LoadProfileEvent());
   }
 }

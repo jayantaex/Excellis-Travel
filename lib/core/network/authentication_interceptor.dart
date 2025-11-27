@@ -46,7 +46,8 @@ class AuthenticationInterceptor extends Interceptor {
           }
           _tokenQueue.clear();
           // Retry the original failed request
-          final Response response = await _retry(err.requestOptions, newAccessToken);
+          final Response response =
+              await _retry(err.requestOptions, newAccessToken);
           return handler.resolve(response);
         } else {
           await StorageService.clearTokens();
@@ -80,7 +81,8 @@ class AuthenticationInterceptor extends Interceptor {
 
   Future<Response> _retry(
       RequestOptions requestOptions, String newToken) async {
-    final Map<String, dynamic> updatedHeaders = Map<String, dynamic>.from(requestOptions.headers);
+    final Map<String, dynamic> updatedHeaders =
+        Map<String, dynamic>.from(requestOptions.headers);
     updatedHeaders['Authorization'] = 'Bearer $newToken';
 
     final Options options = Options(

@@ -52,6 +52,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   int _adultCount = 1;
   int _childCount = 0;
   int _infantCount = 0;
+  double _swapTurns = 0;
   final DateTime _today = DateTime.now();
   final Duration _fiveDay = const Duration(days: 5);
   final Duration _oneDay = const Duration(days: 1);
@@ -151,6 +152,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     final String temp = _depurtureController.text;
     _depurtureController.text = _arrivalController.text;
     _arrivalController.text = temp;
+    if (_swapTurns == 0) {
+      _swapTurns += 0.50;
+    } else {
+      _swapTurns -= 0.50;
+    }
+    setState(() {});
   }
 
   @override
@@ -569,11 +576,15 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               onTap: () {
                                 _swapAirports();
                               },
-                              child: CircleAvatar(
-                                radius: 24,
-                                backgroundColor: AppColors.primary,
-                                child: AppHelpers.svgAsset(
-                                    assetName: 'swap', isIcon: true),
+                              child: AnimatedRotation(
+                                duration: const Duration(milliseconds: 300),
+                                turns: _swapTurns,
+                                child: CircleAvatar(
+                                  radius: 24,
+                                  backgroundColor: AppColors.primary,
+                                  child: AppHelpers.svgAsset(
+                                      assetName: 'swap', isIcon: true),
+                                ),
                               ),
                             ),
                           ),

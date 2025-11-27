@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
@@ -24,14 +22,13 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
     for (var i = 0; i < limit; i++) {
       dates.add(startDate.add(Duration(days: i)));
     }
-    log('${widget.selectedDate}');
     setState(() {});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    String selectedDate = AppHelpers.formatDate(
+    final String selectedDate = AppHelpers.formatDate(
       widget.selectedDate,
       pattern: 'yyyy-MM-dd',
     );
@@ -42,7 +39,7 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
           itemCount: dates.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
-            String thisDate =
+            final String thisDate =
                 AppHelpers.formatDate(dates[index], pattern: 'yyyy-MM-dd');
             return InkWell(
               onTap: () {

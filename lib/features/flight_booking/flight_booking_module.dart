@@ -17,7 +17,6 @@ import 'presentation/screens/booking_policy.dart';
 import 'presentation/screens/flight_details_screen.dart';
 import 'presentation/screens/flight_list_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
-import 'presentation/screens/seat_map_screen.dart';
 
 class FlightBookingModule {
   static final AmadeusClient _amadeusClient = AmadeusClient();

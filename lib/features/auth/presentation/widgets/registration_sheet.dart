@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -96,7 +95,6 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
   @override
   Widget build(BuildContext context) => BlocConsumer<AuthBloc, AuthState>(
         listener: (BuildContext context, AuthState state) async {
-          log(state.toString());
           if (state is RegistrationSuccess) {
             await AppHelpers.showSnackBar(context,
                 'You have registered successfully. Please login with your credentials',

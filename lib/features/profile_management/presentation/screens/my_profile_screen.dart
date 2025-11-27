@@ -123,7 +123,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             option['iconPath'] ?? '',
                             height: 20,
                             width: 20,
-                            color: AppColors.primary,
+                            colorFilter: const ColorFilter.mode(
+                                AppColors.primary, BlendMode.srcIn),
                           ),
                           title: Text(
                             option['title'] == 'Sign Out'

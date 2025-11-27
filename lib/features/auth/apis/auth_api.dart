@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
@@ -48,7 +46,6 @@ class AuthApi {
     required int commissionRate,
     required bool isDirectBooking,
   }) async {
-    log('role $role');
     final Map<String, dynamic> body = <String, dynamic>{
       'first_name': firstName,
       'last_name': lastName,

@@ -256,47 +256,45 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              color: AppColors.grey.withOpacity(0.1),
-              shape: BoxShape.circle,
+  Widget _buildEmptyState() => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: AppColors.grey.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.notifications_off_outlined,
+                size: 60,
+                color: AppColors.grey.withOpacity(0.5),
+              ),
             ),
-            child: Icon(
-              Icons.notifications_off_outlined,
-              size: 60,
-              color: AppColors.grey.withOpacity(0.5),
+            const SizedBox(height: 24),
+            const Text(
+              'No Notifications',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
-          const Text(
-            'No Notifications',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: AppColors.black,
+            const SizedBox(height: 8),
+            Text(
+              'You\'re all caught up!\nWe\'ll notify you when something new arrives.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: AppColors.grey.withOpacity(0.8),
+                height: 1.5,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'You\'re all caught up!\nWe\'ll notify you when something new arrives.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: AppColors.grey.withOpacity(0.8),
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
 
 String getDelay({required DateTime createdAt}) {

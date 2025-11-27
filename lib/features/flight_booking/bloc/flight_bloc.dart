@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -65,7 +63,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         final ApiResponse<double> res = await repository.getMarkUpPrice(
             basePrice: double.parse(element.price!.grandTotal!));
         element.price?.markupPrice = res.data!.toStringAsFixed(2);
-        log(element.price?.markupPrice ?? 'No data');
       }
 
       emit(FlightLoaded(data: res.data!));
@@ -93,12 +90,9 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         basePrice: double.parse(
             res.data!.data!.flightOffers!.first.price!.grandTotal!),
       );
-
       res.data!.data!.flightOffers!.first.price?.markup =
           markupRes.data!.toStringAsFixed(2);
       final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
-
-      log('My Markup: ${myMarkup.data?.toJson()}');
       res.data!.data!.myMarkup = myMarkup.data;
       emit(FlightOfferPriceLoaded(data: res.data!));
     } catch (e) {
@@ -116,15 +110,12 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       //     await repository.createOrder(body: event.body);
       final ApiResponse<OrderModel> res =
           await repository.createPayment(body: event.body);
-      log('res ${res.data?.id}');
-      log('res ${res.data?.id}');
-      log('res ${res.data?.id}');
+
       if (res.data == null) {
         emit(FlightOrderCreationError(
             error: res.errorMessage ?? 'Something went wrong'));
         return;
       }
-      log('******************');
       emit(FlightOrderCreated(data: res.data!));
     } catch (e) {
       emit(FlightOrderCreationError(error: '$e'));
@@ -152,7 +143,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       final ApiResponse<double> resp =
           await repository.getMarkUpPrice(basePrice: event.baseAmount);
       if (resp.data == null) {
-        log('resp ${resp.errorMessage}');
         emit(FlightSearchingError(message: '${resp.errorMessage}'));
       }
     } catch (e) {
@@ -172,8 +162,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
   Future<void> _handleFilterFlight(
       FilterFlightEvent event, Emitter<FlightState> emit) async {
     try {
-      final currentState = state;
-      log('currentState $currentState');
       FlightsDataModel flightData = FlightsDataModel();
       flightData = event.flightData;
       emit(FlightSearching());

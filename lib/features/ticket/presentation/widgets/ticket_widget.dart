@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +14,6 @@ class TicketWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log(ticketData.toString());
     final double width = AppHelpers.getScreenWidth(context);
     return InkWell(
       focusColor: Colors.transparent,

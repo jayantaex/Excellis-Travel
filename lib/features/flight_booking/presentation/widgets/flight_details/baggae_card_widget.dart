@@ -16,7 +16,7 @@ class BaggaeCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListTile(
         dense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         leading: CircleAvatar(
             radius: 16,
             backgroundColor: AppColors.grey.withOpacity(0.1),

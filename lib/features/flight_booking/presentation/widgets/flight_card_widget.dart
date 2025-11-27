@@ -157,7 +157,8 @@ class FlightCardWidget extends StatelessWidget {
                               ? itinerary.segments!.last
                               : null;
 
-                      int index = data.itineraries?.indexOf(itinerary) ?? 0;
+                      final int index =
+                          data.itineraries?.indexOf(itinerary) ?? 0;
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Row(

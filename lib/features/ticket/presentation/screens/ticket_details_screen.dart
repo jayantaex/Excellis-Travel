@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -399,10 +397,7 @@ class TicketDetailsScreen extends StatelessWidget {
                               markupPrice:
                                   '${(ticketData?.fareDetails?.markup ?? 0.00)}',
                               bokkingRefId: '${ticketData?.bookingReference}',
-                              showDownloadProgress: (count, total) {
-                                log('$count $total');
-                                log('${(count / total) * 100}');
-                              },
+                              showDownloadProgress: (count, total) {},
                             );
 
                             if (res) {

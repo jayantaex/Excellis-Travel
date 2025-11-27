@@ -93,6 +93,7 @@ class ApiClient {
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
       final int statusCode = e.response?.statusCode ?? 0;
+      final String errorMessage = _handleDioError(e, statusCode);
       return ApiResponse<T>(
           statusCode: statusCode,
           errorMessage:

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
@@ -56,7 +54,7 @@ class PricingDetails extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +177,6 @@ class PriceCol extends StatelessWidget {
 String getCalculatedPrice(
     {required String basePrice, required String type, required String value}) {
   double price = double.parse(basePrice);
-  log('My Markup Type: $type, Value: $value');
   if (type == 'Fixed') {
     final double amount = double.parse(value);
     price += amount;

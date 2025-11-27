@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_response.dart';
 import '../../../../core/network/api_urls.dart';
@@ -33,7 +31,6 @@ class TicketRemoteDataSrc {
               BookingListModel.fromJson(json['data']));
       return resp;
     } catch (e) {
-      log('$e', name: 'getAllBookedTickets TicketApi');
       return ApiResponse(statusCode: 400, errorMessage: e.toString());
     }
   }

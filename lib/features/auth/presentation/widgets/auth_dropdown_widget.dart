@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_styles.dart';
 
 class AuthDropdownWidget extends StatefulWidget {
@@ -18,7 +15,6 @@ class _AuthDropdownWidgetState extends State<AuthDropdownWidget> {
   @override
   void initState() {
     _defaultValue = widget.items?.first.value ?? '';
-    log(_defaultValue.toString());
     super.initState();
   }
 

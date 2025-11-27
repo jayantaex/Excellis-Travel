@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,8 +58,6 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
       : PopScope(
           canPop: false,
           onPopInvokedWithResult: (bool didPop, Object? result) async {
-            log('didPop $didPop');
-            log('pop result $result');
             if (!didPop) {
               if (_currentIndex == 0) {
                 await showAppSheet(

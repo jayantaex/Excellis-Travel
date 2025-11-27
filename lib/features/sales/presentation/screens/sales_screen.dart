@@ -1,15 +1,13 @@
-import 'dart:developer';
-
-import 'package:excellistravel/core/utils/app_helpers.dart';
-import 'package:excellistravel/core/utils/storage_service.dart';
-import 'package:excellistravel/core/widgets/app_sheet.dart';
-import 'package:excellistravel/core/widgets/no_login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
+import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_sheet.dart';
+import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/sales_bloc.dart';
 import '../widgets/filter_sheet.dart';
@@ -108,7 +106,6 @@ class _SalesScreenState extends State<SalesScreen> {
                               },
                             ),
                             onSubmitPressed: () async {
-                              log('${_bookingIdController.text}');
                               Navigator.pop(context);
                               page = 1;
                               await callApi(page: page, limit: limit);
@@ -139,7 +136,6 @@ class _SalesScreenState extends State<SalesScreen> {
                           );
                         }
                         if (state is SalesLoaded) {
-                          log('${state.sales.pagination?.toJson()}');
                           totalItems = state.sales.pagination?.totalItems ?? 0;
                           return Expanded(
                             child: totalItems == 0
@@ -168,10 +164,10 @@ class _SalesScreenState extends State<SalesScreen> {
                                       SliverAppBar(
                                         expandedHeight: AppHelpers.percenHeight(
                                                 context: context) *
-                                            0.3,
+                                            0.35,
                                         pinned: true,
                                         backgroundColor: Colors.transparent,
-                                        elevation: 0,
+                                        elevation: 0.5,
                                         automaticallyImplyLeading: false,
                                         flexibleSpace: FlexibleSpaceBar(
                                           background: Container(

@@ -52,7 +52,6 @@ class _FlightListScreenState extends State<FlightListScreen> {
   void initState() {
     Future.delayed(Duration.zero, () async {
       paramData = widget.data;
-      log('paratData ${paramData}');
       depurtureDate = paramData['depurtureDate'];
       cabinClass = paramData['cabinClass'];
       totalTravelers = [
@@ -289,7 +288,7 @@ Map<String, dynamic> getBody({
       'travelers': getTravellers(travellersArr: travellersArr),
       'sources': ['GDS'],
       'searchCriteria': {
-        'maxFlightOffers': kDebugMode ? 4 : 100,
+        'maxFlightOffers': kDebugMode ? 4 : null,
         'flightFilters': {
           'cabinRestrictions': [
             {
@@ -347,7 +346,6 @@ List<Map<String, dynamic>> assignAssociateIdToInfants(
     }
   }
 
-  log('listOfTravellers $listOfTravellers');
   return listOfTravellers;
 }
 

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +29,6 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
 
   @override
   void initState() {
-    log('${widget.data}');
     Future.delayed(Duration.zero, () async {
       barCodeSvg = BarcodeService.buildBarcode(
         Barcode.code39(),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
@@ -45,8 +47,7 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
       if (res.data != null) {
         BookingListModel tickets;
 
-        print(
-            '📄 Page: ${event.page}, Received: ${res.data!.bookings?.length ?? 0} bookings');
+        log('📄 Page: ${event.page}, Received: ${res.data!.bookings?.length ?? 0} bookings');
 
         // Check if this is a filter reset (page 1 with filters)
         if (event.page == 1 &&
@@ -55,15 +56,14 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
                 event.bookingId.isNotEmpty ||
                 event.status.isNotEmpty)) {
           // Start fresh with filtered data
-          print('🔍 Filter applied - starting fresh');
+          log('🔍 Filter applied - starting fresh');
           tickets = res.data!;
         } else if (currentState is TicketLoaded && event.page > 1) {
           // Append new bookings to existing ones for pagination
           final existingBookings = currentState.tickets.bookings ?? [];
           final newBookings = res.data!.bookings ?? [];
 
-          print(
-              '➕ Pagination - Existing: ${existingBookings.length}, New: ${newBookings.length}, Total: ${existingBookings.length + newBookings.length}');
+          log('➕ Pagination - Existing: ${existingBookings.length}, New: ${newBookings.length}, Total: ${existingBookings.length + newBookings.length}');
 
           // Create a new BookingListModel with merged bookings
           tickets = BookingListModel(
@@ -72,7 +72,7 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
           );
         } else {
           // Initial load or page 1 without filters
-          print('🆕 Initial load');
+          log('🆕 Initial load');
           tickets = res.data!;
         }
 

@@ -69,7 +69,6 @@ Future<void> showAddAndEditPassengerSheet(
     isScrollControlled: true,
     useSafeArea: true,
     context: context,
-    isDismissible: true,
     builder: (BuildContext context) => StatefulBuilder(
       builder: (context, setState) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

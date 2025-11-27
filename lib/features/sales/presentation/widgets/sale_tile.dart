@@ -71,7 +71,7 @@ class SaleTile extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 8),
+                              margin: const EdgeInsets.only(left: 8),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
                                 vertical: 3,
