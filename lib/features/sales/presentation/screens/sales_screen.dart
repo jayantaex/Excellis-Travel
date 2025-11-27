@@ -77,211 +77,342 @@ class _SalesScreenState extends State<SalesScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.transparent,
-        body: TransWhiteBgWidget(
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AppCustomAppbar(
-                  isBackButtonRequired: false,
-                  centerTitle: 'My Sales',
-                  trailing: SizedBox(
-                    width: 45,
-                    child: IconButton(
-                        onPressed: () async {
-                          await showAppSheet(
-                              context: context,
-                              title: 'Filter Options',
-                              child: FilterSheet(
-                                bookingIdController: _bookingIdController,
-                                startDateController: _startDateController,
-                                endDateController: _endDateController,
-                                onStartDatePicked: (date) {
-                                  _startDateController.text =
-                                      AppHelpers.formatDate(date,
-                                          pattern: 'yyyy-MM-dd');
-                                },
-                                onEndDatePicked: (date) {
-                                  _endDateController.text =
-                                      AppHelpers.formatDate(date,
-                                          pattern: 'yyyy-MM-dd');
-                                },
-                              ),
-                              onSubmitPressed: () {
-                                Navigator.pop(context);
-                                page = 1; // Reset page when applying filters
-                                callApi(page: page, limit: limit);
+  Widget build(BuildContext context) => TransWhiteBgWidget(
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AppCustomAppbar(
+                isBackButtonRequired: false,
+                centerTitle: 'My Sales',
+                trailing: SizedBox(
+                  width: 45,
+                  child: IconButton(
+                      onPressed: () async {
+                        await showAppSheet(
+                            context: context,
+                            title: 'Filter Options',
+                            child: FilterSheet(
+                              bookingIdController: _bookingIdController,
+                              startDateController: _startDateController,
+                              endDateController: _endDateController,
+                              onStartDatePicked: (date) {
+                                _startDateController.text =
+                                    AppHelpers.formatDate(date,
+                                        pattern: 'yyyy-MM-dd');
                               },
-                              submitButtonRequired: true,
-                              submitButtonTitle: 'Apply');
-                        },
-                        icon: const Icon(Icons.filter_alt,
-                            color: AppColors.white)),
-                  ),
+                              onEndDatePicked: (date) {
+                                _endDateController.text = AppHelpers.formatDate(
+                                    date,
+                                    pattern: 'yyyy-MM-dd');
+                              },
+                            ),
+                            onSubmitPressed: () async {
+                              log('${_bookingIdController.text}');
+                              Navigator.pop(context);
+                              page = 1;
+                              await callApi(page: page, limit: limit);
+                            },
+                            submitButtonRequired: true,
+                            submitButtonTitle: 'Apply');
+                      },
+                      icon:
+                          const Icon(Icons.filter_alt, color: AppColors.white)),
                 ),
-                token == null || token!.isEmpty
-                    ? const Expanded(child: Center(child: NotLoginWidget()))
-                    : BlocConsumer<SalesBloc, SalesState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          if (state is SalesError) {
-                            return Expanded(
-                                child: ErrorScreen(
-                              errorMessage: 'Oops!',
-                              errorDesc: state.message,
-                            ));
-                          }
-                          if (state is SalesLoading || state is SalesInitial) {
-                            return const Expanded(
-                              child: Center(
-                                  child: CircularProgressIndicator.adaptive()),
-                            );
-                          }
-                          if (state is SalesLoaded) {
-                            log('${state.sales.pagination?.toJson()}');
-                            totalItems =
-                                state.sales.pagination?.totalItems ?? 0;
-                            return Expanded(
-                              child: totalItems == 0
-                                  ? const NoSales()
-                                  : Column(
-                                      children: [
-                                        const SizedBox(height: 35),
-                                        Text('₹${state.sales.totalMarkup}',
-                                            style: const TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.white)),
-                                        const SizedBox(height: 2),
-                                        const Text(
-                                          'My Earning',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.white,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 18),
-                                        Expanded(
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 18, horizontal: 16),
-                                            width: AppHelpers.getScreenWidth(
-                                                context),
+              ),
+              token == null || token!.isEmpty
+                  ? const Expanded(child: Center(child: NotLoginWidget()))
+                  : BlocConsumer<SalesBloc, SalesState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        if (state is SalesError) {
+                          return Expanded(
+                              child: ErrorScreen(
+                            errorMessage: 'Oops!',
+                            errorDesc: state.message,
+                          ));
+                        }
+                        if (state is SalesLoading || state is SalesInitial) {
+                          return const Expanded(
+                            child: Center(
+                                child: CircularProgressIndicator.adaptive()),
+                          );
+                        }
+                        if (state is SalesLoaded) {
+                          log('${state.sales.pagination?.toJson()}');
+                          totalItems = state.sales.pagination?.totalItems ?? 0;
+                          return Expanded(
+                            child: totalItems == 0
+                                ? (_bookingIdController.text.isNotEmpty ||
+                                        _startDateController.text.isNotEmpty ||
+                                        _endDateController.text.isNotEmpty)
+                                    ? NoSales(
+                                        onFilter: () async {
+                                          _bookingIdController.clear();
+                                          _startDateController.clear();
+                                          _endDateController.clear();
+                                          page = 1;
+                                          await callApi(
+                                              page: page, limit: limit);
+                                        },
+                                        isForFilter: true,
+                                      )
+                                    : NoSales(
+                                        onFilter: () {},
+                                        isForFilter: false,
+                                      )
+                                : CustomScrollView(
+                                    controller: _scrollController,
+                                    slivers: [
+                                      // Collapsible Earnings Card
+                                      SliverAppBar(
+                                        expandedHeight: AppHelpers.percenHeight(
+                                                context: context) *
+                                            0.3,
+                                        pinned: true,
+                                        backgroundColor: Colors.transparent,
+                                        elevation: 0,
+                                        automaticallyImplyLeading: false,
+                                        flexibleSpace: FlexibleSpaceBar(
+                                          background: Container(
+                                            margin: const EdgeInsets.only(
+                                              left: 16,
+                                              right: 16,
+                                              top: 24,
+                                              bottom: 20,
+                                            ),
+                                            padding: const EdgeInsets.all(24),
                                             decoration: BoxDecoration(
-                                              color: AppColors.white,
+                                              gradient: const LinearGradient(
+                                                colors: [
+                                                  AppColors.primary,
+                                                  AppColors.secondary
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              ),
                                               borderRadius:
-                                                  BorderRadius.circular(32),
+                                                  BorderRadius.circular(24),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: AppColors.primary
+                                                      .withOpacity(0.3),
+                                                  blurRadius: 20,
+                                                  offset: const Offset(0, 8),
+                                                ),
+                                              ],
                                             ),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
-                                                SizedBox(
-                                                  height: 25,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        'Bookings(${state.sales.pagination?.totalItems ?? 0})',
-                                                        style: const TextStyle(
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Total Earnings',
+                                                          style: TextStyle(
                                                             fontSize: 14,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             color: AppColors
-                                                                .black),
+                                                                .white
+                                                                .withOpacity(
+                                                                    0.9),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 8),
+                                                        Text(
+                                                          '₹${state.sales.totalMarkup ?? '0'}',
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 36,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                AppColors.white,
+                                                            letterSpacing: -0.5,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16),
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.white
+                                                            .withOpacity(0.2),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(16),
                                                       ),
-                                                      _startDateController.text
-                                                                  .isNotEmpty ||
-                                                              _endDateController
-                                                                  .text
-                                                                  .isNotEmpty ||
-                                                              _bookingIdController
-                                                                  .text
-                                                                  .isNotEmpty
-                                                          ? SizedBox(
-                                                              child: InkWell(
-                                                              onTap: () {
-                                                                _startDateController
-                                                                    .clear();
-                                                                _endDateController
-                                                                    .clear();
-                                                                _bookingIdController
-                                                                    .clear();
-                                                                page =
-                                                                    1; // Reset page when clearing filters
-                                                                callApi(
-                                                                    page: page,
-                                                                    limit:
-                                                                        limit);
-                                                              },
-                                                              child: const Text(
-                                                                  'Clear',
-                                                                  style: TextStyle(
-                                                                      color: AppColors
-                                                                          .primary)),
-                                                            ))
-                                                          : const SizedBox()
-                                                    ],
-                                                  ),
+                                                      child: const Icon(
+                                                        Icons
+                                                            .account_balance_wallet_rounded,
+                                                        color: AppColors.white,
+                                                        size: 32,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Expanded(
-                                                  child: ListView.builder(
-                                                    controller:
-                                                        _scrollController,
-                                                    itemCount: (state
-                                                                .sales
-                                                                .commissions
-                                                                ?.length ??
-                                                            0) +
-                                                        (state.isLoadingMore
-                                                            ? 1
-                                                            : 0),
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      if (index <
-                                                          (state
-                                                                  .sales
-                                                                  .commissions
-                                                                  ?.length ??
-                                                              0)) {
-                                                        return SaleTile(
-                                                            commission: state
-                                                                    .sales
-                                                                    .commissions![
-                                                                index]);
-                                                      } else {
-                                                        return const Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  8.0),
-                                                          child: Center(
-                                                              child: CircularProgressIndicator
-                                                                  .adaptive()),
-                                                        );
-                                                      }
-                                                    },
-                                                  ),
+                                                const SizedBox(height: 20),
+                                                // Stats Row
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: AppColors.white
+                                                              .withOpacity(
+                                                                  0.15),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                        child: Column(
+                                                          children: [
+                                                            Text(
+                                                              '${state.sales.pagination?.totalItems ?? 0}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: AppColors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 4),
+                                                            Text(
+                                                              'Total Bookings',
+                                                              style: TextStyle(
+                                                                fontSize: 11,
+                                                                color: AppColors
+                                                                    .white
+                                                                    .withOpacity(
+                                                                        0.8),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 12),
+                                                    Expanded(
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: AppColors.white
+                                                              .withOpacity(
+                                                                  0.15),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                        child: Column(
+                                                          children: [
+                                                            Text(
+                                                              '₹${((double.tryParse('${state.sales.totalMarkup}') ?? 0) / (state.sales.pagination?.totalItems ?? 1)).toStringAsFixed(0)}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: AppColors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 4),
+                                                            Text(
+                                                              'Avg. Earning',
+                                                              style: TextStyle(
+                                                                fontSize: 11,
+                                                                color: AppColors
+                                                                    .white
+                                                                    .withOpacity(
+                                                                        0.8),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                            );
-                          }
-                          return const Expanded(
-                              child: Center(child: NoSales()));
-                        },
-                      )
-              ],
-            ),
+                                        ),
+                                      ),
+                                      // Transactions List Header
+
+                                      // Sales List
+                                      SliverPadding(
+                                        padding: const EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          top: 16,
+                                          bottom: 16,
+                                        ),
+                                        sliver: SliverList(
+                                          delegate: SliverChildBuilderDelegate(
+                                            (BuildContext context, int index) {
+                                              if (index <
+                                                  (state.sales.commissions
+                                                          ?.length ??
+                                                      0)) {
+                                                return SaleTile(
+                                                    commission: state.sales
+                                                        .commissions![index]);
+                                              } else {
+                                                return const Padding(
+                                                  padding: EdgeInsets.all(16.0),
+                                                  child: Center(
+                                                      child:
+                                                          CircularProgressIndicator
+                                                              .adaptive()),
+                                                );
+                                              }
+                                            },
+                                            childCount: (state.sales.commissions
+                                                        ?.length ??
+                                                    0) +
+                                                (state.isLoadingMore ? 1 : 0),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          );
+                        }
+                        return const Expanded(
+                          child: Center(
+                            child: NoSales(),
+                          ),
+                        );
+                      },
+                    )
+            ],
           ),
         ),
       );
