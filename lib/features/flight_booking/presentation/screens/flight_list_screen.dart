@@ -191,7 +191,15 @@ class _FlightListScreenState extends State<FlightListScreen> {
                                         extra: {
                                           'data': state.data.datam![index],
                                           'flightDictionary':
-                                              state.data.dictionaries
+                                              state.data.dictionaries,
+                                          'arivalCity':
+                                              paramData['arrivalCity'],
+                                          'arivalAirport':
+                                              paramData['arrivalAirport'],
+                                          'departureCity':
+                                              paramData['departureCity'],
+                                          'departureAirport':
+                                              paramData['departureAirport'],
                                         },
                                       );
                                     },

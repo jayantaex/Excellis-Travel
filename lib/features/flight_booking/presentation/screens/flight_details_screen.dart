@@ -1,3 +1,4 @@
+import 'package:excellistravel/features/flight_booking/presentation/widgets/flight_details/baggae_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +17,6 @@ import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart' show FlightDictionary, Datam;
 import '../../data/models/passenger_model.dart';
-import '../widgets/flight_details/fares_and_prices.dart';
 import '../widgets/flight_details/offer_fare_toggler_widget.dart';
 import '../widgets/loading/flight_details_loading_widget.dart';
 import '../widgets/flight_details/prceed_to_pay_widget.dart';
@@ -28,9 +28,17 @@ class FlightDetailsScreen extends StatefulWidget {
     super.key,
     required this.data,
     required this.flightDictionary,
+    required this.arivalCity,
+    required this.arivalAirport,
+    required this.departureCity,
+    required this.departureAirport,
   });
   final Datam data;
   final FlightDictionary flightDictionary;
+  final String arivalCity;
+  final String arivalAirport;
+  final String departureCity;
+  final String departureAirport;
 
   @override
   State<FlightDetailsScreen> createState() => _FlightDetailsScreenState();
@@ -160,22 +168,22 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     width: width,
                                     flightDictionary: widget.flightDictionary,
                                     data: itineraries[index],
+                                    arrivalCity: widget.arivalCity,
+                                    arrivalAirport: widget.arivalAirport,
+                                    departureCity: widget.departureCity,
+                                    departureAirport: widget.departureAirport,
+                                    index: index,
                                   ),
                                   childCount: itineraries.length,
                                 ),
                               ),
                               const SliverToBoxAdapter(
                                   child: SizedBox(height: 12)),
-                              SliverToBoxAdapter(
-                                child: FaresAndPrices(
-                                  allTravelerPricings: flightState
-                                          .data
-                                          .data
-                                          ?.flightOffers!
-                                          .first
-                                          .travelerPricings ??
-                                      [],
-                                  grandPrice: 20.22,
+                              const SliverToBoxAdapter(
+                                child: BaggaeCardWidget(
+                                  title: 'Cabin Baggage',
+                                  iconName: 'baggage',
+                                  allowance: '7KG (1 bag only)/Adult',
                                 ),
                               ),
                               const SliverToBoxAdapter(
@@ -207,8 +215,13 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     onPassengerRemove: (passenger) {
                                       passengers.remove(passenger);
                                     },
-                                    travelerPricing:
-                                        widget.data.travelerPricings ?? [],
+                                    travelerPricing: flightState
+                                            .data
+                                            .data!
+                                            .flightOffers!
+                                            .first
+                                            .travelerPricings ??
+                                        [],
                                   ),
                                 ),
                               ),

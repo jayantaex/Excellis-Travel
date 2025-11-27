@@ -124,6 +124,10 @@ class FlightBookingModule {
       child: FlightDetailsScreen(
         flightDictionary: extra['flightDictionary'] ?? {},
         data: extra['data'] ?? {},
+        arivalCity: extra['arivalCity'] ?? '',
+        arivalAirport: extra['arivalAirport'] ?? '',
+        departureCity: extra['departureCity'] ?? '',
+        departureAirport: extra['departureAirport'] ?? '',
       ),
     );
   }

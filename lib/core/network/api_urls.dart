@@ -18,6 +18,14 @@ class MainUrl {
       return 'https://test.api.amadeus.com';
     }
   }
+
+  String getAirlineLogoUrl() {
+    if (env == 'production') {
+      return AppConstants.airlineLogoUrl;
+    } else {
+      return 'https://content.airhex.com';
+    }
+  }
 }
 
 class EndPoints {

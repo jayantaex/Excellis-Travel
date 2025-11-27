@@ -156,6 +156,8 @@ class FlightCardWidget extends StatelessWidget {
                           (itinerary.segments?.isNotEmpty ?? false)
                               ? itinerary.segments!.last
                               : null;
+
+                      int index = data.itineraries?.indexOf(itinerary) ?? 0;
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Row(
@@ -200,17 +202,21 @@ class FlightCardWidget extends StatelessWidget {
                                         fontWeight: FontWeight.w400,
                                         color: AppColors.grey),
                                   ),
-                                  if (departureAirport != null)
-                                    Text(
-                                      '$departureAirport',
-                                      style: const TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColors.grey),
-                                    ),
+                                  // if (departureAirport != null)
+                                  //   Text(
+                                  //     index > 0
+                                  //         ? ' $arrivalAirport'
+                                  //         : '$departureAirport',
+                                  //     style: const TextStyle(
+                                  //         fontSize: 10,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: AppColors.grey),
+                                  //   ),
                                   if (departureCity != null)
                                     Text(
-                                      '$departureCity',
+                                      index > 0
+                                          ? '$arrivalCity'
+                                          : '$departureCity',
                                       style: const TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
@@ -287,17 +293,21 @@ class FlightCardWidget extends StatelessWidget {
                                         fontWeight: FontWeight.w400,
                                         color: AppColors.grey),
                                   ),
-                                  if (arrivalAirport != null)
-                                    Text(
-                                      '$arrivalAirport',
-                                      style: const TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColors.grey),
-                                    ),
+                                  // if (arrivalAirport != null)
+                                  //   Text(
+                                  //     index > 0
+                                  //         ? '$departureAirport'
+                                  //         : '$arrivalAirport',
+                                  //     style: const TextStyle(
+                                  //         fontSize: 10,
+                                  //         fontWeight: FontWeight.w400,
+                                  //         color: AppColors.grey),
+                                  //   ),
                                   if (arrivalCity != null)
                                     Text(
-                                      '$arrivalCity',
+                                      index > 0
+                                          ? '$departureCity'
+                                          : '$arrivalCity',
                                       style: const TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
