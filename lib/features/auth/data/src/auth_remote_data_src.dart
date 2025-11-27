@@ -1,10 +1,10 @@
-import '../../../core/network/api_client.dart';
-import '../../../core/network/api_response.dart';
-import '../../../core/network/api_urls.dart';
-import '../data/models/auth_resp_model.dart';
+import '../../../../core/network/api_client.dart';
+import '../../../../core/network/api_response.dart';
+import '../../../../core/network/api_urls.dart';
+import '../models/auth_resp_model.dart';
 
-class AuthApi {
-  AuthApi({required this.apiClient});
+class AuthRemoteDataSrc {
+  AuthRemoteDataSrc({required this.apiClient});
   final ApiClient apiClient;
 
   Future<ApiResponse<AuthResponseModel>> login(

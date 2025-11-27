@@ -57,9 +57,9 @@ class ApiClient {
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<T>(
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -75,10 +75,9 @@ class ApiClient {
       return ApiResponse<List<T>>(
           data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
       return ApiResponse<List<T>>(
-          statusCode: statusCode, errorMessage: errorMessage);
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -89,15 +88,12 @@ class ApiClient {
       required T Function(Map<String, dynamic>) fromJson}) async {
     try {
       final Response response = await _dio.post(endPoint, data: reqModel);
-      final data = fromJson(response.data);
+      final T data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
       return ApiResponse<T>(
-          statusCode: statusCode,
-          errorMessage:
-              e.response?.data['message'] ?? _handleDioError(e, statusCode));
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -112,10 +108,9 @@ class ApiClient {
       return ApiResponse<List<T>>(
           data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
       return ApiResponse<List<T>>(
-          statusCode: statusCode, errorMessage: errorMessage);
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -129,9 +124,9 @@ class ApiClient {
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<T>(
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -146,9 +141,9 @@ class ApiClient {
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<T>(
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -186,19 +181,14 @@ class ApiClient {
         statusCode: response.statusCode ?? 0,
       );
     } on DioException catch (e) {
-      // Handle Dio errors
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
-
       return ApiResponse<T>(
-        statusCode: statusCode,
-        errorMessage: errorMessage,
-      );
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
   // Handle Dio errors and return a user-friendly message
-  String _handleDioError(DioException error, int statusCode) {
+  String _handleDioError({required DioException error}) {
     String errorMessage;
     switch (error.type) {
       case DioExceptionType.cancel:
@@ -214,7 +204,7 @@ class ApiClient {
         errorMessage = 'Send timeout in connection with API server';
         break;
       case DioExceptionType.badResponse:
-        errorMessage = _handleStatusCode(statusCode);
+        errorMessage = _getErrorMessage(error);
         break;
       case DioExceptionType.connectionError:
         errorMessage = 'please check your connection';
@@ -230,23 +220,10 @@ class ApiClient {
     return errorMessage;
   }
 
-  // Handle different status codes and return appropriate messages
-  String _handleStatusCode(int statusCode) {
-    switch (statusCode) {
-      case 400:
-        return 'Bad Request 22';
-      case 401:
-        return 'Unauthorized';
-      case 403:
-        return 'Forbidden';
-      case 404:
-        return 'Not Found';
-      case 500:
-        return 'Internal Server Error';
-      case 503:
-        return 'Service Unavailable';
-      default:
-        return 'Recive invalid status code $statusCode';
+  String _getErrorMessage(DioException error) {
+    if (error.response?.statusCode == 502) {
+      return 'App under maintenance';
     }
+    return error.response?.data['message'] ?? 'Something went wrong';
   }
 }

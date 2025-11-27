@@ -37,7 +37,6 @@ class AuthenticationInterceptor extends Interceptor {
         _isRefreshing = true;
         final String? newAccessToken = await _refreshAccessToken(refreshToken);
         _isRefreshing = false;
-
         if (newAccessToken != null) {
           await StorageService.saveTokens(newAccessToken, refreshToken);
           // Retry queued requests
