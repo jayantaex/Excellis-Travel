@@ -20,7 +20,7 @@ class FlightBookingRemoteSrc {
       await amadeusClient.getRequest(
           endPoint: EndPoints.airportSearchByKeyword,
           queryParameters: <String, dynamic>{
-            'subType': 'AIRPORT',
+            'subType': 'CITY,AIRPORT',
             'keyword': keyword.trim(),
             'countryCode': country,
           },
