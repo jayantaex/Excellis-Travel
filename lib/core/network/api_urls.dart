@@ -23,7 +23,7 @@ class MainUrl {
     if (env == 'production') {
       return AppConstants.airlineLogoUrl;
     } else {
-      return 'https://content.airhex.com';
+      return 'https://ik.imagekit.io';
     }
   }
 }
@@ -31,6 +31,7 @@ class MainUrl {
 class EndPoints {
   static String baseUrl = MainUrl().getUrl();
   static String amaduesBaseUrl = MainUrl().getAmaduesUrl();
+  static String airlineLogoUrl = MainUrl().getAirlineLogoUrl();
   // Authentication
   static const String login = '/auth/login';
   static const String registration = '/auth/register';

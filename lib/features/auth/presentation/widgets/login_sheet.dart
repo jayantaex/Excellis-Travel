@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -91,13 +92,12 @@ class _LoginSheetState extends State<LoginSheet> {
                 ),
 
                 const SizedBox(height: 8),
-                const Text(
-                  'Welcome back!',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  'You can reach us anytime',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                const AppText(
+                    text: 'Welcome back!', size: 28, weight: FontWeight.bold),
+                const AppText(
+                  text: 'You can reach us anytime',
+                  size: 20,
+                  weight: FontWeight.normal,
                 ),
                 const SizedBox(height: 33),
                 // Padding(

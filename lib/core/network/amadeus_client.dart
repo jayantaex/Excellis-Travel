@@ -201,6 +201,7 @@ class AmadeusClient {
     if (error.response?.statusCode == 502) {
       return 'App under maintenance';
     }
-    return error.response?.data['message'] ?? 'Something went wrong';
+    return error.response?.data['errors']?.first['detail'] ??
+        'Something went wrong';
   }
 }

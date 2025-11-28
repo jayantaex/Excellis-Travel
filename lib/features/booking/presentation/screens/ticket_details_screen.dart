@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/file_downloader.dart';
+import '../../../../core/utils/airline_image_provider.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
@@ -187,10 +188,10 @@ class TicketDetailsScreen extends StatelessWidget {
                                       shape: const Border(),
                                       tilePadding: const EdgeInsets.all(0),
                                       childrenPadding: const EdgeInsets.all(0),
-                                      leading: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.asset(
-                                            'assets/images/airlines/${e.carrierCode}.png'),
+                                      leading: SizedBox(
+                                        width: 50,
+                                        child: getAirlineLogo(
+                                            airlineCode: e.carrierCode!),
                                       ),
                                       title: Text(
                                         '${e.carrierCode} -  ${getDuration(time: e.duration!)}',

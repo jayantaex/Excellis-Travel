@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/utils/airline_image_provider.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import '../../../data/models/flights_data_model.dart' show FlightDictionary;
@@ -16,16 +17,14 @@ class SegmentCard extends StatelessWidget {
         children: <Widget>[
           ExpansionTile(
             shape: const Border(),
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: SizedBox(
-                height: 40,
-                width: 40,
-                child: Image.asset(
-                  'assets/images/airlines/${data.carrierCode}.png',
-                  fit: BoxFit.fill,
-                ),
-              ),
+            leading: SizedBox(
+              height: 45,
+              width: 45,
+              child: getAirlineLogo(airlineCode: data.carrierCode!),
+              // child: Image.asset(
+              //   'assets/images/airlines/${data.carrierCode}.png',
+              //   fit: BoxFit.fill,
+              // ),
             ),
             title: Text(
               flightDictionary.dictionaries.carriers!['${data.carrierCode}'] ??

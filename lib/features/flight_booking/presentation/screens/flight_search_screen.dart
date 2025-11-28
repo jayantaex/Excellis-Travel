@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/utils/app_date_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,24 +120,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     required DateTime initialDate,
     required DateTime firstDate,
   }) async =>
-      await showDatePicker(
-        builder: (context, child) => Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: AppColors.primary,
-              onPrimary: AppColors.white,
-              surface: AppColors.white,
-              onSurface: AppColors.black,
-            ),
-            dialogBackgroundColor: AppColors.white,
-          ),
-          child: child!,
-        ),
+      await showAppDatePicker(
         context: context,
         firstDate: firstDate,
-        lastDate: DateTime.now().add(
-          const Duration(days: 365),
-        ),
+        lastDate: DateTime.now().add(const Duration(days: 365)),
         initialDate: initialDate,
       );
 
@@ -306,6 +293,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                                 setState(() {
                                                   isRoundTrip = value;
                                                 });
+                                                if (isRoundTrip) {
+                                                  roundTripDate = departureDate
+                                                      ?.add(_fiveDay);
+                                                }
                                               }),
                                         ),
                                       ],
@@ -316,7 +307,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     departureDate = await _pickDate(
                                       context: context,
                                       firstDate: _today,
-                                      initialDate: _today,
+                                      initialDate: departureDate ?? _today,
                                     );
                                     setState(() {});
 
@@ -327,10 +318,14 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 isRoundTrip
                                     ? AppPrimaryInput(
                                         controller: TextEditingController(
-                                          text: AppHelpers.formatDate(
-                                              roundTripDate ??
-                                                  _today.add(_fiveDay),
-                                              pattern: 'E, dd MMM yyyy'),
+                                          text: departureDate != null
+                                              ? AppHelpers.formatDate(
+                                                  departureDate!.add(_fiveDay),
+                                                  pattern: 'E, dd MMM yyyy')
+                                              : AppHelpers.formatDate(
+                                                  roundTripDate ??
+                                                      _today.add(_fiveDay),
+                                                  pattern: 'E, dd MMM yyyy'),
                                         ),
                                         enable: true,
                                         maxCharacters: 10,

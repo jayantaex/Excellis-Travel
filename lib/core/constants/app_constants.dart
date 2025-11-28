@@ -5,7 +5,7 @@ class AppConstants {
   // API
   static const String baseUrl = 'https://api.excellistravel.com';
   static const String amaduesUrl = 'https://api.amadeus.com';
-  static String airlineLogoUrl = 'https://content.airhex.com';
+  static String airlineLogoUrl = 'https://ik.imagekit.io';
   static const String privacyPolicy = 'https://github.com/';
   static const String termsAndConditions = 'https://github.com/';
 
@@ -24,7 +24,7 @@ class AppConstants {
 
   // App Info
   static const String appName = 'Flutter Starter';
-  static const String appVersion = '10.0.8';
+  static const String appVersion = '10.0.10';
 
   // Pagination
   static const int defaultPageSize = 20;

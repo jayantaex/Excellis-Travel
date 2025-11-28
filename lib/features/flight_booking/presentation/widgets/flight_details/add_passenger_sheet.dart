@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/utils/app_date_picker.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
@@ -196,15 +197,7 @@ Future<void> showAddAndEditPassengerSheet(
                       child: AppPrimaryInput(
                         controller: dobController,
                         onTap: () async {
-                          dob = await showDatePicker(
-                            builder: (context, child) => Theme(
-                              data: Theme.of(context).copyWith(
-                                colorScheme: const ColorScheme.light(
-                                  primary: AppColors.primary,
-                                ),
-                              ),
-                              child: child!,
-                            ),
+                          dob = await showAppDatePicker(
                             context: context,
                             firstDate: firstDate,
                             lastDate: lastDate,

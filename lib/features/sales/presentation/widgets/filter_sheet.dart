@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/utils/app_date_picker.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
@@ -45,15 +46,7 @@ class FilterSheet extends StatelessWidget {
               hint: 'Pick up start date',
               label: 'Start date',
               onTap: () async {
-                final DateTime? picked = await showDatePicker(
-                  builder: (context, child) => Theme(
-                    data: Theme.of(context).copyWith(
-                      colorScheme: const ColorScheme.light(
-                        primary: AppColors.primary,
-                      ),
-                    ),
-                    child: child!,
-                  ),
+                final DateTime? picked = await showAppDatePicker(
                   context: context,
                   firstDate: DateTime(2025),
                   lastDate: DateTime.now(),
@@ -79,19 +72,12 @@ class FilterSheet extends StatelessWidget {
                 size: 20,
               ),
               onTap: () async {
-                final DateTime? picked = await showDatePicker(
-                    builder: (context, child) => Theme(
-                          data: Theme.of(context).copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: AppColors.primary,
-                            ),
-                          ),
-                          child: child!,
-                        ),
-                    context: context,
-                    firstDate: startDate ?? DateTime(2025),
-                    lastDate: DateTime.now(),
-                    initialDate: startDate ?? DateTime.now());
+                final DateTime? picked = await showAppDatePicker(
+                  context: context,
+                  firstDate: startDate ?? DateTime(2025),
+                  lastDate: DateTime.now(),
+                  initialDate: startDate ?? DateTime.now(),
+                );
                 if (picked != null) {
                   if (startDate != null && picked.isBefore(startDate!)) {
                     // Show error if end date is before start date

@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/utils/app_date_picker.dart';
 import 'package:excellistravel/core/widgets/app_drop_down.dart';
 import 'package:flutter/material.dart';
 
@@ -60,15 +61,7 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
             hint: 'Pick up start date',
             label: 'Start date',
             onTap: () async {
-              final DateTime? picked = await showDatePicker(
-                builder: (context, child) => Theme(
-                  data: Theme.of(context).copyWith(
-                    colorScheme: const ColorScheme.light(
-                      primary: AppColors.primary,
-                    ),
-                  ),
-                  child: child!,
-                ),
+              final DateTime? picked = await showAppDatePicker(
                 context: context,
                 firstDate: DateTime(2025),
                 lastDate: DateTime.now(),
@@ -94,19 +87,12 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
               size: 20,
             ),
             onTap: () async {
-              final DateTime? picked = await showDatePicker(
-                  builder: (context, child) => Theme(
-                        data: Theme.of(context).copyWith(
-                          colorScheme: const ColorScheme.light(
-                            primary: AppColors.primary,
-                          ),
-                        ),
-                        child: child!,
-                      ),
-                  context: context,
-                  firstDate: startDate ?? DateTime(2025),
-                  lastDate: DateTime.now(),
-                  initialDate: DateTime.now());
+              final DateTime? picked = await showAppDatePicker(
+                context: context,
+                firstDate: startDate ?? DateTime(2025),
+                lastDate: DateTime.now(),
+                initialDate: DateTime.now(),
+              );
               if (picked != null) {
                 if (startDate != null && picked.isBefore(startDate!)) {
                   // Show error if end date is before start date
