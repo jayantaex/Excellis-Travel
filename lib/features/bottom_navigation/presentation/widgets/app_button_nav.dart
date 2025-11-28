@@ -75,7 +75,7 @@ class AppButtonNav extends StatelessWidget {
           colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
         ),
       ),
-      label: 'Ticket',
+      label: 'Booking',
     ),
     BottomNavigationBarItem(
       activeIcon: Container(

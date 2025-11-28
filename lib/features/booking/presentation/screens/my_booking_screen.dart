@@ -14,14 +14,14 @@ import '../../data/models/ticket_model.dart' show Booking;
 import '../widgets/ticket_filter_sheet.dart';
 import '../widgets/ticket_widget.dart';
 
-class TicketScreen extends StatefulWidget {
-  const TicketScreen({super.key});
+class MyBookingScreen extends StatefulWidget {
+  const MyBookingScreen({super.key});
 
   @override
-  State<TicketScreen> createState() => _TicketScreenState();
+  State<MyBookingScreen> createState() => _MyBookingScreenState();
 }
 
-class _TicketScreenState extends State<TicketScreen> {
+class _MyBookingScreenState extends State<MyBookingScreen> {
   int page = 1;
   final int limit = 10;
   int totalItems = 10;
@@ -81,7 +81,7 @@ class _TicketScreenState extends State<TicketScreen> {
               //app bar
               AppCustomAppbar(
                 isBackButtonRequired: false,
-                centerTitle: 'My Tickets',
+                centerTitle: 'My Bookings',
                 trailing: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: CircleAvatar(

@@ -18,6 +18,7 @@ import '../../data/models/hive/flight_hive_data_model.dart'
 import '../widgets/flight_listing/class_filter_widget.dart';
 import '../widgets/flight_card_widget.dart';
 import '../widgets/flight_listing/date_filter_widget.dart';
+import '../widgets/flight_listing/no_flight_widget.dart';
 import '../widgets/loading/flight_list_loadding_widget.dart';
 
 class FlightListScreen extends StatefulWidget {
@@ -173,39 +174,47 @@ class _FlightListScreenState extends State<FlightListScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             sliver: SliverList(
                               delegate: SliverChildBuilderDelegate(
-                                (context, index) => Container(
-                                  margin: const EdgeInsets.only(bottom: 16),
-                                  child: FlightCardWidget(
-                                    departureCity: paramData['departureCity'],
-                                    arrivalCity: paramData['arrivalCity'],
-                                    isAnimated: true,
-                                    onTap: () async {
-                                      await _saveToLocal(
-                                        data: state.data.datam![index],
-                                        flightDictionary:
-                                            state.data.dictionaries!,
-                                      );
-                                      context.pushNamed(
-                                        FlightBookingModule.flightDetailsName,
-                                        extra: {
-                                          'data': state.data.datam![index],
-                                          'flightDictionary':
-                                              state.data.dictionaries,
-                                          'arivalCity':
-                                              paramData['arrivalCity'],
-                                          'arivalAirport':
-                                              paramData['arrivalAirport'],
-                                          'departureCity':
+                                (context, index) => (state.data.datam?.length ??
+                                            0) !=
+                                        0
+                                    ? Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 16),
+                                        child: FlightCardWidget(
+                                          departureCity:
                                               paramData['departureCity'],
-                                          'departureAirport':
-                                              paramData['departureAirport'],
-                                        },
-                                      );
-                                    },
-                                    data: state.data.datam![index],
-                                    dictionaries: state.data.dictionaries,
-                                  ),
-                                ),
+                                          arrivalCity: paramData['arrivalCity'],
+                                          isAnimated: true,
+                                          onTap: () async {
+                                            await _saveToLocal(
+                                              data: state.data.datam![index],
+                                              flightDictionary:
+                                                  state.data.dictionaries!,
+                                            );
+                                            context.pushNamed(
+                                              FlightBookingModule
+                                                  .flightDetailsName,
+                                              extra: {
+                                                'data':
+                                                    state.data.datam![index],
+                                                'flightDictionary':
+                                                    state.data.dictionaries,
+                                                'arivalCity':
+                                                    paramData['arrivalCity'],
+                                                'arivalAirport':
+                                                    paramData['arrivalAirport'],
+                                                'departureCity':
+                                                    paramData['departureCity'],
+                                                'departureAirport': paramData[
+                                                    'departureAirport'],
+                                              },
+                                            );
+                                          },
+                                          data: state.data.datam![index],
+                                          dictionaries: state.data.dictionaries,
+                                        ),
+                                      )
+                                    : const NoFlightWidget(),
                                 childCount: state.data.datam?.length ?? 0,
                               ),
                             ),

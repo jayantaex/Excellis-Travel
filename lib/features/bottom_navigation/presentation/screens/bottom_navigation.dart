@@ -1,15 +1,15 @@
-import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/app_exit_sheet.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
+import '../../../../core/widgets/app_sheet.dart';
 import '../../../flight_booking/presentation/screens/flight_search_screen.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../../profile_management/presentation/screens/my_profile_screen.dart';
 import '../../../sales/presentation/screens/sales_screen.dart';
-import '../../../ticket/presentation/screens/ticket_screen.dart';
+import '../../../booking/presentation/screens/my_booking_screen.dart';
 import '../widgets/app_button_nav.dart';
 import '../widgets/bottom_navigation_loading.dart';
 
@@ -40,7 +40,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         }
         _screens = const <Widget>[
           FlightSearchScreen(),
-          TicketScreen(),
+          MyBookingScreen(),
           SalesScreen(),
           MyProfileScreen()
         ];

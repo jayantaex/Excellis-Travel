@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../data/models/ticket_model.dart';
-import '../../ticket_module.dart';
+import '../../booking_module.dart';
 
 class TicketWidget extends StatelessWidget {
   const TicketWidget({super.key, this.isLast, this.ticketData});
@@ -22,7 +22,7 @@ class TicketWidget extends StatelessWidget {
       splashColor: Colors.transparent,
       onTap: () {
         context.pushNamed(
-          TicketModule.ticketDetails,
+          BookingModule.ticketDetails,
           extra: ticketData,
         );
       },

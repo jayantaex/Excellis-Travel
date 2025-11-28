@@ -56,7 +56,7 @@ class FilterSheet extends StatelessWidget {
                   ),
                   context: context,
                   firstDate: DateTime(2025),
-                  lastDate: DateTime(2100),
+                  lastDate: DateTime.now(),
                   initialDate: DateTime.now(),
                 );
                 if (picked != null) {
@@ -90,7 +90,7 @@ class FilterSheet extends StatelessWidget {
                         ),
                     context: context,
                     firstDate: startDate ?? DateTime(2025),
-                    lastDate: DateTime(2100),
+                    lastDate: DateTime.now(),
                     initialDate: startDate ?? DateTime.now());
                 if (picked != null) {
                   if (startDate != null && picked.isBefore(startDate!)) {

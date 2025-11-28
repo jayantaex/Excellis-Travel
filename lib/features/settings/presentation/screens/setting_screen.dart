@@ -138,15 +138,10 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           ListTile(
                             onTap: () {
-                              showResetPassSheet(
+                              showAppSheet(
                                   context: context,
-                                  onDone: (String oldPass, String newPass) {
-                                    context.read<AuthBloc>().add(
-                                        ResetPasswordEvent(
-                                            currentPassword: oldPass,
-                                            newPassword: newPass));
-                                    Navigator.of(context).pop();
-                                  });
+                                  title: 'Reset Password',
+                                  child: ResetPassSheet());
                             },
                             contentPadding: const EdgeInsets.all(0),
                             title: const Text('Reset Password',

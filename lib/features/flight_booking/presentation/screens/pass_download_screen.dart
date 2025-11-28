@@ -430,7 +430,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const LaungeAccessWidget(),
+              // const LaungeAccessWidget(),
               const SizedBox(
                 height: 8,
               ),

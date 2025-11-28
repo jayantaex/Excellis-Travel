@@ -7,20 +7,20 @@ import 'data/src/ticket_remote_data_src.dart';
 import 'presentation/screens/ticket_details_screen.dart';
 import 'bloc/ticket_bloc.dart';
 import 'data/tickets_repository.dart';
-import 'presentation/screens/ticket_screen.dart';
+import 'presentation/screens/my_booking_screen.dart';
 
-class TicketModule {
+class BookingModule {
   static final TicketsRepository ticketRepository = TicketsRepository(
       ticketRemoteDataSrc: TicketRemoteDataSrc(apiClient: ApiClient()));
   //tickets screen
-  static String tickets = 'ticket';
-  static String ticketsRoute = '/ticket';
-  static Widget ticketBuilder() => MultiBlocProvider(
+  static String booking = 'booking';
+  static String bookingRoute = '/booking';
+  static Widget bookingBuilder() => MultiBlocProvider(
         providers: [
           BlocProvider<TicketBloc>(
               create: (_) => TicketBloc(repository: ticketRepository)),
         ],
-        child: const TicketScreen(),
+        child: const MyBookingScreen(),
       );
 
 //ticket details screen

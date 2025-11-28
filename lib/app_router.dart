@@ -11,7 +11,7 @@ import 'features/sales/sales_module.dart';
 import 'features/settings/settings_module.dart';
 import 'features/splash/screens/app_updater.dart';
 import 'features/splash/splash_module.dart';
-import 'features/ticket/ticket_module.dart';
+import 'features/booking/booking_module.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -61,16 +61,16 @@ class AppRouter {
 
       //ticket
       GoRoute(
-        path: TicketModule.ticketsRoute,
-        name: TicketModule.tickets,
+        path: BookingModule.bookingRoute,
+        name: BookingModule.booking,
         builder: (BuildContext context, GoRouterState state) =>
-            TicketModule.ticketBuilder(),
+            BookingModule.bookingBuilder(),
       ),
       GoRoute(
-        path: TicketModule.ticketDetailsRoute,
-        name: TicketModule.ticketDetails,
+        path: BookingModule.ticketDetailsRoute,
+        name: BookingModule.ticketDetails,
         builder: (BuildContext context, GoRouterState state) =>
-            TicketModule.ticketDetailsBuilder(state),
+            BookingModule.ticketDetailsBuilder(state),
       ),
 
       //Flight Booking
