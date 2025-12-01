@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../profile_management/bloc/profile_bloc.dart';
@@ -57,8 +56,11 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
               return SizedBox(
                 width: AppHelpers.getScreenWidth(context),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 16, right: 16, bottom: 10),
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    bottom: 10,
+                  ),
                   child: AppPrimaryButton(
                     onPressed: () async {
                       try {

@@ -8,7 +8,6 @@ import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_sheet.dart';
 import '../../../../core/widgets/no_login_widget.dart';
-import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/sales_bloc.dart';
 import '../widgets/filter_sheet.dart';
@@ -32,6 +31,8 @@ class _SalesScreenState extends State<SalesScreen> {
   final TextEditingController _bookingIdController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
+  DateTime? startingDate;
+  DateTime? endingDate;
 
   @override
   void initState() {
@@ -69,8 +70,12 @@ class _SalesScreenState extends State<SalesScreen> {
           SalesFetchEvent(
               page: page,
               limit: limit,
-              startDate: _startDateController.text,
-              endDate: _endDateController.text,
+              startDate: startingDate != null
+                  ? AppHelpers.formatDate(startingDate!, pattern: 'yyyy-MM-dd')
+                  : '',
+              endDate: endingDate != null
+                  ? AppHelpers.formatDate(endingDate!, pattern: 'yyyy-MM-dd')
+                  : '',
               keyword: _bookingIdController.text),
         );
   }
@@ -98,12 +103,14 @@ class _SalesScreenState extends State<SalesScreen> {
                               onStartDatePicked: (date) {
                                 _startDateController.text =
                                     AppHelpers.formatDate(date,
-                                        pattern: 'yyyy-MM-dd');
+                                        pattern: 'dd-MM-yyyy');
+                                startingDate = date;
                               },
                               onEndDatePicked: (date) {
                                 _endDateController.text = AppHelpers.formatDate(
                                     date,
-                                    pattern: 'yyyy-MM-dd');
+                                    pattern: 'dd-MM-yyyy');
+                                endingDate = date;
                               },
                             ),
                             onSubmitPressed: () async {
@@ -469,6 +476,8 @@ class _SalesScreenState extends State<SalesScreen> {
     _startDateController.clear();
     _endDateController.clear();
     _bookingIdController.clear();
+    startingDate = null;
+    endingDate = null;
     limit = 10;
     callApi(limit: limit, page: page);
   }

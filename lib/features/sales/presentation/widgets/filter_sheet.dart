@@ -64,8 +64,6 @@ class FilterSheet extends StatelessWidget {
                 if (picked != null) {
                   startDate = picked;
                   onStartDatePicked(picked);
-                  startDateController.text =
-                      AppHelpers.formatDate(picked, pattern: 'yyyy-MM-dd');
                 }
               },
             ),
@@ -99,8 +97,6 @@ class FilterSheet extends StatelessWidget {
                     return;
                   }
                   onEndDatePicked(picked);
-                  endDateController.text =
-                      AppHelpers.formatDate(picked, pattern: 'yyyy-MM-dd');
                 }
               },
             ),

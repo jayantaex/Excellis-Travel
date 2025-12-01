@@ -249,8 +249,10 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                                             itemBuilder: (BuildContext context,
                                                     int index) =>
                                                 TicketWidget(
-                                              isLast:
-                                                  index == tickets!.length - 1,
+                                              isLast: (totalItems !=
+                                                      tickets!.length) &&
+                                                  (index ==
+                                                      tickets!.length - 1),
                                               ticketData: tickets?[index],
                                             ),
                                           ),

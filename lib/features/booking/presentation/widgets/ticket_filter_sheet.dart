@@ -1,9 +1,11 @@
 import 'package:excellistravel/core/utils/app_date_picker.dart';
 import 'package:excellistravel/core/widgets/app_drop_down.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../../../core/widgets/primary_input.dart';
 
 class TicketFilterSheet extends StatefulWidget {
@@ -94,14 +96,13 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                 initialDate: DateTime.now(),
               );
               if (picked != null) {
+                if (startDate == null) {
+                  showToast(message: 'Please select start date first');
+                  return;
+                }
+
                 if (startDate != null && picked.isBefore(startDate!)) {
-                  // Show error if end date is before start date
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('End date cannot be before start date'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                  showToast(message: 'End date cannot be before start date');
                   return;
                 }
                 widget.onEndDatePicked(picked);

@@ -293,6 +293,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                                 setState(() {
                                                   isRoundTrip = value;
                                                 });
+                                                roundTripDate = null;
                                                 if (isRoundTrip) {
                                                   roundTripDate = departureDate
                                                       ?.add(_fiveDay);
@@ -348,7 +349,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                                       const Duration(
                                                           hours: 2)) ??
                                                   _today.add(_oneDay),
-                                              initialDate: departureDate
+                                              initialDate: roundTripDate ??
+                                                  departureDate
                                                       ?.add(_fiveDay) ??
                                                   _today.add(_fiveDay));
                                           setState(() {});
