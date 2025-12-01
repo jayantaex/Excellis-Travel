@@ -1,8 +1,8 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
-import 'package:excellistravel/core/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/app_styles.dart';
+import '../utils/app_helpers.dart';
+import 'primary_button.dart';
 
 Future<void> showAppSheet({
   required BuildContext context,
@@ -44,14 +44,17 @@ Future<void> showAppSheet({
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 16),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                          size: 20,
-                          color: AppColors.grey,
+                      child: CircleAvatar(
+                        backgroundColor: AppColors.divider,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            size: 20,
+                            color: AppColors.grey,
+                          ),
                         ),
                       ),
                     ),

@@ -14,7 +14,6 @@ import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
 import '../../data/models/payment_verify_res_model.dart';
-import '../widgets/launge_access_widget.dart';
 
 class PassDownloadScreen extends StatefulWidget {
   const PassDownloadScreen({super.key, required this.data});

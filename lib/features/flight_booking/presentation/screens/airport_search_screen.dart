@@ -46,6 +46,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
         _searchController.text = widget.selectedAirport!;
         await _handleAirportSearch(keyword: widget.selectedAirport);
       }
+      setState(() {});
     });
     super.initState();
   }
@@ -83,6 +84,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                   width:
                                       AppHelpers.getScreenWidth(context) * 0.6,
                                   child: AppPrimaryInput(
+                                    focus: true,
                                     onChange: (String query) {
                                       AppHelpers.debounce(
                                         () async {

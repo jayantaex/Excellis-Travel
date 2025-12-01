@@ -21,7 +21,7 @@ void main() async {
   runApp(
     EasyLocalization(
       supportedLocales: supportedLocales(),
-      fallbackLocale: supportedLocales().last,
+      fallbackLocale: supportedLocales().first,
       path: 'assets/translations',
       child: const MyApp(),
     ),
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.lightTheme,
         routerConfig: AppRouter.router,
         localizationsDelegates: context.localizationDelegates,
-        locale: supportedLocales().last,
+        locale: supportedLocales().first,
         supportedLocales: supportedLocales(),
       );
 }

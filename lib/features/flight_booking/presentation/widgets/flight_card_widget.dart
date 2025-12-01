@@ -438,35 +438,29 @@ class FlightCardWidget extends StatelessWidget {
                     SizedBox(
                       height: 30,
                       width: AppHelpers.getScreenWidth(context) * 0.4,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 2),
-                        child: Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              backgroundColor: AppColors.white,
-                              radius: 15,
-                              backgroundImage: AssetImage(
-                                  'assets/images/airlines/${(data.itineraries?.isNotEmpty ?? false) && (data.itineraries!.first.segments?.isNotEmpty ?? false) ? data.itineraries!.first.segments!.first.carrierCode : ""}.png'),
-                            ),
-                            const SizedBox(width: 5),
-                            SizedBox(
-                              width: AppHelpers.getScreenWidth(context) * 0.31,
-                              child: Text(
-                                dictionaries?.dictionaries.carriers?[
-                                        '${(data.itineraries?.isNotEmpty ?? false) && (data.itineraries!.first.segments?.isNotEmpty ?? false) ? data.itineraries!.first.segments!.first.carrierCode : ""}'] ??
-                                    'NO-NAME',
-                                softWrap: true,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      child: Row(
+                        children: <Widget>[
+                          getAirlineLogo(
+                              airlineCode: data.itineraries!.first.segments!
+                                  .first.carrierCode!),
+                          // const SizedBox(width: 5),
+                          // SizedBox(
+                          //   width: AppHelpers.getScreenWidth(context) * 0.31,
+                          //   child: Text(
+                          //     dictionaries?.dictionaries.carriers?[
+                          //             '${(data.itineraries?.isNotEmpty ?? false) && (data.itineraries!.first.segments?.isNotEmpty ?? false) ? data.itineraries!.first.segments!.first.carrierCode : ""}'] ??
+                          //         'NO-NAME',
+                          //     softWrap: true,
+                          //     maxLines: 2,
+                          //     overflow: TextOverflow.ellipsis,
+                          //     style: const TextStyle(
+                          //       fontSize: 10,
+                          //       fontWeight: FontWeight.w500,
+                          //       color: AppColors.black,
+                          //     ),
+                          //   ),
+                          // ),
+                        ],
                       ),
                     ),
                     Row(

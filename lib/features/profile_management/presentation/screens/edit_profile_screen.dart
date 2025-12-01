@@ -51,11 +51,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () async {
-      if (context.mounted) {
-        context.read<ProfileBloc>().add(const LoadProfileEvent());
-        context.read<StatesBloc>().add(GetStatesEvent());
-      }
+    Future.microtask(() {
+      _handleFetchProfile();
+      _handleFetchStates();
     });
     super.initState();
   }
@@ -386,4 +384,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ),
       );
+  void _handleFetchProfile() {
+    context.read<ProfileBloc>().add(const LoadProfileEvent());
+  }
+
+  void _handleFetchStates() {
+    context.read<StatesBloc>().add(GetStatesEvent());
+  }
 }
