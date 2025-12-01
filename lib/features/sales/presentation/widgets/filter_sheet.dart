@@ -29,6 +29,15 @@ class FilterSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             AppPrimaryInput(
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    bookingIdController.clear();
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    color: AppColors.grey,
+                    size: 16,
+                  )),
               maxCharacters: 50,
               hint: 'Enter your booking reference id',
               label: 'Booking Reference ID',

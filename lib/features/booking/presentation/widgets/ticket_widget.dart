@@ -165,7 +165,7 @@ class TicketWidget extends StatelessWidget {
                                         ticketData?.flightData?.itineraries
                                                     ?.length ==
                                                 2
-                                            ? 'RETURN'
+                                            ? 'ROUND TRIP'
                                             : 'ONE WAY',
                                         style: const TextStyle(
                                             fontSize: 10,

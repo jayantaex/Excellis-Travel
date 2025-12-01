@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
@@ -19,21 +21,22 @@ class PricingDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     for (TravelerPricing element in flightOffer.travelerPricings!) {
+      log('${element.travelerType}');
       switch (element.travelerType) {
         case 'ADULT':
           {
-            adult.add(element.price!.total!);
+            adult.add(element.travelerId ?? '');
           }
 
           break;
         case 'CHILD':
           {
-            child.add(element.price!.total!);
+            child.add(element.travelerId ?? '');
           }
           break;
         case 'HELD_INFANT':
           {
-            infant.add(element.price!.total!);
+            infant.add(element.travelerId ?? '');
           }
         default:
       }
@@ -79,13 +82,13 @@ class PricingDetails extends StatelessWidget {
                       : PriceCol(
                           isIconRequired: false,
                           titile: 'CHILD',
-                          value: '${adult.length} Person(s)'),
+                          value: '${child.length} Person(s)'),
                   infant.isEmpty
                       ? const SizedBox()
                       : PriceCol(
                           isIconRequired: false,
                           titile: 'INFANT',
-                          value: '${adult.length} Person(s)'),
+                          value: '${infant.length} Person(s)'),
                   const SizedBox(height: 8),
                   PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
                   PriceCol(

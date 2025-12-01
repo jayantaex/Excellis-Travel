@@ -8,6 +8,7 @@ import '../../../../core/utils/storage_service.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_sheet.dart';
 import '../../../../core/widgets/no_login_widget.dart';
+import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/sales_bloc.dart';
 import '../widgets/filter_sheet.dart';
@@ -362,6 +363,56 @@ class _SalesScreenState extends State<SalesScreen> {
                                       ),
                                       // Transactions List Header
 
+                                      //total booking with count and reset button,
+                                      SliverToBoxAdapter(
+                                        child: SizedBox(
+                                          height: 40,
+                                          width: AppHelpers.getScreenWidth(
+                                              context),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Total Booking (${state.sales.pagination?.totalItems ?? 0})',
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: AppColors.white,
+                                                  ),
+                                                ),
+                                                _startDateController
+                                                            .text.isNotEmpty ||
+                                                        _endDateController
+                                                            .text.isNotEmpty ||
+                                                        _bookingIdController
+                                                            .text.isNotEmpty
+                                                    ? SizedBox(
+                                                        height: 45,
+                                                        width: 80,
+                                                        child: TextButton(
+                                                            onPressed: () {
+                                                              _resetFilters();
+                                                            },
+                                                            child: const Text(
+                                                              'Reset',
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      AppColors
+                                                                          .white,
+                                                                  fontSize: 10),
+                                                            )),
+                                                      )
+                                                    : const SizedBox(),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
                                       // Sales List
                                       SliverPadding(
                                         padding: const EdgeInsets.only(
@@ -412,4 +463,13 @@ class _SalesScreenState extends State<SalesScreen> {
           ),
         ),
       );
+
+  void _resetFilters() {
+    page = 1;
+    _startDateController.clear();
+    _endDateController.clear();
+    _bookingIdController.clear();
+    limit = 10;
+    callApi(limit: limit, page: page);
+  }
 }

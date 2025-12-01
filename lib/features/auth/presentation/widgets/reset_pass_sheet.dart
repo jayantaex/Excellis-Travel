@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
@@ -16,6 +17,9 @@ class _ResetPassSheetState extends State<ResetPassSheet> {
   final TextEditingController _oldPassController = TextEditingController();
   final TextEditingController _newPassController = TextEditingController();
   final TextEditingController _confirmPassController = TextEditingController();
+  bool _isOldPasswordVisible = true;
+  bool _isNewPasswordVisible = true;
+  bool _isConfirmPasswordVisible = true;
 
   @override
   void dispose() {
@@ -67,6 +71,24 @@ class _ResetPassSheetState extends State<ResetPassSheet> {
     }
   }
 
+  void _toggleOldPasswordVisibility() {
+    setState(() {
+      _isOldPasswordVisible = !_isOldPasswordVisible;
+    });
+  }
+
+  void _toggleNewPasswordVisibility() {
+    setState(() {
+      _isNewPasswordVisible = !_isNewPasswordVisible;
+    });
+  }
+
+  void _toggleConfirmPasswordVisibility() {
+    setState(() {
+      _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext selfContext) => Form(
         key: _formKey,
@@ -75,7 +97,23 @@ class _ResetPassSheetState extends State<ResetPassSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppPrimaryInput(
-              isPassword: true,
+              suffixIcon: InkWell(
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: _toggleOldPasswordVisibility,
+                child: SizedBox(
+                  height: 15,
+                  width: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: AppHelpers.svgAsset(
+                        assetName: 'password_visisbility', isIcon: true),
+                  ),
+                ),
+              ),
+              isPassword: _isOldPasswordVisible,
               maxCharacters: 21,
               controller: _oldPassController,
               hint: 'Enter your old password',
@@ -84,7 +122,23 @@ class _ResetPassSheetState extends State<ResetPassSheet> {
             ),
             const SizedBox(height: 16),
             AppPrimaryInput(
-              isPassword: true,
+              suffixIcon: InkWell(
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: _toggleNewPasswordVisibility,
+                child: SizedBox(
+                  height: 15,
+                  width: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: AppHelpers.svgAsset(
+                        assetName: 'password_visisbility', isIcon: true),
+                  ),
+                ),
+              ),
+              isPassword: _isNewPasswordVisible,
               maxCharacters: 21,
               controller: _newPassController,
               hint: 'Enter your new password',
@@ -93,7 +147,23 @@ class _ResetPassSheetState extends State<ResetPassSheet> {
             ),
             const SizedBox(height: 16),
             AppPrimaryInput(
-              isPassword: true,
+              suffixIcon: InkWell(
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: _toggleConfirmPasswordVisibility,
+                child: SizedBox(
+                  height: 15,
+                  width: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: AppHelpers.svgAsset(
+                        assetName: 'password_visisbility', isIcon: true),
+                  ),
+                ),
+              ),
+              isPassword: _isConfirmPasswordVisible,
               controller: _confirmPassController,
               maxCharacters: 21,
               hint: 'Confirm your new password',

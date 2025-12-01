@@ -54,13 +54,11 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
 
               final profile = profileState.profileData;
 
-              return Container(
-                height: 65,
-                color: AppColors.white,
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
-                child: SizedBox(
-                  height: 45,
-                  width: AppHelpers.getScreenWidth(context),
+              return SizedBox(
+                width: AppHelpers.getScreenWidth(context),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 10),
                   child: AppPrimaryButton(
                     onPressed: () async {
                       try {
