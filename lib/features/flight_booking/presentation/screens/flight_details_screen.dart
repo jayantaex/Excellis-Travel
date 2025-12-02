@@ -240,8 +240,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                             },
                                             flightOffer: flightState
                                                 .data.data!.flightOffers!.first,
-                                            myMarkup: flightState
-                                                .data.data!.myMarkup!,
+                                            myMarkup:
+                                                flightState.data.data?.myMarkup,
                                           ),
                                           ListTile(
                                             leading: CircleAvatar(

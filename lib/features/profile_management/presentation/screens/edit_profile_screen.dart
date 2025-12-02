@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -82,7 +84,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: SafeArea(
               bottom: false,
               child: BlocConsumer<ProfileBloc, ProfileState>(
-                listener: (BuildContext context, ProfileState state) {
+                listener: (BuildContext context, ProfileState state) async {
+                  log('state $state');
+
                   if (state is ProfileLoaded) {
                     List<String> addressList = <String>[];
 
@@ -110,6 +114,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     _nearbyAirportController.text = '';
                     _gstNoController.text = '';
                     _aadhaarNoController.text = '';
+                  }
+                  if (state is ProfileError) {
+                    await AppHelpers.showSnackBar(context, state.message,
+                        backgroundColor: AppColors.error,
+                        textColor: AppColors.white);
                   }
                 },
                 builder: (BuildContext context, ProfileState state) {
@@ -364,12 +373,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                   if (state is ProfileError) {
                     return Center(
-                      child: Text(state.message),
+                      child: Text(state.message,
+                          style: const TextStyle(
+                            color: AppColors.white,
+                            fontSize: 16,
+                          )),
                     );
                   }
                   if (state is ProfileUpdateError) {
                     return Center(
-                      child: Text(state.message),
+                      child: Text(
+                        state.message,
+                        style: const TextStyle(
+                          color: AppColors.error,
+                        ),
+                      ),
                     );
                   }
                   return const Center(

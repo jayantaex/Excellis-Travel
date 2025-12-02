@@ -9,10 +9,10 @@ class PricingDetails extends StatelessWidget {
   PricingDetails(
       {super.key,
       required this.flightOffer,
-      required this.myMarkup,
+      this.myMarkup,
       required this.offerFareEnabled});
   final FlightOffer flightOffer;
-  final MyMarkup myMarkup;
+  final MyMarkup? myMarkup;
   final bool offerFareEnabled;
   final List<String> adult = <String>[];
   final List<String> child = <String>[];
@@ -91,16 +91,17 @@ class PricingDetails extends StatelessWidget {
                           value: '${infant.length} Person(s)'),
                   const SizedBox(height: 8),
                   PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
-                  PriceCol(
-                      titile: 'Taxes, Surcharges & Fees',
-                      value: offerFareEnabled
-                          ? '0.00'
-                          : (double.parse(getCalculatedPrice(
-                                      basePrice: flightOffer.price!.markup!,
-                                      type: myMarkup.fareType ?? 'Fixed',
-                                      value: myMarkup.value ?? '0')) -
-                                  double.parse(flightOffer.price!.markup!))
-                              .toStringAsFixed(2)),
+                  if (myMarkup != null)
+                    PriceCol(
+                        titile: 'Taxes, Surcharges & Fees',
+                        value: offerFareEnabled
+                            ? '0.00'
+                            : (double.parse(getCalculatedPrice(
+                                        basePrice: flightOffer.price!.markup!,
+                                        type: myMarkup?.fareType ?? 'Fixed',
+                                        value: myMarkup?.value ?? '0')) -
+                                    double.parse(flightOffer.price!.markup!))
+                                .toStringAsFixed(2)),
                   const SizedBox(height: 6),
                   const Divider(),
                   const SizedBox(height: 12),
@@ -110,8 +111,8 @@ class PricingDetails extends StatelessWidget {
                         ? flightOffer.price!.markup!
                         : getCalculatedPrice(
                             basePrice: flightOffer.price!.markup!,
-                            type: myMarkup.fareType ?? 'Fixed',
-                            value: myMarkup.value ?? '0',
+                            type: myMarkup?.fareType ?? 'Fixed',
+                            value: myMarkup?.value ?? '0',
                           ),
                     isBold: true,
                     isIconRequired: true,

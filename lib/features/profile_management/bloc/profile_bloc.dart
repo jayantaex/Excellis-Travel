@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -23,11 +24,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       final ApiResponse<ProfileModel> res =
           await profileRepository.getUserProfile();
+
+      if (res.errorMessage != null) {
+        emit(ProfileError(message: res.errorMessage ?? 'Something went wrong'));
+        return;
+      }
+      log('${res.errorMessage}');
       final ProfileModel profileData = res.data ?? ProfileModel();
       // emit(const ProfileError(message: 'Access denied'));
 
       emit(ProfileLoaded(profileData: profileData));
     } catch (e) {
+      log(e.toString());
       emit(ProfileError(message: e.toString()));
     }
   }

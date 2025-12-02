@@ -42,7 +42,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
           final flightOffer = flightState.data.data!.flightOffers!.first;
           final grandTotal = flightOffer.price!.grandTotal!;
           final markup = flightOffer.price!.markup!;
-          final myMarkup = flightState.data.data!.myMarkup!;
+          final myMarkup = flightState.data.data?.myMarkup;
           final travellersCount = flightOffer.travelerPricings!.length;
 
           return BlocBuilder<ProfileBloc, ProfileState>(
@@ -104,18 +104,18 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                         );
                         final Map<String, dynamic> fareDetails =
                             calculateFareDetails(
-                          myMarkupPrice: myMarkup.value ?? '0',
+                          myMarkupPrice: myMarkup?.value ?? '0',
                           grandTotal: grandTotal,
                           markupPrice: markup,
                           taxes: flightOffer.price?.fees,
                           showTotalFare: widget.offerFareEnabled,
-                          myMarkupType: myMarkup.fareType ?? 'Fixed',
+                          myMarkupType: myMarkup?.fareType ?? 'Fixed',
                         );
 
                         createPaymentBody = getCreatePaymentBody(
                           markupPrice: markup,
-                          myMarkupPrice: myMarkup.value ?? '0',
-                          myMarkupType: myMarkup.type ?? 'Fixed',
+                          myMarkupPrice: myMarkup?.value ?? '0',
+                          myMarkupType: myMarkup?.type ?? 'Fixed',
                           billingAddress: billingAddress,
                           contactDetails: contactDetails,
                           flightOfferData: flightOffer.toJson(),
