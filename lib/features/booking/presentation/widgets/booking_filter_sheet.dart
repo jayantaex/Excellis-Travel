@@ -56,6 +56,15 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           AppPrimaryInput(
+            suffixIcon: InkWell(
+              onTap: () {
+                widget.bookingIdController.clear();
+              },
+              child: const Icon(
+                Icons.close_rounded,
+                size: 16,
+              ),
+            ),
             maxCharacters: 50,
             hint: 'Enter your booking reference id',
             label: 'Booking Reference ID',

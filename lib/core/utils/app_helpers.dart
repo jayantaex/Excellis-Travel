@@ -193,13 +193,14 @@ class AppHelpers {
               margin: const EdgeInsets.only(bottom: 8),
               child: TextButton(
                 style: TextButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    maximumSize: const Size.fromHeight(50)),
+                  minimumSize: const Size.fromHeight(50),
+                ),
                 onPressed: () => Navigator.of(context).pop(false),
                 child: Text(cancelText),
               ),
             ),
-            Expanded(
+            Container(
+              margin: const EdgeInsets.only(bottom: 8),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     maximumSize: const Size.fromHeight(50)),

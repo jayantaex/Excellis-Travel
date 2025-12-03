@@ -175,7 +175,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                       SliverAppBar(
                                         expandedHeight: AppHelpers.percenHeight(
                                                 context: context) *
-                                            0.3,
+                                            0.34,
                                         pinned: true,
                                         backgroundColor: Colors.transparent,
                                         elevation: 0.5,
@@ -295,7 +295,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                               '${state.sales.pagination?.totalItems ?? 0}',
                                                               style:
                                                                   const TextStyle(
-                                                                fontSize: 16,
+                                                                fontSize: 14,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
@@ -308,7 +308,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                             Text(
                                                               'Total Ticket Booked',
                                                               style: TextStyle(
-                                                                fontSize: 11,
+                                                                fontSize: 12,
                                                                 color: AppColors
                                                                     .white
                                                                     .withOpacity(
@@ -340,7 +340,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                               '₹${state.sales.totalSales ?? 0}',
                                                               style:
                                                                   const TextStyle(
-                                                                fontSize: 16,
+                                                                fontSize: 14,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
@@ -353,7 +353,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                             Text(
                                                               'Total Amount',
                                                               style: TextStyle(
-                                                                fontSize: 11,
+                                                                fontSize: 12,
                                                                 color: AppColors
                                                                     .white
                                                                     .withOpacity(
@@ -408,12 +408,15 @@ class _SalesScreenState extends State<SalesScreen> {
                                                               _resetFilters();
                                                             },
                                                             child: const Text(
-                                                              'Reset',
+                                                              'Clear',
                                                               style: TextStyle(
-                                                                  color:
-                                                                      AppColors
-                                                                          .white,
-                                                                  fontSize: 10),
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: AppColors
+                                                                    .white,
+                                                              ),
                                                             )),
                                                       )
                                                     : const SizedBox(),
