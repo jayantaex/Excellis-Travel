@@ -21,7 +21,7 @@ class PricingDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     for (TravelerPricing element in flightOffer.travelerPricings!) {
-      log('${element.travelerType}');
+      log('${element.travelerType}----------');
       switch (element.travelerType) {
         case 'ADULT':
           {

@@ -81,7 +81,6 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                           final Map<String, dynamic> data = getPassengetDetails(
                             passenger: widget.passengers[i],
                           );
-                          log('${widget.passengers[i].type}');
                           if (widget.passengers[i].type == 'ADULT') {
                             travellers['adults']?.add(data);
                           }
@@ -97,11 +96,14 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                             getBillingAddress(
                           address: profile.address ?? '',
                         );
+                        log('${billingAddress}');
+
                         final Map<String, dynamic> contactDetails =
                             getContactDetails(
                           email: profile.email ?? '',
                           phone: profile.phone ?? '',
                         );
+                        log('${contactDetails}');
                         final Map<String, dynamic> fareDetails =
                             calculateFareDetails(
                           myMarkupPrice: myMarkup?.value ?? '0',
@@ -111,7 +113,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                           showTotalFare: widget.offerFareEnabled,
                           myMarkupType: myMarkup?.fareType ?? 'Fixed',
                         );
-
+                        log('${fareDetails}');
                         createPaymentBody = getCreatePaymentBody(
                           markupPrice: markup,
                           myMarkupPrice: myMarkup?.value ?? '0',
@@ -123,6 +125,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                           fareDetails: fareDetails,
                           isOfferEnabled: widget.offerFareEnabled,
                         );
+                        log('${createPaymentBody}');
 
                         if (context.mounted) {
                           context
@@ -162,9 +165,6 @@ Map<String, dynamic> getCreatePaymentBody(
       'contactDetails': contactDetails,
       'billingAddress': billingAddress,
       'fareDetails': fareDetails,
-
-      //enable  ->markup price
-      //disable -> markup price + my markup price
       'amount': isOfferEnabled
           ? (double.parse(markupPrice))
           : (double.parse(getCalculatedPrice(
@@ -260,5 +260,6 @@ String getCalculatedPrice(
   }
   final amount = (price * double.parse(value)) / 100;
   price += amount;
+
   return price.toStringAsFixed(2);
 }

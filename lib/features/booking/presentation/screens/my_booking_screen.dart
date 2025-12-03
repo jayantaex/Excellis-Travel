@@ -273,6 +273,7 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
           ),
         ),
       );
+
   Future<void> fetchTickets() async {
     if (context.mounted) {
       context.read<TicketBloc>().add(

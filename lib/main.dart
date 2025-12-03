@@ -1,11 +1,7 @@
-import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:excellistravel/core/constants/app_styles.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'core/localization/supported_local.dart';
 import 'core/services/firebase_notification_service.dart';
 import 'core/services/local_db.dart';

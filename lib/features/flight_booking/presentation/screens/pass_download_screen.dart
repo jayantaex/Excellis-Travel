@@ -1,5 +1,6 @@
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:excellistravel/core/utils/airline_image_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -92,11 +93,9 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(
-                                          height: 16,
-                                          width: 40,
-                                          color: AppColors.grey,
-                                        ),
+                                        getAirlineLogo(
+                                            airlineCode:
+                                                '${widget.data.flightData?.itineraries?.first.segments?.first.carrierCode}'),
                                         Text(
                                           '${widget.data.bookingReference}'
                                               .toUpperCase(),
@@ -409,7 +408,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
           ),
         ),
         bottomNavigationBar: Container(
-          height: AppHelpers.getScreenHeight(context) * 0.24,
+          height: AppHelpers.getScreenHeight(context) * 0.165,
           padding:
               const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 16),
           decoration: BoxDecoration(
@@ -430,9 +429,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               // const LaungeAccessWidget(),
-              const SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 8),
               AppPrimaryButton(
                 title: 'Download Pass',
                 style:

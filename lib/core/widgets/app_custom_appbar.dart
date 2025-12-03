@@ -74,7 +74,11 @@ class AppCustomAppbar extends StatelessWidget {
                                   color: AppColors.white)),
                         ],
                 )),
-            trailing ?? const SizedBox()
+            InkWell(
+              onTap: () => onMoreClicked?.call(),
+              borderRadius: BorderRadius.circular(25),
+              child: trailing ?? const SizedBox(),
+            )
           ],
         ),
       );

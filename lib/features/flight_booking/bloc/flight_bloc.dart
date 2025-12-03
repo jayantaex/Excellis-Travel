@@ -65,7 +65,20 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         element.price?.markupPrice = res.data!.toStringAsFixed(2);
       }
 
-      emit(FlightLoaded(data: res.data!));
+      //filtering the array by aircraft codes
+      final List<String> aircaftCodes = [];
+      for (var flight in res.data!.datam ?? []) {
+        for (var itinerary in flight.itineraries ?? []) {
+          for (var segment in itinerary.segments ?? []) {
+            final aircraftCode = segment.aircraft?.code;
+            if (aircraftCode != null && !aircaftCodes.contains(aircraftCode)) {
+              aircaftCodes.add(aircraftCode);
+            }
+          }
+        }
+      }
+
+      emit(FlightLoaded(data: res.data!, aircaftCodes: aircaftCodes));
     } catch (e) {
       emit(FlightSearchingError(
         message: '$e',
@@ -169,46 +182,139 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       switch (event.filterName) {
         case 'All':
           {
+            //filtering the array by aircraft codes
+            final List<String> aircaftCodes = [];
+            for (var flight in flightData.datam ?? []) {
+              for (var itinerary in flight.itineraries ?? []) {
+                for (var segment in itinerary.segments ?? []) {
+                  final aircraftCode = segment.aircraft?.code;
+                  if (aircraftCode != null &&
+                      !aircaftCodes.contains(aircraftCode)) {
+                    aircaftCodes.add(aircraftCode);
+                  }
+                }
+              }
+            }
             flightData.datam!.sort((a, b) => a
                 .itineraries!.first.segments!.first.arrival!.at!
                 .compareTo(b.itineraries!.first.segments!.first.arrival!.at!));
-            emit(FlightLoaded(data: flightData));
+
+            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
           }
           break;
 
         case 'Lowest Price':
           {
+            final List<String> aircaftCodes = [];
+            for (var flight in flightData.datam ?? []) {
+              for (var itinerary in flight.itineraries ?? []) {
+                for (var segment in itinerary.segments ?? []) {
+                  final aircraftCode = segment.aircraft?.code;
+                  if (aircraftCode != null &&
+                      !aircaftCodes.contains(aircraftCode)) {
+                    aircaftCodes.add(aircraftCode);
+                  }
+                }
+              }
+            }
             flightData.datam!.sort((a, b) => double.parse(a.price!.markupPrice!)
                 .compareTo(double.parse(b.price!.markupPrice!)));
-            emit(FlightLoaded(data: flightData));
+
+            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
           }
           break;
         case 'Highest Price':
           {
+            final List<String> aircaftCodes = [];
+            for (var flight in flightData.datam ?? []) {
+              for (var itinerary in flight.itineraries ?? []) {
+                for (var segment in itinerary.segments ?? []) {
+                  final aircraftCode = segment.aircraft?.code;
+                  if (aircraftCode != null &&
+                      !aircaftCodes.contains(aircraftCode)) {
+                    aircaftCodes.add(aircraftCode);
+                  }
+                }
+              }
+            }
             flightData.datam!.sort((a, b) => double.parse(b.price!.markupPrice!)
                 .compareTo(double.parse(a.price!.markupPrice!)));
-            emit(FlightLoaded(data: flightData));
+            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
           }
           break;
         case 'Non Stop First':
           {
+            final List<String> aircaftCodes = [];
+            for (var flight in flightData.datam ?? []) {
+              for (var itinerary in flight.itineraries ?? []) {
+                for (var segment in itinerary.segments ?? []) {
+                  final aircraftCode = segment.aircraft?.code;
+                  if (aircraftCode != null &&
+                      !aircaftCodes.contains(aircraftCode)) {
+                    aircaftCodes.add(aircraftCode);
+                  }
+                }
+              }
+            }
             flightData.datam!.sort((a, b) => a
                 .itineraries!.first.segments!.length
                 .compareTo(b.itineraries!.first.segments!.length));
-            emit(FlightLoaded(data: flightData));
+            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
           }
           break;
         case 'Non Stop Last':
           {
+            final List<String> aircaftCodes = [];
+            for (var flight in flightData.datam ?? []) {
+              for (var itinerary in flight.itineraries ?? []) {
+                for (var segment in itinerary.segments ?? []) {
+                  final aircraftCode = segment.aircraft?.code;
+                  if (aircraftCode != null &&
+                      !aircaftCodes.contains(aircraftCode)) {
+                    aircaftCodes.add(aircraftCode);
+                  }
+                }
+              }
+            }
             flightData.datam!.sort((a, b) => b
                 .itineraries!.first.segments!.length
                 .compareTo(a.itineraries!.first.segments!.length));
-            emit(FlightLoaded(data: flightData));
+            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
+          }
+          break;
+        case 'Aircraft':
+          {
+            final List<String> aircaftCodes = [];
+            for (var flight in flightData.datam ?? []) {
+              for (var itinerary in flight.itineraries ?? []) {
+                for (var segment in itinerary.segments ?? []) {
+                  final aircraftCode = segment.aircraft?.code;
+                  if (aircraftCode != null &&
+                      !aircaftCodes.contains(aircraftCode)) {
+                    aircaftCodes.add(aircraftCode);
+                  }
+                }
+              }
+            }
+            flightData.datam!.retainWhere((element) {
+              // Check if any segment in any itinerary uses one of the selected aircraft
+              for (var itinerary in element.itineraries ?? []) {
+                for (var segment in itinerary.segments ?? []) {
+                  if (event.selectedAircraftCode!
+                      .contains(segment.aircraft?.code)) {
+                    return true;
+                  }
+                }
+              }
+              return false;
+            });
+
+            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
           }
           break;
 
         default:
-          emit(FlightLoaded(data: flightData));
+          emit(FlightLoaded(data: flightData, aircaftCodes: const []));
       }
     } catch (e) {
       emit(FlightSearchingError(message: '$e'));

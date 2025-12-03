@@ -31,8 +31,10 @@ final class FlightSearching extends FlightState {}
 final class FlightLoaded extends FlightState {
   const FlightLoaded({
     required this.data,
+    required this.aircaftCodes,
   });
   final FlightsDataModel data;
+  final List<String> aircaftCodes;
 }
 
 final class FlightSearchingError extends FlightState {
