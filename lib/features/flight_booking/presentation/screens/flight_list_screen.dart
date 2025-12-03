@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:excellistravel/core/constants/app_styles.dart';
+import 'package:excellistravel/features/flight_booking/data/models/filter_data_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +20,7 @@ import '../../data/models/hive/flight_hive_data_model.dart'
 import '../widgets/flight_listing/class_filter_widget.dart';
 import '../widgets/flight_card_widget.dart';
 import '../widgets/flight_listing/date_filter_widget.dart';
+import '../widgets/flight_listing/filter_drawer.dart';
 import '../widgets/flight_listing/no_flight_widget.dart';
 import '../widgets/loading/flight_list_loadding_widget.dart';
 
@@ -79,6 +82,11 @@ class _FlightListScreenState extends State<FlightListScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        drawer: flightSearchDrawer(
+          context: context,
+          onApply: _handleFilterApply,
+          onClear: _handleFilterClear,
+        ),
         body: AppGradientBg(
           child: TransWhiteBgWidget(
             child: Center(
@@ -104,6 +112,20 @@ class _FlightListScreenState extends State<FlightListScreen> {
                               child: AppCustomAppbar(
                                 start: widget.data['depurture'],
                                 end: widget.data['arrival'],
+                                trailing: InkWell(
+                                  onTap: () {
+                                    Scaffold.of(context).openDrawer();
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor:
+                                        AppColors.white.withOpacity(0.2),
+                                    child: const Icon(
+                                      Icons.filter_alt_rounded,
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -151,23 +173,17 @@ class _FlightListScreenState extends State<FlightListScreen> {
                             ),
                           ),
 
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 16),
-                          ),
+                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
                           // Class Filter
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 16),
-                              child: ClassFilterWidget(
-                                filters: filters,
-                              ),
+                              child: ClassFilterWidget(filters: filters),
                             ),
                           ),
 
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 16),
-                          ),
+                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
                           // Flight List
                           SliverPadding(
@@ -240,6 +256,31 @@ class _FlightListScreenState extends State<FlightListScreen> {
           ),
         ),
       );
+
+  void _handleFilterApply(FilterDataModel filterData) {
+    final FlightState currentFlightState = context.read<FlightBloc>().state;
+    if (currentFlightState is FlightLoaded) {
+      context.read<FlightBloc>().add(
+            FilterFlightEvent(
+              filterData: filterData,
+              flightData: currentFlightState.data,
+            ),
+          );
+    }
+  }
+
+  void _handleFilterClear() {
+    final FlightState currentFlightState = context.read<FlightBloc>().state;
+
+    if (currentFlightState is FlightLoaded) {
+      context.read<FlightBloc>().add(
+            FilterFlightEvent(
+              filterData: FilterDataModel(),
+              flightData: currentFlightState.data,
+            ),
+          );
+    }
+  }
 }
 
 Future<bool> _saveToLocal(

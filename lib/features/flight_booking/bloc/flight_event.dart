@@ -56,4 +56,10 @@ class SortFlightEvent extends FlightEvent {
   final List<String>? selectedAircraftCode;
 }
 
+class FilterFlightEvent extends FlightEvent {
+  const FilterFlightEvent({required this.filterData, required this.flightData});
+  final FilterDataModel filterData;
+  final FlightsDataModel flightData;
+}
+
 class ToggleFareOption extends FlightEvent {}

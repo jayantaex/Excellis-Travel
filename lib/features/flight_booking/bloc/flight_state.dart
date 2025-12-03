@@ -32,8 +32,12 @@ final class FlightLoaded extends FlightState {
   const FlightLoaded({
     required this.data,
     required this.aircaftCodes,
+    required this.isFiltered,
+    this.filteredData,
   });
   final FlightsDataModel data;
+  final FlightsDataModel? filteredData;
+  final bool isFiltered;
   final List<String> aircaftCodes;
 }
 

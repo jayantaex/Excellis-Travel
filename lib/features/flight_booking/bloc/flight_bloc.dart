@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/network/api_response.dart';
+import '../data/models/filter_data_model.dart';
 import '../data/repository/flight_booking_repository.dart';
 import '../data/models/air_port_model.dart';
 import '../data/models/create_order_res.dart';
@@ -26,6 +27,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     on<VerifyPayment>(_handleVerifyPayment);
     on<ToggleFareOption>(_handleOfferFareToggle);
     on<SortFlightEvent>(_handleSortFlight);
+    on<FilterFlightEvent>(_handleFilterFlight);
   }
   final FlightBookingRepository repository;
 
@@ -60,13 +62,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       res.data!.datam?.sort((a, b) => a
           .itineraries!.first.segments!.first.departure!.at!
           .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
-      log("/////////////////////////////");
-      double publishFare = 0.0;
       final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
-      if (myMarkup.data != null) {
-        log('+++++++++++++++${myMarkup.data?.value}=============');
-        log('+++++++++++++++${myMarkup.data?.fareType}=============');
-      }
       for (Datam element in res.data!.datam!) {
         final ApiResponse<double> res = await repository.getMarkUpPrice(
             basePrice: double.parse(element.price!.grandTotal!));
@@ -90,7 +86,8 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         }
       }
 
-      emit(FlightLoaded(data: res.data!, aircaftCodes: aircaftCodes));
+      emit(FlightLoaded(
+          data: res.data!, aircaftCodes: aircaftCodes, isFiltered: false));
     } catch (e) {
       emit(FlightSearchingError(
         message: '$e',
@@ -211,10 +208,12 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                 .itineraries!.first.segments!.first.arrival!.at!
                 .compareTo(b.itineraries!.first.segments!.first.arrival!.at!));
 
-            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
+            emit(FlightLoaded(
+                isFiltered: false,
+                data: flightData,
+                aircaftCodes: aircaftCodes));
           }
           break;
-
         case 'Lowest Price':
           {
             final List<String> aircaftCodes = [];
@@ -232,7 +231,10 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
             flightData.datam!.sort((a, b) => double.parse(a.price!.offerPrice!)
                 .compareTo(double.parse(b.price!.offerPrice!)));
 
-            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
+            emit(FlightLoaded(
+                isFiltered: false,
+                data: flightData,
+                aircaftCodes: aircaftCodes));
           }
           break;
         case 'Highest Price':
@@ -254,7 +256,10 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                 double.parse(a.price!.offerPrice!),
               ),
             );
-            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
+            emit(FlightLoaded(
+                isFiltered: false,
+                data: flightData,
+                aircaftCodes: aircaftCodes));
           }
           break;
         case 'Non Stop First':
@@ -274,7 +279,10 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
             flightData.datam!.sort((a, b) => a
                 .itineraries!.first.segments!.length
                 .compareTo(b.itineraries!.first.segments!.length));
-            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
+            emit(FlightLoaded(
+                isFiltered: false,
+                data: flightData,
+                aircaftCodes: aircaftCodes));
           }
           break;
         case 'Non Stop Last':
@@ -294,43 +302,89 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
             flightData.datam!.sort((a, b) => b
                 .itineraries!.first.segments!.length
                 .compareTo(a.itineraries!.first.segments!.length));
-            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
+            emit(FlightLoaded(
+                isFiltered: false,
+                data: flightData,
+                aircaftCodes: aircaftCodes));
           }
           break;
-        case 'Aircraft':
-          {
-            final List<String> aircaftCodes = [];
-            for (var flight in flightData.datam ?? []) {
-              for (var itinerary in flight.itineraries ?? []) {
-                for (var segment in itinerary.segments ?? []) {
-                  final aircraftCode = segment.aircraft?.code;
-                  if (aircraftCode != null &&
-                      !aircaftCodes.contains(aircraftCode)) {
-                    aircaftCodes.add(aircraftCode);
-                  }
-                }
-              }
-            }
-            flightData.datam!.retainWhere((element) {
-              // Check if any segment in any itinerary uses one of the selected aircraft
-              for (var itinerary in element.itineraries ?? []) {
-                for (var segment in itinerary.segments ?? []) {
-                  if (event.selectedAircraftCode!
-                      .contains(segment.aircraft?.code)) {
-                    return true;
-                  }
-                }
-              }
-              return false;
-            });
-
-            emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
-          }
-          break;
-
         default:
-          emit(FlightLoaded(data: flightData, aircaftCodes: const []));
+          emit(FlightLoaded(
+              isFiltered: false, data: flightData, aircaftCodes: const []));
       }
+    } catch (e) {
+      emit(FlightSearchingError(message: '$e'));
+    }
+  }
+
+  Future<void> _handleFilterFlight(
+      FilterFlightEvent event, Emitter<FlightState> emit) async {
+    try {
+      emit(FlightSearching());
+
+      final FlightsDataModel _flightData = event.flightData;
+      final FlightsDataModel _filteredFlightData = event.flightData;
+      log('${event.filterData}');
+      if (event.filterData.departureTime != null) {
+        final DateTime now = DateTime.now();
+        switch (event.filterData.departureTime) {
+          case 'before_6am':
+            {
+              DateTime _6am = DateTime(now.year, now.month, now.day, 6, 0, 0);
+
+              _filteredFlightData.datam!.removeWhere((flight) {
+                final departureTime = DateTime.parse(
+                    flight.itineraries!.first.segments!.first.departure!.at!);
+                return departureTime.isAfter(_6am);
+              });
+
+              log('${_filteredFlightData.datam!.length}');
+              log('${_6am}');
+            }
+
+            break;
+          case '6_to_12pm':
+            {
+              _filteredFlightData.datam!.removeWhere((flight) {
+                final departureTime = DateTime.parse(
+                    flight.itineraries!.first.segments!.first.departure!.at!);
+                return departureTime
+                    .isBefore(now.subtract(const Duration(hours: 12)));
+              });
+            }
+
+            break;
+          case '12_to_6pm':
+            {
+              _filteredFlightData.datam!.removeWhere((flight) {
+                final departureTime = DateTime.parse(
+                    flight.itineraries!.first.segments!.first.departure!.at!);
+                return departureTime
+                    .isBefore(now.subtract(const Duration(hours: 12)));
+              });
+            }
+
+            break;
+          case 'after_6pm':
+            {
+              _filteredFlightData.datam!.removeWhere((flight) {
+                final departureTime = DateTime.parse(
+                    flight.itineraries!.first.segments!.first.departure!.at!);
+                return departureTime
+                    .isBefore(now.subtract(const Duration(hours: 18)));
+              });
+            }
+
+            break;
+          default:
+        }
+      }
+      emit(FlightLoaded(
+        isFiltered: true,
+        filteredData: _filteredFlightData,
+        data: _flightData,
+        aircaftCodes: const [],
+      ));
     } catch (e) {
       emit(FlightSearchingError(message: '$e'));
     }
