@@ -34,11 +34,13 @@ final class FlightLoaded extends FlightState {
     required this.aircaftCodes,
     required this.isFiltered,
     this.filteredData,
+    this.currentFilter,
   });
   final FlightsDataModel data;
   final FlightsDataModel? filteredData;
   final bool isFiltered;
   final List<String> aircaftCodes;
+  final FilterDataModel? currentFilter;
 }
 
 final class FlightSearchingError extends FlightState {

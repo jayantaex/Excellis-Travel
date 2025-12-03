@@ -63,3 +63,8 @@ class FilterFlightEvent extends FlightEvent {
 }
 
 class ToggleFareOption extends FlightEvent {}
+
+class ClearFilterEvent extends FlightEvent {
+  const ClearFilterEvent({required this.flightData});
+  final FlightsDataModel flightData;
+}

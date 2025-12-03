@@ -82,10 +82,19 @@ class _FlightListScreenState extends State<FlightListScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        drawer: flightSearchDrawer(
-          context: context,
-          onApply: _handleFilterApply,
-          onClear: _handleFilterClear,
+        drawer: BlocBuilder<FlightBloc, FlightState>(
+          builder: (context, state) {
+            FilterDataModel? currentFilter;
+            if (state is FlightLoaded) {
+              currentFilter = state.currentFilter;
+            }
+            return flightSearchDrawer(
+              context: context,
+              onApply: _handleFilterApply,
+              onClear: _handleFilterClear,
+              initialFilter: currentFilter,
+            );
+          },
         ),
         body: AppGradientBg(
           child: TransWhiteBgWidget(
@@ -116,13 +125,16 @@ class _FlightListScreenState extends State<FlightListScreen> {
                                   onTap: () {
                                     Scaffold.of(context).openDrawer();
                                   },
-                                  child: CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor:
-                                        AppColors.white.withOpacity(0.2),
-                                    child: const Icon(
-                                      Icons.filter_alt_rounded,
-                                      color: AppColors.white,
+                                  child: Badge(
+                                    isLabelVisible: state.isFiltered,
+                                    child: CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor:
+                                          AppColors.white.withOpacity(0.2),
+                                      child: const Icon(
+                                        Icons.filter_alt_rounded,
+                                        color: AppColors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -190,8 +202,12 @@ class _FlightListScreenState extends State<FlightListScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             sliver: SliverList(
                               delegate: SliverChildBuilderDelegate(
-                                (context, index) => (state.data.datam?.length ??
-                                            0) !=
+                                (context, index) => (state.isFiltered
+                                            ? (state.filteredData?.datam
+                                                    ?.length ??
+                                                0)
+                                            : (state.data.datam?.length ??
+                                                0)) !=
                                         0
                                     ? Container(
                                         margin:
@@ -226,12 +242,17 @@ class _FlightListScreenState extends State<FlightListScreen> {
                                               },
                                             );
                                           },
-                                          data: state.data.datam![index],
+                                          data: state.isFiltered
+                                              ? state
+                                                  .filteredData!.datam![index]
+                                              : state.data.datam![index],
                                           dictionaries: state.data.dictionaries,
                                         ),
                                       )
                                     : const NoFlightWidget(),
-                                childCount: state.data.datam?.length ?? 0,
+                                childCount: state.isFiltered
+                                    ? state.filteredData?.datam?.length ?? 0
+                                    : state.data.datam?.length ?? 0,
                               ),
                             ),
                           ),
@@ -257,7 +278,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
         ),
       );
 
-  void _handleFilterApply(FilterDataModel filterData) {
+  void _handleFilterApply(FilterDataModel filterData, BuildContext context) {
     final FlightState currentFlightState = context.read<FlightBloc>().state;
     if (currentFlightState is FlightLoaded) {
       context.read<FlightBloc>().add(
@@ -266,20 +287,21 @@ class _FlightListScreenState extends State<FlightListScreen> {
               flightData: currentFlightState.data,
             ),
           );
+      Scaffold.of(context).closeDrawer();
     }
   }
 
-  void _handleFilterClear() {
+  void _handleFilterClear(BuildContext context) {
     final FlightState currentFlightState = context.read<FlightBloc>().state;
 
     if (currentFlightState is FlightLoaded) {
       context.read<FlightBloc>().add(
-            FilterFlightEvent(
-              filterData: FilterDataModel(),
+            ClearFilterEvent(
               flightData: currentFlightState.data,
             ),
           );
     }
+    Scaffold.of(context).closeDrawer();
   }
 }
 

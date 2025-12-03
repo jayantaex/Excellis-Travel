@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:excellistravel/features/flight_booking/data/models/filter_data_model.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
 
-Drawer flightSearchDrawer(
-    {required BuildContext context,
-    required Function(FilterDataModel filterData) onApply,
-    required VoidCallback onClear}) {
+Drawer flightSearchDrawer({
+  required BuildContext context,
+  required Function(FilterDataModel filterData, BuildContext context) onApply,
+  required Function(BuildContext context) onClear,
+  FilterDataModel? initialFilter,
+}) {
   final List<Map<String, dynamic>> listOfDepartureTime = [
     {'title': 'Before 6AM', 'icon': 'bf_6', 'name': 'before_6am'},
     {'title': '6AM - 12PM', 'icon': '6_12', 'name': '6_to_12pm'},
@@ -27,6 +31,7 @@ Drawer flightSearchDrawer(
       listOfStops: listOfStops,
       onApply: onApply,
       onClear: onClear,
+      initialFilter: initialFilter,
     ),
   );
 }
@@ -38,12 +43,14 @@ class FilterContent extends StatefulWidget {
     required this.listOfStops,
     required this.onApply,
     required this.onClear,
+    this.initialFilter,
   });
 
   final List<Map<String, dynamic>> listOfDepartureTime;
   final List<Map<String, dynamic>> listOfStops;
-  final Function(FilterDataModel filterData) onApply;
-  final VoidCallback onClear;
+  final Function(FilterDataModel filterData, BuildContext context) onApply;
+  final Function(BuildContext context) onClear;
+  final FilterDataModel? initialFilter;
 
   @override
   State<FilterContent> createState() => _FilterContentState();
@@ -55,6 +62,38 @@ class _FilterContentState extends State<FilterContent> {
   String minPrice = '10';
   String maxPrice = '100';
   RangeValues _rangeValues = const RangeValues(10, 100);
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize with the current filter values if they exist
+    _syncWithInitialFilter();
+  }
+
+  @override
+  void didUpdateWidget(FilterContent oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update local state when initialFilter changes (e.g., when reset is triggered)
+    if (oldWidget.initialFilter != widget.initialFilter) {
+      log('Filter changed - Old: ${oldWidget.initialFilter?.departureTime}, New: ${widget.initialFilter?.departureTime}');
+      _syncWithInitialFilter();
+    }
+  }
+
+  void _syncWithInitialFilter() {
+    log('Syncing with initialFilter: DepartureTime=${widget.initialFilter?.departureTime}, Stops=${widget.initialFilter?.stops}');
+    setState(() {
+      if (widget.initialFilter != null) {
+        _selectedDepartureTime = widget.initialFilter!.departureTime ?? '';
+        _selectedStop = widget.initialFilter!.stops ?? '';
+      } else {
+        // If initialFilter is null, clear selections
+        _selectedDepartureTime = '';
+        _selectedStop = '';
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) => SafeArea(
         child: Padding(
@@ -203,7 +242,15 @@ class _FilterContentState extends State<FilterContent> {
                       height: 45,
                       width: 120,
                       child: TextButton(
-                          onPressed: widget.onClear,
+                          onPressed: () {
+                            // Clear local state
+                            setState(() {
+                              _selectedDepartureTime = '';
+                              _selectedStop = '';
+                            });
+                            // Call the clear callback
+                            widget.onClear(context);
+                          },
                           child: const Text(
                             'Reset',
                             style: TextStyle(color: AppColors.primary),
@@ -216,13 +263,13 @@ class _FilterContentState extends State<FilterContent> {
                       child: AppPrimaryButton(
                         onPressed: () {
                           widget.onApply(
-                            FilterDataModel(
-                              departureTime: _selectedDepartureTime,
-                              stops: _selectedStop,
-                              minPrice: null,
-                              maxPrice: null,
-                            ),
-                          );
+                              FilterDataModel(
+                                departureTime: _selectedDepartureTime,
+                                stops: _selectedStop,
+                                minPrice: null,
+                                maxPrice: null,
+                              ),
+                              context);
                         },
                         title: 'Apply',
                         isLoading: false,

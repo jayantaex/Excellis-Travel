@@ -28,6 +28,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     on<ToggleFareOption>(_handleOfferFareToggle);
     on<SortFlightEvent>(_handleSortFlight);
     on<FilterFlightEvent>(_handleFilterFlight);
+    on<ClearFilterEvent>(_handleClearFilter);
   }
   final FlightBookingRepository repository;
 
@@ -322,68 +323,163 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     try {
       emit(FlightSearching());
 
-      final FlightsDataModel _flightData = event.flightData;
-      final FlightsDataModel _filteredFlightData = event.flightData;
+      final FlightsDataModel flightData = event.flightData;
+      // Create a copy of the flight data to avoid mutating the original
+      final FlightsDataModel filteredFlightData = FlightsDataModel(
+        datam: List.from(event.flightData.datam ?? []),
+        dictionaries: event.flightData.dictionaries,
+        meta: event.flightData.meta,
+      );
+
       log('${event.filterData}');
       if (event.filterData.departureTime != null) {
-        final DateTime now = DateTime.now();
         switch (event.filterData.departureTime) {
           case 'before_6am':
             {
-              DateTime _6am = DateTime(now.year, now.month, now.day, 6, 0, 0);
-
-              _filteredFlightData.datam!.removeWhere((flight) {
+              filteredFlightData.datam!.removeWhere((flight) {
                 final departureTime = DateTime.parse(
                     flight.itineraries!.first.segments!.first.departure!.at!);
-                return departureTime.isAfter(_6am);
+                final hourOfDay = departureTime.hour;
+                // Keep flights with departure time before 6 AM (0-5 hours)
+                return hourOfDay >= 6;
               });
 
-              log('${_filteredFlightData.datam!.length}');
-              log('${_6am}');
+              log('Filtered flights (before 6am): ${filteredFlightData.datam!.length}');
             }
-
             break;
+
           case '6_to_12pm':
             {
-              _filteredFlightData.datam!.removeWhere((flight) {
+              filteredFlightData.datam!.removeWhere((flight) {
                 final departureTime = DateTime.parse(
                     flight.itineraries!.first.segments!.first.departure!.at!);
-                return departureTime
-                    .isBefore(now.subtract(const Duration(hours: 12)));
+                final hourOfDay = departureTime.hour;
+                // Keep flights with departure time between 6 AM and 12 PM (6-11 hours)
+                return hourOfDay < 6 || hourOfDay >= 12;
               });
-            }
 
+              log('Filtered flights (6am-12pm): ${filteredFlightData.datam!.length}');
+            }
             break;
+
           case '12_to_6pm':
             {
-              _filteredFlightData.datam!.removeWhere((flight) {
+              filteredFlightData.datam!.removeWhere((flight) {
                 final departureTime = DateTime.parse(
                     flight.itineraries!.first.segments!.first.departure!.at!);
-                return departureTime
-                    .isBefore(now.subtract(const Duration(hours: 12)));
+                final hourOfDay = departureTime.hour;
+                // Keep flights with departure time between 12 PM and 6 PM (12-17 hours)
+                return hourOfDay < 12 || hourOfDay >= 18;
               });
-            }
 
+              log('Filtered flights (12pm-6pm): ${filteredFlightData.datam!.length}');
+            }
             break;
+
           case 'after_6pm':
             {
-              _filteredFlightData.datam!.removeWhere((flight) {
+              filteredFlightData.datam!.removeWhere((flight) {
                 final departureTime = DateTime.parse(
                     flight.itineraries!.first.segments!.first.departure!.at!);
-                return departureTime
-                    .isBefore(now.subtract(const Duration(hours: 18)));
+                final hourOfDay = departureTime.hour;
+                // Keep flights with departure time after 6 PM (18-23 hours)
+                return hourOfDay < 18;
               });
-            }
 
+              log('Filtered flights (after 6pm): ${filteredFlightData.datam!.length}');
+            }
             break;
+
           default:
         }
       }
+
+      // Filter by stops
+      if (event.filterData.stops != null &&
+          event.filterData.stops!.isNotEmpty) {
+        switch (event.filterData.stops) {
+          case 'non_stop':
+            {
+              filteredFlightData.datam!.removeWhere((flight) {
+                // Non-stop means only 1 segment in the first itinerary
+                final segmentCount =
+                    flight.itineraries?.first.segments?.length ?? 0;
+                return segmentCount != 1;
+              });
+
+              log('Filtered flights (non-stop): ${filteredFlightData.datam!.length}');
+            }
+            break;
+
+          case '1_stop':
+            {
+              filteredFlightData.datam!.removeWhere((flight) {
+                // 1 stop means 2 segments in the first itinerary
+                final segmentCount =
+                    flight.itineraries?.first.segments?.length ?? 0;
+                return segmentCount != 2;
+              });
+
+              log('Filtered flights (1 stop): ${filteredFlightData.datam!.length}');
+            }
+            break;
+
+          case 'multiple_stop':
+            {
+              filteredFlightData.datam!.removeWhere((flight) {
+                // Multiple stops means 3 or more segments in the first itinerary
+                final segmentCount =
+                    flight.itineraries?.first.segments?.length ?? 0;
+                return segmentCount < 3;
+              });
+
+              log('Filtered flights (multiple stops): ${filteredFlightData.datam!.length}');
+            }
+            break;
+
+          default:
+        }
+      }
+
+      // Determine if any filters are actually applied
+      final bool hasActiveFilters = (event.filterData.departureTime != null &&
+              event.filterData.departureTime!.isNotEmpty) ||
+          (event.filterData.stops != null &&
+              event.filterData.stops!.isNotEmpty);
+
       emit(FlightLoaded(
-        isFiltered: true,
-        filteredData: _filteredFlightData,
-        data: _flightData,
+        isFiltered: hasActiveFilters,
+        filteredData: hasActiveFilters ? filteredFlightData : null,
+        data: flightData,
         aircaftCodes: const [],
+        currentFilter: hasActiveFilters ? event.filterData : null,
+      ));
+    } catch (e) {
+      emit(FlightSearchingError(message: '$e'));
+    }
+  }
+
+  Future<void> _handleClearFilter(
+      ClearFilterEvent event, Emitter<FlightState> emit) async {
+    try {
+      // Extract aircraft codes from the flight data
+      final List<String> aircaftCodes = [];
+      for (var flight in event.flightData.datam ?? []) {
+        for (var itinerary in flight.itineraries ?? []) {
+          for (var segment in itinerary.segments ?? []) {
+            final aircraftCode = segment.aircraft?.code;
+            if (aircraftCode != null && !aircaftCodes.contains(aircraftCode)) {
+              aircaftCodes.add(aircraftCode);
+            }
+          }
+        }
+      }
+
+      emit(FlightLoaded(
+        data: event.flightData,
+        aircaftCodes: aircaftCodes,
+        isFiltered: false,
+        currentFilter: null,
       ));
     } catch (e) {
       emit(FlightSearchingError(message: '$e'));
