@@ -22,16 +22,15 @@ class _ClassFilterWidgetState extends State<ClassFilterWidget> {
         child: ListView.builder(
           itemBuilder: (context, index) =>
               BlocConsumer<FlightBloc, FlightState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
+            listener: (context, state) {},
             builder: (context, state) => SearchFilterWidget(
               onTap: () {
                 if (state is FlightLoaded) {
                   context.read<FlightBloc>().add(
-                        FilterFlightEvent(
-                            filterName: widget.filters[index],
-                            flightData: state.data),
+                        SortFlightEvent(
+                          filterName: widget.filters[index],
+                          flightData: state.data,
+                        ),
                       );
                 }
                 setState(() {

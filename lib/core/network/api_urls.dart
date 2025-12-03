@@ -8,6 +8,7 @@ class MainUrl {
       return AppConstants.baseUrl;
     } else {
       return 'https://api.excellistravel.com';
+      // return 'http://192.168.0.205:5000/api/v1';
     }
   }
 

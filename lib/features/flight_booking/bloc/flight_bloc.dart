@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -23,7 +25,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     on<CreateFlightOrder>(_handleCreateFlightOrder);
     on<VerifyPayment>(_handleVerifyPayment);
     on<ToggleFareOption>(_handleOfferFareToggle);
-    on<FilterFlightEvent>(_handleFilterFlight);
+    on<SortFlightEvent>(_handleSortFlight);
   }
   final FlightBookingRepository repository;
 
@@ -58,11 +60,21 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       res.data!.datam?.sort((a, b) => a
           .itineraries!.first.segments!.first.departure!.at!
           .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
-
+      log("/////////////////////////////");
+      double publishFare = 0.0;
+      final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
+      if (myMarkup.data != null) {
+        log('+++++++++++++++${myMarkup.data?.value}=============');
+        log('+++++++++++++++${myMarkup.data?.fareType}=============');
+      }
       for (Datam element in res.data!.datam!) {
         final ApiResponse<double> res = await repository.getMarkUpPrice(
             basePrice: double.parse(element.price!.grandTotal!));
-        element.price?.markupPrice = res.data!.toStringAsFixed(2);
+        element.price?.offerPrice = res.data!.toStringAsFixed(2);
+        element.price?.publishedPrice = getCalculatedPrice(
+            basePrice: res.data!.toStringAsFixed(2),
+            type: myMarkup.data?.fareType ?? 'Fixed',
+            value: myMarkup.data?.value ?? '0');
       }
 
       //filtering the array by aircraft codes
@@ -172,8 +184,8 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     }
   }
 
-  Future<void> _handleFilterFlight(
-      FilterFlightEvent event, Emitter<FlightState> emit) async {
+  Future<void> _handleSortFlight(
+      SortFlightEvent event, Emitter<FlightState> emit) async {
     try {
       FlightsDataModel flightData = FlightsDataModel();
       flightData = event.flightData;
@@ -217,8 +229,8 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                 }
               }
             }
-            flightData.datam!.sort((a, b) => double.parse(a.price!.markupPrice!)
-                .compareTo(double.parse(b.price!.markupPrice!)));
+            flightData.datam!.sort((a, b) => double.parse(a.price!.offerPrice!)
+                .compareTo(double.parse(b.price!.offerPrice!)));
 
             emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
           }
@@ -237,8 +249,11 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                 }
               }
             }
-            flightData.datam!.sort((a, b) => double.parse(b.price!.markupPrice!)
-                .compareTo(double.parse(a.price!.markupPrice!)));
+            flightData.datam!.sort(
+              (a, b) => double.parse(b.price!.offerPrice!).compareTo(
+                double.parse(a.price!.offerPrice!),
+              ),
+            );
             emit(FlightLoaded(data: flightData, aircaftCodes: aircaftCodes));
           }
           break;
@@ -320,4 +335,17 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       emit(FlightSearchingError(message: '$e'));
     }
   }
+}
+
+String getCalculatedPrice(
+    {required String basePrice, required String type, required String value}) {
+  double price = double.parse(basePrice);
+  if (type == 'Fixed') {
+    final double amount = double.parse(value);
+    price += amount;
+    return price.toStringAsFixed(2);
+  }
+  final amount = (price * double.parse(value)) / 100;
+  price += amount;
+  return price.toStringAsFixed(2);
 }

@@ -282,7 +282,8 @@ class DatamPrice {
       this.base,
       this.fees,
       this.grandTotal,
-      this.markupPrice});
+      this.publishedPrice,
+      this.offerPrice});
 
   factory DatamPrice.fromJson(Map<String, dynamic> json) => DatamPrice(
         currency: json['currency'],
@@ -299,7 +300,8 @@ class DatamPrice {
   final String? base;
   final List<Fee>? fees;
   final String? grandTotal;
-  String? markupPrice;
+  String? offerPrice;
+  String? publishedPrice;
 
   Map<String, dynamic> toJson() => {
         'currency': currency,
@@ -309,7 +311,7 @@ class DatamPrice {
             ? List<dynamic>.from(fees!.map((fee) => fee.toJson()))
             : null,
         'grandTotal': grandTotal,
-        'markupPrice': markupPrice, // Included markupPrice in toJson
+        'offerPrice': offerPrice, // Included markupPrice in toJson
       };
 }
 

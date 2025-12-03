@@ -14,14 +14,16 @@ class TicketRemoteDataSrc {
     required String status,
     required String startDate,
     required String endDate,
+    required String dateType,
   }) async {
     try {
       final ApiResponse<BookingListModel> resp = await apiClient.getRequest(
           queryParameters: <String, dynamic>{
+            'searchCriteria': bookingId.isEmpty ? null : 'Reference No',
             'page': page,
             'limit': limit,
             'searchText': bookingId,
-            'dateType': 'bookingdate',
+            'dateType': dateType,
             'status': status,
             'fromDate': startDate,
             'toDate': endDate,

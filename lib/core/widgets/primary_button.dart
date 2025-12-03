@@ -10,11 +10,13 @@ class AppPrimaryButton extends StatelessWidget {
       this.onPressed,
       required this.title,
       required this.isLoading,
+      this.enabled,
       this.style,
       this.bgColor});
   final Function? onPressed;
   final String title;
   final bool isLoading;
+  final bool? enabled;
   final Color? bgColor;
   final TextStyle? style;
 

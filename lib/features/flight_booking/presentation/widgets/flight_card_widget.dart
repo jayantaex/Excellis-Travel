@@ -393,14 +393,15 @@ class FlightCardWidget extends StatelessWidget {
                           ),
                           hasFinalPrice ?? true
                               ? Text(
-                                  '₹${data.price?.markupPrice ?? 0.00} | ₹${getCalculatedPrice(
-                                    basePrice: data.price!.markupPrice!,
+                                  '₹${data.price?.offerPrice ?? 0.00} | ₹${getCalculatedPrice(
+                                    basePrice:
+                                        data.price?.publishedPrice ?? '0.00',
                                     type: markUpType ?? 'Fixed',
                                     value: markUpValue ?? '0',
                                   )}',
                                   style: const TextStyle(
                                       fontSize: 12,
-                                      fontWeight: FontWeight.w500),
+                                      fontWeight: FontWeight.w600),
                                 )
                               : const SizedBox(),
                         ],
@@ -696,7 +697,7 @@ class FlightCardWidget extends StatelessWidget {
                       ),
                       hasFinalPrice ?? true
                           ? Text(
-                              '₹${data.price?.markupPrice ?? 0.00}',
+                              '₹${data.price?.offerPrice ?? 0.00}',
                               style: const TextStyle(
                                   fontSize: 10, fontWeight: FontWeight.w500),
                             )

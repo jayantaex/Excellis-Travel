@@ -1,3 +1,4 @@
+import 'package:excellistravel/core/utils/app_toast.dart';
 import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +12,7 @@ import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/ticket_bloc.dart';
 import '../../data/models/ticket_model.dart' show Booking;
-import '../widgets/ticket_filter_sheet.dart';
+import '../widgets/booking_filter_sheet.dart';
 import '../widgets/ticket_widget.dart';
 
 class MyBookingScreen extends StatefulWidget {
@@ -31,6 +32,7 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
   String _selectedStatus = '';
+  String _selectedDateType = 'bookingdate';
   String _pickedStartDate = '';
   String _pickedEndDate = '';
   List<Booking>? tickets;
@@ -96,8 +98,12 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                             startDateController: _startDateController,
                             endDateController: _endDateController,
                             selectedStatus: _selectedStatus,
+                            selectedDateType: _selectedDateType,
                             onStatusChanged: (String? status) {
                               _selectedStatus = status ?? '';
+                            },
+                            onDateTypeChanged: (String? dateType) {
+                              _selectedDateType = dateType ?? 'bookingdate';
                             },
                             onStartDatePicked: (DateTime picked) {
                               _pickedStartDate = AppHelpers.formatDate(picked,
@@ -107,16 +113,13 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                               _pickedEndDate = AppHelpers.formatDate(picked,
                                   pattern: 'yyyy-MM-dd');
                             },
+                            onSubmitPressed: () {
+                              page = 1;
+                              tickets = null;
+                              fetchTickets();
+                              Navigator.pop(context);
+                            },
                           ),
-                          submitButtonRequired: true,
-                          onSubmitPressed: () {
-                            // Reset pagination when applying filters
-                            page = 1;
-                            tickets = null;
-                            fetchTickets();
-                            Navigator.pop(context); // Close the filter sheet
-                          },
-                          submitButtonTitle: 'Apply',
                         );
                       },
                       icon: const Icon(
@@ -278,6 +281,7 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
     if (context.mounted) {
       context.read<TicketBloc>().add(
             FetchTickets(
+              dateType: _selectedDateType,
               page: page,
               limit: limit,
               startDate: _pickedStartDate,

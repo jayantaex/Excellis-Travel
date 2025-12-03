@@ -46,8 +46,8 @@ class GetMarkupPrice extends FlightEvent {
   final double baseAmount;
 }
 
-class FilterFlightEvent extends FlightEvent {
-  const FilterFlightEvent(
+class SortFlightEvent extends FlightEvent {
+  const SortFlightEvent(
       {required this.flightData,
       required this.filterName,
       this.selectedAircraftCode});

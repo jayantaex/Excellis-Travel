@@ -10,7 +10,7 @@ import '../../../../core/widgets/app_sheet.dart';
 import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/sales_bloc.dart';
-import '../widgets/filter_sheet.dart';
+import '../widgets/sales_filter_sheet.dart';
 import '../widgets/no_sales.dart';
 import '../widgets/sale_tile.dart';
 
@@ -94,32 +94,35 @@ class _SalesScreenState extends State<SalesScreen> {
                   child: IconButton(
                       onPressed: () async {
                         await showAppSheet(
-                            context: context,
-                            title: 'Filter Options',
-                            child: FilterSheet(
-                              bookingIdController: _bookingIdController,
-                              startDateController: _startDateController,
-                              endDateController: _endDateController,
-                              onStartDatePicked: (date) {
-                                _startDateController.text =
-                                    AppHelpers.formatDate(date,
-                                        pattern: 'dd-MM-yyyy');
-                                startingDate = date;
-                              },
-                              onEndDatePicked: (date) {
-                                _endDateController.text = AppHelpers.formatDate(
-                                    date,
-                                    pattern: 'dd-MM-yyyy');
-                                endingDate = date;
-                              },
-                            ),
+                          context: context,
+                          title: 'Filter Options',
+                          child: SalesFilterSheet(
+                            bookingIdController: _bookingIdController,
+                            startDateController: _startDateController,
+                            endDateController: _endDateController,
+                            onStartDatePicked: (date) {
+                              _startDateController.text = AppHelpers.formatDate(
+                                  date,
+                                  pattern: 'dd-MM-yyyy');
+                              startingDate = date;
+                            },
+                            onEndDatePicked: (date) {
+                              _endDateController.text = AppHelpers.formatDate(
+                                  date,
+                                  pattern: 'dd-MM-yyyy');
+                              endingDate = date;
+                            },
                             onSubmitPressed: () async {
-                              Navigator.pop(context);
                               page = 1;
                               await callApi(page: page, limit: limit);
                             },
-                            submitButtonRequired: true,
-                            submitButtonTitle: 'Apply');
+                          ),
+                          // onSubmitPressed: () async {
+
+                          // },
+                          // submitButtonRequired: true,
+                          // submitButtonTitle: 'Apply',
+                        );
                       },
                       icon:
                           const Icon(Icons.filter_alt, color: AppColors.white)),
@@ -172,7 +175,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                       SliverAppBar(
                                         expandedHeight: AppHelpers.percenHeight(
                                                 context: context) *
-                                            0.35,
+                                            0.3,
                                         pinned: true,
                                         backgroundColor: Colors.transparent,
                                         elevation: 0.5,
@@ -221,7 +224,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                               .start,
                                                       children: [
                                                         Text(
-                                                          'Total Earnings',
+                                                          'Total Markup',
                                                           style: TextStyle(
                                                             fontSize: 14,
                                                             fontWeight:
@@ -292,7 +295,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                               '${state.sales.pagination?.totalItems ?? 0}',
                                                               style:
                                                                   const TextStyle(
-                                                                fontSize: 20,
+                                                                fontSize: 16,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
@@ -303,7 +306,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                             const SizedBox(
                                                                 height: 4),
                                                             Text(
-                                                              'Total Bookings',
+                                                              'Total Ticket Booked',
                                                               style: TextStyle(
                                                                 fontSize: 11,
                                                                 color: AppColors
@@ -334,10 +337,10 @@ class _SalesScreenState extends State<SalesScreen> {
                                                         child: Column(
                                                           children: [
                                                             Text(
-                                                              '₹${((double.tryParse('${state.sales.totalMarkup}') ?? 0) / (state.sales.pagination?.totalItems ?? 1)).toStringAsFixed(0)}',
+                                                              '₹${state.sales.totalSales ?? 0}',
                                                               style:
                                                                   const TextStyle(
-                                                                fontSize: 20,
+                                                                fontSize: 16,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
@@ -348,7 +351,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                             const SizedBox(
                                                                 height: 4),
                                                             Text(
-                                                              'Avg. Earning',
+                                                              'Total Amount',
                                                               style: TextStyle(
                                                                 fontSize: 11,
                                                                 color: AppColors

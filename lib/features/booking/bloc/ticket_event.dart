@@ -15,6 +15,7 @@ class FetchTickets extends TicketEvent {
     required this.endDate,
     required this.status,
     required this.bookingId,
+    required this.dateType,
   });
   final int page;
   final int limit;
@@ -22,6 +23,7 @@ class FetchTickets extends TicketEvent {
   final String endDate;
   final String status;
   final String bookingId;
+  final String dateType;
 }
 
 class RefreshTickets extends TicketEvent {}
