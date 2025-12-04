@@ -189,13 +189,23 @@ class AppHelpers {
           title: Text(title),
           content: Text(content),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(cancelText),
+            Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    maximumSize: const Size.fromHeight(50)),
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(cancelText),
+              ),
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(confirmText),
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    maximumSize: const Size.fromHeight(50)),
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(confirmText),
+              ),
             ),
           ],
         ),
@@ -280,6 +290,7 @@ class AppHelpers {
     bool? isIcon,
     double? width,
     double? height,
+    Color? color,
   }) =>
       SvgPicture.asset(
         isIcon == true
@@ -287,6 +298,8 @@ class AppHelpers {
             : '${AppConstants.assetImageUrl}$assetName.svg',
         width: width,
         height: height,
+        colorFilter:
+            color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
       );
 
   static bool validateEmail(String text) {

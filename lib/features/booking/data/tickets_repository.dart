@@ -14,6 +14,7 @@ class TicketsRepository {
     required String startDate,
     required String endDate,
     required String bookingId,
+    required String dateType,
   }) async =>
       await ticketRemoteDataSrc.getAllBookedTickets(
         page: page,
@@ -22,5 +23,6 @@ class TicketsRepository {
         bookingId: bookingId,
         endDate: endDate,
         startDate: startDate,
+        dateType: dateType,
       );
 }

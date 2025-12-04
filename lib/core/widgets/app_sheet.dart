@@ -13,6 +13,7 @@ Future<void> showAppSheet({
   VoidCallback? onSubmitPressed,
 }) =>
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true,
       backgroundColor: AppColors.white,
       context: context,
@@ -24,6 +25,8 @@ Future<void> showAppSheet({
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               SizedBox(
                 height: 45,
@@ -74,7 +77,7 @@ Future<void> showAppSheet({
               if (submitButtonRequired == true)
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: SizedBox(
                     height: 50,
                     width: AppHelpers.getScreenWidth(context),

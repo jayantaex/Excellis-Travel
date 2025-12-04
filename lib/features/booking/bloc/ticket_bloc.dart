@@ -42,6 +42,7 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
         status: event.status,
         startDate: event.startDate,
         endDate: event.endDate,
+        dateType: event.dateType,
       );
 
       if (res.data != null) {

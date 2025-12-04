@@ -82,18 +82,18 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
       value: 'Regular',
       child: Text('Regular'),
     ),
-    const DropdownMenuItem<String>(
-      value: 'Student',
-      child: Text('Student'),
-    ),
-    const DropdownMenuItem<String>(
-      value: 'Senior Citizen',
-      child: Text('Senior Citizen'),
-    ),
-    const DropdownMenuItem<String>(
-      value: 'Armed Forces',
-      child: Text('Armed Forces'),
-    ),
+    // const DropdownMenuItem<String>(
+    //   value: 'Student',
+    //   child: Text('Student'),
+    // ),
+    // const DropdownMenuItem<String>(
+    //   value: 'Senior Citizen',
+    //   child: Text('Senior Citizen'),
+    // ),
+    // const DropdownMenuItem<String>(
+    //   value: 'Armed Forces',
+    //   child: Text('Armed Forces'),
+    // ),
   ];
 
   final List<DropdownMenuItem<String>> _trendingSearches =
@@ -281,8 +281,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           'Roundtrip?',
                                           style: TextStyle(
                                               fontSize: 10,
-                                              fontWeight: FontWeight.w300,
-                                              color: AppColors.grey),
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.primary),
                                         ),
                                         Transform.scale(
                                           scale: 0.6,

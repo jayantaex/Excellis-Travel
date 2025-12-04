@@ -255,10 +255,20 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                               ),
                                             ),
                                             title: Text(
-                                                '${state.profileData.firstName} ${state.profileData.lastName}'),
+                                              '${state.profileData.firstName} ${state.profileData.lastName}',
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
                                             subtitle: Text(
-                                                '${state.profileData.email}'),
-                                            trailing: const Text('Change'),
+                                              '${state.profileData.email}',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            // trailing: const Text('Change'),
                                           ),
                                         ],
                                       );

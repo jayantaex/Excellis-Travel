@@ -300,14 +300,62 @@ class TicketDetailsScreen extends StatelessWidget {
                                 ),
                               ),
                               title: Text(
-                                '${adult.firstName ?? 'N/A'} ${adult.lastName ?? 'N/A'}',
+                                '${adult.firstName ?? ''} ${adult.lastName ?? ''}',
                               ),
                               subtitle: adult.dateOfBirth?.isEmpty ?? true
-                                  ? const Text(
-                                      'N/A',
-                                    )
+                                  ? null
                                   : Text(
-                                      '${AppHelpers.formatDate(DateTime.parse(adult.dateOfBirth ?? DateTime.now().toString()), pattern: 'dd MMM yyy')} | ${adult.open ?? 'N/A'}',
+                                      AppHelpers.formatDate(
+                                          DateTime.parse(adult.dateOfBirth ??
+                                              DateTime.now().toString()),
+                                          pattern: 'dd MMM yyy'),
+                                    ),
+                            ),
+                          ),
+
+                          ...ticketData!.travellerDetails!.children!.map(
+                            (child) => ListTile(
+                              leading: const CircleAvatar(
+                                radius: 16,
+                                child: Icon(
+                                  Icons.person,
+                                  color: AppColors.primary,
+                                  size: 16,
+                                ),
+                              ),
+                              title: Text(
+                                '${child.firstName ?? ''} ${child.lastName ?? ''}',
+                              ),
+                              subtitle: child.dateOfBirth?.isEmpty ?? true
+                                  ? null
+                                  : Text(
+                                      AppHelpers.formatDate(
+                                          DateTime.parse(child.dateOfBirth ??
+                                              DateTime.now().toString()),
+                                          pattern: 'dd MMM yyy'),
+                                    ),
+                            ),
+                          ),
+                          ...ticketData!.travellerDetails!.infants!.map(
+                            (infant) => ListTile(
+                              leading: const CircleAvatar(
+                                radius: 16,
+                                child: Icon(
+                                  Icons.person,
+                                  color: AppColors.primary,
+                                  size: 16,
+                                ),
+                              ),
+                              title: Text(
+                                '${infant.firstName ?? ''} ${infant.lastName ?? ''}',
+                              ),
+                              subtitle: infant.dateOfBirth?.isEmpty ?? true
+                                  ? null
+                                  : Text(
+                                      AppHelpers.formatDate(
+                                          DateTime.parse(infant.dateOfBirth ??
+                                              DateTime.now().toString()),
+                                          pattern: 'dd MMM yyy'),
                                     ),
                             ),
                           ),

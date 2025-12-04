@@ -16,6 +16,8 @@ class FlightCardWidget extends StatelessWidget {
       this.dictionaries,
       this.hasFinalPrice = true,
       required this.onTap,
+      this.markUpType,
+      this.markUpValue,
       this.customWidth,
       this.departureCity,
       this.departureAirport,
@@ -23,6 +25,8 @@ class FlightCardWidget extends StatelessWidget {
       this.arrivalAirport});
   final Datam data;
   final FlightDictionary? dictionaries;
+  final String? markUpType;
+  final String? markUpValue;
   final bool? isOnWishList;
   final bool? hasFinalPrice;
   final bool? isAnimated;
@@ -389,10 +393,15 @@ class FlightCardWidget extends StatelessWidget {
                           ),
                           hasFinalPrice ?? true
                               ? Text(
-                                  '₹${data.price?.markupPrice ?? 0.00}',
+                                  '₹${data.price?.offerPrice ?? 0.00} | ₹${getCalculatedPrice(
+                                    basePrice:
+                                        data.price?.publishedPrice ?? '0.00',
+                                    type: markUpType ?? 'Fixed',
+                                    value: markUpValue ?? '0',
+                                  )}',
                                   style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
                                 )
                               : const SizedBox(),
                         ],
@@ -688,9 +697,9 @@ class FlightCardWidget extends StatelessWidget {
                       ),
                       hasFinalPrice ?? true
                           ? Text(
-                              '₹${data.price?.markupPrice ?? 0.00}',
+                              '₹${data.price?.offerPrice ?? 0.00}',
                               style: const TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
+                                  fontSize: 10, fontWeight: FontWeight.w500),
                             )
                           : const SizedBox(),
                     ],
@@ -763,4 +772,17 @@ class TicketClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+String getCalculatedPrice(
+    {required String basePrice, required String type, required String value}) {
+  double price = double.parse(basePrice);
+  if (type == 'Fixed') {
+    final double amount = double.parse(value);
+    price += amount;
+    return price.toStringAsFixed(2);
+  }
+  final amount = (price * double.parse(value)) / 100;
+  price += amount;
+  return price.toStringAsFixed(2);
 }
