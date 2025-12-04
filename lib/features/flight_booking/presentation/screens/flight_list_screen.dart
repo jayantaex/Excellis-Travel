@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:excellistravel/core/constants/app_styles.dart';
+import 'package:excellistravel/features/flight_booking/data/models/filter_data_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +13,7 @@ import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
+import '../../data/models/airline_model.dart';
 import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart';
 import '../../data/models/hive/flight_hive_data_model.dart'
@@ -18,6 +21,7 @@ import '../../data/models/hive/flight_hive_data_model.dart'
 import '../widgets/flight_listing/class_filter_widget.dart';
 import '../widgets/flight_card_widget.dart';
 import '../widgets/flight_listing/date_filter_widget.dart';
+import '../widgets/flight_listing/filter_drawer.dart';
 import '../widgets/flight_listing/no_flight_widget.dart';
 import '../widgets/loading/flight_list_loadding_widget.dart';
 
@@ -79,6 +83,36 @@ class _FlightListScreenState extends State<FlightListScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        drawer: BlocBuilder<FlightBloc, FlightState>(
+          builder: (context, state) {
+            FilterDataModel? currentFilter;
+            double minOfferFare = 0;
+            double maxOfferFare = 0;
+            double minPublishedFare = 0;
+            double maxPublishedFare = 0;
+            List<AirlineModel> airlines = [];
+            if (state is FlightLoaded) {
+              minOfferFare = state.minOfferFare;
+              maxOfferFare = state.maxOfferFare;
+              minPublishedFare = state.minPublishedFare;
+              maxPublishedFare = state.maxPublishedFare;
+              currentFilter = state.currentFilter;
+              airlines = state.airlines;
+            }
+            log('${currentFilter?.aircraftCodes}');
+            return flightSearchDrawer(
+              context: context,
+              onApply: _handleFilterApply,
+              onClear: _handleFilterClear,
+              initialFilter: currentFilter,
+              minOfferFare: minOfferFare,
+              maxOfferFare: maxOfferFare,
+              minPublishedFare: minPublishedFare,
+              maxPublishedFare: maxPublishedFare,
+              airlines: airlines,
+            );
+          },
+        ),
         body: AppGradientBg(
           child: TransWhiteBgWidget(
             child: Center(
@@ -104,6 +138,23 @@ class _FlightListScreenState extends State<FlightListScreen> {
                               child: AppCustomAppbar(
                                 start: widget.data['depurture'],
                                 end: widget.data['arrival'],
+                                trailing: InkWell(
+                                  onTap: () {
+                                    Scaffold.of(context).openDrawer();
+                                  },
+                                  child: Badge(
+                                    isLabelVisible: state.isFiltered,
+                                    child: CircleAvatar(
+                                      radius: 20,
+                                      backgroundColor:
+                                          AppColors.white.withOpacity(0.2),
+                                      child: const Icon(
+                                        Icons.filter_alt_rounded,
+                                        color: AppColors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -151,71 +202,76 @@ class _FlightListScreenState extends State<FlightListScreen> {
                             ),
                           ),
 
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 16),
-                          ),
+                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
                           // Class Filter
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 16),
-                              child: ClassFilterWidget(
-                                filters: filters,
-                              ),
+                              child: ClassFilterWidget(filters: filters),
                             ),
                           ),
 
-                          const SliverToBoxAdapter(
-                            child: SizedBox(height: 16),
-                          ),
+                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
 
                           // Flight List
                           SliverPadding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             sliver: SliverList(
                               delegate: SliverChildBuilderDelegate(
-                                (context, index) => (state.data.datam?.length ??
-                                            0) !=
-                                        0
-                                    ? Container(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 16),
-                                        child: FlightCardWidget(
-                                          departureCity:
-                                              paramData['departureCity'],
-                                          arrivalCity: paramData['arrivalCity'],
-                                          isAnimated: true,
-                                          onTap: () async {
-                                            await _saveToLocal(
-                                              data: state.data.datam![index],
-                                              flightDictionary:
-                                                  state.data.dictionaries!,
-                                            );
-                                            context.pushNamed(
-                                              FlightBookingModule
-                                                  .flightDetailsName,
-                                              extra: {
-                                                'data':
-                                                    state.data.datam![index],
-                                                'flightDictionary':
-                                                    state.data.dictionaries,
-                                                'arivalCity':
-                                                    paramData['arrivalCity'],
-                                                'arivalAirport':
-                                                    paramData['arrivalAirport'],
-                                                'departureCity':
-                                                    paramData['departureCity'],
-                                                'departureAirport': paramData[
-                                                    'departureAirport'],
-                                              },
-                                            );
-                                          },
+                                (context, index) {
+                                  final int flightCount = state.isFiltered
+                                      ? (state.filteredData?.datam?.length ?? 0)
+                                      : (state.data.datam?.length ?? 0);
+
+                                  // If no flights, show NoFlightWidget
+                                  if (flightCount == 0) {
+                                    return const NoFlightWidget();
+                                  }
+
+                                  // Otherwise, show flight cards
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 16),
+                                    child: FlightCardWidget(
+                                      departureCity: paramData['departureCity'],
+                                      arrivalCity: paramData['arrivalCity'],
+                                      isAnimated: true,
+                                      onTap: () async {
+                                        await _saveToLocal(
                                           data: state.data.datam![index],
-                                          dictionaries: state.data.dictionaries,
-                                        ),
-                                      )
-                                    : const NoFlightWidget(),
-                                childCount: state.data.datam?.length ?? 0,
+                                          flightDictionary:
+                                              state.data.dictionaries!,
+                                        );
+                                        context.pushNamed(
+                                          FlightBookingModule.flightDetailsName,
+                                          extra: {
+                                            'data': state.data.datam![index],
+                                            'flightDictionary':
+                                                state.data.dictionaries,
+                                            'arivalCity':
+                                                paramData['arrivalCity'],
+                                            'arivalAirport':
+                                                paramData['arrivalAirport'],
+                                            'departureCity':
+                                                paramData['departureCity'],
+                                            'departureAirport':
+                                                paramData['departureAirport'],
+                                          },
+                                        );
+                                      },
+                                      data: state.isFiltered
+                                          ? state.filteredData!.datam![index]
+                                          : state.data.datam![index],
+                                      dictionaries: state.data.dictionaries,
+                                    ),
+                                  );
+                                },
+                                childCount: (state.isFiltered
+                                        ? (state.filteredData?.datam?.length ??
+                                            0)
+                                        : (state.data.datam?.length ?? 0))
+                                    .clamp(1, double.infinity)
+                                    .toInt(),
                               ),
                             ),
                           ),
@@ -240,6 +296,43 @@ class _FlightListScreenState extends State<FlightListScreen> {
           ),
         ),
       );
+
+  void _handleFilterApply(FilterDataModel filterData, BuildContext context) {
+    final FlightState currentFlightState = context.read<FlightBloc>().state;
+    if (currentFlightState is FlightLoaded) {
+      context.read<FlightBloc>().add(
+            FilterFlightEvent(
+              filterData: filterData,
+              flightData: currentFlightState.data,
+              minOfferFare: currentFlightState.minOfferFare,
+              maxOfferFare: currentFlightState.maxOfferFare,
+              minPublishedFare: currentFlightState.minPublishedFare,
+              maxPublishedFare: currentFlightState.maxPublishedFare,
+              airlines: currentFlightState.airlines,
+            ),
+          );
+      Scaffold.of(context).closeDrawer();
+    }
+  }
+
+  void _handleFilterClear(BuildContext context) {
+    final FlightState currentFlightState = context.read<FlightBloc>().state;
+
+    if (currentFlightState is FlightLoaded) {
+      context.read<FlightBloc>().add(
+            ClearFilterEvent(
+              flightData: currentFlightState.data,
+              minOfferFare: currentFlightState.minOfferFare,
+              maxOfferFare: currentFlightState.maxOfferFare,
+              minPublishedFare: currentFlightState.minPublishedFare,
+              maxPublishedFare: currentFlightState.maxPublishedFare,
+              selectedAircraftCode: const [],
+              airlines: currentFlightState.airlines,
+            ),
+          );
+    }
+    Scaffold.of(context).closeDrawer();
+  }
 }
 
 Future<bool> _saveToLocal(
@@ -297,7 +390,7 @@ Map<String, dynamic> getBody({
       'travelers': getTravellers(travellersArr: travellersArr),
       'sources': ['GDS'],
       'searchCriteria': {
-        'maxFlightOffers': kDebugMode ? 4 : null,
+        'maxFlightOffers': kDebugMode ? 10 : null,
         'flightFilters': {
           'cabinRestrictions': [
             {

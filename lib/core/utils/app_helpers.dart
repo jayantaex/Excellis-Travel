@@ -291,6 +291,7 @@ class AppHelpers {
     bool? isIcon,
     double? width,
     double? height,
+    Color? color,
   }) =>
       SvgPicture.asset(
         isIcon == true
@@ -298,6 +299,8 @@ class AppHelpers {
             : '${AppConstants.assetImageUrl}$assetName.svg',
         width: width,
         height: height,
+        colorFilter:
+            color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
       );
 
   static bool validateEmail(String text) {
