@@ -31,16 +31,24 @@ final class FlightSearching extends FlightState {}
 final class FlightLoaded extends FlightState {
   const FlightLoaded({
     required this.data,
-    required this.aircaftCodes,
+    required this.airlines,
     required this.isFiltered,
     this.filteredData,
     this.currentFilter,
+    required this.minOfferFare,
+    required this.maxOfferFare,
+    required this.minPublishedFare,
+    required this.maxPublishedFare,
   });
   final FlightsDataModel data;
   final FlightsDataModel? filteredData;
   final bool isFiltered;
-  final List<String> aircaftCodes;
   final FilterDataModel? currentFilter;
+  final double minOfferFare;
+  final double maxOfferFare;
+  final double minPublishedFare;
+  final double maxPublishedFare;
+  final List<AirlineModel> airlines;
 }
 
 final class FlightSearchingError extends FlightState {
@@ -83,7 +91,7 @@ final class FlightPaymentVerifing extends FlightState {
 
 final class FlightPaymentVerified extends FlightState {
   const FlightPaymentVerified({required this.data});
-  final PaymentVarifiedDataModel data;
+  final payment.PaymentVarifiedDataModel data;
 }
 
 final class FlightPaymentVerificationFailed extends FlightState {

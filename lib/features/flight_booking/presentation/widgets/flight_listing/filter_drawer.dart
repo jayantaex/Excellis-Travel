@@ -1,16 +1,23 @@
 import 'dart:developer';
 
+import 'package:excellistravel/core/utils/airline_image_provider.dart';
 import 'package:excellistravel/features/flight_booking/data/models/filter_data_model.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
+import '../../../data/models/airline_model.dart';
 
 Drawer flightSearchDrawer({
   required BuildContext context,
   required Function(FilterDataModel filterData, BuildContext context) onApply,
   required Function(BuildContext context) onClear,
   FilterDataModel? initialFilter,
+  required double minOfferFare,
+  required double maxOfferFare,
+  required double minPublishedFare,
+  required double maxPublishedFare,
+  required List<AirlineModel> airlines,
 }) {
   final List<Map<String, dynamic>> listOfDepartureTime = [
     {'title': 'Before 6AM', 'icon': 'bf_6', 'name': 'before_6am'},
@@ -26,12 +33,23 @@ Drawer flightSearchDrawer({
   ];
 
   return Drawer(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(8),
+        bottomRight: Radius.circular(8),
+      ),
+    ),
     child: FilterContent(
       listOfDepartureTime: listOfDepartureTime,
       listOfStops: listOfStops,
       onApply: onApply,
       onClear: onClear,
       initialFilter: initialFilter,
+      minOfferFare: minOfferFare,
+      maxOfferFare: maxOfferFare,
+      minPublishedFare: minPublishedFare,
+      maxPublishedFare: maxPublishedFare,
+      airlines: airlines,
     ),
   );
 }
@@ -44,13 +62,24 @@ class FilterContent extends StatefulWidget {
     required this.onApply,
     required this.onClear,
     this.initialFilter,
+    required this.minOfferFare,
+    required this.maxOfferFare,
+    required this.minPublishedFare,
+    required this.maxPublishedFare,
+    required this.airlines,
   });
 
   final List<Map<String, dynamic>> listOfDepartureTime;
   final List<Map<String, dynamic>> listOfStops;
+  final List<AirlineModel> airlines;
+
   final Function(FilterDataModel filterData, BuildContext context) onApply;
   final Function(BuildContext context) onClear;
   final FilterDataModel? initialFilter;
+  final double minOfferFare;
+  final double maxOfferFare;
+  final double minPublishedFare;
+  final double maxPublishedFare;
 
   @override
   State<FilterContent> createState() => _FilterContentState();
@@ -59,9 +88,10 @@ class FilterContent extends StatefulWidget {
 class _FilterContentState extends State<FilterContent> {
   String _selectedDepartureTime = '';
   String _selectedStop = '';
-  String minPrice = '10';
-  String maxPrice = '100';
-  RangeValues _rangeValues = const RangeValues(10, 100);
+  double minPrice = 100;
+  double maxPrice = 100;
+  RangeValues? _rangeValues;
+  final List<String> _selectedAirlines = [];
 
   @override
   void initState() {
@@ -84,12 +114,29 @@ class _FilterContentState extends State<FilterContent> {
     log('Syncing with initialFilter: DepartureTime=${widget.initialFilter?.departureTime}, Stops=${widget.initialFilter?.stops}');
     setState(() {
       if (widget.initialFilter != null) {
-        _selectedDepartureTime = widget.initialFilter!.departureTime ?? '';
-        _selectedStop = widget.initialFilter!.stops ?? '';
+        _selectedDepartureTime = widget.initialFilter?.departureTime ?? '';
+        _selectedStop = widget.initialFilter?.stops ?? '';
+        minPrice =
+            widget.initialFilter?.minPublishedFare ?? widget.minPublishedFare;
+        maxPrice =
+            widget.initialFilter?.maxPublishedFare ?? widget.maxPublishedFare;
+        _rangeValues =
+            RangeValues(widget.initialFilter?.minPublishedFare ?? 0, maxPrice);
+
+        // Sync selected airlines
+        _selectedAirlines.clear();
+        if (widget.initialFilter?.aircraftCodes != null) {
+          _selectedAirlines.addAll(widget.initialFilter!.aircraftCodes!);
+        }
       } else {
         // If initialFilter is null, clear selections
+        _selectedAirlines.clear();
         _selectedDepartureTime = '';
         _selectedStop = '';
+        minPrice = widget.minPublishedFare;
+        maxPrice = widget.maxPublishedFare;
+        _rangeValues = RangeValues(0, maxPrice);
+        _selectedAirlines.clear();
       }
     });
   }
@@ -128,112 +175,150 @@ class _FilterContentState extends State<FilterContent> {
               // Filter content
 
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //departure time
-                    const Text(
-                      'Departure Time',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 18),
-                    Wrap(
-                      spacing: 16,
-                      runSpacing: 16,
-                      children: [
-                        ...widget.listOfDepartureTime.map(
-                          (e) => DepartureTimeCard(
-                            isSelected: _selectedDepartureTime == e['name'],
-                            onTap: () {
-                              setState(() {
-                                _selectedDepartureTime = e['name'];
-                              });
-                            },
-                            title: e['title'],
-                            icon: e['icon'],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-
-                    const Text(
-                      'Stops',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 18),
-
-                    SizedBox(
-                      height: 45,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //departure time
+                      const Text(
+                        'Departure Time',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 18),
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 16,
                         children: [
-                          ...widget.listOfStops.map(
-                            (e) => StopChip(
-                              title: e['title'],
-                              isSelected: _selectedStop == e['name'],
+                          ...widget.listOfDepartureTime.map(
+                            (e) => DepartureTimeCard(
+                              isSelected: _selectedDepartureTime == e['name'],
                               onTap: () {
                                 setState(() {
-                                  _selectedStop = e['name'];
+                                  _selectedDepartureTime = e['name'];
                                 });
                               },
+                              title: e['title'],
+                              icon: e['icon'],
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 16),
+                      const SizedBox(height: 18),
 
-                    const Text(
-                      'Price',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
-
-                    RangeSlider(
-                        activeColor: AppColors.primary,
-                        inactiveColor: AppColors.grey,
-                        labels: RangeLabels(
-                          _rangeValues.start.round().toString(),
-                          _rangeValues.end.round().toString(),
-                        ),
-                        values: _rangeValues,
-                        max: 100,
-                        divisions: 10,
-                        onChanged: (value) {
-                          setState(() {
-                            _rangeValues = value;
-                          });
-                        }),
-                    SizedBox(
-                      height: 20,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            minPrice.toString(),
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            maxPrice.toString(),
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          )
-                        ],
+                      const Text(
+                        'Stops',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
                       ),
-                    )
+                      const SizedBox(height: 18),
 
-                    //time-table
-                    //price
-                    //cabin
-                  ],
+                      SizedBox(
+                        height: 45,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ...widget.listOfStops.map(
+                              (e) => StopChip(
+                                title: e['title'],
+                                isSelected: _selectedStop == e['name'],
+                                onTap: () {
+                                  setState(() {
+                                    _selectedStop = e['name'];
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      const Text(
+                        'Price',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+
+                      RangeSlider(
+                          divisions: 100,
+                          activeColor: AppColors.primary,
+                          inactiveColor: AppColors.grey,
+                          labels: RangeLabels(
+                            _rangeValues?.start.toStringAsFixed(2) ?? '0',
+                            _rangeValues?.end.toStringAsFixed(2) ?? '0',
+                          ),
+                          values: _rangeValues!,
+                          max: widget.maxPublishedFare,
+                          onChanged: (value) {
+                            setState(() {
+                              _rangeValues = value;
+                            });
+                          }),
+                      SizedBox(
+                        height: 20,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '₹${minPrice.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              '₹${maxPrice.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Airlines',
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.bold),
+                      ),
+
+                      ...widget.airlines.map(
+                        (airline) => ListTile(
+                          contentPadding: const EdgeInsets.all(0),
+                          minVerticalPadding: 0,
+                          leading: SizedBox(
+                              height: 35,
+                              width: 45,
+                              child: getAirlineLogo(airlineCode: airline.code)),
+                          title: Text(
+                            airline.name,
+                            style: const TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w500),
+                          ),
+                          trailing: Checkbox(
+                            activeColor: AppColors.primary,
+                            value: _selectedAirlines.contains(airline.code),
+                            onChanged: (value) {
+                              setState(
+                                () {
+                                  if (value != null) {
+                                    if (value) {
+                                      _selectedAirlines.add(airline.code);
+                                    } else {
+                                      _selectedAirlines.remove(airline.code);
+                                    }
+                                  }
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               // Apply button
               const SizedBox(height: 16),
+
               SizedBox(
                 height: 50,
                 child: Row(
@@ -266,8 +351,10 @@ class _FilterContentState extends State<FilterContent> {
                               FilterDataModel(
                                 departureTime: _selectedDepartureTime,
                                 stops: _selectedStop,
-                                minPrice: null,
-                                maxPrice: null,
+                                minPublishedFare: _rangeValues?.start,
+                                maxPublishedFare: _rangeValues?.end,
+                                aircraftCodes:
+                                    List<String>.from(_selectedAirlines),
                               ),
                               context);
                         },
