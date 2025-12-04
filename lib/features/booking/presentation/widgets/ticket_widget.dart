@@ -280,7 +280,7 @@ class TicketWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            ticketData?.bookingReference ?? 'N/A',
+                            ticketData?.bookingReference ?? '',
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           ),

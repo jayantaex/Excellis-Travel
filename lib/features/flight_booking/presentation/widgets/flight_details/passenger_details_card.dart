@@ -325,7 +325,7 @@ class PassengerCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             )),
         subtitle: Text(
-          'Gender: ${passenger.gender} | DOB: ${passenger.dateOfBirth != null ? AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now()) : 'N/A'}',
+          'Gender: ${passenger.gender} | DOB: ${passenger.dateOfBirth != null ? AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now()) : ''}',
           style: const TextStyle(
             fontSize: 12,
             color: AppColors.grey,

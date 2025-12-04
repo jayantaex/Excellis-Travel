@@ -400,7 +400,7 @@ class _SegmenCardState extends State<SegmenCard> {
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
-                                widget.data.cabin ?? 'N/A',
+                                widget.data.cabin ?? '',
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,

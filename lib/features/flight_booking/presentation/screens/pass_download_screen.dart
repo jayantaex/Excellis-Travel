@@ -296,7 +296,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   fontWeight: FontWeight.w600),
                                             ),
                                             subtitle: Text(
-                                              'ADULT | DOB:  ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : 'N/A'} | Nationality: ${e.nationality}',
+                                              'ADULT | DOB:  ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
                                               style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400),
@@ -324,7 +324,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   fontWeight: FontWeight.w600),
                                             ),
                                             subtitle: Text(
-                                              'CHILD | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : 'N/A'} | Nationality: ${e.nationality}',
+                                              'CHILD | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
                                               style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400),
@@ -352,7 +352,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   fontWeight: FontWeight.w600),
                                             ),
                                             subtitle: Text(
-                                              'INFANT | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : 'N/A'} | Nationality: ${e.nationality}',
+                                              'INFANT | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
                                               style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400),
