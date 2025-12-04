@@ -2,13 +2,17 @@ class FilterDataModel {
   FilterDataModel({
     this.departureTime,
     this.stops,
-    this.minPrice,
-    this.maxPrice,
+    this.minPublishedFare,
+    this.maxPublishedFare,
+    this.minOfferFare,
+    this.maxOfferFare,
     this.aircraftCodes,
   });
   final String? departureTime;
   final String? stops;
-  final double? minPrice;
-  final double? maxPrice;
+  final double? minPublishedFare;
+  final double? maxPublishedFare;
+  final double? minOfferFare;
+  final double? maxOfferFare;
   final List<String>? aircraftCodes;
 }
