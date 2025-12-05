@@ -7,12 +7,16 @@ class PaymentModule {
   static String paymentSucessName = 'payment_success';
   static String paymentSucessPath = '/payment_success/:paymentId';
   static Widget paymentSuccessBuilder(context, state) => PaymentSuccessScreen(
-      paymentId: state.pathParameters['paymentId'] ?? '',
-    );
+        paymentId: state.pathParameters['paymentId'] ?? '',
+      );
 
   static String paymentFailedName = 'payment_failed';
-  static String paymentFailedPath = '/payment_failed/:errorMsg';
-  static Widget paymentFailedBuilder(context, state) => PaymentFailedScreen(
-      errMsg: state.pathParameters['errorMsg'] ?? '',
+  static String paymentFailedPath = '/payment_failed';
+  static Widget paymentFailedBuilder(context, state) {
+    final String message = state.uri.queryParameters['message'] ?? '';
+    return PaymentFailedScreen(
+      errMsg:
+          message.isNotEmpty ? message : 'Payment failed. Please try again.',
     );
+  }
 }

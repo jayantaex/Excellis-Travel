@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:excellistravel/core/common/common_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -298,8 +299,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       enable: _selectedStateCode.isNotEmpty,
                                       onTap: () {
                                         context.pushNamed(
-                                            ProfileManagementModule
-                                                .citySearchName,
+                                            CommonModule.citySearchName,
                                             extra: <String, Object>{
                                               'stateCode': _selectedStateCode,
                                               'stateName': _selectedState,

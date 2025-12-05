@@ -139,12 +139,31 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     final String temp = _depurtureController.text;
     _depurtureController.text = _arrivalController.text;
     _arrivalController.text = temp;
+
+    final String tempDepartureCode = departureCode;
+    departureCode = arrivalCode;
+    arrivalCode = tempDepartureCode;
+
+    final String tempDepartureAirport = departureAirport;
+    departureAirport = arrivalAirport;
+    arrivalAirport = tempDepartureAirport;
+
+    final String tempDepartureCity = departureCity;
+    departureCity = arrivalCity;
+    arrivalCity = tempDepartureCity;
+
     if (_swapTurns == 0) {
       _swapTurns += 0.50;
     } else {
       _swapTurns -= 0.50;
     }
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    departureDate = _today;
+    super.initState();
   }
 
   @override
@@ -319,7 +338,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 isRoundTrip
                                     ? AppPrimaryInput(
                                         controller: TextEditingController(
-                                          text: departureDate != null
+                                          text: roundTripDate == null
                                               ? AppHelpers.formatDate(
                                                   departureDate!.add(_fiveDay),
                                                   pattern: 'E, dd MMM yyyy')
@@ -505,6 +524,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             <String, dynamic>{
                                           'depurture': departureCode,
                                           'arrival': arrivalCode,
+                                          'departureAirport': departureAirport,
+                                          'arrivalAirport': arrivalAirport,
+                                          'departureCity': departureCity,
+                                          'arrivalCity': arrivalCity,
                                           'isRoundTrip': isRoundTrip,
                                           'depurtureDate':
                                               AppHelpers.formatDate(
@@ -525,10 +548,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           },
                                           'fareType': _selectedFareType,
                                           'cabinClass': _selectedSeatType,
-                                          'departureAirport': departureAirport,
-                                          'arrivalAirport': arrivalAirport,
-                                          'departureCity': departureCity,
-                                          'arrivalCity': arrivalCity,
                                         };
                                         final String? token =
                                             await StorageService

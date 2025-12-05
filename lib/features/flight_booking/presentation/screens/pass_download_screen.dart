@@ -295,12 +295,21 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            subtitle: Text(
-                                              'ADULT | DOB:  ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
+                                            subtitle: e.dateOfBirth != null
+                                                ? Text(
+                                                    'ADULT | DOB:  ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                : const Text(
+                                                    'ADULT',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
                                           ),
                                         ),
                                         ...?widget
@@ -323,12 +332,21 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            subtitle: Text(
-                                              'CHILD | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
+                                            subtitle: e.dateOfBirth != null
+                                                ? Text(
+                                                    'CHILD | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                : const Text(
+                                                    'CHILD',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
                                           ),
                                         ),
                                         ...?widget
@@ -351,12 +369,21 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            subtitle: Text(
-                                              'INFANT | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
+                                            subtitle: e.dateOfBirth != null
+                                                ? Text(
+                                                    'INFANT | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                : const Text(
+                                                    'INFANT',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
                                           ),
                                         ),
                                       ],

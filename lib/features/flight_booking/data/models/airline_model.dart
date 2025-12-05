@@ -7,6 +7,6 @@ class AirlineModel {
   });
   final String name;
   final String code;
-  final int totalFlights;
+  int totalFlights;
   final double totalFare;
 }

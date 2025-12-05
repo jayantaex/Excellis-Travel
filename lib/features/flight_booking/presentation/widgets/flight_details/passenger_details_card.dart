@@ -324,14 +324,23 @@ class PassengerCard extends StatelessWidget {
               fontSize: 14,
               fontWeight: FontWeight.w500,
             )),
-        subtitle: Text(
-          'Gender: ${passenger.gender} | DOB: ${passenger.dateOfBirth != null ? AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now()) : ''}',
-          style: const TextStyle(
-            fontSize: 12,
-            color: AppColors.grey,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
+        subtitle: passenger.dateOfBirth != null
+            ? Text(
+                'Gender: ${passenger.gender} | DOB: ${passenger.dateOfBirth != null ? AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now()) : ''}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.grey,
+                  fontWeight: FontWeight.w400,
+                ),
+              )
+            : Text(
+                'Gender: ${passenger.gender} ',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.grey,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
         trailing: InkWell(
           onTap: () {
             onPassengerRemove(passenger);

@@ -93,27 +93,31 @@ class FlightCardWidget extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 2),
                             child: Row(
                               children: <Widget>[
-                                getAirlineLogo(
-                                    airlineCode: data.itineraries!.first
-                                        .segments!.first.carrierCode!),
+                                SizedBox(
+                                  height: 30,
+                                  width: 45,
+                                  child: getAirlineLogo(
+                                      airlineCode: data.itineraries!.first
+                                          .segments!.first.carrierCode!),
+                                ),
                                 const SizedBox(width: 5),
-                                // SizedBox(
-                                //   width:
-                                //       AppHelpers.getScreenWidth(context) * 0.31,
-                                //   child: Text(
-                                //     dictionaries?.dictionaries.carriers?[
-                                //             '${(data.itineraries?.isNotEmpty ?? false) && (data.itineraries!.first.segments?.isNotEmpty ?? false) ? data.itineraries!.first.segments!.first.carrierCode : ""}'] ??
-                                //         'NO-NAME',
-                                //     softWrap: true,
-                                //     maxLines: 2,
-                                //     overflow: TextOverflow.ellipsis,
-                                //     style: const TextStyle(
-                                //       fontSize: 10,
-                                //       fontWeight: FontWeight.w500,
-                                //       color: AppColors.black,
-                                //     ),
-                                //   ),
-                                // ),
+                                SizedBox(
+                                  width:
+                                      AppHelpers.getScreenWidth(context) * 0.27,
+                                  child: Text(
+                                    dictionaries?.dictionaries.carriers?[
+                                            '${(data.itineraries?.isNotEmpty ?? false) && (data.itineraries!.first.segments?.isNotEmpty ?? false) ? data.itineraries!.first.segments!.first.carrierCode : ""}'] ??
+                                        'NO-NAME',
+                                    softWrap: true,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.black,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),

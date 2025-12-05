@@ -88,10 +88,11 @@ class FilterContent extends StatefulWidget {
 class _FilterContentState extends State<FilterContent> {
   String _selectedDepartureTime = '';
   String _selectedStop = '';
-  double minPrice = 100;
-  double maxPrice = 100;
   RangeValues? _rangeValues;
   final List<String> _selectedAirlines = [];
+
+  RangeValues get _currentRange =>
+      _rangeValues ?? RangeValues(widget.minOfferFare, widget.maxPublishedFare);
 
   @override
   void initState() {
@@ -111,17 +112,20 @@ class _FilterContentState extends State<FilterContent> {
   }
 
   void _syncWithInitialFilter() {
-    log('Syncing with initialFilter: DepartureTime=${widget.initialFilter?.departureTime}, Stops=${widget.initialFilter?.stops}');
     setState(() {
       if (widget.initialFilter != null) {
         _selectedDepartureTime = widget.initialFilter?.departureTime ?? '';
         _selectedStop = widget.initialFilter?.stops ?? '';
-        minPrice =
-            widget.initialFilter?.minPublishedFare ?? widget.minPublishedFare;
-        maxPrice =
-            widget.initialFilter?.maxPublishedFare ?? widget.maxPublishedFare;
+        final double lower =
+            (widget.initialFilter?.minOfferFare ?? widget.minOfferFare)
+                .clamp(widget.minOfferFare, widget.maxPublishedFare)
+                .toDouble();
+        final double upper =
+            (widget.initialFilter?.maxPublishedFare ?? widget.maxPublishedFare)
+                .clamp(widget.minOfferFare, widget.maxPublishedFare)
+                .toDouble();
         _rangeValues =
-            RangeValues(widget.initialFilter?.minPublishedFare ?? 0, maxPrice);
+            lower <= upper ? RangeValues(lower, upper) : _currentRange;
 
         // Sync selected airlines
         _selectedAirlines.clear();
@@ -133,10 +137,8 @@ class _FilterContentState extends State<FilterContent> {
         _selectedAirlines.clear();
         _selectedDepartureTime = '';
         _selectedStop = '';
-        minPrice = widget.minPublishedFare;
-        maxPrice = widget.maxPublishedFare;
-        _rangeValues = RangeValues(0, maxPrice);
-        _selectedAirlines.clear();
+        _rangeValues =
+            RangeValues(widget.minOfferFare, widget.maxPublishedFare);
       }
     });
   }
@@ -241,32 +243,34 @@ class _FilterContentState extends State<FilterContent> {
                       ),
 
                       RangeSlider(
-                          divisions: 100,
-                          activeColor: AppColors.primary,
-                          inactiveColor: AppColors.grey,
-                          labels: RangeLabels(
-                            _rangeValues?.start.toStringAsFixed(2) ?? '0',
-                            _rangeValues?.end.toStringAsFixed(2) ?? '0',
-                          ),
-                          values: _rangeValues!,
-                          max: widget.maxPublishedFare,
-                          onChanged: (value) {
-                            setState(() {
-                              _rangeValues = value;
-                            });
-                          }),
+                        divisions: 100,
+                        activeColor: AppColors.primary,
+                        inactiveColor: AppColors.grey,
+                        labels: RangeLabels(
+                          _currentRange.start.toStringAsFixed(2),
+                          _currentRange.end.toStringAsFixed(2),
+                        ),
+                        values: _currentRange,
+                        max: widget.maxPublishedFare,
+                        min: widget.minOfferFare,
+                        onChanged: (value) {
+                          setState(() {
+                            _rangeValues = value;
+                          });
+                        },
+                      ),
                       SizedBox(
                         height: 20,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '₹${minPrice.toStringAsFixed(2)}',
+                              '₹${_currentRange.start.toStringAsFixed(2)}',
                               style: const TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.w500),
                             ),
                             Text(
-                              '₹${maxPrice.toStringAsFixed(2)}',
+                              '₹${_currentRange.end.toStringAsFixed(2)}',
                               style: const TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.w500),
                             )
@@ -289,7 +293,7 @@ class _FilterContentState extends State<FilterContent> {
                               width: 45,
                               child: getAirlineLogo(airlineCode: airline.code)),
                           title: Text(
-                            airline.name,
+                            '${airline.name} (${airline.totalFlights})',
                             style: const TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.w500),
                           ),
@@ -332,6 +336,11 @@ class _FilterContentState extends State<FilterContent> {
                             setState(() {
                               _selectedDepartureTime = '';
                               _selectedStop = '';
+                              _selectedAirlines.clear();
+                              _rangeValues = RangeValues(
+                                widget.minOfferFare,
+                                widget.maxPublishedFare,
+                              );
                             });
                             // Call the clear callback
                             widget.onClear(context);
@@ -351,8 +360,10 @@ class _FilterContentState extends State<FilterContent> {
                               FilterDataModel(
                                 departureTime: _selectedDepartureTime,
                                 stops: _selectedStop,
-                                minPublishedFare: _rangeValues?.start,
-                                maxPublishedFare: _rangeValues?.end,
+                                minPublishedFare: _currentRange.start,
+                                maxPublishedFare: _currentRange.end,
+                                minOfferFare: _currentRange.start,
+                                maxOfferFare: _currentRange.end,
                                 aircraftCodes:
                                     List<String>.from(_selectedAirlines),
                               ),

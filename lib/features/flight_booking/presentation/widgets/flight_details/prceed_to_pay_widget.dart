@@ -13,10 +13,30 @@ class ProceedToPayWidget extends StatefulWidget {
     super.key,
     required this.passengers,
     required this.offerFareEnabled,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.mobileNumber,
+    required this.addressLine1,
+    required this.addressLine2,
+    required this.city,
+    required this.pinCode,
+    required this.country,
+    required this.countryCode,
   });
 
   final List<PassengerModel> passengers;
   final bool offerFareEnabled;
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String mobileNumber;
+  final String addressLine1;
+  final String addressLine2;
+  final String city;
+  final String pinCode;
+  final String country;
+  final String countryCode;
 
   @override
   State<ProceedToPayWidget> createState() => _ProceedToPayWidgetState();

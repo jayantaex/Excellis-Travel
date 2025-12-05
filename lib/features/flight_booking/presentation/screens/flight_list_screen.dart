@@ -245,7 +245,10 @@ class _FlightListScreenState extends State<FlightListScreen> {
                                         context.pushNamed(
                                           FlightBookingModule.flightDetailsName,
                                           extra: {
-                                            'data': state.data.datam![index],
+                                            'data': state.isFiltered
+                                                ? state
+                                                    .filteredData!.datam![index]
+                                                : state.data.datam![index],
                                             'flightDictionary':
                                                 state.data.dictionaries,
                                             'arivalCity':

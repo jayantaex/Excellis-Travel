@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/common/api/location_api.dart';
+import '../../core/common/bloc/cities/city_bloc.dart';
+import '../../core/common/bloc/states/states_bloc.dart';
+import '../../core/common/data/location_repository.dart';
 import '../../core/network/amadeus_client.dart';
 import '../../core/network/api_client.dart';
 import '../../core/services/local_db.dart';
@@ -32,6 +36,8 @@ class FlightBookingModule {
   static final _profileApi = ProfileManagementApi(apiClient: _apiClient);
   static final _profileRepo =
       ProfileManagementRepository(profileManagementApi: _profileApi);
+  static final _statesRepository =
+      LocationRepository(statesApi: LocationApi(apiClient: _apiClient));
 
   //airport search
   static const String airportSearch = '/airport-search';
@@ -118,6 +124,12 @@ class FlightBookingModule {
         ),
         BlocProvider(
           create: (context) => ProfileBloc(profileRepository: _profileRepo),
+        ),
+        BlocProvider(
+          create: (context) => StatesBloc(repository: _statesRepository),
+        ),
+        BlocProvider(
+          create: (context) => CityBloc(repository: _statesRepository),
         ),
       ],
       child: FlightDetailsScreen(

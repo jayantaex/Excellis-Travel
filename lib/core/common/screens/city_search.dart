@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/common/bloc/cities/city_bloc.dart';
-import '../../../../core/common/models/city_model.dart';
-import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../../../core/widgets/app_custom_appbar.dart';
-import '../../../../core/widgets/app_gradient_bg.dart';
-import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../bloc/cities/city_bloc.dart';
+import '../models/city_model.dart';
+import '../../constants/app_styles.dart';
+import '../../utils/app_helpers.dart';
+import '../../widgets/app_custom_appbar.dart';
+import '../../widgets/app_gradient_bg.dart';
+import '../../widgets/trans_white_bg_widget.dart';
 
 class CitySearch extends StatelessWidget {
   CitySearch(

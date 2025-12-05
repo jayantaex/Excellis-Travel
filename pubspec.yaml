@@ -45,6 +45,7 @@ dependencies:
   dartz: ^0.10.1
   easy_localization: ^3.0.8
   internet_connection_checker_plus: ^2.7.2
+
   # Security
   flutter_secure_storage: ^9.2.2
 
@@ -83,6 +84,9 @@ dependencies:
 
   #permission handler
   permission_handler: ^11.2.0
+
+  #country code
+  country_code_picker: ^3.4.1
 
   #local  app update
   open_filex: ^4.7.0

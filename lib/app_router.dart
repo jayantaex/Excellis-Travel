@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'core/common/common_module.dart';
 import 'features/auth/auth_module.dart';
 import 'features/bottom_navigation/bottom_nav_module.dart';
 import 'features/flight_booking/flight_booking_module.dart';
@@ -17,6 +18,12 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: SplashModule.splashRoute,
     routes: <RouteBase>[
+      GoRoute(
+        path: CommonModule.citySeacrRoute,
+        name: CommonModule.citySearchName,
+        builder: (BuildContext context, GoRouterState state) =>
+            CommonModule.citySearchBuilder(context, state),
+      ),
       //Splash
       GoRoute(
         path: SplashModule.splashRoute,
@@ -137,12 +144,6 @@ class AppRouter {
         name: ProfileManagementModule.editProfileName,
         builder: (BuildContext context, GoRouterState state) =>
             ProfileManagementModule.editProfileBuilder(context, state),
-      ),
-      GoRoute(
-        path: ProfileManagementModule.citySeacrRoute,
-        name: ProfileManagementModule.citySearchName,
-        builder: (BuildContext context, GoRouterState state) =>
-            ProfileManagementModule.citySearchBuilder(context, state),
       ),
 
       //legal

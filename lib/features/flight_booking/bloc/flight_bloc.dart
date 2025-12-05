@@ -102,7 +102,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                 : double.parse(flight.price!.publishedPrice!);
       }
 
-      //filtering the array by aircraft codes
       final List<AirlineModel> airlines = [];
       for (Datam flight in res.data!.datam!) {
         if (flight.itineraries == null) {
@@ -127,6 +126,23 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
             }
           }
         }
+      }
+
+      //calculate the availabe flights for each carrier
+
+      for (AirlineModel airline in airlines) {
+        final String carrierCode = airline.code;
+        int totalFlights = 0;
+        for (Datam flight in res.data!.datam!) {
+          if (flight.itineraries == null) {
+            continue;
+          }
+          if (flight.itineraries!.first.segments!.first.carrierCode ==
+              carrierCode) {
+            totalFlights++;
+          }
+        }
+        airline.totalFlights = totalFlights;
       }
 
       emit(
@@ -454,20 +470,11 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       if (event.filterData.aircraftCodes != null &&
           event.filterData.aircraftCodes!.isNotEmpty) {
         filteredFlightData.datam!.removeWhere((flight) {
-          // Check if any segment in the flight has a carrier code matching the selected airlines
-          bool hasMatchingAirline = false;
-          for (var itinerary in flight.itineraries ?? []) {
-            for (var segment in itinerary.segments ?? []) {
-              if (event.filterData.aircraftCodes!
-                  .contains(segment.carrierCode)) {
-                hasMatchingAirline = true;
-                break;
-              }
-            }
-            if (hasMatchingAirline) break;
-          }
-          // Remove if no matching airline found
-          return !hasMatchingAirline;
+          log('FIRST SEGMENT AIRCRAFT CODE: ${flight.itineraries!.first.segments!.first.aircraft?.code}');
+          final departureAircraftCode =
+              flight.itineraries!.first.segments!.first.carrierCode;
+          return !event.filterData.aircraftCodes!
+              .contains(departureAircraftCode);
         });
 
         log('Filtered flights (by airlines): ${filteredFlightData.datam!.length}');
