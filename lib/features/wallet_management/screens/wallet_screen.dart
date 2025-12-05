@@ -227,14 +227,18 @@ class _WalletScreenState extends State<WalletScreen>
                                   Expanded(
                                     child: TypeCardWidget(
                                       type: 'cr',
-                                      value: _totalCredit.toStringAsFixed(2),
+                                      value: state.wallet?.totoalCredit
+                                              ?.toStringAsFixed(2) ??
+                                          '0.00',
                                     ),
                                   ),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: TypeCardWidget(
                                       type: 'dr',
-                                      value: _totalDebit.toStringAsFixed(2),
+                                      value: state.wallet?.totalDebt
+                                              ?.toStringAsFixed(2) ??
+                                          '0.00',
                                     ),
                                   ),
                                 ],
