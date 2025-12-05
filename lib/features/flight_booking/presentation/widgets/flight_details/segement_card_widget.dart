@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/services/temp_store.dart';
 import '../../../../../core/utils/airline_image_provider.dart';
 import '../../../../../core/utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
@@ -27,13 +28,14 @@ class SegmentCard extends StatelessWidget {
               // ),
             ),
             title: Text(
-              flightDictionary.dictionaries.carriers!['${data.carrierCode}'] ??
-                  'NO-NAME',
+              data.carrierCode != null
+                  ? TempStore.getCarrierName(data.carrierCode!)
+                  : 'NO-NAME',
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             subtitle: Text(
-              '${flightDictionary.dictionaries.aircraft![data.aircraft?.code ?? '']} | '
-              '${data.co2Emissions!.first.cabin ?? ''}',
+              '${data.aircraft?.code != null ? TempStore.getAircraftName(data.aircraft!.code!) : ''} | '
+              '${data.co2Emissions?.isNotEmpty ?? false ? data.co2Emissions!.first.cabin ?? '' : ''}',
               style: const TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w400,

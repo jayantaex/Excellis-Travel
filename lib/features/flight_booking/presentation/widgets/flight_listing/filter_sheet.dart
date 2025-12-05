@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:excellistravel/core/constants/app_styles.dart';
+import 'package:excellistravel/core/services/temp_store.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/models/flights_data_model.dart';
@@ -49,7 +50,9 @@ class _FilterSheetState extends State<FilterSheet> {
                 size: 32,
               ),
               title: Text(
-                widget.dictionaries?.dictionaries.aircraft?[e] ?? e,
+                TempStore.getAircraftName(e).isNotEmpty
+                    ? TempStore.getAircraftName(e)
+                    : e,
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                 ),

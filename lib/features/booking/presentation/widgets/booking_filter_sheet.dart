@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:excellistravel/core/utils/app_date_picker.dart';
 import 'package:excellistravel/core/widgets/app_drop_down.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +83,10 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                   height: 50,
                   width: AppHelpers.getScreenWidth(context) * 0.45,
                   child: AppDropDown(
-                    onChanged: widget.onStatusChanged,
+                    onChanged: (String? value) {
+                      _selectedStatus = value ?? '';
+                      widget.onStatusChanged(value);
+                    },
                     title: 'Status',
                     value: _selectedStatus,
                     label: 'Select status',
@@ -92,7 +97,7 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                       DropdownMenuItem(
                           value: 'pending', child: Text('Pending')),
                       DropdownMenuItem(
-                          value: 'cancel', child: Text('Cancelled')),
+                          value: 'cancelled', child: Text('Cancelled')),
                     ],
                   ),
                 ),
@@ -103,7 +108,10 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                     height: 50,
                     width: AppHelpers.getScreenWidth(context) * 0.45,
                     child: AppDropDown(
-                      onChanged: widget.onDateTypeChanged,
+                      onChanged: (String? value) {
+                        _selectedDateType = value ?? 'bookingdate';
+                        widget.onDateTypeChanged(value);
+                      },
                       title: 'Date Type',
                       value: _selectedDateType,
                       label: 'Select date type',
@@ -141,11 +149,27 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                     hint: 'Pick up start date',
                     label: 'Start date',
                     onTap: () async {
+                      // For booking date: allow past dates only
+                      // For travel date: allow past and future dates
+                      final bool isBookingDate =
+                          _selectedDateType == 'bookingdate';
+                      final DateTime now = DateTime.now();
+                      final DateTime firstDate = isBookingDate
+                          ? DateTime(
+                              2020) // Allow dates from 2020 for booking dates
+                          : DateTime(
+                              2020); // Allow dates from 2020 for travel dates
+                      final DateTime lastDate = isBookingDate
+                          ? now // Booking dates: up to today
+                          : now.add(const Duration(
+                              days: 365 *
+                                  2)); // Travel dates: up to 2 years in future
+
                       final DateTime? picked = await showAppDatePicker(
                         context: context,
-                        firstDate: DateTime(2025),
-                        lastDate: DateTime.now(),
-                        initialDate: DateTime.now(),
+                        firstDate: firstDate,
+                        lastDate: lastDate,
+                        initialDate: startDate ?? now,
                       );
                       if (picked != null) {
                         startDate = picked;
@@ -171,20 +195,34 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                       size: 20,
                     ),
                     onTap: () async {
+                      if (startDate == null) {
+                        showToast(message: 'Please select start date first');
+                        return;
+                      }
+
+                      // For booking date: allow past dates only
+                      // For travel date: allow past and future dates
+                      final bool isBookingDate =
+                          _selectedDateType == 'bookingdate';
+                      final DateTime now = DateTime.now();
+                      final DateTime firstDate =
+                          startDate!; // End date must be after start date
+                      final DateTime lastDate = isBookingDate
+                          ? now // Booking dates: up to today
+                          : now.add(const Duration(
+                              days: 365 *
+                                  2)); // Travel dates: up to 2 years in future
+
                       final DateTime? picked = await showAppDatePicker(
                         context: context,
-                        firstDate: startDate ?? DateTime(2025),
-                        lastDate: DateTime.now(),
-                        initialDate: DateTime.now(),
+                        firstDate: firstDate,
+                        lastDate: lastDate,
+                        initialDate: endDate ??
+                            (startDate!.isAfter(now) ? startDate! : now),
                       );
                       if (picked != null) {
                         endDate = picked;
-                        if (startDate == null) {
-                          showToast(message: 'Please select start date first');
-                          return;
-                        }
-
-                        if (startDate != null && picked.isBefore(startDate!)) {
+                        if (picked.isBefore(startDate!)) {
                           showToast(
                               message: 'End date cannot be before start date');
                           return;
@@ -222,9 +260,28 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
             width: AppHelpers.getScreenWidth(context),
             child: AppPrimaryButton(
               onPressed: () {
-                if (widget.bookingIdController.text.isEmpty &&
-                    startDate == null &&
-                    endDate == null) {
+                // Clear previous error
+                setState(() {
+                  _errorMsg = '';
+                });
+
+                log('selectedStatus: $_selectedStatus');
+
+                // Validate: Allow filtering by status only, booking ID only, or dates only
+                // But require at least one filter criteria
+                final bool hasBookingId =
+                    widget.bookingIdController.text.isNotEmpty;
+                final bool hasStartDate =
+                    widget.startDateController.text.isNotEmpty;
+                final bool hasEndDate =
+                    widget.endDateController.text.isNotEmpty;
+                final bool hasStatus = _selectedStatus.isNotEmpty;
+
+                // Check if at least one filter is applied
+                if (!hasBookingId &&
+                    !hasStartDate &&
+                    !hasEndDate &&
+                    !hasStatus) {
                   setState(() {
                     _errorMsg =
                         'Filter criteria is not valid. Please select at least one filter criteria.';
@@ -232,7 +289,8 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                   return;
                 }
 
-                if (widget.bookingIdController.text.isNotEmpty &&
+                // Validate booking ID length if provided
+                if (hasBookingId &&
                     widget.bookingIdController.text.length < 14) {
                   setState(() {
                     _errorMsg =
@@ -241,30 +299,38 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                   return;
                 }
 
-                if (widget.startDateController.text.isNotEmpty &&
-                    widget.endDateController.text.isEmpty) {
-                  _errorMsg =
-                      'End date is required. Please select end date to complete the filter.';
-                  setState(() {});
+                // Validate date range: if one date is provided, both must be provided
+                if (hasStartDate && !hasEndDate) {
+                  setState(() {
+                    _errorMsg =
+                        'End date is required. Please select end date to complete the filter.';
+                  });
                   return;
                 }
 
-                if (widget.endDateController.text.isNotEmpty &&
-                    widget.startDateController.text.isEmpty) {
-                  _errorMsg =
-                      'Start date is required. Please select start date to complete the filter.';
-                  setState(() {});
+                if (hasEndDate && !hasStartDate) {
+                  setState(() {
+                    _errorMsg =
+                        'Start date is required. Please select start date to complete the filter.';
+                  });
                   return;
                 }
 
-                if (widget.startDateController.text.isNotEmpty &&
-                    widget.endDateController.text.isNotEmpty &&
-                    startDate!.isAfter(endDate!)) {
-                  _errorMsg = 'Make sure you are putting a valid date range';
-                  setState(() {});
-                  return;
+                // Validate date range: end date must be after start date
+                if (hasStartDate &&
+                    hasEndDate &&
+                    startDate != null &&
+                    endDate != null) {
+                  if (startDate!.isAfter(endDate!)) {
+                    setState(() {
+                      _errorMsg =
+                          'Make sure you are putting a valid date range';
+                    });
+                    return;
+                  }
                 }
 
+                // All validations passed
                 widget.onSubmitPressed();
               },
               title: 'Apply',

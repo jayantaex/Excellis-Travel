@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/services/file_downloader.dart';
+import '../../../../core/services/temp_store.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
@@ -87,15 +88,54 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                               child: Column(
                                 children: [
                                   SizedBox(
-                                    height: 20,
                                     width: AppHelpers.getScreenWidth(context),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        getAirlineLogo(
-                                            airlineCode:
-                                                '${widget.data.flightData?.itineraries?.first.segments?.first.carrierCode}'),
+                                        SizedBox(
+                                          width: width * 0.5,
+                                          height: 40,
+                                          child: ListTile(
+                                            contentPadding: EdgeInsets.all(0),
+                                            minVerticalPadding: 2,
+                                            horizontalTitleGap: 4,
+                                            leading: SizedBox(
+                                              height: 45,
+                                              width: 45,
+                                              child: getAirlineLogo(
+                                                  airlineCode:
+                                                      '${widget.data.flightData?.itineraries?.first.segments?.first.carrierCode}'),
+                                            ),
+                                            title: Text(
+                                              TempStore.getCarrierName(widget
+                                                          .data
+                                                          .flightData
+                                                          ?.itineraries
+                                                          ?.first
+                                                          .segments
+                                                          ?.first
+                                                          .carrierCode ??
+                                                      '') +
+                                                  ' | ' +
+                                                  TempStore.getAircraftName(
+                                                      widget
+                                                              .data
+                                                              .flightData
+                                                              ?.itineraries
+                                                              ?.first
+                                                              .segments
+                                                              ?.first
+                                                              .aircraft
+                                                              ?.code ??
+                                                          ''),
+                                              style: const TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                         Text(
                                           '${widget.data.bookingReference}'
                                               .toUpperCase(),
@@ -107,7 +147,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 12),
                                   ...?widget.data.flightData?.itineraries!.map(
                                     (e) => Row(
                                       mainAxisAlignment:

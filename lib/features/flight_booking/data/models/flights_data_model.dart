@@ -1,3 +1,5 @@
+import '../../../../core/services/temp_store.dart';
+
 class FlightsDataModel {
   factory FlightsDataModel.fromJson(Map<String, dynamic> json) =>
       FlightsDataModel(
@@ -515,9 +517,8 @@ class FlightDictionary {
   FlightDictionary({required this.dictionaries});
 
   factory FlightDictionary.fromJson(Map<String, dynamic> json) =>
-      FlightDictionary(
-        dictionaries: Dictionaries.fromJson(json),
-      );
+      FlightDictionary(dictionaries: Dictionaries.fromJson(json));
+
   final Dictionaries dictionaries;
 
   Map<String, dynamic> toJson() => dictionaries.toJson();
@@ -529,15 +530,18 @@ class Dictionaries {
     this.carriers,
   });
 
-  factory Dictionaries.fromJson(Map<String, dynamic> json) => Dictionaries(
-        // Added null check before mapping/casting from JSON
-        aircraft: json['aircraft'] != null
-            ? Map<String, String>.from(json['aircraft'])
-            : null,
-        carriers: json['carriers'] != null
-            ? Map<String, String>.from(json['carriers'])
-            : null,
-      );
+  factory Dictionaries.fromJson(Map<String, dynamic> json) {
+    TempStore.setAircraft(json['aircraft'] != null
+        ? Map<String, String>.from(json['aircraft'])
+        : <String, String>{});
+    TempStore.setAirlines(json['carriers'] != null
+        ? Map<String, String>.from(json['carriers'])
+        : <String, String>{});
+    return Dictionaries(
+      aircraft: TempStore.getAircraft(),
+      carriers: TempStore.getCarriers(),
+    );
+  }
   Map<String, String>? aircraft;
   Map<String, String>? carriers;
 

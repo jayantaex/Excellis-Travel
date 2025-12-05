@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:excellistravel/core/utils/airline_image_provider.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/services/temp_store.dart';
 import '../../../../core/utils/app_helpers.dart';
 import '../../data/models/flights_data_model.dart';
 
@@ -105,9 +106,14 @@ class FlightCardWidget extends StatelessWidget {
                                   width:
                                       AppHelpers.getScreenWidth(context) * 0.27,
                                   child: Text(
-                                    dictionaries?.dictionaries.carriers?[
-                                            '${(data.itineraries?.isNotEmpty ?? false) && (data.itineraries!.first.segments?.isNotEmpty ?? false) ? data.itineraries!.first.segments!.first.carrierCode : ""}'] ??
-                                        'NO-NAME',
+                                    (data.itineraries?.isNotEmpty ?? false) &&
+                                            (data.itineraries!.first.segments
+                                                    ?.isNotEmpty ??
+                                                false)
+                                        ? TempStore.getCarrierName(
+                                            data.itineraries!.first.segments!
+                                                .first.carrierCode!)
+                                        : 'NO-NAME',
                                     softWrap: true,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/utils/app_helpers.dart';
 import '../../data/models/ticket_model.dart';
 
 class BillingInfo extends StatelessWidget {
-  const BillingInfo({super.key, this.billingAddress, this.contactDetails});
+  const BillingInfo(
+      {super.key, this.billingAddress, this.contactDetails, this.billingDate});
   final BillingAddress? billingAddress;
   final ContactDetails? contactDetails;
+  final String? billingDate;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -45,10 +48,6 @@ class BillingInfo extends StatelessWidget {
               title: '',
               value: '',
             ),
-            const ItemRow(
-              title: '',
-              value: '',
-            ),
             ItemRow(
               title: 'Email',
               value: '${contactDetails?.email ?? ''} ',
@@ -60,6 +59,11 @@ class BillingInfo extends StatelessWidget {
             ItemRow(
               title: 'Country Code',
               value: '${contactDetails?.countryCode ?? ''} ',
+            ),
+            ItemRow(
+              title: 'Billing Date',
+              value:
+                  '${AppHelpers.formatDate(DateTime.parse(billingDate ?? DateTime.now().toString()), pattern: 'dd MMM, yyyy hh:mm:aa')} ',
             )
           ],
         ),

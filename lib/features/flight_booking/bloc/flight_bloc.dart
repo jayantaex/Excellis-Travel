@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
+import '../../../core/services/temp_store.dart';
 import '../data/models/airline_model.dart';
 import '../data/models/filter_data_model.dart';
 import '../data/repository/flight_booking_repository.dart';
@@ -116,9 +117,9 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
             if (aircraftCode != null &&
                 !airlines.any((airline) => airline.code == aircraftCode)) {
               airlines.add(AirlineModel(
-                name: res.data?.dictionaries?.dictionaries
-                        .carriers?[aircraftCode] ??
-                    'No-Name',
+                name: TempStore.getCarrierName(aircraftCode).isNotEmpty
+                    ? TempStore.getCarrierName(aircraftCode)
+                    : 'No-Name',
                 code: aircraftCode,
                 totalFlights: 1,
                 totalFare: 0.0,

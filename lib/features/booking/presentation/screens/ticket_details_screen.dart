@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:excellistravel/core/services/temp_store.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -194,20 +195,29 @@ class TicketDetailsScreen extends StatelessWidget {
                                             airlineCode: e.carrierCode!),
                                       ),
                                       title: Text(
-                                        '${e.carrierCode} -  ${getDuration(time: e.duration!)}',
+                                        '${TempStore.getCarrierName(e.carrierCode!)} -  ${getDuration(time: e.duration!)}',
                                         style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                      subtitle: Text(
-                                        '${e.number} | ${e.aircraft?.code}',
-                                        style: const TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColors.grey,
-                                        ),
-                                      ),
+                                      subtitle: e.aircraft?.code != null
+                                          ? Text(
+                                              '${e.number}| ${TempStore.getAircraftName(e.aircraft?.code ?? '')}',
+                                              style: const TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.grey,
+                                              ),
+                                            )
+                                          : Text(
+                                              '${e.number} ',
+                                              style: const TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.grey,
+                                              ),
+                                            ),
                                       children: <Widget>[
                                         ListTile(
                                           leading: AppHelpers.svgAsset(
@@ -377,6 +387,7 @@ class TicketDetailsScreen extends StatelessWidget {
                             child: BillingInfo(
                               billingAddress: ticketData?.billingAddress,
                               contactDetails: ticketData?.contactDetails,
+                              billingDate: ticketData?.createdAt,
                             ),
                           ),
                           const SizedBox(height: 45),
@@ -385,7 +396,6 @@ class TicketDetailsScreen extends StatelessWidget {
                           //   padding: const EdgeInsets.symmetric(horizontal: 16),
                           //   child: FareBreakdownCard(),
                           // ),
-                          const SizedBox(height: 45),
                         ],
                       ),
                     ),
