@@ -17,17 +17,32 @@ class TicketRemoteDataSrc {
     required String dateType,
   }) async {
     try {
+      Map<String, dynamic> queryParameters = <String, dynamic>{};
+      if (bookingId.isNotEmpty) {
+        queryParameters['searchCriteria'] = 'Reference No';
+        queryParameters['searchText'] = bookingId;
+      }
+      if (page > 0) {
+        queryParameters['page'] = page;
+      }
+      if (limit > 0) {
+        queryParameters['limit'] = limit;
+      }
+      if (dateType.isNotEmpty) {
+        queryParameters['dateType'] = dateType;
+      }
+      if (status.isNotEmpty) {
+        queryParameters['status'] = status;
+      }
+      if (startDate.isNotEmpty) {
+        queryParameters['fromDate'] = '${startDate}T00:00:00.000Z';
+      }
+      if (endDate.isNotEmpty) {
+        queryParameters['toDate'] = '${endDate}T23:59:59.999Z';
+      }
+
       final ApiResponse<BookingListModel> resp = await apiClient.getRequest(
-          queryParameters: <String, dynamic>{
-            'searchCriteria': bookingId.isEmpty ? null : 'Reference No',
-            'page': page,
-            'limit': limit,
-            'searchText': bookingId.isEmpty ? null : bookingId,
-            'dateType': dateType,
-            'status': status.isEmpty ? null : status,
-            'fromDate': startDate.isEmpty ? null : startDate,
-            'toDate': endDate.isEmpty ? null : endDate,
-          },
+          queryParameters: queryParameters,
           endPoint: EndPoints.ticket,
           fromJson: (Map<String, dynamic> json) =>
               BookingListModel.fromJson(json['data']));

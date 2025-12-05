@@ -117,42 +117,43 @@ class TicketWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           SizedBox(
-                              height: 90,
-                              width: width * 0.22,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                      '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.iataCode}',
-                                      style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600)),
-                                  Text(
-                                    AppHelpers.formatDateTime(
-                                      DateTime.parse(
-                                          '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.at}'),
-                                      pattern: 'dd MMM, yyyy',
-                                    ),
+                            height: 90,
+                            width: width * 0.22,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                    '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.iataCode}',
                                     style: const TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.grey),
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600)),
+                                Text(
+                                  AppHelpers.formatDateTime(
+                                    DateTime.parse(
+                                        '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.at}'),
+                                    pattern: 'dd MMM, yyyy',
                                   ),
-                                  //time
-                                  Text(
-                                    AppHelpers.formatDateTime(
-                                        DateTime.parse(
-                                          '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.at}',
-                                        ),
-                                        pattern: 'hh:mm:aa'),
-                                    style: const TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.grey),
-                                  )
-                                ],
-                              )),
+                                  style: const TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.grey),
+                                ),
+                                //time
+                                Text(
+                                  AppHelpers.formatDateTime(
+                                      DateTime.parse(
+                                        '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.at}',
+                                      ),
+                                      pattern: 'hh:mm:aa'),
+                                  style: const TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.grey),
+                                )
+                              ],
+                            ),
+                          ),
                           SizedBox(
                               width: width * 0.22,
                               child: Column(
@@ -334,11 +335,10 @@ Color getColorByStatus(String status) {
   switch (status.toLowerCase().trim()) {
     case 'confirmed':
       return AppColors.success;
-    case 'cancel':
-      return AppColors.primary;
+
     case 'pending':
       return AppColors.warning;
     default:
-      return AppColors.info;
+      return AppColors.error;
   }
 }

@@ -173,9 +173,7 @@ class _FilterContentState extends State<FilterContent> {
               const SizedBox(height: 16),
               const Divider(),
               const SizedBox(height: 16),
-
               // Filter content
-
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -284,8 +282,11 @@ class _FilterContentState extends State<FilterContent> {
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
 
-                      ...widget.airlines.map(
-                        (airline) => ListTile(
+                      ...widget.airlines.map((airline) {
+                        if (airline.totalFlights == 0) {
+                          return const SizedBox.shrink();
+                        }
+                        return ListTile(
                           contentPadding: const EdgeInsets.all(0),
                           minVerticalPadding: 0,
                           leading: SizedBox(
@@ -314,15 +315,14 @@ class _FilterContentState extends State<FilterContent> {
                               );
                             },
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ],
                   ),
                 ),
               ),
               // Apply button
               const SizedBox(height: 16),
-
               SizedBox(
                 height: 50,
                 child: Row(
