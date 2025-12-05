@@ -68,4 +68,6 @@ class EndPoints {
   static const String sales = '/commissions/transactions-auto';
   //markup
   static const String markup = '/markups';
+  //transactions
+  static const String transactions = '/transactions';
 }
