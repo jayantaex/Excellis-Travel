@@ -13,6 +13,7 @@ import 'features/settings/settings_module.dart';
 import 'features/splash/screens/app_updater.dart';
 import 'features/splash/splash_module.dart';
 import 'features/booking/booking_module.dart';
+import 'features/wallet_management/wallet_module.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -187,7 +188,12 @@ class AppRouter {
               downloadUrl: url,
               latestVersion: version,
             );
-          })
+          }),
+      GoRoute(
+          path: WalletModule.walletPath,
+          name: WalletModule.wallet,
+          builder: (BuildContext context, GoRouterState state) =>
+              WalletModule.builder())
     ],
     errorBuilder: (BuildContext context, GoRouterState state) => const Scaffold(
       body: Center(

@@ -68,6 +68,10 @@ class EndPoints {
   static const String sales = '/commissions/transactions-auto';
   //markup
   static const String markup = '/markups';
-  //transactions
-  static const String transactions = '/transactions';
+
+  //wallet
+  static const String wallet = '/wallet/balance';
+  static const String walletTransactions = '/wallet/transactions';
+  static const String walletWithdraw = '/wallet/withdraw';
+  static const String walletRecharge = '/wallet/recharge';
 }
