@@ -16,6 +16,7 @@ import '../../../auth/presentation/widgets/log_out_sheet.dart';
 import '../../../legal/legal_module.dart';
 import '../../../sales/sales_module.dart';
 import '../../../settings/settings_module.dart';
+import '../../../wallet_management/wallet_module.dart';
 import '../../bloc/profile_bloc.dart';
 import '../../profile_management_module.dart';
 import '../widgets/user_content_widget.dart';
@@ -39,6 +40,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       'title': 'My Markup',
       'iconPath': '${AppConstants.assetIcontUrl}markup.svg',
       'routeName': ''
+    },
+    <String, String>{
+      'title': 'My Wallet',
+      'iconPath': '${AppConstants.assetIcontUrl}wallet.svg',
+      'routeName': WalletModule.wallet
     },
     <String, String>{
       'title': 'Terms & Conditions',

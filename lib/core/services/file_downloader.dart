@@ -20,7 +20,7 @@ class FileDownloaderService {
       bool dirDownloadExists = true;
       dirDownloadExists = await Directory(directory).exists();
       if (!dirDownloadExists) {
-        directory = '/storage/emulated/0/Downloads/';
+        directory = '/storage/emulated/0/Download/';
         dirDownloadExists = await Directory(directory).exists();
         if (!dirDownloadExists) {
           directory = (await getTemporaryDirectory()).path;
@@ -45,7 +45,8 @@ class FileDownloaderService {
           await openAppSettings();
         }
       }
-      final String savePath = '${await _getPath()}$bokkingRefId.pdf';
+      final String now = DateTime.now().millisecond.toString();
+      final String savePath = '${await _getPath()}${bokkingRefId}_$now.pdf';
       final String? accessToken = await StorageService.getAccessToken();
       final String url =
           '${EndPoints.baseUrl}${EndPoints.downloadFile}/$bokkingRefId/download?format=pdf';
