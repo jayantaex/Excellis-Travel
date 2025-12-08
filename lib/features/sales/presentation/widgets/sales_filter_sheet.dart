@@ -105,9 +105,9 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                       onTap: () async {
                         final DateTime? picked = await showAppDatePicker(
                           context: context,
-                          firstDate: startDate ?? DateTime(2025),
+                          firstDate: DateTime(2025),
                           lastDate: DateTime.now(),
-                          initialDate: startDate ?? DateTime.now(),
+                          initialDate: DateTime.now(),
                         );
                         if (picked != null) {
                           endDate = picked;
@@ -142,6 +142,12 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
               width: AppHelpers.getScreenWidth(context),
               child: AppPrimaryButton(
                 onPressed: () {
+                  // Clear previous error message
+                  setState(() {
+                    _errorMessage = '';
+                  });
+
+                  // Validate: At least one filter criteria must be selected
                   if (widget.bookingIdController.text.isEmpty &&
                       startDate == null &&
                       endDate == null) {
@@ -152,6 +158,7 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                     return;
                   }
 
+                  // Validate: Booking ID must be at least 14 characters if provided
                   if (widget.bookingIdController.text.isNotEmpty &&
                       widget.bookingIdController.text.length < 14) {
                     setState(() {
@@ -161,6 +168,7 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                     return;
                   }
 
+                  // Validate: If start date is selected, end date must also be selected
                   if (widget.startDateController.text.isNotEmpty &&
                       widget.endDateController.text.isEmpty) {
                     setState(() {
@@ -169,14 +177,18 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                     });
                     return;
                   }
+
+                  // Validate: If end date is selected, start date must also be selected
                   if (widget.endDateController.text.isNotEmpty &&
-                      widget.endDateController.text.isEmpty) {
+                      widget.startDateController.text.isEmpty) {
                     setState(() {
                       _errorMessage =
                           'Start date is required to complete the filter.';
                     });
                     return;
                   }
+
+                  // Validate: Start date must be before or equal to end date
                   if (startDate != null &&
                       endDate != null &&
                       startDate!.isAfter(endDate!)) {
@@ -186,6 +198,7 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                     return;
                   }
 
+                  // All validations passed
                   widget.onSubmitPressed();
                   Navigator.pop(context);
                 },

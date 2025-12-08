@@ -21,24 +21,45 @@ class WalletLoaded extends WalletState {
     required this.wallet,
     this.isLoadingMore = false,
     this.currentFilter = 'all',
+    this.transactions,
+    this.allTransactions = const [],
+    this.pagination,
   });
   final WalletBalanceModel? wallet;
   final bool isLoadingMore;
   final String currentFilter;
+  final TransactionDataModel? transactions;
+  final List<Datam> allTransactions;
+  final Pagination? pagination;
 
   WalletLoaded copyWith({
     WalletBalanceModel? wallet,
     bool? isLoadingMore,
     String? currentFilter,
+    TransactionDataModel? transactions,
+    List<Datam>? allTransactions,
+    Pagination? pagination,
+    bool clearTransactions = false,
   }) =>
       WalletLoaded(
         wallet: wallet ?? this.wallet,
         isLoadingMore: isLoadingMore ?? this.isLoadingMore,
         currentFilter: currentFilter ?? this.currentFilter,
+        transactions: transactions ?? this.transactions,
+        allTransactions: clearTransactions
+            ? (allTransactions ?? [])
+            : (allTransactions ?? this.allTransactions),
+        pagination: pagination ?? this.pagination,
       );
 
   @override
-  List<Object?> get props => [wallet, isLoadingMore, currentFilter];
+  List<Object?> get props => [
+        wallet,
+        isLoadingMore,
+        currentFilter,
+        allTransactions,
+        pagination,
+      ];
 }
 
 /// Error state
@@ -65,46 +86,6 @@ class WithdrawalSubmitted extends WalletState {
 
 class WithdrawalError extends WalletState {
   const WithdrawalError({required this.message});
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
-/// Add money states
-class AddMoneyProcessing extends WalletState {}
-
-class AddMoneySuccess extends WalletState {
-  const AddMoneySuccess({
-    this.message = 'Money added successfully',
-  });
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class AddMoneyError extends WalletState {
-  const AddMoneyError({required this.message});
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
-/// Transaction details states
-class TransactionDetailsLoading extends WalletState {}
-
-class TransactionDetailsLoaded extends WalletState {
-  const TransactionDetailsLoaded({required this.transaction});
-  final TransactionDataModel transaction;
-
-  @override
-  List<Object?> get props => [transaction];
-}
-
-class TransactionDetailsError extends WalletState {
-  const TransactionDetailsError({required this.message});
   final String message;
 
   @override

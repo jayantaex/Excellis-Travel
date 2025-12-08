@@ -1,231 +1,221 @@
-class Pagination {
-  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
-        page: json['page'],
-        limit: json['limit'],
-        total: json['total'],
-        totalPages: json['totalPages'],
-        hasNext: json['hasNext'],
-        hasPrev: json['hasPrev'],
-      );
+class TransactionDataModel {
+  TransactionDataModel({this.datam, this.pagination});
 
-  Pagination({
-    this.page,
-    this.limit,
-    this.total,
-    this.totalPages,
-    this.hasNext,
-    this.hasPrev,
-  });
-  final int? page;
-  final int? limit;
-  final int? total;
-  final int? totalPages;
-  final bool? hasNext;
-  final bool? hasPrev;
+  TransactionDataModel.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      datam = <Datam>[];
+      json['data'].forEach((v) {
+        datam!.add(Datam.fromJson(v));
+      });
+    }
+    pagination = json['pagination'] != null
+        ? Pagination.fromJson(json['pagination'])
+        : null;
+  }
+  List<Datam>? datam;
+  Pagination? pagination;
 
-  Map<String, dynamic> toJson() => {
-        'page': page,
-        'limit': limit,
-        'total': total,
-        'totalPages': totalPages,
-        'hasNext': hasNext,
-        'hasPrev': hasPrev,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (datam != null) {
+      data['datam'] = datam!.map((v) => v.toJson()).toList();
+    }
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
+    }
+    return data;
+  }
 }
 
-// --- Commission Model ---
+class Datam {
+  Datam(
+      {this.id,
+      this.walletId,
+      this.transactionType,
+      this.amount,
+      this.balanceBefore,
+      this.balanceAfter,
+      this.transactionReference,
+      this.description,
+      this.relatedBookingId,
+      this.relatedCommissionId,
+      this.status,
+      this.metadata,
+      this.createdAt,
+      this.updatedAt,
+      this.booking,
+      this.commission});
 
-class Commission {
-  Commission({
-    this.id,
-    this.commissionAmount,
-    this.userRole,
-  });
+  Datam.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    walletId = json['wallet_id'];
+    transactionType = json['transaction_type'];
+    amount = json['amount'];
+    balanceBefore = json['balance_before'];
+    balanceAfter = json['balance_after'];
+    transactionReference = json['transaction_reference'];
+    description = json['description'];
+    relatedBookingId = json['related_booking_id'];
+    relatedCommissionId = json['related_commission_id'];
+    status = json['status'];
+    metadata =
+        json['metadata'] != null ? Metadata.fromJson(json['metadata']) : null;
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    booking =
+        json['booking'] != null ? Booking.fromJson(json['booking']) : null;
+    commission = json['commission'] != null
+        ? Commission.fromJson(json['commission'])
+        : null;
+  }
+  int? id;
+  int? walletId;
+  String? transactionType;
+  String? amount;
+  String? balanceBefore;
+  String? balanceAfter;
+  String? transactionReference;
+  String? description;
+  int? relatedBookingId;
+  int? relatedCommissionId;
+  String? status;
+  Metadata? metadata;
+  String? createdAt;
+  String? updatedAt;
+  Booking? booking;
+  Commission? commission;
 
-  factory Commission.fromJson(Map<String, dynamic> json) => Commission(
-        id: json['id'],
-        commissionAmount: json['commission_amount'],
-        userRole: json['user_role'],
-      );
-  final int? id;
-  final String? commissionAmount;
-  final String? userRole;
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'commissionAmount': commissionAmount,
-        'userRole': userRole,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['wallet_id'] = walletId;
+    data['transaction_type'] = transactionType;
+    data['amount'] = amount;
+    data['balance_before'] = balanceBefore;
+    data['balance_after'] = balanceAfter;
+    data['transaction_reference'] = transactionReference;
+    data['description'] = description;
+    data['related_booking_id'] = relatedBookingId;
+    data['related_commission_id'] = relatedCommissionId;
+    data['status'] = status;
+    if (metadata != null) {
+      data['metadata'] = metadata!.toJson();
+    }
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (booking != null) {
+      data['booking'] = booking!.toJson();
+    }
+    if (commission != null) {
+      data['commission'] = commission!.toJson();
+    }
+    return data;
+  }
 }
-
-// --- Booking Model ---
-
-class Booking {
-  Booking({
-    this.bookingReference,
-    this.bookingType,
-  });
-
-  factory Booking.fromJson(Map<String, dynamic> json) => Booking(
-        bookingReference: json['booking_reference'],
-        bookingType: json['booking_type'],
-      );
-  final String? bookingReference;
-  final String? bookingType;
-
-  Map<String, dynamic> toJson() => {
-        'bookingReference': bookingReference,
-        'bookingType': bookingType,
-      };
-}
-
-// --- Metadata Model ---
 
 class Metadata {
-  Metadata({
-    this.fareType,
-    this.userRole,
-    this.baseAmount,
-    this.markupAmount,
-    this.hierarchyLevel,
-  });
+  Metadata(
+      {this.fareType,
+      this.userRole,
+      this.baseAmount,
+      this.markupAmount,
+      this.hierarchyLevel});
 
-  factory Metadata.fromJson(Map<String, dynamic> json) => Metadata(
-        fareType: json['fare_type'],
-        userRole: json['user_role'],
-        baseAmount: json['base_amount'],
-        markupAmount: json['markup_amount']?.toDouble(),
-        hierarchyLevel: json['hierarchy_level'],
-      );
-  final String? fareType;
-  final String? userRole;
-  final int? baseAmount;
-  final double? markupAmount;
-  final int? hierarchyLevel;
+  Metadata.fromJson(Map<String, dynamic> json) {
+    fareType = json['fare_type'];
+    userRole = json['user_role'];
+    baseAmount = json['base_amount'];
+    markupAmount = json['markup_amount'];
+    hierarchyLevel = json['hierarchy_level'];
+  }
+  String? fareType;
+  String? userRole;
+  int? baseAmount;
+  double? markupAmount;
+  int? hierarchyLevel;
 
-  Map<String, dynamic> toJson() => {
-        'fareType': fareType,
-        'userRole': userRole,
-        'baseAmount': baseAmount,
-        'markupAmount': markupAmount,
-        'hierarchyLevel': hierarchyLevel,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['fare_type'] = fareType;
+    data['user_role'] = userRole;
+    data['base_amount'] = baseAmount;
+    data['markup_amount'] = markupAmount;
+    data['hierarchy_level'] = hierarchyLevel;
+    return data;
+  }
 }
 
-// --- Datum Model (Individual Transaction) ---
+class Booking {
+  Booking({this.bookingReference, this.bookingType});
 
-class Datum {
-  Datum({
-    this.id,
-    this.walletId,
-    this.transactionType,
-    this.amount,
-    this.balanceBefore,
-    this.balanceAfter,
-    this.transactionReference,
-    this.description,
-    this.relatedBookingId,
-    this.relatedCommissionId,
-    this.status,
-    this.metadata,
-    this.createdAt,
-    this.updatedAt,
-    this.booking,
-    this.commission,
-  });
+  Booking.fromJson(Map<String, dynamic> json) {
+    bookingReference = json['booking_reference'];
+    bookingType = json['booking_type'];
+  }
+  String? bookingReference;
+  String? bookingType;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        id: json['id'],
-        walletId: json['wallet_id'],
-        transactionType: json['transaction_type'],
-        amount: json['amount'],
-        balanceBefore: json['balance_before'],
-        balanceAfter: json['balance_after'],
-        transactionReference: json['transaction_reference'],
-        description: json['description'],
-        relatedBookingId: json['related_booking_id'],
-        relatedCommissionId: json['related_commission_id'],
-        status: json['status'],
-        metadata: json['metadata'] == null
-            ? null
-            : Metadata.fromJson(json['metadata']),
-        // Parse ISO 8601 strings into DateTime objects
-        createdAt: json['created_at'] == null
-            ? null
-            : DateTime.parse(json['created_at']),
-        updatedAt: json['updated_at'] == null
-            ? null
-            : DateTime.parse(json['updated_at']),
-        booking:
-            json['booking'] == null ? null : Booking.fromJson(json['booking']),
-        commission: json['commission'] == null
-            ? null
-            : Commission.fromJson(json['commission']),
-      );
-  final int? id;
-  final int? walletId;
-  final String? transactionType;
-  final String? amount;
-  final String? balanceBefore;
-  final String? balanceAfter;
-  final String? transactionReference;
-  final String? description;
-  final int? relatedBookingId;
-  final int? relatedCommissionId;
-  final String? status;
-  final Metadata? metadata;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final Booking? booking;
-  final Commission? commission;
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'walletId': walletId,
-        'transactionType': transactionType,
-        'amount': amount,
-        'balanceBefore': balanceBefore,
-        'balanceAfter': balanceAfter,
-        'transactionReference': transactionReference,
-        'description': description,
-        'relatedBookingId': relatedBookingId,
-        'relatedCommissionId': relatedCommissionId,
-        'status': status,
-        'metadata': metadata?.toJson(),
-        // Format DateTime objects back to ISO 8601 strings
-        'createdAt': createdAt?.toIso8601String(),
-        'updatedAt': updatedAt?.toIso8601String(),
-        'booking': booking?.toJson(),
-        'commission': commission?.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['booking_reference'] = bookingReference;
+    data['booking_type'] = bookingType;
+    return data;
+  }
 }
 
-// --- Main Data Model ---
+class Commission {
+  Commission({this.id, this.commissionAmount, this.userRole});
 
-class TransactionDataModel {
-  TransactionDataModel({
-    this.data,
-    this.pagination,
-  });
+  Commission.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    commissionAmount = json['commission_amount'];
+    userRole = json['user_role'];
+  }
+  int? id;
+  String? commissionAmount;
+  String? userRole;
 
-  factory TransactionDataModel.fromJson(Map<String, dynamic> json) =>
-      TransactionDataModel(
-        // Map list of JSON objects to list of Datum objects
-        data: json['data'] == null
-            ? null
-            : List<Datum>.from(json['data'].map((x) => Datum.fromJson(x))),
-        pagination: json['pagination'] == null
-            ? null
-            : Pagination.fromJson(json['pagination']),
-      );
-  final List<Datum>? data;
-  final Pagination? pagination;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['commission_amount'] = commissionAmount;
+    data['user_role'] = userRole;
+    return data;
+  }
+}
 
-  Map<String, dynamic> toJson() => {
-        // Map list of Datum objects to list of JSON objects
-        'data': data == null
-            ? null
-            : List<dynamic>.from(data!.map((x) => x.toJson())),
-        'pagination': pagination?.toJson(),
-      };
+class Pagination {
+  Pagination(
+      {this.page,
+      this.limit,
+      this.total,
+      this.totalPages,
+      this.hasNext,
+      this.hasPrev});
+
+  Pagination.fromJson(Map<String, dynamic> json) {
+    page = json['page'];
+    limit = json['limit'];
+    total = json['total'];
+    totalPages = json['totalPages'];
+    hasNext = json['hasNext'];
+    hasPrev = json['hasPrev'];
+  }
+  int? page;
+  int? limit;
+  int? total;
+  int? totalPages;
+  bool? hasNext;
+  bool? hasPrev;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['page'] = page;
+    data['limit'] = limit;
+    data['total'] = total;
+    data['totalPages'] = totalPages;
+    data['hasNext'] = hasNext;
+    data['hasPrev'] = hasPrev;
+    return data;
+  }
 }

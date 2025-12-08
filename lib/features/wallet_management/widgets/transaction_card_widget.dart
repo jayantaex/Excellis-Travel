@@ -58,7 +58,7 @@ class TransactionCardWidget extends StatelessWidget {
               size: 24,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
           // Transaction Details
           Expanded(
             child: Column(
@@ -67,26 +67,18 @@ class TransactionCardWidget extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 14,
+                    fontSize: 10,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  date,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
                 if (description != null && description!.isNotEmpty) ...[
                   const SizedBox(height: 2),
                   Text(
                     description!,
                     style: const TextStyle(
-                      fontSize: 11,
+                      fontSize: 10,
                       color: AppColors.textHint,
                       fontWeight: FontWeight.w400,
                     ),
@@ -105,18 +97,18 @@ class TransactionCardWidget extends StatelessWidget {
               Text(
                 '${isCredit ? '+' : '-'} ₹$amount',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: isCredit ? AppColors.success : AppColors.error,
                 ),
               ),
-              if (transactionId != null && transactionId!.isNotEmpty) ...[
+              if (date.isNotEmpty) ...[
                 const SizedBox(height: 4),
                 Text(
-                  '#$transactionId',
+                  date,
                   style: const TextStyle(
-                    fontSize: 10,
-                    color: AppColors.textHint,
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
