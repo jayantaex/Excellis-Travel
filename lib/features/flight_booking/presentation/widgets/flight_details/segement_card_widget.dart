@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/services/temp_store.dart';
-import '../../../../../core/utils/airline_image_provider.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/airline_image_provider.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import '../../../data/models/flights_data_model.dart' show FlightDictionary;
 
@@ -29,12 +28,17 @@ class SegmentCard extends StatelessWidget {
             ),
             title: Text(
               data.carrierCode != null
-                  ? TempStore.getCarrierName(data.carrierCode!)
-                  : 'NO-NAME',
+                  ? flightDictionary.dictionaries.carriers != null &&
+                          flightDictionary.dictionaries.carriers!.isNotEmpty
+                      ? flightDictionary
+                              .dictionaries.carriers![data.carrierCode!] ??
+                          ''
+                      : ''
+                  : '',
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             subtitle: Text(
-              '${data.aircraft?.code != null ? TempStore.getAircraftName(data.aircraft!.code!) : ''} | '
+              '${data.aircraft?.code != null ? (flightDictionary.dictionaries.aircraft?[data.aircraft!.code!] ?? '') : ''} | '
               '${data.co2Emissions?.isNotEmpty ?? false ? data.co2Emissions!.first.cabin ?? '' : ''}',
               style: const TextStyle(
                   fontSize: 10,

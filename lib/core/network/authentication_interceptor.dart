@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import '../constants/app_constants.dart';
-import '../utils/storage_service.dart';
+import '../../utils/storage_service.dart';
 import 'api_urls.dart';
 
 class AuthenticationInterceptor extends Interceptor {

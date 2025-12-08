@@ -1,6 +1,6 @@
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/core/utils/airline_image_provider.dart';
+import 'package:excellistravel/utils/airline_image_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,12 +9,13 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/services/file_downloader.dart';
 import '../../../../core/services/temp_store.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
+import '../../data/airline_info_service.dart';
 import '../../data/models/payment_verify_res_model.dart';
 
 class PassDownloadScreen extends StatefulWidget {
@@ -27,7 +28,7 @@ class PassDownloadScreen extends StatefulWidget {
 
 class _PassDownloadScreenState extends State<PassDownloadScreen> {
   String barCodeSvg = '';
-
+  String airlineName = '';
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -37,6 +38,10 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
         width: 250,
         height: 60,
       );
+      airlineName = await AirlinInfoService().getAirlineName(
+          airlineCode: widget.data.flightData?.itineraries?.first.segments
+                  ?.first.carrierCode ??
+              '');
       setState(() {});
     });
     super.initState();
@@ -97,7 +102,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                           width: width * 0.5,
                                           height: 40,
                                           child: ListTile(
-                                            contentPadding: EdgeInsets.all(0),
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
                                             minVerticalPadding: 2,
                                             horizontalTitleGap: 4,
                                             leading: SizedBox(
@@ -107,43 +113,27 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   airlineCode:
                                                       '${widget.data.flightData?.itineraries?.first.segments?.first.carrierCode}'),
                                             ),
-                                            title: Text(
-                                              TempStore.getCarrierName(widget
-                                                          .data
-                                                          .flightData
-                                                          ?.itineraries
-                                                          ?.first
-                                                          .segments
-                                                          ?.first
-                                                          .carrierCode ??
-                                                      '') +
-                                                  ' | ' +
-                                                  TempStore.getAircraftName(
-                                                      widget
-                                                              .data
-                                                              .flightData
-                                                              ?.itineraries
-                                                              ?.first
-                                                              .segments
-                                                              ?.first
-                                                              .aircraft
-                                                              ?.code ??
-                                                          ''),
-                                              style: const TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+                                            title: (widget
+                                                        .data
+                                                        .flightData
+                                                        ?.itineraries
+                                                        ?.first
+                                                        .segments
+                                                        ?.first
+                                                        .aircraft
+                                                        ?.code
+                                                        ?.isNotEmpty ??
+                                                    false)
+                                                ? Text(
+                                                    '${airlineName.isNotEmpty ? '$airlineName | ' : ''} ${widget.data.flightData?.itineraries?.first.segments?.first.aircraft?.code ?? ''}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )
+                                                : null,
                                           ),
                                         ),
-                                        Text(
-                                          '${widget.data.bookingReference}'
-                                              .toUpperCase(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        )
                                       ],
                                     ),
                                   ),

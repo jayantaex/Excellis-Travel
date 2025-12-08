@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
-import '../../../../../core/utils/app_toast.dart';
+import '../../../../../utils/app_helpers.dart';
+import '../../../../../utils/app_toast.dart';
 // import '../../../data/models/flights_data_model.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import '../../../data/models/passenger_model.dart';

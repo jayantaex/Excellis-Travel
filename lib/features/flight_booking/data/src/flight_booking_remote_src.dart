@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../../core/network/amadeus_client.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_response.dart';
@@ -130,6 +132,25 @@ class FlightBookingRemoteSrc {
               MyMarkup.fromJson(jsonData['data'][0]));
       return resp;
     } catch (e) {
+      return ApiResponse(errorMessage: e.toString(), statusCode: 400);
+    }
+  }
+
+  Future<ApiResponse<String>> getAirlineName(
+      {required String airlineCode}) async {
+    try {
+      final ApiResponse<String> resp = await amadeusClient.getRequest(
+          endPoint: EndPoints.airlineName,
+          queryParameters: <String, dynamic>{
+            'airlineCodes': airlineCode,
+          },
+          fromJson: (Map<String, dynamic> jsonData) {
+            log(jsonData['data'][0]['businessName'].toString());
+            return jsonData['data'][0]['businessName'];
+          });
+      return resp;
+    } catch (e) {
+      log(e.toString());
       return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
   }

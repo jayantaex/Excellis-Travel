@@ -1,9 +1,9 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/core/utils/airline_image_provider.dart';
+import 'package:excellistravel/utils/airline_image_provider.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/temp_store.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../data/models/flights_data_model.dart';
 
 class FlightCardWidget extends StatelessWidget {
@@ -110,10 +110,23 @@ class FlightCardWidget extends StatelessWidget {
                                             (data.itineraries!.first.segments
                                                     ?.isNotEmpty ??
                                                 false)
-                                        ? TempStore.getCarrierName(
-                                            data.itineraries!.first.segments!
-                                                .first.carrierCode!)
-                                        : 'NO-NAME',
+                                        ? dictionaries?.dictionaries.carriers !=
+                                                    null &&
+                                                (dictionaries?.dictionaries
+                                                        .carriers?.isNotEmpty ??
+                                                    false)
+                                            ? dictionaries?.dictionaries
+                                                        .carriers![
+                                                    data
+                                                        .itineraries!
+                                                        .first
+                                                        .segments!
+                                                        .first
+                                                        .carrierCode!] ??
+                                                ''
+                                            : ''
+                                        : ''
+                                            '',
                                     softWrap: true,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,

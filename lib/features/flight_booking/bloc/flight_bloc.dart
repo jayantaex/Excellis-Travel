@@ -117,8 +117,15 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
             if (aircraftCode != null &&
                 !airlines.any((airline) => airline.code == aircraftCode)) {
               airlines.add(AirlineModel(
-                name: TempStore.getCarrierName(aircraftCode).isNotEmpty
-                    ? TempStore.getCarrierName(aircraftCode)
+                name: res.data!.dictionaries?.dictionaries
+                                .carriers?[aircraftCode] !=
+                            null &&
+                        (res.data!.dictionaries?.dictionaries.carriers
+                                ?.isNotEmpty ??
+                            false)
+                    ? (res.data!.dictionaries?.dictionaries
+                            .carriers?[aircraftCode] ??
+                        '')
                     : 'No-Name',
                 code: aircraftCode,
                 totalFlights: 1,

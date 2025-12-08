@@ -3,16 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/airline_image_provider.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/airline_image_provider.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../data/models/ticket_model.dart';
 import '../../booking_module.dart';
 
-class TicketWidget extends StatelessWidget {
+class TicketWidget extends StatefulWidget {
   const TicketWidget({super.key, this.isLast, this.ticketData});
   final bool? isLast;
   final Booking? ticketData;
 
+  @override
+  State<TicketWidget> createState() => _TicketWidgetState();
+}
+
+class _TicketWidgetState extends State<TicketWidget> {
   @override
   Widget build(BuildContext context) {
     final double width = AppHelpers.getScreenWidth(context);
@@ -24,7 +29,7 @@ class TicketWidget extends StatelessWidget {
       onTap: () {
         context.pushNamed(
           BookingModule.ticketDetails,
-          extra: ticketData,
+          extra: widget.ticketData,
         );
       },
       child: Column(
@@ -56,24 +61,21 @@ class TicketWidget extends StatelessWidget {
                               padding: const EdgeInsets.only(left: 8),
                               child: Row(
                                 children: <Widget>[
-                                  getAirlineLogo(
-                                      airlineCode: ticketData
-                                              ?.flightData
-                                              ?.itineraries
-                                              ?.first
-                                              .segments
-                                              ?.first
-                                              .carrierCode ??
-                                          ''),
+                                  SizedBox(
+                                    height: 40,
+                                    width: 65,
+                                    child: getAirlineLogo(
+                                        airlineCode: widget
+                                                .ticketData
+                                                ?.flightData
+                                                ?.itineraries
+                                                ?.first
+                                                .segments
+                                                ?.first
+                                                .carrierCode ??
+                                            ''),
+                                  ),
                                   const SizedBox(width: 5),
-                                  // Text(
-                                  //   '${ticketData?.flightData?.itineraries?.first.segments?.first.carrierCode}',
-                                  //   style: const TextStyle(
-                                  //     fontSize: 12,
-                                  //     fontWeight: FontWeight.w600,
-                                  //     color: AppColors.black,
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                             ),
@@ -90,17 +92,18 @@ class TicketWidget extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
                                   color: getColorByStatus(
-                                          ticketData?.bookingStatus ?? '')
+                                          widget.ticketData?.bookingStatus ??
+                                              '')
                                       .withOpacity(0.1),
                                 ),
                                 child: Text(
-                                  (ticketData?.bookingStatus ?? '')
+                                  (widget.ticketData?.bookingStatus ?? '')
                                       .toUpperCase(),
                                   style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
                                     color: getColorByStatus(
-                                      ticketData?.bookingStatus ?? '',
+                                      widget.ticketData?.bookingStatus ?? '',
                                     ),
                                   ),
                                 ),
@@ -124,14 +127,14 @@ class TicketWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                    '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.iataCode}',
+                                    '${widget.ticketData?.flightData?.itineraries?.first.segments?.first.departure?.iataCode}',
                                     style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w600)),
                                 Text(
                                   AppHelpers.formatDateTime(
                                     DateTime.parse(
-                                        '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.at}'),
+                                        '${widget.ticketData?.flightData?.itineraries?.first.segments?.first.departure?.at}'),
                                     pattern: 'dd MMM, yyyy',
                                   ),
                                   style: const TextStyle(
@@ -143,7 +146,7 @@ class TicketWidget extends StatelessWidget {
                                 Text(
                                   AppHelpers.formatDateTime(
                                       DateTime.parse(
-                                        '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.at}',
+                                        '${widget.ticketData?.flightData?.itineraries?.first.segments?.first.departure?.at}',
                                       ),
                                       pattern: 'hh:mm:aa'),
                                   style: const TextStyle(
@@ -163,8 +166,8 @@ class TicketWidget extends StatelessWidget {
                                   Column(
                                     children: <Widget>[
                                       Text(
-                                        ticketData?.flightData?.itineraries
-                                                    ?.length ==
+                                        widget.ticketData?.flightData
+                                                    ?.itineraries?.length ==
                                                 2
                                             ? 'ROUND TRIP'
                                             : 'ONE WAY',
@@ -178,7 +181,7 @@ class TicketWidget extends StatelessWidget {
                                             AppColors.primary.withOpacity(0.3),
                                       ),
                                       Text(
-                                        '${ticketData?.flightData?.itineraries?.first.segments?.length ?? 0} stops',
+                                        '${widget.ticketData?.flightData?.itineraries?.first.segments?.length ?? 0} stops',
                                         style: const TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400),
@@ -195,14 +198,14 @@ class TicketWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: <Widget>[
                                 Text(
-                                    '${ticketData?.flightData?.itineraries?.first.segments?.last.arrival?.iataCode}',
+                                    '${widget.ticketData?.flightData?.itineraries?.first.segments?.last.arrival?.iataCode}',
                                     style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w600)),
                                 Text(
                                   AppHelpers.formatDateTime(
                                     DateTime.parse(
-                                        '${ticketData?.flightData?.itineraries?.first.segments?.last.arrival?.at}'),
+                                        '${widget.ticketData?.flightData?.itineraries?.first.segments?.last.arrival?.at}'),
                                     pattern: 'dd MMM, yyyy',
                                   ),
                                   style: const TextStyle(
@@ -213,7 +216,7 @@ class TicketWidget extends StatelessWidget {
                                 Text(
                                   AppHelpers.formatTime(
                                       DateTime.parse(
-                                        '${ticketData?.flightData?.itineraries?.first.segments?.last.arrival?.at}',
+                                        '${widget.ticketData?.flightData?.itineraries?.first.segments?.last.arrival?.at}',
                                       ),
                                       pattern: 'hh:mm:aa'),
                                   style: const TextStyle(
@@ -261,13 +264,23 @@ class TicketWidget extends StatelessWidget {
                                     color: AppColors.grey),
                               ),
                               Text(
-                                ' (${ticketData?.paymentStatus ?? 'Pending'})',
+                                (widget.ticketData?.paymentStatus == 'paid') &&
+                                        (widget.ticketData?.bookingStatus ==
+                                            'cancelled')
+                                    ? ' (Refund in Progress)'
+                                    : ' (${widget.ticketData?.paymentStatus ?? 'Pending'})',
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
-                                  color: ticketData?.paymentStatus == 'paid'
-                                      ? AppColors.success
-                                      : AppColors.warning,
+                                  color: (widget.ticketData?.paymentStatus ==
+                                              'paid') &&
+                                          (widget.ticketData?.bookingStatus ==
+                                              'cancelled')
+                                      ? AppColors.info
+                                      : widget.ticketData?.paymentStatus ==
+                                              'paid'
+                                          ? AppColors.success
+                                          : AppColors.warning,
                                 ),
                               ),
                             ],
@@ -281,12 +294,12 @@ class TicketWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            ticketData?.bookingReference ?? '',
+                            widget.ticketData?.bookingReference ?? '',
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           ),
                           Text(
-                            '₹${ticketData?.totalAmount ?? 0.00}',
+                            '₹${widget.ticketData?.totalAmount ?? 0.00}',
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           ),
@@ -298,7 +311,7 @@ class TicketWidget extends StatelessWidget {
               ),
             ),
           ),
-          isLast ?? false
+          widget.isLast ?? false
               ? const Padding(
                   padding: EdgeInsets.only(top: 12, bottom: 40),
                   child: CircularProgressIndicator.adaptive(),

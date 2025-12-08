@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:excellistravel/core/common/common_module.dart';
 import 'package:excellistravel/core/constants/app_styles.dart';
-import 'package:excellistravel/core/utils/app_helpers.dart';
+import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:excellistravel/core/widgets/primary_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

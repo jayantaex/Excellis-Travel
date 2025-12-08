@@ -1,19 +1,19 @@
 import 'dart:developer';
-import 'package:excellistravel/core/constants/app_styles.dart';
-import 'package:excellistravel/features/flight_booking/data/models/filter_data_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
+import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
 import '../../../../core/services/local_db.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../data/models/airline_model.dart';
+import '../../data/models/filter_data_model.dart';
 import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart';
 import '../../data/models/hive/flight_hive_data_model.dart'
@@ -125,7 +125,6 @@ class _FlightListScreenState extends State<FlightListScreen> {
                         departure: widget.data['depurture'],
                       );
                     }
-
                     if (state is FlightLoaded) {
                       return CustomScrollView(
                         slivers: [
@@ -157,9 +156,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                               ),
                             ),
                           ),
-
                           const SliverToBoxAdapter(child: SizedBox(height: 16)),
-
                           // Date Filter
                           SliverToBoxAdapter(
                             child: Padding(
@@ -200,9 +197,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                               ),
                             ),
                           ),
-
                           const SliverToBoxAdapter(child: SizedBox(height: 16)),
-
                           // Class Filter
                           SliverToBoxAdapter(
                             child: Padding(
@@ -217,9 +212,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                                   selectedFilter: selectedFilter),
                             ),
                           ),
-
                           const SliverToBoxAdapter(child: SizedBox(height: 16)),
-
                           // Flight List
                           SliverPadding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -229,12 +222,10 @@ class _FlightListScreenState extends State<FlightListScreen> {
                                   final int flightCount = state.isFiltered
                                       ? (state.filteredData?.datam?.length ?? 0)
                                       : (state.data.datam?.length ?? 0);
-
                                   // If no flights, show NoFlightWidget
                                   if (flightCount == 0) {
                                     return const NoFlightWidget();
                                   }
-
                                   // Otherwise, show flight cards
                                   return Container(
                                     margin: const EdgeInsets.only(bottom: 16),
@@ -293,7 +284,6 @@ class _FlightListScreenState extends State<FlightListScreen> {
                         errorMessage: 'Flight Searching Error',
                       );
                     }
-
                     return const ErrorScreen(
                       errorDesc: 'Something went wrong',
                       errorMessage: 'Flight Searching Error',
@@ -345,12 +335,6 @@ class _FlightListScreenState extends State<FlightListScreen> {
     }
     Scaffold.of(context).closeDrawer();
   }
-
-  void _resetFilter() {
-    setState(() {
-      selectedFilter = 'All';
-    });
-  }
 }
 
 Future<bool> _saveToLocal(
@@ -359,12 +343,10 @@ Future<bool> _saveToLocal(
     final String key =
         '${data.itineraries!.first.segments!.first.departure!.iataCode}_${data.itineraries!.first.segments!.last.arrival!.iataCode}_${data.itineraries?.first.segments?.first.departure?.at}_${data.itineraries?.first.segments?.last.arrival?.at}';
     final Box<FlightHiveDataModel> flightBox = await LocalDB().getFlightBox();
-
     final Map<String, dynamic> dictionaries = flightDictionary.toJson();
     final Map<String, dynamic> dataMap = data.toJson();
     final FlightHiveDataModel recentSearchedData =
         FlightHiveDataModel(data: dataMap, dictionaries: dictionaries);
-
     final FlightHiveDataModel? existingData = flightBox.get(key);
     if (existingData != null) {
       flightBox.delete(key);
@@ -424,10 +406,7 @@ Map<String, dynamic> getBody({
       }
     };
 
-List<Map<String, dynamic>> getTravellers({required List<int> travellersArr
-
-    /// [adult, child, infant]
-    }) {
+List<Map<String, dynamic>> getTravellers({required List<int> travellersArr}) {
   List<Map<String, dynamic>> listOfTravellers = [];
   int travellerId = 1;
   for (int i = 0; i < travellersArr.length; i++) {

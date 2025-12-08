@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/image_picker.dart';
+import '../../../../utils/image_picker.dart';
 import '../../bloc/profile_bloc.dart';
 import 'profile_photo_preview.dart';
 

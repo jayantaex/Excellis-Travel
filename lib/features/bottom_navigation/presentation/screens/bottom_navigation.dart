@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/utils/storage_service.dart';
+import '../../../../utils/storage_service.dart';
 import '../../../../core/widgets/app_exit_sheet.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/app_sheet.dart';

@@ -1,10 +1,10 @@
 import 'dart:developer';
 
-import 'package:excellistravel/core/utils/airline_image_provider.dart';
+import 'package:excellistravel/utils/airline_image_provider.dart';
 import 'package:excellistravel/features/flight_booking/data/models/filter_data_model.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../data/models/airline_model.dart';
 

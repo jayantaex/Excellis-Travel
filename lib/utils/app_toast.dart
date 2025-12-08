@@ -1,6 +1,6 @@
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../constants/app_styles.dart';
+import '../core/constants/app_styles.dart';
 
 void showToast({required String message}) {
   Fluttertoast.showToast(

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
@@ -35,10 +33,7 @@ class WalletApi {
           'page': page,
           'limit': limit,
         },
-        fromJson: (json) {
-          log(json.toString());
-          return TransactionDataModel.fromJson(json['data']);
-        },
+        fromJson: (json) => TransactionDataModel.fromJson(json['data']),
       );
     } catch (e) {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());

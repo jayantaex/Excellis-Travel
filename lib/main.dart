@@ -6,7 +6,7 @@ import 'core/localization/supported_local.dart';
 import 'core/services/firebase_notification_service.dart';
 import 'core/services/local_db.dart';
 import 'core/theme/app_theme.dart';
-import 'core/utils/storage_service.dart';
+import 'utils/storage_service.dart';
 import 'app_router.dart';
 
 void main() async {

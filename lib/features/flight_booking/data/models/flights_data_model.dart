@@ -530,18 +530,14 @@ class Dictionaries {
     this.carriers,
   });
 
-  factory Dictionaries.fromJson(Map<String, dynamic> json) {
-    TempStore.setAircraft(json['aircraft'] != null
-        ? Map<String, String>.from(json['aircraft'])
-        : <String, String>{});
-    TempStore.setAirlines(json['carriers'] != null
-        ? Map<String, String>.from(json['carriers'])
-        : <String, String>{});
-    return Dictionaries(
-      aircraft: TempStore.getAircraft(),
-      carriers: TempStore.getCarriers(),
-    );
-  }
+  factory Dictionaries.fromJson(Map<String, dynamic> json) => Dictionaries(
+        aircraft: json['aircraft'] != null
+            ? Map<String, String>.from(json['aircraft'])
+            : <String, String>{},
+        carriers: json['carriers'] != null
+            ? Map<String, String>.from(json['carriers'])
+            : <String, String>{},
+      );
   Map<String, String>? aircraft;
   Map<String, String>? carriers;
 

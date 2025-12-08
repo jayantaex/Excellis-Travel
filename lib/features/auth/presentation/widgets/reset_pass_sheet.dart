@@ -1,4 +1,4 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
+import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';

@@ -4,19 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/file_downloader.dart';
-import '../../../../core/utils/airline_image_provider.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/airline_image_provider.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../flight_booking/data/airline_info_service.dart';
 import '../../data/models/ticket_model.dart';
 import '../widgets/billing_info_widget.dart';
 
-class TicketDetailsScreen extends StatelessWidget {
+class TicketDetailsScreen extends StatefulWidget {
   const TicketDetailsScreen({super.key, required this.ticketData});
   final Booking? ticketData;
 
+  @override
+  State<TicketDetailsScreen> createState() => _TicketDetailsScreenState();
+}
+
+class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () async {
+      _airlineName = await AirlinInfoService().getAirlineName(
+          airlineCode: widget.ticketData?.flightData?.itineraries?.first
+                  .segments?.first.carrierCode ??
+              '');
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  String _airlineName = '';
   @override
   Widget build(BuildContext context) {
     final double width = AppHelpers.getScreenWidth(context);
@@ -31,9 +50,9 @@ class TicketDetailsScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: AppCustomAppbar(
                     start:
-                        '${ticketData?.flightData?.itineraries?.first.segments?.first.departure?.iataCode}',
+                        '${widget.ticketData?.flightData?.itineraries?.first.segments?.first.departure?.iataCode}',
                     end:
-                        '${ticketData?.flightData?.itineraries?.first.segments?.last.arrival?.iataCode}',
+                        '${widget.ticketData?.flightData?.itineraries?.first.segments?.last.arrival?.iataCode}',
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -62,7 +81,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                     horizontal: 16,
                                   ),
                                   child: Text(
-                                    '${ticketData?.bookingReference}',
+                                    '${widget.ticketData?.bookingReference}',
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w700,
@@ -70,7 +89,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                     ),
                                   ))),
 
-                          ...ticketData!.flightData!.itineraries!.map(
+                          ...widget.ticketData!.flightData!.itineraries!.map(
                             (Itinerary e) => DottedBorder(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 10),
@@ -181,8 +200,8 @@ class TicketDetailsScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  ...ticketData!
-                                      .flightData!.itineraries!.first.segments!
+                                  ...widget.ticketData!.flightData!.itineraries!
+                                      .first.segments!
                                       .map(
                                     (Segment e) => ExpansionTile(
                                       collapsedShape: const Border(),
@@ -195,7 +214,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                             airlineCode: e.carrierCode!),
                                       ),
                                       title: Text(
-                                        '${TempStore.getCarrierName(e.carrierCode!)} -  ${getDuration(time: e.duration!)}',
+                                        '${_airlineName} -  ${getDuration(time: e.duration!)}',
                                         style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
@@ -203,7 +222,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                       ),
                                       subtitle: e.aircraft?.code != null
                                           ? Text(
-                                              '${e.number}| ${TempStore.getAircraftName(e.aircraft?.code ?? '')}',
+                                              '${e.number}| ${e.aircraft?.code}',
                                               style: const TextStyle(
                                                 fontSize: 11,
                                                 fontWeight: FontWeight.w400,
@@ -299,7 +318,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                   )),
                             ),
                           ),
-                          ...ticketData!.travellerDetails!.adults!.map(
+                          ...widget.ticketData!.travellerDetails!.adults!.map(
                             (Adult adult) => ListTile(
                               leading: const CircleAvatar(
                                 radius: 16,
@@ -323,7 +342,7 @@ class TicketDetailsScreen extends StatelessWidget {
                             ),
                           ),
 
-                          ...ticketData!.travellerDetails!.children!.map(
+                          ...widget.ticketData!.travellerDetails!.children!.map(
                             (child) => ListTile(
                               leading: const CircleAvatar(
                                 radius: 16,
@@ -346,7 +365,7 @@ class TicketDetailsScreen extends StatelessWidget {
                                     ),
                             ),
                           ),
-                          ...ticketData!.travellerDetails!.infants!.map(
+                          ...widget.ticketData!.travellerDetails!.infants!.map(
                             (infant) => ListTile(
                               leading: const CircleAvatar(
                                 radius: 16,
@@ -385,9 +404,9 @@ class TicketDetailsScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: BillingInfo(
-                              billingAddress: ticketData?.billingAddress,
-                              contactDetails: ticketData?.contactDetails,
-                              billingDate: ticketData?.createdAt,
+                              billingAddress: widget.ticketData?.billingAddress,
+                              contactDetails: widget.ticketData?.contactDetails,
+                              billingDate: widget.ticketData?.createdAt,
                             ),
                           ),
                           const SizedBox(height: 45),
@@ -421,18 +440,18 @@ class TicketDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    '₹${ticketData?.totalAmount}',
+                    '₹${widget.ticketData?.totalAmount}',
                     style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: AppColors.black),
                   ),
                   Text(
-                    '${ticketData?.paymentStatus}'.toUpperCase(),
+                    '${widget.ticketData?.paymentStatus}'.toUpperCase(),
                     style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
-                        color: ticketData?.paymentStatus == 'paid'
+                        color: widget.ticketData?.paymentStatus == 'paid'
                             ? AppColors.success
                             : AppColors.grey),
                   ),
@@ -443,19 +462,20 @@ class TicketDetailsScreen extends StatelessWidget {
               width: AppHelpers.getScreenWidth(context) * 0.4,
               height: 45,
               child: AppPrimaryButton(
-                  onPressed: ticketData?.bookingStatus == 'confirmed'
+                  onPressed: widget.ticketData?.bookingStatus == 'confirmed'
                       ? () async {
                           try {
                             Fluttertoast.showToast(msg: 'Downloading...');
                             final bool res =
                                 await FileDownloaderService.saveFile(
                               baseFare:
-                                  '${(ticketData?.fareDetails?.totalFare ?? 0.0) - (ticketData?.fareDetails?.markup ?? 0.0)}',
+                                  '${(widget.ticketData?.fareDetails?.totalFare ?? 0.0) - (widget.ticketData?.fareDetails?.markup ?? 0.0)}',
                               totalFare:
-                                  '${ticketData?.fareDetails?.totalFare}',
+                                  '${widget.ticketData?.fareDetails?.totalFare}',
                               markupPrice:
-                                  '${(ticketData?.fareDetails?.markup ?? 0.00)}',
-                              bokkingRefId: '${ticketData?.bookingReference}',
+                                  '${(widget.ticketData?.fareDetails?.markup ?? 0.00)}',
+                              bokkingRefId:
+                                  '${widget.ticketData?.bookingReference}',
                               showDownloadProgress: (count, total) {},
                             );
 
@@ -468,7 +488,7 @@ class TicketDetailsScreen extends StatelessWidget {
                           }
                         }
                       : null,
-                  bgColor: ticketData?.bookingStatus == 'confirmed'
+                  bgColor: widget.ticketData?.bookingStatus == 'confirmed'
                       ? AppColors.primary
                       : AppColors.grey,
                   style: const TextStyle(fontSize: 14, color: AppColors.white),

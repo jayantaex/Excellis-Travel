@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:flutter/foundation.dart';
-import '../utils/storage_service.dart';
+import '../../utils/storage_service.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
 import 'authentication_interceptor.dart';

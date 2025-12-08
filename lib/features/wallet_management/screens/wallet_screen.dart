@@ -1,5 +1,5 @@
 import 'package:excellistravel/core/constants/app_styles.dart';
-import 'package:excellistravel/core/utils/app_helpers.dart';
+import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
 import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';

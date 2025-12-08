@@ -1,11 +1,11 @@
-import 'package:excellistravel/core/utils/app_toast.dart';
+import 'package:excellistravel/utils/app_toast.dart';
 import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../../../core/utils/storage_service.dart';
+import '../../../../utils/app_helpers.dart';
+import '../../../../utils/storage_service.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
@@ -120,6 +120,15 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                               Navigator.pop(context);
                             },
                           ),
+                          onClosePressed: () {
+                            _bookingIdController.clear();
+                            _startDateController.clear();
+                            _endDateController.clear();
+                            _selectedStatus = '';
+                            _selectedDateType = 'bookingdate';
+                            _pickedStartDate = '';
+                            _pickedEndDate = '';
+                          },
                         );
                       },
                       icon: const Icon(
