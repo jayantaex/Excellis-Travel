@@ -2,7 +2,6 @@ import 'package:excellistravel/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/app_styles.dart';
-import '../services/network_checker.dart';
 
 class AppPrimaryButton extends StatelessWidget {
   const AppPrimaryButton(
@@ -34,11 +33,6 @@ class AppPrimaryButton extends StatelessWidget {
         onPressed: isLoading || onPressed == null
             ? null
             : () async {
-                final bool hasInternet =
-                    await NetworkChecker().hasInternetConnection();
-                if (!hasInternet) {
-                  return;
-                }
                 onPressed!();
               },
         child: isLoading

@@ -11,6 +11,7 @@ Future<void> showAppSheet({
   bool? submitButtonRequired = false,
   String submitButtonTitle = 'Submit',
   VoidCallback? onSubmitPressed,
+  VoidCallback? onClosePressed,
 }) =>
     showModalBottomSheet(
       useSafeArea: true,
@@ -51,6 +52,7 @@ Future<void> showAppSheet({
                         backgroundColor: AppColors.divider,
                         child: IconButton(
                           onPressed: () {
+                            onClosePressed?.call();
                             Navigator.pop(context);
                           },
                           icon: const Icon(

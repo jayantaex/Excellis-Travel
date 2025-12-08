@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/wallet_bloc.dart';
+import '../data/models/transaction_model.dart';
 import '../widgets/transaction_card_widget.dart';
 import '../widgets/type_card_widget.dart';
 import '../widgets/withdrawl_sheet.dart';
@@ -21,140 +22,89 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  String selectedFilter = 'All';
-
-  // Sample transaction data - Replace with actual data from your backend
-  final List<Map<String, String>> _allTransactions = [
-    {
-      'title': 'Flight Booking',
-      'date': '5 Dec 2025, 10:30 AM',
-      'amount': '12500.00',
-      'type': 'debit',
-      'description': 'DEL to BOM - AI 101',
-      'transactionId': 'TXN123456789',
-    },
-    {
-      'title': 'Wallet Recharge',
-      'date': '4 Dec 2025, 02:15 PM',
-      'amount': '5000.00',
-      'type': 'credit',
-      'description': 'UPI Payment',
-      'transactionId': 'TXN123456788',
-    },
-    {
-      'title': 'Refund',
-      'date': '3 Dec 2025, 11:45 AM',
-      'amount': '2500.00',
-      'type': 'credit',
-      'description': 'Booking Cancellation',
-      'transactionId': 'TXN123456787',
-    },
-    {
-      'title': 'Hotel Booking',
-      'date': '2 Dec 2025, 09:20 AM',
-      'amount': '8500.00',
-      'type': 'debit',
-      'description': 'Taj Hotel - 2 Nights',
-      'transactionId': 'TXN123456786',
-    },
-    {
-      'title': 'Cashback',
-      'date': '1 Dec 2025, 06:30 PM',
-      'amount': '250.00',
-      'type': 'credit',
-      'description': 'Promotional Offer',
-      'transactionId': 'TXN123456785',
-    },
-    {
-      'title': 'Flight Booking',
-      'date': '30 Nov 2025, 03:15 PM',
-      'amount': '15000.00',
-      'type': 'debit',
-      'description': 'BOM to GOA - 6E 234',
-      'transactionId': 'TXN123456784',
-    },
-    {
-      'title': 'Wallet Recharge',
-      'date': '29 Nov 2025, 01:00 PM',
-      'amount': '10000.00',
-      'type': 'credit',
-      'description': 'Net Banking',
-      'transactionId': 'TXN123456783',
-    },
-    {
-      'title': 'Seat Selection',
-      'date': '28 Nov 2025, 04:45 PM',
-      'amount': '500.00',
-      'type': 'debit',
-      'description': 'Extra Legroom Seat',
-      'transactionId': 'TXN123456782',
-    },
-  ];
+  int page = 1;
+  int limit = 10;
+  String selectedFilter = 'all';
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _FetchWalletBalance();
+    _scrollController.addListener(_onScroll);
+    _fetchWalletBalance();
+    _fetchWalletTransactions(page: page, limit: limit);
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
-      setState(() {
-        switch (_tabController.index) {
-          case 0:
-            selectedFilter = 'All';
-            break;
-          case 1:
-            selectedFilter = 'Credit';
-            break;
-          case 2:
-            selectedFilter = 'Debit';
-            break;
-        }
-      });
+      final newFilter = switch (_tabController.index) {
+        0 => 'all',
+        1 => 'credit',
+        2 => 'debit',
+        _ => 'all',
+      };
+
+      if (newFilter != selectedFilter) {
+        setState(() {
+          selectedFilter = newFilter;
+        });
+        // Dispatch filter event to bloc (client-side filtering)
+        context.read<WalletBloc>().add(FilterTransactionsEvent(
+              filterType: newFilter,
+            ));
+      }
     });
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      // Load more when 200px from bottom
+      final state = context.read<WalletBloc>().state;
+      if (state is WalletLoaded && !state.isLoadingMore) {
+        final pagination = state.pagination;
+        if (pagination != null && pagination.hasNext == true) {
+          setState(() {
+            page++;
+          });
+          _fetchWalletTransactions(page: page, limit: limit);
+        }
+      }
+    }
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
-  List<Map<String, String>> get _filteredTransactions {
-    if (selectedFilter == 'All') {
-      return _allTransactions;
-    } else if (selectedFilter == 'Credit') {
-      return _allTransactions
-          .where((txn) => txn['type']?.toLowerCase() == 'credit')
+  List<Datam> _getFilteredTransactions(List<Datam> allTransactions) {
+    if (selectedFilter == 'all') {
+      return allTransactions;
+    } else if (selectedFilter == 'credit') {
+      return allTransactions
+          .where((txn) => txn.transactionType?.toLowerCase() == 'credit')
           .toList();
     } else {
-      return _allTransactions
-          .where((txn) => txn['type']?.toLowerCase() == 'debit')
+      return allTransactions
+          .where((txn) => txn.transactionType?.toLowerCase() == 'debit')
           .toList();
     }
   }
 
-  // Calculate total credit and debit
-  double get _totalCredit => _allTransactions
-      .where((txn) => txn['type']?.toLowerCase() == 'credit')
-      .fold(0.0,
-          (sum, txn) => sum + (double.tryParse(txn['amount'] ?? '0') ?? 0));
-
-  double get _totalDebit => _allTransactions
-      .where((txn) => txn['type']?.toLowerCase() == 'debit')
-      .fold(0.0,
-          (sum, txn) => sum + (double.tryParse(txn['amount'] ?? '0') ?? 0));
-
-  double get _availableBalance => _totalCredit - _totalDebit;
-
   void _showWithdrawalSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => WithdrawalSheet(
-        availableBalance: _availableBalance,
-      ),
-    );
+    final state = context.read<WalletBloc>().state;
+    if (state is WalletLoaded) {
+      final balance = state.wallet?.balance ?? 0.0;
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => WithdrawalSheet(
+          availableBalance: balance,
+        ),
+      );
+    }
   }
 
   @override
@@ -163,13 +113,13 @@ class _WalletScreenState extends State<WalletScreen>
           child: TransWhiteBgWidget(
             child: SafeArea(
               child: BlocConsumer<WalletBloc, WalletState>(
-                listener: (context, state) {},
+                listener: (context, state) {
+                  // Listener can be used for side effects if needed
+                },
                 builder: (context, state) {
                   if (state is WalletLoading) {
                     return const Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primary,
-                      ),
+                      child: CircularProgressIndicator(color: AppColors.white),
                     );
                   }
                   if (state is WalletError) {
@@ -180,7 +130,6 @@ class _WalletScreenState extends State<WalletScreen>
                   if (state is! WalletLoaded) {
                     return const SizedBox.shrink();
                   }
-                  final wallet = state.wallet;
                   return Column(
                     children: [
                       // App Bar
@@ -348,60 +297,89 @@ class _WalletScreenState extends State<WalletScreen>
 
                               // Transaction List
                               Expanded(
-                                child: _filteredTransactions.isEmpty
-                                    ? Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.receipt_long_outlined,
-                                              size: 64,
-                                              color: AppColors.textHint
-                                                  .withOpacity(0.5),
+                                child: () {
+                                  final filteredTransactions =
+                                      _getFilteredTransactions(
+                                    state.allTransactions,
+                                  );
+
+                                  if (filteredTransactions.isEmpty &&
+                                      !state.isLoadingMore) {
+                                    return Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.receipt_long_outlined,
+                                            size: 64,
+                                            color: AppColors.textHint
+                                                .withOpacity(0.5),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          const Text(
+                                            'No transactions found',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColors.textSecondary,
                                             ),
-                                            const SizedBox(height: 16),
-                                            const Text(
-                                              'No transactions found',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.textSecondary,
-                                              ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            'Your ${selectedFilter} transactions will appear here',
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: AppColors.textHint,
                                             ),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              'Your ${selectedFilter.toLowerCase()} transactions will appear here',
-                                              style: const TextStyle(
-                                                fontSize: 13,
-                                                color: AppColors.textHint,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : ListView.builder(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                        ),
-                                        itemCount: _filteredTransactions.length,
-                                        itemBuilder: (context, index) {
-                                          final transaction =
-                                              _filteredTransactions[index];
-                                          return TransactionCardWidget(
-                                            title: transaction['title'] ?? '',
-                                            date: transaction['date'] ?? '',
-                                            amount:
-                                                transaction['amount'] ?? '0.00',
-                                            type:
-                                                transaction['type'] ?? 'debit',
-                                            description:
-                                                transaction['description'],
-                                            transactionId:
-                                                transaction['transactionId'],
-                                          );
-                                        },
+                                          ),
+                                        ],
                                       ),
+                                    );
+                                  }
+
+                                  return ListView.builder(
+                                    controller: _scrollController,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    itemCount: filteredTransactions.length +
+                                        (state.isLoadingMore ? 1 : 0),
+                                    itemBuilder: (context, index) {
+                                      // Show loading indicator at the end
+                                      if (index ==
+                                          filteredTransactions.length) {
+                                        return const Padding(
+                                          padding: EdgeInsets.all(16.0),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: AppColors.primary,
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      final transaction =
+                                          filteredTransactions[index];
+                                      return TransactionCardWidget(
+                                        title:
+                                            transaction.transactionReference ??
+                                                '',
+                                        date: AppHelpers.formatDate(
+                                            DateTime.parse(
+                                                transaction.createdAt ??
+                                                    '2025-01-01')),
+                                        amount: transaction.amount ?? '0.00',
+                                        type: transaction.transactionType ??
+                                            'debit',
+                                        description:
+                                            transaction.description ?? '',
+                                        transactionId:
+                                            transaction.transactionReference ??
+                                                '',
+                                      );
+                                    },
+                                  );
+                                }(),
                               ),
                               const SizedBox(height: 16),
                             ],
@@ -417,13 +395,19 @@ class _WalletScreenState extends State<WalletScreen>
         ),
       );
 
-  void _FetchWalletBalance() {
+  void _fetchWalletBalance() {
     context.read<WalletBloc>().add(const FetchWalletEvent());
   }
 
-  // void _FetchWalletTransactions() {
-  //   context.read<WalletBloc>().add(const FetchWalletTransactionsEvent());
-  // }
+  void _fetchWalletTransactions({
+    required int page,
+    required int limit,
+  }) {
+    context.read<WalletBloc>().add(FetchWalletTransactionsEvent(
+          page: page,
+          limit: limit,
+        ));
+  }
 }
 
 // Withdrawal Bottom Sheet Widget

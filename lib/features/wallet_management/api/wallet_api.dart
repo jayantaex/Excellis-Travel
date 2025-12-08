@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
@@ -22,7 +24,7 @@ class WalletApi {
   }
 
   /// Fetch transactions
-  Future<ApiResponse<List<TransactionDataModel>>> fetchTransactions({
+  Future<ApiResponse<TransactionDataModel>> fetchTransactions({
     required int page,
     required int limit,
   }) async {
@@ -34,11 +36,8 @@ class WalletApi {
           'limit': limit,
         },
         fromJson: (json) {
-          final List<dynamic> transactionList = json['data']['data'] ?? [];
-          return transactionList
-              .map((e) =>
-                  TransactionDataModel.fromJson(e as Map<String, dynamic>))
-              .toList();
+          log(json.toString());
+          return TransactionDataModel.fromJson(json['data']);
         },
       );
     } catch (e) {
