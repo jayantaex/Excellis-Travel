@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:excellistravel/features/flight_booking/presentation/widgets/flight_details/baggae_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -310,52 +312,49 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             ),
-                                            // trailing: InkWell(
-                                            //   onTap: () {
-                                            //     showAppSheet(
-                                            //       context: context,
-                                            //       title: 'Billing Information',
-                                            //       child: MultiBlocProvider(
-                                            //         providers: [
-                                            //           BlocProvider.value(
-                                            //             value: context
-                                            //                 .read<StatesBloc>(),
-                                            //           ),
-                                            //           BlocProvider.value(
-                                            //             value: context
-                                            //                 .read<CityBloc>(),
-                                            //           ),
-                                            //         ],
-                                            //         child: BillingSheet(
-                                            //           firstNameController:
-                                            //               _firstNameController,
-                                            //           lastNameController:
-                                            //               _lastNameController,
-                                            //           emailController:
-                                            //               _emailController,
-                                            //           mobileNumberController:
-                                            //               _mobileNumberController,
-                                            //           addressLine1Controller:
-                                            //               _addressLine1Controller,
-                                            //           addressLine2Controller:
-                                            //               _addressLine2Controller,
-                                            //           cityController:
-                                            //               _cityController,
-                                            //           pinCodeController:
-                                            //               _pinCodeController,
-                                            //           countryController:
-                                            //               _countryController,
-                                            //         ),
-                                            //       ),
-                                            //       submitButtonRequired: true,
-                                            //       submitButtonTitle: 'Save',
-                                            //       onSubmitPressed: () {
-                                            //         context.pop();
-                                            //       },
-                                            //     );
-                                            //   },
-                                            //   child: const Text('Change'),
-                                            // ),
+                                            trailing: InkWell(
+                                              onTap: () {
+                                                showAppSheet(
+                                                  context: context,
+                                                  title: 'Billing Information',
+                                                  child: MultiBlocProvider(
+                                                    providers: [
+                                                      BlocProvider.value(
+                                                          value: context.read<
+                                                              StatesBloc>()),
+                                                      BlocProvider.value(
+                                                          value: context.read<
+                                                              CityBloc>()),
+                                                    ],
+                                                    child: BillingSheet(
+                                                      onSavePressed:
+                                                          (profileData) {
+                                                        log('${profileData.address}');
+                                                      },
+                                                      firstNameController:
+                                                          _firstNameController,
+                                                      lastNameController:
+                                                          _lastNameController,
+                                                      emailController:
+                                                          _emailController,
+                                                      mobileNumberController:
+                                                          _mobileNumberController,
+                                                      addressLine1Controller:
+                                                          _addressLine1Controller,
+                                                      addressLine2Controller:
+                                                          _addressLine2Controller,
+                                                      cityController:
+                                                          _cityController,
+                                                      pinCodeController:
+                                                          _pinCodeController,
+                                                      profileData:
+                                                          state.profileData,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: const Text('Change'),
+                                            ),
                                           ),
                                         ],
                                       );

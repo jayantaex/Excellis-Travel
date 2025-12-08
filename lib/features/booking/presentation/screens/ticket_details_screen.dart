@@ -394,11 +394,13 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                 horizontal: 16, vertical: 12),
                             child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text('Billing Information',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  )),
+                              child: Text(
+                                'Billing Information',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
                           ),
                           Padding(
