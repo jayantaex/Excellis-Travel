@@ -6,15 +6,19 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/utils/app_helpers.dart';
 
 class ClassFilterWidget extends StatefulWidget {
-  const ClassFilterWidget({super.key, required this.filters});
+  const ClassFilterWidget(
+      {super.key,
+      required this.filters,
+      required this.selectedFilter,
+      required this.onFilterSelected});
   final List<String> filters;
-
+  final String selectedFilter;
+  final Function(String filter) onFilterSelected;
   @override
   State<ClassFilterWidget> createState() => _ClassFilterWidgetState();
 }
 
 class _ClassFilterWidgetState extends State<ClassFilterWidget> {
-  String selectedFilter = 'All';
   @override
   Widget build(BuildContext context) => SizedBox(
         height: 40,
@@ -25,6 +29,7 @@ class _ClassFilterWidgetState extends State<ClassFilterWidget> {
             listener: (context, state) {},
             builder: (context, state) => SearchFilterWidget(
               onTap: () {
+                widget.onFilterSelected(widget.filters[index]);
                 if (state is FlightLoaded) {
                   context.read<FlightBloc>().add(
                         SortFlightEvent(
@@ -42,11 +47,8 @@ class _ClassFilterWidgetState extends State<ClassFilterWidget> {
                                 state.currentFilter?.aircraftCodes ?? []),
                       );
                 }
-                setState(() {
-                  selectedFilter = widget.filters[index];
-                });
               },
-              isSelected: selectedFilter == widget.filters[index],
+              isSelected: widget.selectedFilter == widget.filters[index],
               title: widget.filters[index],
             ),
           ),

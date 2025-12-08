@@ -46,7 +46,6 @@ class _FlightListScreenState extends State<FlightListScreen> {
   ];
   int dateDuration = 20; //days
   String selectedFilter = 'All';
-  int selectedIndex = 0;
   Map<String, dynamic>? body;
   String depurtureDate = '';
   String cabinClass = '';
@@ -208,7 +207,14 @@ class _FlightListScreenState extends State<FlightListScreen> {
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 16),
-                              child: ClassFilterWidget(filters: filters),
+                              child: ClassFilterWidget(
+                                  onFilterSelected: (filter) {
+                                    setState(() {
+                                      selectedFilter = filter;
+                                    });
+                                  },
+                                  filters: filters,
+                                  selectedFilter: selectedFilter),
                             ),
                           ),
 
@@ -302,6 +308,9 @@ class _FlightListScreenState extends State<FlightListScreen> {
 
   void _handleFilterApply(FilterDataModel filterData, BuildContext context) {
     final FlightState currentFlightState = context.read<FlightBloc>().state;
+    setState(() {
+      selectedFilter = 'All';
+    });
     if (currentFlightState is FlightLoaded) {
       context.read<FlightBloc>().add(
             FilterFlightEvent(
@@ -320,7 +329,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
 
   void _handleFilterClear(BuildContext context) {
     final FlightState currentFlightState = context.read<FlightBloc>().state;
-
+    selectedFilter = 'All';
     if (currentFlightState is FlightLoaded) {
       context.read<FlightBloc>().add(
             ClearFilterEvent(
@@ -335,6 +344,12 @@ class _FlightListScreenState extends State<FlightListScreen> {
           );
     }
     Scaffold.of(context).closeDrawer();
+  }
+
+  void _resetFilter() {
+    setState(() {
+      selectedFilter = 'All';
+    });
   }
 }
 
