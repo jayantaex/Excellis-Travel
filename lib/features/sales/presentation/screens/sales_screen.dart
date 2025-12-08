@@ -117,11 +117,9 @@ class _SalesScreenState extends State<SalesScreen> {
                               await callApi(page: page, limit: limit);
                             },
                           ),
-                          // onSubmitPressed: () async {
-
-                          // },
-                          // submitButtonRequired: true,
-                          // submitButtonTitle: 'Apply',
+                          onClosePressed: () {
+                            _resetFilters();
+                          },
                         );
                       },
                       icon:

@@ -15,7 +15,7 @@ class WalletRepository {
       await walletApi.fetchWallet();
 
   /// Fetch transactions with pagination
-  Future<ApiResponse<List<TransactionDataModel>>> fetchTransactions({
+  Future<ApiResponse<TransactionDataModel>> fetchTransactions({
     required int page,
     required int limit,
   }) async =>

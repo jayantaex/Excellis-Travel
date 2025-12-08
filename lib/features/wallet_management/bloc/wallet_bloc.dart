@@ -14,12 +14,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   WalletBloc(this.walletRepository) : super(WalletInitial()) {
     on<WalletEvent>((event, emit) {});
     on<FetchWalletEvent>(_handleFetchWallet);
-    on<LoadMoreTransactionsEvent>(_handleLoadMoreTransactions);
+    on<FetchWalletTransactionsEvent>(_handleFetchWalletTransactions);
     on<FilterTransactionsEvent>(_handleFilterTransactions);
-    on<SubmitWithdrawalEvent>(_handleSubmitWithdrawal);
-    on<AddMoneyEvent>(_handleAddMoney);
-    on<RefreshWalletEvent>(_handleRefreshWallet);
-    on<GetTransactionDetailsEvent>(_handleGetTransactionDetails);
   }
 
   final WalletRepository walletRepository;
@@ -33,11 +29,20 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
     final ApiResponse<WalletBalanceModel> response =
         await walletRepository.fetchWallet();
+    final ApiResponse<TransactionDataModel> transactionsResponse =
+        await walletRepository.fetchTransactions(
+      page: event.page,
+      limit: event.limit,
+    );
 
     if (response.data != null) {
+      final transactions = transactionsResponse.data?.datam ?? [];
       emit(WalletLoaded(
         wallet: response.data!,
         currentFilter: event.filterType ?? 'all',
+        transactions: transactionsResponse.data,
+        allTransactions: transactions,
+        pagination: transactionsResponse.data?.pagination,
       ));
     } else {
       emit(WalletError(
@@ -46,90 +51,94 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
-  /// Handle load more transactions (pagination)
-  Future<void> _handleLoadMoreTransactions(
-    LoadMoreTransactionsEvent event,
+  /// Handle fetch wallet transactions event (for pagination)
+  Future<void> _handleFetchWalletTransactions(
+    FetchWalletTransactionsEvent event,
     Emitter<WalletState> emit,
-  ) async {}
+  ) async {
+    final currentState = state;
 
-  /// Handle filter transactions
+    // If loading first page, show loading state
+    if (event.page == 1) {
+      if (currentState is WalletLoaded) {
+        emit(currentState.copyWith(
+          isLoadingMore: true,
+          clearTransactions: true,
+        ));
+      } else {
+        emit(WalletLoading());
+      }
+    } else {
+      // If loading more pages, show loading more indicator
+      if (currentState is WalletLoaded) {
+        emit(currentState.copyWith(isLoadingMore: true));
+      }
+    }
+
+    final ApiResponse<TransactionDataModel> transactionsResponse =
+        await walletRepository.fetchTransactions(
+      page: event.page,
+      limit: event.limit,
+    );
+
+    if (transactionsResponse.data != null) {
+      final newTransactions = transactionsResponse.data!.datam ?? [];
+      final updatedState = state;
+
+      if (updatedState is WalletLoaded) {
+        // If page 1, replace transactions; otherwise append
+        final allTransactions = event.page == 1
+            ? newTransactions
+            : [...updatedState.allTransactions, ...newTransactions];
+
+        emit(updatedState.copyWith(
+          transactions: transactionsResponse.data,
+          allTransactions: allTransactions,
+          pagination: transactionsResponse.data?.pagination,
+          isLoadingMore: false,
+        ));
+      } else {
+        // If state is not WalletLoaded, fetch wallet first
+        final ApiResponse<WalletBalanceModel> walletResponse =
+            await walletRepository.fetchWallet();
+
+        if (walletResponse.data != null) {
+          emit(WalletLoaded(
+            wallet: walletResponse.data!,
+            currentFilter: event.filterType ?? 'all',
+            transactions: transactionsResponse.data,
+            allTransactions: newTransactions,
+            pagination: transactionsResponse.data?.pagination,
+          ));
+        } else {
+          emit(WalletError(
+            message:
+                walletResponse.errorMessage ?? 'Failed to load wallet data',
+          ));
+        }
+      }
+    } else {
+      if (currentState is WalletLoaded) {
+        emit(currentState.copyWith(isLoadingMore: false));
+      } else {
+        emit(WalletError(
+          message: transactionsResponse.errorMessage ??
+              'Failed to load transactions',
+        ));
+      }
+    }
+  }
+
+  /// Handle filter transactions event
   Future<void> _handleFilterTransactions(
     FilterTransactionsEvent event,
     Emitter<WalletState> emit,
-  ) async {}
-
-  /// Handle submit withdrawal request
-  Future<void> _handleSubmitWithdrawal(
-    SubmitWithdrawalEvent event,
-    Emitter<WalletState> emit,
   ) async {
-    emit(WithdrawalSubmitting());
-
-    final ApiResponse<void> response =
-        await walletRepository.submitWithdrawalRequest(
-      request: event.request,
-    );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      emit(const WithdrawalSubmitted());
-
-      // Refresh wallet data after successful withdrawal
-      add(const RefreshWalletEvent());
-    } else {
-      emit(WithdrawalError(
-        message: response.errorMessage ?? 'Failed to submit withdrawal request',
-      ));
-    }
-  }
-
-  /// Handle add money to wallet
-  Future<void> _handleAddMoney(
-    AddMoneyEvent event,
-    Emitter<WalletState> emit,
-  ) async {
-    emit(AddMoneyProcessing());
-
-    final ApiResponse<void> response = await walletRepository.addMoney(
-      amount: event.amount,
-      paymentMethod: event.paymentMethod,
-      additionalData: event.additionalData,
-    );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      emit(const AddMoneySuccess());
-
-      // Refresh wallet data after successful recharge
-      add(const RefreshWalletEvent());
-    } else {
-      emit(AddMoneyError(
-        message: response.errorMessage ?? 'Failed to add money to wallet',
-      ));
-    }
-  }
-
-  /// Handle refresh wallet
-  Future<void> _handleRefreshWallet(
-    RefreshWalletEvent event,
-    Emitter<WalletState> emit,
-  ) async {}
-
-  /// Handle get transaction details
-  Future<void> _handleGetTransactionDetails(
-    GetTransactionDetailsEvent event,
-    Emitter<WalletState> emit,
-  ) async {
-    emit(TransactionDetailsLoading());
-
-    final ApiResponse<TransactionDataModel> response =
-        await walletRepository.getTransactionDetails(
-      transactionId: event.transactionId,
-    );
-
-    if (response.data != null) {
-      emit(TransactionDetailsLoaded(transaction: response.data!));
-    } else {
-      emit(TransactionDetailsError(
-        message: response.errorMessage ?? 'Failed to load transaction details',
+    final currentState = state;
+    if (currentState is WalletLoaded) {
+      // Just update the filter - filtering is done client-side
+      emit(currentState.copyWith(
+        currentFilter: event.filterType.toLowerCase(),
       ));
     }
   }
