@@ -7,8 +7,8 @@ class MainUrl {
     if (env == 'production') {
       return AppConstants.baseUrl;
     } else {
-      // return 'https://api.excellistravel.com';
-      return 'http://192.168.0.215:5000/api/v1';
+      return 'https://api.excellistravel.com';
+      // return 'http://192.168.0.215:5000/api/v1';
     }
   }
 
@@ -75,5 +75,4 @@ class EndPoints {
   static const String walletTransactions = '/wallet/transactions';
   static const String walletWithdraw = '/wallet/withdraw';
   static const String walletRecharge = '/wallet/recharge';
-
 }
