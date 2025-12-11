@@ -59,3 +59,42 @@ final class MarkupUpdateError extends SalesState {
 }
 
 final class MarkupUpdated extends SalesState {}
+
+final class LoadChildData extends SalesState {}
+
+final class LoadingSubSalesExecutives extends SalesState {
+  const LoadingSubSalesExecutives({this.sales});
+  final SalesDataModel? sales;
+}
+
+final class SubSalesExecutivesError extends SalesState {
+  const SubSalesExecutivesError({required this.message, this.sales});
+  final String message;
+  final SalesDataModel? sales;
+}
+
+final class SubSalesExecutivesLoaded extends SalesState {
+  const SubSalesExecutivesLoaded({
+    required this.subSalesExecutives,
+    this.sales,
+  });
+  final List<ChildDataModel> subSalesExecutives;
+  final SalesDataModel? sales;
+}
+
+final class LoadingSalesAgents extends SalesState {
+  const LoadingSalesAgents({this.sales});
+  final SalesDataModel? sales;
+}
+
+final class SalesAgentsError extends SalesState {
+  const SalesAgentsError(this.sales, {required this.message});
+  final String message;
+  final SalesDataModel? sales;
+}
+
+final class SalesAgentsLoaded extends SalesState {
+  const SalesAgentsLoaded({required this.agents, this.sales});
+  final List<ChildDataModel> agents;
+  final SalesDataModel? sales;
+}

@@ -92,6 +92,9 @@ dependencies:
 
   #url_launcher
   url_launcher: ^6.3.1
+  
+  # multi-selectable-dropdown
+  multi_dropdown: ^3.0.1
   flutter_localizations:
     sdk: flutter
 
