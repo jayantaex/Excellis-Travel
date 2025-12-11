@@ -3,8 +3,12 @@ class SalesDataModel {
 
   SalesDataModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    totalMarkup = double.parse(json['totalMarkup'].toStringAsFixed(2));
-    totalSales = double.parse(json['totalSales'].toStringAsFixed(2));
+    totalMarkup = json['totalMarkup'] != null
+        ? double.parse(json['totalMarkup'].toStringAsFixed(2))
+        : 0.0;
+    totalSales = json['totalSales'] != null
+        ? double.parse(json['totalSales'].toStringAsFixed(2))
+        : 0.0;
     if (json['commissions'] != null) {
       commissions = <Commissions>[];
       json['commissions'].forEach((v) {
@@ -24,10 +28,10 @@ class SalesDataModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['success'] = success;
-    if (commissions != null) {
+    if (commissions != null && commissions!.isNotEmpty) {
       data['commissions'] = commissions!.map((v) => v.toJson()).toList();
     }
-    if (pagination != null) {
+    if (pagination != null && pagination!.totalItems != null) {
       data['pagination'] = pagination!.toJson();
     }
     return data;

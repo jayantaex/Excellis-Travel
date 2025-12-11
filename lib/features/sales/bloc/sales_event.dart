@@ -8,17 +8,22 @@ sealed class SalesEvent extends Equatable {
 }
 
 class SalesFetchEvent extends SalesEvent {
-  const SalesFetchEvent(
-      {required this.page,
-      required this.limit,
-      required this.startDate,
-      required this.endDate,
-      required this.keyword});
+  const SalesFetchEvent({
+    required this.page,
+    required this.limit,
+    required this.startDate,
+    required this.endDate,
+    required this.keyword,
+    required this.agentIds,
+    this.userType,
+  });
   final int page;
   final int limit;
   final String startDate;
   final String keyword;
   final String endDate;
+  final List<int> agentIds;
+  final String? userType;
 }
 
 class SalesAddMarkupEvent extends SalesEvent {
@@ -39,4 +44,13 @@ class SalesUpdateMarkupEvent extends SalesEvent {
   const SalesUpdateMarkupEvent({required this.body, required this.id});
   final Map<String, dynamic> body;
   final int id;
+}
+
+class LoadAgentsEvent extends SalesEvent {
+  const LoadAgentsEvent({required this.agentIds});
+  final List<int> agentIds;
+}
+
+class LoadSubSalesExecutivesEvent extends SalesEvent {
+  const LoadSubSalesExecutivesEvent();
 }
