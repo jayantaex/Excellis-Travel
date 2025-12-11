@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:multi_dropdown/multi_dropdown.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/multi_drop_down_widget.dart';
 import '../../../../core/widgets/primary_input.dart';
 
-class FilterSheet extends StatelessWidget {
-  FilterSheet({
+class FilterSheet extends StatefulWidget {
+  const FilterSheet({
     super.key,
     required this.bookingIdController,
     required this.startDateController,
     required this.endDateController,
     required this.onStartDatePicked,
     required this.onEndDatePicked,
+    required this.role,
   });
 
   final TextEditingController bookingIdController;
@@ -18,8 +21,23 @@ class FilterSheet extends StatelessWidget {
   final TextEditingController endDateController;
   final Function(DateTime) onStartDatePicked;
   final Function(DateTime) onEndDatePicked;
+  final String role;
 
+  @override
+  State<FilterSheet> createState() => _FilterSheetState();
+}
+
+class _FilterSheetState extends State<FilterSheet> {
   DateTime? startDate;
+  final MultiSelectController<String> controller =
+      MultiSelectController<String>();
+  final List<String> items = <String>['Agent', 'Admin', 'Manager', 'Sales'];
+  @override
+  void initState() {
+    super.initState();
+    controller.addItems(
+        items.map((e) => DropdownItem<String>(value: e, label: e)).toList());
+  }
 
   @override
   Widget build(BuildContext context) => SizedBox(
@@ -31,11 +49,16 @@ class FilterSheet extends StatelessWidget {
               maxCharacters: 50,
               hint: 'Enter your booking reference id',
               label: 'Booking Reference ID',
-              controller: bookingIdController,
+              controller: widget.bookingIdController,
+            ),
+            const SizedBox(height: 8),
+            MultiDropDownWidget(
+              items: items,
+              controller: controller,
             ),
             const SizedBox(height: 8),
             AppPrimaryInput(
-              controller: startDateController,
+              controller: widget.startDateController,
               suffixIcon: const Icon(
                 Icons.calendar_month_rounded,
                 color: AppColors.grey,
@@ -61,15 +84,15 @@ class FilterSheet extends StatelessWidget {
                 );
                 if (picked != null) {
                   startDate = picked;
-                  onStartDatePicked(picked);
-                  startDateController.text =
+                  widget.onStartDatePicked(picked);
+                  widget.startDateController.text =
                       AppHelpers.formatDate(picked, pattern: 'yyyy-MM-dd');
                 }
               },
             ),
             const SizedBox(height: 8),
             AppPrimaryInput(
-              controller: endDateController,
+              controller: widget.endDateController,
               maxCharacters: 50,
               hint: 'Pick up end date ',
               label: 'End date',
@@ -103,8 +126,8 @@ class FilterSheet extends StatelessWidget {
                     );
                     return;
                   }
-                  onEndDatePicked(picked);
-                  endDateController.text =
+                  widget.onEndDatePicked(picked);
+                  widget.endDateController.text =
                       AppHelpers.formatDate(picked, pattern: 'yyyy-MM-dd');
                 }
               },

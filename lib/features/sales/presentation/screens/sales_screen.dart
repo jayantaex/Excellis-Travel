@@ -11,6 +11,7 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/sales_bloc.dart';
 import '../widgets/filter_sheet.dart';
 import '../widgets/no_sales.dart';
@@ -82,44 +83,51 @@ class _SalesScreenState extends State<SalesScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AppCustomAppbar(
-                isBackButtonRequired: false,
-                centerTitle: 'My Sales',
-                trailing: SizedBox(
-                  width: 45,
-                  child: IconButton(
-                      onPressed: () async {
-                        await showAppSheet(
-                            context: context,
-                            title: 'Filter Options',
-                            child: FilterSheet(
-                              bookingIdController: _bookingIdController,
-                              startDateController: _startDateController,
-                              endDateController: _endDateController,
-                              onStartDatePicked: (date) {
-                                _startDateController.text =
-                                    AppHelpers.formatDate(date,
-                                        pattern: 'yyyy-MM-dd');
-                              },
-                              onEndDatePicked: (date) {
-                                _endDateController.text = AppHelpers.formatDate(
-                                    date,
-                                    pattern: 'yyyy-MM-dd');
-                              },
-                            ),
-                            onSubmitPressed: () async {
-                              log('${_bookingIdController.text}');
-                              Navigator.pop(context);
-                              page = 1;
-                              await callApi(page: page, limit: limit);
-                            },
-                            submitButtonRequired: true,
-                            submitButtonTitle: 'Apply');
-                      },
-                      icon:
-                          const Icon(Icons.filter_alt, color: AppColors.white)),
-                ),
-              ),
+              BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+                if (state is ProfileLoaded) {
+                  return AppCustomAppbar(
+                    isBackButtonRequired: false,
+                    centerTitle:
+                        'My Sales ${state is ProfileLoading ? 'Loading...' : ''}',
+                    trailing: SizedBox(
+                      width: 45,
+                      child: IconButton(
+                          onPressed: () async {
+                            await showAppSheet(
+                                context: context,
+                                title: 'Filter Options',
+                                child: FilterSheet(
+                                  role: state.profileData.role ?? 'agent',
+                                  bookingIdController: _bookingIdController,
+                                  startDateController: _startDateController,
+                                  endDateController: _endDateController,
+                                  onStartDatePicked: (date) {
+                                    _startDateController.text =
+                                        AppHelpers.formatDate(date,
+                                            pattern: 'yyyy-MM-dd');
+                                  },
+                                  onEndDatePicked: (date) {
+                                    _endDateController.text =
+                                        AppHelpers.formatDate(date,
+                                            pattern: 'yyyy-MM-dd');
+                                  },
+                                ),
+                                onSubmitPressed: () async {
+                                  log('${_bookingIdController.text}');
+                                  Navigator.pop(context);
+                                  page = 1;
+                                  await callApi(page: page, limit: limit);
+                                },
+                                submitButtonRequired: true,
+                                submitButtonTitle: 'Apply');
+                          },
+                          icon: const Icon(Icons.filter_alt,
+                              color: AppColors.white)),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              }),
               token == null || token!.isEmpty
                   ? const Expanded(child: Center(child: NotLoginWidget()))
                   : BlocConsumer<SalesBloc, SalesState>(
