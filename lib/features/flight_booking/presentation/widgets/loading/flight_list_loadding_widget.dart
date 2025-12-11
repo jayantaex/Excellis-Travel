@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
+import '../../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../../core/widgets/loading_widget.dart';
 
 class FlightListLoaddingWidget extends StatelessWidget {
-  const FlightListLoaddingWidget({super.key});
+  const FlightListLoaddingWidget(
+      {super.key, required this.arrival, required this.departure});
+  final String arrival;
+  final String departure;
 
   @override
   Widget build(BuildContext context) => Column(
         children: <Widget>[
-          const SizedBox(height: 65),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: AppCustomAppbar(
+              start: departure,
+              end: arrival,
+            ),
+          ),
+          const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: SizedBox(

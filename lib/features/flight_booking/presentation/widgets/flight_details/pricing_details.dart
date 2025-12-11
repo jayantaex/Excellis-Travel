@@ -2,17 +2,17 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 
 class PricingDetails extends StatelessWidget {
   PricingDetails(
       {super.key,
       required this.flightOffer,
-      required this.myMarkup,
+      this.myMarkup,
       required this.offerFareEnabled});
   final FlightOffer flightOffer;
-  final MyMarkup myMarkup;
+  final MyMarkup? myMarkup;
   final bool offerFareEnabled;
   final List<String> adult = <String>[];
   final List<String> child = <String>[];
@@ -21,21 +21,22 @@ class PricingDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     for (TravelerPricing element in flightOffer.travelerPricings!) {
+      log('${element.travelerType}----------');
       switch (element.travelerType) {
         case 'ADULT':
           {
-            adult.add(element.price!.total!);
+            adult.add(element.travelerId ?? '');
           }
 
           break;
         case 'CHILD':
           {
-            child.add(element.price!.total!);
+            child.add(element.travelerId ?? '');
           }
           break;
         case 'HELD_INFANT':
           {
-            infant.add(element.price!.total!);
+            infant.add(element.travelerId ?? '');
           }
         default:
       }
@@ -56,7 +57,7 @@ class PricingDetails extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,25 +82,26 @@ class PricingDetails extends StatelessWidget {
                       : PriceCol(
                           isIconRequired: false,
                           titile: 'CHILD',
-                          value: '${adult.length} Person(s)'),
+                          value: '${child.length} Person(s)'),
                   infant.isEmpty
                       ? const SizedBox()
                       : PriceCol(
                           isIconRequired: false,
                           titile: 'INFANT',
-                          value: '${adult.length} Person(s)'),
+                          value: '${infant.length} Person(s)'),
                   const SizedBox(height: 8),
                   PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
-                  PriceCol(
-                      titile: 'Taxes, Surcharges & Fees',
-                      value: offerFareEnabled
-                          ? '0.00'
-                          : (double.parse(getCalculatedPrice(
-                                      basePrice: flightOffer.price!.markup!,
-                                      type: myMarkup.fareType ?? 'Fixed',
-                                      value: myMarkup.value ?? '0')) -
-                                  double.parse(flightOffer.price!.markup!))
-                              .toStringAsFixed(2)),
+                  if (myMarkup != null)
+                    PriceCol(
+                        titile: 'Taxes, Surcharges & Fees',
+                        value: offerFareEnabled
+                            ? '0.00'
+                            : (double.parse(getCalculatedPrice(
+                                        basePrice: flightOffer.price!.markup!,
+                                        type: myMarkup?.fareType ?? 'Fixed',
+                                        value: myMarkup?.value ?? '0')) -
+                                    double.parse(flightOffer.price!.markup!))
+                                .toStringAsFixed(2)),
                   const SizedBox(height: 6),
                   const Divider(),
                   const SizedBox(height: 12),
@@ -109,8 +111,8 @@ class PricingDetails extends StatelessWidget {
                         ? flightOffer.price!.markup!
                         : getCalculatedPrice(
                             basePrice: flightOffer.price!.markup!,
-                            type: myMarkup.fareType ?? 'Fixed',
-                            value: myMarkup.value ?? '0',
+                            type: myMarkup?.fareType ?? 'Fixed',
+                            value: myMarkup?.value ?? '0',
                           ),
                     isBold: true,
                     isIconRequired: true,
@@ -179,7 +181,6 @@ class PriceCol extends StatelessWidget {
 String getCalculatedPrice(
     {required String basePrice, required String type, required String value}) {
   double price = double.parse(basePrice);
-  log('My Markup Type: $type, Value: $value');
   if (type == 'Fixed') {
     final double amount = double.parse(value);
     price += amount;

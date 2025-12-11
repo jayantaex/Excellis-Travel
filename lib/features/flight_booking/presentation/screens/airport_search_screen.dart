@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/data/country_code.dart';
 import '../../../../core/errors/error_screen.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_drop_down.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
@@ -48,6 +46,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
         _searchController.text = widget.selectedAirport!;
         await _handleAirportSearch(keyword: widget.selectedAirport);
       }
+      setState(() {});
     });
     super.initState();
   }
@@ -85,6 +84,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                   width:
                                       AppHelpers.getScreenWidth(context) * 0.6,
                                   child: AppPrimaryInput(
+                                    focus: true,
                                     onChange: (String query) {
                                       AppHelpers.debounce(
                                         () async {
@@ -98,6 +98,17 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                         'Enter city name here or airport code',
                                     maxCharacters: 20,
                                     controller: _searchController,
+                                    suffixIcon:
+                                        _searchController.text.isNotEmpty
+                                            ? IconButton(
+                                                onPressed: () {
+                                                  _searchController.clear();
+                                                },
+                                                icon: const Icon(
+                                                  Icons.close,
+                                                  size: 14,
+                                                ))
+                                            : null,
                                   ),
                                 ),
                                 SizedBox(
@@ -105,7 +116,6 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                       AppHelpers.getScreenWidth(context) * 0.3,
                                   child: AppDropDown(
                                     onChanged: (String? value) {
-                                      log(value ?? 'IN');
                                       _selectedCountyCode = value ?? 'IN';
                                     },
                                     title: 'Country',

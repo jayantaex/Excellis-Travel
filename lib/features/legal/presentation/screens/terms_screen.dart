@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -30,21 +28,12 @@ class _TermsScreenState extends State<TermsScreen> {
           onProgress: (int progress) {
             // Update loading bar.
           },
-          onPageStarted: (String url) {
-            log(url);
-          },
-          onPageFinished: (String url) {
-            log(url);
-          },
-          onHttpError: (HttpResponseError error) {
-            log('Http error$error');
-          },
-          onWebResourceError: (WebResourceError error) {
-            log(error.errorType.toString());
-            log(error.description.toString());
-            log(error.errorCode.toString());
-          },
-          onNavigationRequest: (NavigationRequest request) => NavigationDecision.navigate,
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onHttpError: (HttpResponseError error) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) =>
+              NavigationDecision.navigate,
         ),
       )
       ..loadRequest(Uri.parse(termsUrl));
@@ -54,38 +43,38 @@ class _TermsScreenState extends State<TermsScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: AppGradientBg(
-        child: TransWhiteBgWidget(
-          child: SafeArea(
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: AppCustomAppbar(
-                    centerTitle: 'Terms & Conditions',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(24)),
-                      color: AppColors.white,
+        body: AppGradientBg(
+          child: TransWhiteBgWidget(
+            child: SafeArea(
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: AppCustomAppbar(
+                      centerTitle: 'Terms & Conditions',
                     ),
-                    child: controller == null
-                        ? const Center(
-                            child: CircularProgressIndicator.adaptive())
-                        : ClipRRect(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(24),
-                            ),
-                            child: WebViewWidget(controller: controller!)),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(24)),
+                        color: AppColors.white,
+                      ),
+                      child: controller == null
+                          ? const Center(
+                              child: CircularProgressIndicator.adaptive())
+                          : ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(24),
+                              ),
+                              child: WebViewWidget(controller: controller!)),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
 }

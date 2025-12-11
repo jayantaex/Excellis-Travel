@@ -57,4 +57,7 @@ class FlightBookingRepository {
 
   Future<ApiResponse<MyMarkup>> getMyMarkup() async =>
       await remoteSrc.getMyMarkup();
+  Future<ApiResponse<String>> getAirlineName(
+          {required String airlineCode}) async =>
+      await remoteSrc.getAirlineName(airlineCode: airlineCode);
 }

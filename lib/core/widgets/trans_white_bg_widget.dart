@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/app_styles.dart';
-import '../utils/app_helpers.dart';
+import '../../utils/app_helpers.dart';
 
 class TransWhiteBgWidget extends StatelessWidget {
   const TransWhiteBgWidget({super.key, required this.child});

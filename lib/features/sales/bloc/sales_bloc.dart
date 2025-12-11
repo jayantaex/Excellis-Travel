@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -59,9 +57,9 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
       }
       emit(SalesLoaded(sales: newSales));
     } else {
-      log(response.errorMessage ?? 'Unknown error');
+      emit(SalesError(response.errorMessage ?? 'Unknown error'));
       if (currentState is SalesLoaded) {
-        emit(SalesLoaded(sales: currentState.sales, isLoadingMore: false));
+        emit(SalesLoaded(sales: currentState.sales));
       } else {
         emit(SalesError(response.errorMessage ?? 'Unknown error'));
       }

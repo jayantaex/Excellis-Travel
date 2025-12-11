@@ -1,5 +1,6 @@
-class FlightsDataModel {
+import '../../../../core/services/temp_store.dart';
 
+class FlightsDataModel {
   factory FlightsDataModel.fromJson(Map<String, dynamic> json) =>
       FlightsDataModel(
         meta: json['meta'] != null
@@ -31,7 +32,6 @@ class FlightsDataModel {
 }
 
 class Meta {
-
   Meta({this.count});
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
@@ -45,7 +45,6 @@ class Meta {
 }
 
 class Datam {
-
   Datam({
     this.type,
     this.id,
@@ -76,7 +75,8 @@ class Datam {
         lastTicketingDateTime: json['lastTicketingDateTime'],
         numberOfBookableSeats: json['numberOfBookableSeats'],
         itineraries: json['itineraries'] != null
-            ? List<Itinerary>.from(json['itineraries'].map((itineraryJson) => Itinerary.fromJson(itineraryJson)))
+            ? List<Itinerary>.from(json['itineraries']
+                .map((itineraryJson) => Itinerary.fromJson(itineraryJson)))
             : null,
         price: json['price'] != null
             ? DatamPrice.fromJson(json['price'] as Map<String, dynamic>)
@@ -136,7 +136,6 @@ class Datam {
 }
 
 class Itinerary {
-
   Itinerary({this.duration, this.segments});
 
   factory Itinerary.fromJson(Map<String, dynamic> json) => Itinerary(
@@ -158,7 +157,6 @@ class Itinerary {
 }
 
 class Segment {
-
   Segment({
     this.departure,
     this.arrival,
@@ -218,7 +216,6 @@ class Segment {
 }
 
 class Departure {
-
   Departure({this.iataCode, this.terminal, this.at});
 
   factory Departure.fromJson(Map<String, dynamic> json) => Departure(
@@ -238,7 +235,6 @@ class Departure {
 }
 
 class Arrival {
-
   Arrival({
     this.iataCode,
     this.at,
@@ -262,7 +258,6 @@ class Arrival {
 }
 
 class Aircraft {
-
   Aircraft({this.code});
 
   factory Aircraft.fromJson(Map<String, dynamic> json) =>
@@ -273,7 +268,6 @@ class Aircraft {
 }
 
 class Operating {
-
   Operating({this.carrierCode});
 
   factory Operating.fromJson(Map<String, dynamic> json) =>
@@ -284,14 +278,14 @@ class Operating {
 }
 
 class DatamPrice {
-
   DatamPrice(
       {this.currency,
       this.total,
       this.base,
       this.fees,
       this.grandTotal,
-      this.markupPrice});
+      this.publishedPrice,
+      this.offerPrice});
 
   factory DatamPrice.fromJson(Map<String, dynamic> json) => DatamPrice(
         currency: json['currency'],
@@ -308,7 +302,8 @@ class DatamPrice {
   final String? base;
   final List<Fee>? fees;
   final String? grandTotal;
-  String? markupPrice;
+  String? offerPrice;
+  String? publishedPrice;
 
   Map<String, dynamic> toJson() => {
         'currency': currency,
@@ -318,12 +313,11 @@ class DatamPrice {
             ? List<dynamic>.from(fees!.map((fee) => fee.toJson()))
             : null,
         'grandTotal': grandTotal,
-        'markupPrice': markupPrice, // Included markupPrice in toJson
+        'offerPrice': offerPrice, // Included markupPrice in toJson
       };
 }
 
 class Fee {
-
   Fee({this.amount, this.type});
 
   factory Fee.fromJson(Map<String, dynamic> json) =>
@@ -335,7 +329,6 @@ class Fee {
 }
 
 class PricingOptions {
-
   PricingOptions({this.fareType, this.includedCheckedBagsOnly});
 
   factory PricingOptions.fromJson(Map<String, dynamic> json) => PricingOptions(
@@ -354,7 +347,6 @@ class PricingOptions {
 }
 
 class TravelerPricing {
-
   TravelerPricing(
       {this.travelerId,
       this.fareOption,
@@ -396,7 +388,6 @@ class TravelerPricing {
 }
 
 class TravelerPricingPrice {
-
   TravelerPricingPrice({this.currency, this.total, this.base});
 
   factory TravelerPricingPrice.fromJson(Map<String, dynamic> json) =>
@@ -411,7 +402,6 @@ class TravelerPricingPrice {
 }
 
 class FareDetailsBySegment {
-
   FareDetailsBySegment({
     this.segmentId,
     this.cabin,
@@ -472,7 +462,6 @@ class FareDetailsBySegment {
 }
 
 class IncludedCBags {
-
   IncludedCBags({this.weight, this.weightUnit});
 
   factory IncludedCBags.fromJson(Map<String, dynamic> json) =>
@@ -484,7 +473,6 @@ class IncludedCBags {
 }
 
 class Amenity {
-
   Amenity(
       {this.description,
       this.isChargeable,
@@ -514,7 +502,6 @@ class Amenity {
 }
 
 class AmenityProvider {
-
   AmenityProvider({this.name});
 
   factory AmenityProvider.fromJson(Map<String, dynamic> json) =>
@@ -529,31 +516,28 @@ class AmenityProvider {
 class FlightDictionary {
   FlightDictionary({required this.dictionaries});
 
-  // The 'dictionaries' field in the outer JSON contains the actual map.
-  factory FlightDictionary.fromJson(Map<String, dynamic> json) => FlightDictionary(
-      dictionaries: Dictionaries.fromJson(json),
-    );
+  factory FlightDictionary.fromJson(Map<String, dynamic> json) =>
+      FlightDictionary(dictionaries: Dictionaries.fromJson(json));
+
   final Dictionaries dictionaries;
 
   Map<String, dynamic> toJson() => dictionaries.toJson();
 }
 
 class Dictionaries {
-
   Dictionaries({
     this.aircraft,
     this.carriers,
   });
 
   factory Dictionaries.fromJson(Map<String, dynamic> json) => Dictionaries(
-      // Added null check before mapping/casting from JSON
-      aircraft: json['aircraft'] != null
-          ? Map<String, String>.from(json['aircraft'])
-          : null,
-      carriers: json['carriers'] != null
-          ? Map<String, String>.from(json['carriers'])
-          : null,
-    );
+        aircraft: json['aircraft'] != null
+            ? Map<String, String>.from(json['aircraft'])
+            : <String, String>{},
+        carriers: json['carriers'] != null
+            ? Map<String, String>.from(json['carriers'])
+            : <String, String>{},
+      );
   Map<String, String>? aircraft;
   Map<String, String>? carriers;
 

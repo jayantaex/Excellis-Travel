@@ -1,8 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../profile_management/bloc/profile_bloc.dart';
 import '../../../bloc/flight_bloc.dart';
@@ -14,10 +13,30 @@ class ProceedToPayWidget extends StatefulWidget {
     super.key,
     required this.passengers,
     required this.offerFareEnabled,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.mobileNumber,
+    required this.addressLine1,
+    required this.addressLine2,
+    required this.city,
+    required this.pinCode,
+    required this.country,
+    required this.countryCode,
   });
 
   final List<PassengerModel> passengers;
   final bool offerFareEnabled;
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String mobileNumber;
+  final String addressLine1;
+  final String addressLine2;
+  final String city;
+  final String pinCode;
+  final String country;
+  final String countryCode;
 
   @override
   State<ProceedToPayWidget> createState() => _ProceedToPayWidgetState();
@@ -43,7 +62,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
           final flightOffer = flightState.data.data!.flightOffers!.first;
           final grandTotal = flightOffer.price!.grandTotal!;
           final markup = flightOffer.price!.markup!;
-          final myMarkup = flightState.data.data!.myMarkup!;
+          final myMarkup = flightState.data.data?.myMarkup;
           final travellersCount = flightOffer.travelerPricings!.length;
 
           return BlocBuilder<ProfileBloc, ProfileState>(
@@ -54,13 +73,14 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
 
               final profile = profileState.profileData;
 
-              return Container(
-                height: 65,
-                color: AppColors.white,
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
-                child: SizedBox(
-                  height: 45,
-                  width: AppHelpers.getScreenWidth(context),
+              return SizedBox(
+                width: AppHelpers.getScreenWidth(context),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    bottom: 10,
+                  ),
                   child: AppPrimaryButton(
                     onPressed: () async {
                       try {
@@ -81,7 +101,6 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                           final Map<String, dynamic> data = getPassengetDetails(
                             passenger: widget.passengers[i],
                           );
-                          log('${widget.passengers[i].type}');
                           if (widget.passengers[i].type == 'ADULT') {
                             travellers['adults']?.add(data);
                           }
@@ -97,25 +116,28 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                             getBillingAddress(
                           address: profile.address ?? '',
                         );
+                        log('${billingAddress}');
+
                         final Map<String, dynamic> contactDetails =
                             getContactDetails(
                           email: profile.email ?? '',
                           phone: profile.phone ?? '',
                         );
+                        log('${contactDetails}');
                         final Map<String, dynamic> fareDetails =
                             calculateFareDetails(
-                          myMarkupPrice: myMarkup.value ?? '0',
+                          myMarkupPrice: myMarkup?.value ?? '0',
                           grandTotal: grandTotal,
                           markupPrice: markup,
                           taxes: flightOffer.price?.fees,
                           showTotalFare: widget.offerFareEnabled,
-                          myMarkupType: myMarkup.fareType ?? 'Fixed',
+                          myMarkupType: myMarkup?.fareType ?? 'Fixed',
                         );
-
+                        log('${fareDetails}');
                         createPaymentBody = getCreatePaymentBody(
                           markupPrice: markup,
-                          myMarkupPrice: myMarkup.value ?? '0',
-                          myMarkupType: myMarkup.type ?? 'Fixed',
+                          myMarkupPrice: myMarkup?.value ?? '0',
+                          myMarkupType: myMarkup?.type ?? 'Fixed',
                           billingAddress: billingAddress,
                           contactDetails: contactDetails,
                           flightOfferData: flightOffer.toJson(),
@@ -123,6 +145,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                           fareDetails: fareDetails,
                           isOfferEnabled: widget.offerFareEnabled,
                         );
+                        log('${createPaymentBody}');
 
                         if (context.mounted) {
                           context
@@ -162,9 +185,6 @@ Map<String, dynamic> getCreatePaymentBody(
       'contactDetails': contactDetails,
       'billingAddress': billingAddress,
       'fareDetails': fareDetails,
-
-      //enable  ->markup price
-      //disable -> markup price + my markup price
       'amount': isOfferEnabled
           ? (double.parse(markupPrice))
           : (double.parse(getCalculatedPrice(
@@ -260,5 +280,6 @@ String getCalculatedPrice(
   }
   final amount = (price * double.parse(value)) / 100;
   price += amount;
+
   return price.toStringAsFixed(2);
 }

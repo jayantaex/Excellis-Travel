@@ -8,6 +8,7 @@ class MainUrl {
       return AppConstants.baseUrl;
     } else {
       return 'https://api.excellistravel.com';
+      // return 'http://192.168.0.215:5000/api/v1';
     }
   }
 
@@ -18,11 +19,20 @@ class MainUrl {
       return 'https://test.api.amadeus.com';
     }
   }
+
+  String getAirlineLogoUrl() {
+    if (env == 'production') {
+      return AppConstants.airlineLogoUrl;
+    } else {
+      return 'https://ik.imagekit.io';
+    }
+  }
 }
 
 class EndPoints {
   static String baseUrl = MainUrl().getUrl();
   static String amaduesBaseUrl = MainUrl().getAmaduesUrl();
+  static String airlineLogoUrl = MainUrl().getAirlineLogoUrl();
   // Authentication
   static const String login = '/auth/login';
   static const String registration = '/auth/register';
@@ -54,8 +64,15 @@ class EndPoints {
   static const String airportSearchByKeyword = '/v1/reference-data/locations';
   static const String flightSearch = '/v2/shopping/flight-offers';
   static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
+  static const String airlineName = '/v1/reference-data/airlines';
 
   static const String sales = '/commissions/transactions-auto';
   //markup
   static const String markup = '/markups';
+
+  //wallet
+  static const String wallet = '/wallet/summary';
+  static const String walletTransactions = '/wallet/transactions';
+  static const String walletWithdraw = '/wallet/withdraw';
+  static const String walletRecharge = '/wallet/recharge';
 }

@@ -1,5 +1,5 @@
 name: excellistravel
-description: "A new Flutter project."
+description: "A Flight Booking App"
 publish_to: 'none' 
 
 #production version
@@ -42,8 +42,9 @@ dependencies:
   # Utils
   equatable: ^2.0.5
   intl: ^0.19.0
-  dartz: ^0.10.1  
-
+  dartz: ^0.10.1
+  easy_localization: ^3.0.8
+  date_picker_plus: ^3.0.2
   # Security
   flutter_secure_storage: ^9.2.2
 
@@ -83,6 +84,9 @@ dependencies:
   #permission handler
   permission_handler: ^11.2.0
 
+  #country code
+  country_code_picker: ^3.4.1
+
   #local  app update
   open_filex: ^4.7.0
 
@@ -91,6 +95,9 @@ dependencies:
   
   # multi-selectable-dropdown
   multi_dropdown: ^3.0.1
+  flutter_localizations:
+    sdk: flutter
+
 
   
 
@@ -103,16 +110,22 @@ dev_dependencies:
   # Code Generation
   build_runner: ^2.4.12
   json_serializable: ^6.8.0
+  flutter_launcher_icons: ^0.14.4
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/applogo.jpg"
   
 flutter:
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-    - assets/images/airlines/
     - assets/icons/
+    - assets/translations/
 
   fonts:
     - family: Inter

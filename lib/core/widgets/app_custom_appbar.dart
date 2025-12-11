@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../utils/app_helpers.dart';
 
 class AppCustomAppbar extends StatelessWidget {
   const AppCustomAppbar(
@@ -74,7 +74,11 @@ class AppCustomAppbar extends StatelessWidget {
                                   color: AppColors.white)),
                         ],
                 )),
-            trailing ?? const SizedBox()
+            InkWell(
+              onTap: () => onMoreClicked?.call(),
+              borderRadius: BorderRadius.circular(25),
+              child: trailing ?? const SizedBox(),
+            )
           ],
         ),
       );

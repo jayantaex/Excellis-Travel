@@ -80,9 +80,9 @@ class AddEditMarkUpSheetState extends State<AddEditMarkUpSheet> {
               label: 'Select Product',
               items: const [
                 DropdownMenuItem(value: 'Airline', child: Text('Airline')),
-                DropdownMenuItem(value: 'Hotel', child: Text('Hotel')),
-                DropdownMenuItem(value: 'Bus', child: Text('Bus')),
-                DropdownMenuItem(value: 'Train', child: Text('Train')),
+                // DropdownMenuItem(value: 'Hotel', child: Text('Hotel')),
+                // DropdownMenuItem(value: 'Bus', child: Text('Bus')),
+                // DropdownMenuItem(value: 'Train', child: Text('Train')),
               ],
               onChanged: (value) {
                 if (value != null) {

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:excellistravel/core/common/common_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +9,7 @@ import '../../../../core/common/bloc/states/states_bloc.dart';
 import '../../../../core/common/models/city_model.dart';
 import '../../../../core/common/models/state_model.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -51,11 +54,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () async {
-      if (context.mounted) {
-        context.read<ProfileBloc>().add(const LoadProfileEvent());
-        context.read<StatesBloc>().add(GetStatesEvent());
-      }
+    Future.microtask(() {
+      _handleFetchProfile();
+      _handleFetchStates();
     });
     super.initState();
   }
@@ -84,7 +85,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: SafeArea(
               bottom: false,
               child: BlocConsumer<ProfileBloc, ProfileState>(
-                listener: (BuildContext context, ProfileState state) {
+                listener: (BuildContext context, ProfileState state) async {
+                  log('state $state');
+
                   if (state is ProfileLoaded) {
                     List<String> addressList = <String>[];
 
@@ -112,6 +115,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     _nearbyAirportController.text = '';
                     _gstNoController.text = '';
                     _aadhaarNoController.text = '';
+                  }
+                  if (state is ProfileError) {
+                    await AppHelpers.showSnackBar(context, state.message,
+                        backgroundColor: AppColors.error,
+                        textColor: AppColors.white);
                   }
                 },
                 builder: (BuildContext context, ProfileState state) {
@@ -291,8 +299,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       enable: _selectedStateCode.isNotEmpty,
                                       onTap: () {
                                         context.pushNamed(
-                                            ProfileManagementModule
-                                                .citySearchName,
+                                            CommonModule.citySearchName,
                                             extra: <String, Object>{
                                               'stateCode': _selectedStateCode,
                                               'stateName': _selectedState,
@@ -366,12 +373,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                   if (state is ProfileError) {
                     return Center(
-                      child: Text(state.message),
+                      child: Text(state.message,
+                          style: const TextStyle(
+                            color: AppColors.white,
+                            fontSize: 16,
+                          )),
                     );
                   }
                   if (state is ProfileUpdateError) {
                     return Center(
-                      child: Text(state.message),
+                      child: Text(
+                        state.message,
+                        style: const TextStyle(
+                          color: AppColors.error,
+                        ),
+                      ),
                     );
                   }
                   return const Center(
@@ -386,4 +402,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
         ),
       );
+  void _handleFetchProfile() {
+    context.read<ProfileBloc>().add(const LoadProfileEvent());
+  }
+
+  void _handleFetchStates() {
+    context.read<StatesBloc>().add(GetStatesEvent());
+  }
 }

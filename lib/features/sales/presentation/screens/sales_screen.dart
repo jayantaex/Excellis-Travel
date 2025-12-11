@@ -1,19 +1,17 @@
-import 'dart:developer';
-
-import 'package:excellistravel/core/utils/app_helpers.dart';
-import 'package:excellistravel/core/utils/storage_service.dart';
-import 'package:excellistravel/core/widgets/app_sheet.dart';
-import 'package:excellistravel/core/widgets/no_login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
+import '../../../../utils/app_helpers.dart';
+import '../../../../utils/storage_service.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_sheet.dart';
+import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/sales_bloc.dart';
-import '../widgets/filter_sheet.dart';
+import '../widgets/sales_filter_sheet.dart';
 import '../widgets/no_sales.dart';
 import '../widgets/sale_tile.dart';
 
@@ -34,6 +32,8 @@ class _SalesScreenState extends State<SalesScreen> {
   final TextEditingController _bookingIdController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
+  DateTime? startingDate;
+  DateTime? endingDate;
 
   @override
   void initState() {
@@ -71,8 +71,12 @@ class _SalesScreenState extends State<SalesScreen> {
           SalesFetchEvent(
               page: page,
               limit: limit,
-              startDate: _startDateController.text,
-              endDate: _endDateController.text,
+              startDate: startingDate != null
+                  ? AppHelpers.formatDate(startingDate!, pattern: 'yyyy-MM-dd')
+                  : '',
+              endDate: endingDate != null
+                  ? AppHelpers.formatDate(endingDate!, pattern: 'yyyy-MM-dd')
+                  : '',
               keyword: _bookingIdController.text),
         );
   }
@@ -83,51 +87,46 @@ class _SalesScreenState extends State<SalesScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-                if (state is ProfileLoaded) {
-                  return AppCustomAppbar(
-                    isBackButtonRequired: false,
-                    centerTitle:
-                        'My Sales ${state is ProfileLoading ? 'Loading...' : ''}',
-                    trailing: SizedBox(
-                      width: 45,
-                      child: IconButton(
-                          onPressed: () async {
-                            await showAppSheet(
-                                context: context,
-                                title: 'Filter Options',
-                                child: FilterSheet(
-                                  role: state.profileData.role ?? 'agent',
-                                  bookingIdController: _bookingIdController,
-                                  startDateController: _startDateController,
-                                  endDateController: _endDateController,
-                                  onStartDatePicked: (date) {
-                                    _startDateController.text =
-                                        AppHelpers.formatDate(date,
-                                            pattern: 'yyyy-MM-dd');
-                                  },
-                                  onEndDatePicked: (date) {
-                                    _endDateController.text =
-                                        AppHelpers.formatDate(date,
-                                            pattern: 'yyyy-MM-dd');
-                                  },
-                                ),
-                                onSubmitPressed: () async {
-                                  log('${_bookingIdController.text}');
-                                  Navigator.pop(context);
-                                  page = 1;
-                                  await callApi(page: page, limit: limit);
-                                },
-                                submitButtonRequired: true,
-                                submitButtonTitle: 'Apply');
+              AppCustomAppbar(
+                isBackButtonRequired: false,
+                centerTitle: 'My Sales',
+                trailing: SizedBox(
+                  width: 45,
+                  child: IconButton(
+                      onPressed: () async {
+                        await showAppSheet(
+                          context: context,
+                          title: 'Filter Options',
+                          child: SalesFilterSheet(
+                            bookingIdController: _bookingIdController,
+                            startDateController: _startDateController,
+                            endDateController: _endDateController,
+                            onStartDatePicked: (date) {
+                              _startDateController.text = AppHelpers.formatDate(
+                                  date,
+                                  pattern: 'dd-MM-yyyy');
+                              startingDate = date;
+                            },
+                            onEndDatePicked: (date) {
+                              _endDateController.text = AppHelpers.formatDate(
+                                  date,
+                                  pattern: 'dd-MM-yyyy');
+                              endingDate = date;
+                            },
+                            onSubmitPressed: () async {
+                              page = 1;
+                              await callApi(page: page, limit: limit);
+                            },
+                          ),
+                          onClosePressed: () {
+                            _resetFilters();
                           },
-                          icon: const Icon(Icons.filter_alt,
-                              color: AppColors.white)),
-                    ),
-                  );
-                }
-                return const SizedBox.shrink();
-              }),
+                        );
+                      },
+                      icon:
+                          const Icon(Icons.filter_alt, color: AppColors.white)),
+                ),
+              ),
               token == null || token!.isEmpty
                   ? const Expanded(child: Center(child: NotLoginWidget()))
                   : BlocConsumer<SalesBloc, SalesState>(
@@ -147,7 +146,6 @@ class _SalesScreenState extends State<SalesScreen> {
                           );
                         }
                         if (state is SalesLoaded) {
-                          log('${state.sales.pagination?.toJson()}');
                           totalItems = state.sales.pagination?.totalItems ?? 0;
                           return Expanded(
                             child: totalItems == 0
@@ -176,10 +174,10 @@ class _SalesScreenState extends State<SalesScreen> {
                                       SliverAppBar(
                                         expandedHeight: AppHelpers.percenHeight(
                                                 context: context) *
-                                            0.3,
+                                            0.34,
                                         pinned: true,
                                         backgroundColor: Colors.transparent,
-                                        elevation: 0,
+                                        elevation: 0.5,
                                         automaticallyImplyLeading: false,
                                         flexibleSpace: FlexibleSpaceBar(
                                           background: Container(
@@ -225,7 +223,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                               .start,
                                                       children: [
                                                         Text(
-                                                          'Total Earnings',
+                                                          'Total Markup',
                                                           style: TextStyle(
                                                             fontSize: 14,
                                                             fontWeight:
@@ -296,7 +294,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                                               '${state.sales.pagination?.totalItems ?? 0}',
                                                               style:
                                                                   const TextStyle(
-                                                                fontSize: 20,
+                                                                fontSize: 14,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
@@ -307,9 +305,9 @@ class _SalesScreenState extends State<SalesScreen> {
                                                             const SizedBox(
                                                                 height: 4),
                                                             Text(
-                                                              'Total Bookings',
+                                                              'Total Ticket Booked',
                                                               style: TextStyle(
-                                                                fontSize: 11,
+                                                                fontSize: 12,
                                                                 color: AppColors
                                                                     .white
                                                                     .withOpacity(
@@ -338,10 +336,10 @@ class _SalesScreenState extends State<SalesScreen> {
                                                         child: Column(
                                                           children: [
                                                             Text(
-                                                              '₹${((double.tryParse('${state.sales.totalMarkup}') ?? 0) / (state.sales.pagination?.totalItems ?? 1)).toStringAsFixed(0)}',
+                                                              '₹${state.sales.totalSales ?? 0}',
                                                               style:
                                                                   const TextStyle(
-                                                                fontSize: 20,
+                                                                fontSize: 14,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
@@ -352,9 +350,9 @@ class _SalesScreenState extends State<SalesScreen> {
                                                             const SizedBox(
                                                                 height: 4),
                                                             Text(
-                                                              'Avg. Earning',
+                                                              'Total Amount',
                                                               style: TextStyle(
-                                                                fontSize: 11,
+                                                                fontSize: 12,
                                                                 color: AppColors
                                                                     .white
                                                                     .withOpacity(
@@ -373,6 +371,59 @@ class _SalesScreenState extends State<SalesScreen> {
                                         ),
                                       ),
                                       // Transactions List Header
+
+                                      //total booking with count and reset button,
+                                      SliverToBoxAdapter(
+                                        child: SizedBox(
+                                          height: 40,
+                                          width: AppHelpers.getScreenWidth(
+                                              context),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Total Booking (${state.sales.pagination?.totalItems ?? 0})',
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: AppColors.white,
+                                                  ),
+                                                ),
+                                                _startDateController
+                                                            .text.isNotEmpty ||
+                                                        _endDateController
+                                                            .text.isNotEmpty ||
+                                                        _bookingIdController
+                                                            .text.isNotEmpty
+                                                    ? SizedBox(
+                                                        height: 45,
+                                                        width: 80,
+                                                        child: TextButton(
+                                                            onPressed: () {
+                                                              _resetFilters();
+                                                            },
+                                                            child: const Text(
+                                                              'Clear',
+                                                              style: TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: AppColors
+                                                                    .white,
+                                                              ),
+                                                            )),
+                                                      )
+                                                    : const SizedBox(),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
 
                                       // Sales List
                                       SliverPadding(
@@ -424,4 +475,15 @@ class _SalesScreenState extends State<SalesScreen> {
           ),
         ),
       );
+
+  void _resetFilters() {
+    page = 1;
+    _startDateController.clear();
+    _endDateController.clear();
+    _bookingIdController.clear();
+    startingDate = null;
+    endingDate = null;
+    limit = 10;
+    callApi(limit: limit, page: page);
+  }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/airline_image_provider.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import '../../../data/models/flights_data_model.dart' show FlightDictionary;
 
@@ -16,25 +17,29 @@ class SegmentCard extends StatelessWidget {
         children: <Widget>[
           ExpansionTile(
             shape: const Border(),
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: SizedBox(
-                height: 40,
-                width: 40,
-                child: Image.asset(
-                  'assets/images/airlines/${data.carrierCode}.png',
-                  fit: BoxFit.fill,
-                ),
-              ),
+            leading: SizedBox(
+              height: 45,
+              width: 45,
+              child: getAirlineLogo(airlineCode: data.carrierCode!),
+              // child: Image.asset(
+              //   'assets/images/airlines/${data.carrierCode}.png',
+              //   fit: BoxFit.fill,
+              // ),
             ),
             title: Text(
-              flightDictionary.dictionaries.carriers!['${data.carrierCode}'] ??
-                  'NO-NAME',
+              data.carrierCode != null
+                  ? flightDictionary.dictionaries.carriers != null &&
+                          flightDictionary.dictionaries.carriers!.isNotEmpty
+                      ? flightDictionary
+                              .dictionaries.carriers![data.carrierCode!] ??
+                          ''
+                      : ''
+                  : '',
               style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             subtitle: Text(
-              '${flightDictionary.dictionaries.aircraft![data.aircraft?.code ?? '']} | '
-              '${data.number ?? ''}',
+              '${data.aircraft?.code != null ? (flightDictionary.dictionaries.aircraft?[data.aircraft!.code!] ?? '') : ''} | '
+              '${data.co2Emissions?.isNotEmpty ?? false ? data.co2Emissions!.first.cabin ?? '' : ''}',
               style: const TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
@@ -108,11 +113,23 @@ class SegmentCard extends StatelessWidget {
       );
 }
 
-getDuration({required String duration}) {
+String getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
   final String hr = duration.split('H')[0].trim();
   final String mn = duration.split('H')[1].split('M')[0].trim();
-
   return '${hr}H ${mn}M';
+}
+
+Color getColorByCabinClass({required String cabinClass}) {
+  switch (cabinClass) {
+    case 'PREMIUM_ECONOMY':
+      return AppColors.info;
+    case 'ECONOMY':
+      return AppColors.success;
+    case 'FIRST':
+      return AppColors.primary;
+    default:
+      return AppColors.warning;
+  }
 }

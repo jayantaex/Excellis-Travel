@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:excellistravel/core/utils/app_updater.dart';
+import 'package:excellistravel/utils/app_updater.dart';
 import 'package:excellistravel/core/constants/app_constants.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:url_launcher/url_launcher.dart';

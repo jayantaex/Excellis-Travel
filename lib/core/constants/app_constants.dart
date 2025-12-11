@@ -5,6 +5,10 @@ class AppConstants {
   // API
   static const String baseUrl = 'https://api.excellistravel.com';
   static const String amaduesUrl = 'https://api.amadeus.com';
+  static String airlineLogoUrl = 'https://ik.imagekit.io';
+  static const String privacyPolicy = 'https://github.com/';
+  static const String termsAndConditions = 'https://github.com/';
+
   static const int connectTimeout = 30000;
   static const int receiveTimeout = 30000;
 
@@ -20,7 +24,7 @@ class AppConstants {
 
   // App Info
   static const String appName = 'Flutter Starter';
-  static const String appVersion = '10.0.5';
+  static const String appVersion = '10.3.0';
 
   // Pagination
   static const int defaultPageSize = 20;
@@ -43,6 +47,4 @@ class AppConstants {
   static const String imageNotFound = 'assets/images/image_not_found.png';
 
   //Legality
-  static const String privacyPolicy = 'https://github.com/';
-  static const String termsAndConditions = 'https://github.com/';
 }

@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:excellistravel/utils/airline_image_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,14 +8,15 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/services/file_downloader.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/services/temp_store.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
+import '../../data/airline_info_service.dart';
 import '../../data/models/payment_verify_res_model.dart';
-import '../widgets/launge_access_widget.dart';
 
 class PassDownloadScreen extends StatefulWidget {
   const PassDownloadScreen({super.key, required this.data});
@@ -28,10 +28,9 @@ class PassDownloadScreen extends StatefulWidget {
 
 class _PassDownloadScreenState extends State<PassDownloadScreen> {
   String barCodeSvg = '';
-
+  String airlineName = '';
   @override
   void initState() {
-    log('${widget.data}');
     Future.delayed(Duration.zero, () async {
       barCodeSvg = BarcodeService.buildBarcode(
         Barcode.code39(),
@@ -39,6 +38,10 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
         width: 250,
         height: 60,
       );
+      airlineName = await AirlinInfoService().getAirlineName(
+          airlineCode: widget.data.flightData?.itineraries?.first.segments
+                  ?.first.carrierCode ??
+              '');
       setState(() {});
     });
     super.initState();
@@ -90,29 +93,51 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                               child: Column(
                                 children: [
                                   SizedBox(
-                                    height: 20,
                                     width: AppHelpers.getScreenWidth(context),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Container(
-                                          height: 16,
-                                          width: 40,
-                                          color: AppColors.grey,
-                                        ),
-                                        Text(
-                                          '${widget.data.bookingReference}'
-                                              .toUpperCase(),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
+                                        SizedBox(
+                                          width: width * 0.5,
+                                          height: 40,
+                                          child: ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            minVerticalPadding: 2,
+                                            horizontalTitleGap: 4,
+                                            leading: SizedBox(
+                                              height: 45,
+                                              width: 45,
+                                              child: getAirlineLogo(
+                                                  airlineCode:
+                                                      '${widget.data.flightData?.itineraries?.first.segments?.first.carrierCode}'),
+                                            ),
+                                            title: (widget
+                                                        .data
+                                                        .flightData
+                                                        ?.itineraries
+                                                        ?.first
+                                                        .segments
+                                                        ?.first
+                                                        .aircraft
+                                                        ?.code
+                                                        ?.isNotEmpty ??
+                                                    false)
+                                                ? Text(
+                                                    '${airlineName.isNotEmpty ? '$airlineName | ' : ''} ${widget.data.flightData?.itineraries?.first.segments?.first.aircraft?.code ?? ''}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )
+                                                : null,
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 12),
                                   ...?widget.data.flightData?.itineraries!.map(
                                     (e) => Row(
                                       mainAxisAlignment:
@@ -300,12 +325,21 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            subtitle: Text(
-                                              'ADULT | DOB:  ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : 'N/A'} | Nationality: ${e.nationality}',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
+                                            subtitle: e.dateOfBirth != null
+                                                ? Text(
+                                                    'ADULT | DOB:  ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                : const Text(
+                                                    'ADULT',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
                                           ),
                                         ),
                                         ...?widget
@@ -328,12 +362,21 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            subtitle: Text(
-                                              'CHILD | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : 'N/A'} | Nationality: ${e.nationality}',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
+                                            subtitle: e.dateOfBirth != null
+                                                ? Text(
+                                                    'CHILD | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                : const Text(
+                                                    'CHILD',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
                                           ),
                                         ),
                                         ...?widget
@@ -356,12 +399,21 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            subtitle: Text(
-                                              'INFANT | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : 'N/A'} | Nationality: ${e.nationality}',
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
+                                            subtitle: e.dateOfBirth != null
+                                                ? Text(
+                                                    'INFANT | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                : const Text(
+                                                    'INFANT',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
                                           ),
                                         ),
                                       ],
@@ -413,7 +465,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
           ),
         ),
         bottomNavigationBar: Container(
-          height: AppHelpers.getScreenHeight(context) * 0.24,
+          height: AppHelpers.getScreenHeight(context) * 0.165,
           padding:
               const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 16),
           decoration: BoxDecoration(
@@ -433,10 +485,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const LaungeAccessWidget(),
-              const SizedBox(
-                height: 8,
-              ),
+              // const LaungeAccessWidget(),
+              const SizedBox(height: 8),
               AppPrimaryButton(
                 title: 'Download Pass',
                 style:

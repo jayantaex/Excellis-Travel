@@ -1,11 +1,17 @@
+import 'dart:developer';
+
+import 'package:excellistravel/core/widgets/app_sheet.dart';
+import 'package:excellistravel/features/flight_booking/presentation/widgets/flight_details/baggae_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import '../../../../core/common/bloc/cities/city_bloc.dart';
+import '../../../../core/common/bloc/states/states_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
 import '../../../../core/services/razorpay.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/no_login_widget.dart';
@@ -16,6 +22,7 @@ import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart' show FlightDictionary, Datam;
 import '../../data/models/passenger_model.dart';
+import '../widgets/flight_details/billing_sheet.dart';
 import '../widgets/flight_details/offer_fare_toggler_widget.dart';
 import '../widgets/loading/flight_details_loading_widget.dart';
 import '../widgets/flight_details/prceed_to_pay_widget.dart';
@@ -27,9 +34,17 @@ class FlightDetailsScreen extends StatefulWidget {
     super.key,
     required this.data,
     required this.flightDictionary,
+    required this.arivalCity,
+    required this.arivalAirport,
+    required this.departureCity,
+    required this.departureAirport,
   });
   final Datam data;
   final FlightDictionary flightDictionary;
+  final String arivalCity;
+  final String arivalAirport;
+  final String departureCity;
+  final String departureAirport;
 
   @override
   State<FlightDetailsScreen> createState() => _FlightDetailsScreenState();
@@ -44,9 +59,16 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   ];
   List<PassengerModel> passengers = <PassengerModel>[];
   bool isOfferEnabled = false;
-
   final RazorpayService _razorpayService = RazorpayService();
-
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _mobileNumberController = TextEditingController();
+  final TextEditingController _addressLine1Controller = TextEditingController();
+  final TextEditingController _addressLine2Controller = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _pinCodeController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -159,18 +181,24 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     width: width,
                                     flightDictionary: widget.flightDictionary,
                                     data: itineraries[index],
+                                    arrivalCity: widget.arivalCity,
+                                    arrivalAirport: widget.arivalAirport,
+                                    departureCity: widget.departureCity,
+                                    departureAirport: widget.departureAirport,
+                                    index: index,
                                   ),
                                   childCount: itineraries.length,
                                 ),
                               ),
                               const SliverToBoxAdapter(
                                   child: SizedBox(height: 12)),
-                              // SliverToBoxAdapter(
-                              //   child: FaresAndPrices(
-                              //     allTravelerPricings: travelerPricings,
-                              //     grandPrice: grandTotal,
-                              //   ),
-                              // ),
+                              const SliverToBoxAdapter(
+                                child: BaggaeCardWidget(
+                                  title: 'Cabin Baggage',
+                                  iconName: 'baggage',
+                                  allowance: '7KG (1 bag only)/Adult',
+                                ),
+                              ),
                               const SliverToBoxAdapter(
                                   child: SizedBox(height: 8)),
                               const SliverToBoxAdapter(
@@ -200,8 +228,13 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                     onPassengerRemove: (passenger) {
                                       passengers.remove(passenger);
                                     },
-                                    travelerPricing:
-                                        widget.data.travelerPricings ?? [],
+                                    travelerPricing: flightState
+                                            .data
+                                            .data!
+                                            .flightOffers!
+                                            .first
+                                            .travelerPricings ??
+                                        [],
                                   ),
                                 ),
                               ),
@@ -213,15 +246,46 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                   builder: (context, state) {
                                     if (state is ProfileLoaded) {
                                       return Column(
-                                        children: [
+                                        children: <Widget>[
+                                          const SizedBox(height: 16),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                'Travellers Details',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 2),
                                           OfferFareTogglerWidget(
                                             onToggle: (bool value) {
                                               isOfferEnabled = value;
                                             },
                                             flightOffer: flightState
                                                 .data.data!.flightOffers!.first,
-                                            myMarkup: flightState
-                                                .data.data!.myMarkup!,
+                                            myMarkup:
+                                                flightState.data.data?.myMarkup,
+                                          ),
+                                          const SizedBox(height: 16),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                'Billing Information',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                           ListTile(
                                             leading: CircleAvatar(
@@ -235,10 +299,62 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                               ),
                                             ),
                                             title: Text(
-                                                '${state.profileData.firstName} ${state.profileData.lastName}'),
+                                              '${state.profileData.firstName} ${state.profileData.lastName}',
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
                                             subtitle: Text(
-                                                '${state.profileData.email}'),
-                                            trailing: const Text('Change'),
+                                              '${state.profileData.email}',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            trailing: InkWell(
+                                              onTap: () {
+                                                showAppSheet(
+                                                  context: context,
+                                                  title: 'Billing Information',
+                                                  child: MultiBlocProvider(
+                                                    providers: [
+                                                      BlocProvider.value(
+                                                          value: context.read<
+                                                              StatesBloc>()),
+                                                      BlocProvider.value(
+                                                          value: context.read<
+                                                              CityBloc>()),
+                                                    ],
+                                                    child: BillingSheet(
+                                                      onSavePressed:
+                                                          (profileData) {
+                                                        log('${profileData.address}');
+                                                      },
+                                                      firstNameController:
+                                                          _firstNameController,
+                                                      lastNameController:
+                                                          _lastNameController,
+                                                      emailController:
+                                                          _emailController,
+                                                      mobileNumberController:
+                                                          _mobileNumberController,
+                                                      addressLine1Controller:
+                                                          _addressLine1Controller,
+                                                      addressLine2Controller:
+                                                          _addressLine2Controller,
+                                                      cityController:
+                                                          _cityController,
+                                                      pinCodeController:
+                                                          _pinCodeController,
+                                                      profileData:
+                                                          state.profileData,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: const Text('Change'),
+                                            ),
                                           ),
                                         ],
                                       );
@@ -297,6 +413,16 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
       bottomNavigationBar: ProceedToPayWidget(
         passengers: passengers,
         offerFareEnabled: isOfferEnabled,
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        email: _emailController.text,
+        mobileNumber: _mobileNumberController.text,
+        addressLine1: _addressLine1Controller.text,
+        addressLine2: _addressLine2Controller.text,
+        city: _cityController.text,
+        pinCode: _pinCodeController.text,
+        country: _countryController.text,
+        countryCode: _countryController.text,
       ),
     );
   }
@@ -312,8 +438,55 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   }
 
   Future<void> _handlePaymentError(PaymentFailureResponse response) async {
-    context.pushNamed(PaymentModule.paymentFailedName,
-        pathParameters: {'errorMsg': '${response.message}'});
+    final String failureMessage = _extractPaymentFailureMessage(response);
+    if (!mounted) return;
+    context.pushNamed(
+      PaymentModule.paymentFailedName,
+      queryParameters: {'message': failureMessage},
+    );
+  }
+
+  String _extractPaymentFailureMessage(PaymentFailureResponse response) {
+    final String? directMessage = _sanitizePaymentMessage(response.message);
+    if (directMessage != null) {
+      return directMessage;
+    }
+
+    final dynamic errorPayload = response.error;
+    if (errorPayload is Map) {
+      final dynamic nestedError = errorPayload['error'];
+      final Iterable<dynamic> candidates = <dynamic>[
+        if (nestedError is Map) nestedError['description'],
+        if (nestedError is Map) nestedError['reason'],
+        errorPayload['description'],
+        errorPayload['reason'],
+      ];
+
+      for (final candidate in candidates) {
+        final String? cleaned = _sanitizePaymentMessage(candidate?.toString());
+        if (cleaned != null) {
+          return cleaned;
+        }
+      }
+    }
+
+    final int? code = response.code;
+    if (code != null) {
+      return 'Payment failed (code $code). Please try again.';
+    }
+
+    return 'Payment failed. Please try again.';
+  }
+
+  String? _sanitizePaymentMessage(String? message) {
+    if (message == null) return null;
+    final String trimmed = message.trim();
+    if (trimmed.isEmpty) return null;
+    final String normalized = trimmed.toLowerCase();
+    if (normalized == 'null' || normalized == 'undefined') {
+      return null;
+    }
+    return trimmed;
   }
 }
 

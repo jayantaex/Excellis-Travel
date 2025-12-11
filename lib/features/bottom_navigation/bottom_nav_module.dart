@@ -7,9 +7,9 @@ import '../profile_management/data/repository/profile_management_repository.dart
 import '../sales/api/sales_api.dart';
 import '../sales/bloc/sales_bloc.dart';
 import '../sales/data/repository/sales_repository.dart';
-import '../ticket/bloc/ticket_bloc.dart';
-import '../ticket/data/src/ticket_remote_data_src.dart';
-import '../ticket/data/tickets_repository.dart';
+import '../booking/bloc/ticket_bloc.dart';
+import '../booking/data/src/ticket_remote_data_src.dart';
+import '../booking/data/tickets_repository.dart';
 import 'presentation/screens/bottom_navigation.dart';
 
 class BottomNavModule {

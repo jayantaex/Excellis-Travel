@@ -2,7 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import '../../../data/models/flights_data_model.dart' show FlightDictionary;
 import 'segement_card_widget.dart';
@@ -13,10 +13,20 @@ class ItineraryCard extends StatelessWidget {
       required this.width,
       required this.data,
       required this.flightDictionary,
-      this.isSegmentRequired = true});
+      this.isSegmentRequired = true,
+      required this.arrivalCity,
+      required this.arrivalAirport,
+      required this.departureCity,
+      required this.departureAirport,
+      required this.index});
   final Itinerary data;
   final FlightDictionary flightDictionary;
   final bool? isSegmentRequired;
+  final String arrivalCity;
+  final String arrivalAirport;
+  final String departureCity;
+  final String departureAirport;
+  final int index;
 
   final double width;
 
@@ -29,8 +39,7 @@ class ItineraryCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 SizedBox(
-                  height: 90,
-                  width: width * 0.25,
+                  width: width * 0.3,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,6 +67,22 @@ class ItineraryCard extends StatelessWidget {
                         '${data.segments?.first.departure?.iataCode} (T${data.segments?.first.departure?.terminal ?? '1'})',
                         style: const TextStyle(
                             fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.black),
+                      ),
+                      Text(
+                        index > 0 ? arrivalCity : departureCity,
+                        style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.black),
+                      ),
+                      Text(
+                        index > 0 ? arrivalAirport : departureAirport,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 8,
                             fontWeight: FontWeight.w500,
                             color: AppColors.black),
                       )
@@ -94,8 +119,7 @@ class ItineraryCard extends StatelessWidget {
                       ],
                     )),
                 SizedBox(
-                  height: 90,
-                  width: width * 0.25,
+                  width: width * 0.3,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -124,6 +148,22 @@ class ItineraryCard extends StatelessWidget {
                           color: AppColors.black,
                         ),
                       ),
+                      Text(
+                        index > 0 ? departureCity : arrivalCity,
+                        style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.black),
+                      ),
+                      Text(
+                        index > 0 ? departureAirport : arrivalAirport,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 8,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.black),
+                      )
                     ],
                   ),
                 ),
@@ -159,7 +199,7 @@ class ItineraryCard extends StatelessWidget {
       );
 }
 
-getDuration({required String duration}) {
+String getDuration({required String duration}) {
   //input PT6H35M
   duration = duration.replaceAll('PT', '');
   final String hr = duration.split('H')[0].trim();

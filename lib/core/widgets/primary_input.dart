@@ -21,6 +21,8 @@ class AppPrimaryInput extends StatelessWidget {
     this.onChange,
     this.focusNode,
     this.isMultiline,
+    this.validator,
+    this.focus,
   });
   final String? label;
   final String? hint;
@@ -37,9 +39,12 @@ class AppPrimaryInput extends StatelessWidget {
   final VoidCallback? onTap;
   final FocusNode? focusNode;
   final Function(String)? onChange;
+  final String? Function(String?)? validator;
+  final bool? focus;
 
   @override
-  Widget build(BuildContext context) => TextField(
+  Widget build(BuildContext context) => TextFormField(
+        autofocus: focus ?? false,
         cursorColor: AppColors.primary,
         obscureText: isPassword == true ? true : false,
         enabled: enable ?? true,
@@ -50,6 +55,7 @@ class AppPrimaryInput extends StatelessWidget {
         keyboardType: onTap != null ? TextInputType.none : keyboardType,
         focusNode: focusNode,
         style: style,
+        validator: validator,
         inputFormatters: <TextInputFormatter>[
           if (maxCharacters > 0)
             LengthLimitingTextInputFormatter(maxCharacters),
@@ -72,6 +78,14 @@ class AppPrimaryInput extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
             borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            borderSide: BorderSide(color: AppColors.error.withOpacity(0.7)),
+          ),
+          focusedErrorBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderSide: BorderSide(color: AppColors.error),
           ),
           labelText: label,
           hintText: hint,

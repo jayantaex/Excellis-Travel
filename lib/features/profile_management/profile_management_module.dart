@@ -10,7 +10,7 @@ import '../../core/network/api_client.dart';
 import 'apis/profile_management_api.dart';
 import 'bloc/profile_bloc.dart';
 import 'data/repository/profile_management_repository.dart';
-import 'presentation/screens/city_search.dart';
+import '../../core/common/screens/city_search.dart';
 import 'presentation/screens/edit_profile_screen.dart';
 import 'presentation/screens/my_profile_screen.dart';
 
@@ -23,8 +23,6 @@ class ProfileManagementModule {
     ),
   );
 
-  static final LocationRepository _locationRepository =
-      LocationRepository(statesApi: LocationApi(apiClient: _apiClient));
   //my profile
   static String myProfileName = 'my_profile';
   static String myProfilePath = '/my_profile';
@@ -51,31 +49,16 @@ class ProfileManagementModule {
               ),
             ),
           BlocProvider<StatesBloc>(
-            create: (_) => StatesBloc(repository: _locationRepository),
+            create: (_) => StatesBloc(
+                repository: LocationRepository(
+                    statesApi: LocationApi(apiClient: _apiClient))),
           ),
           BlocProvider<CityBloc>(
-            create: (_) => CityBloc(repository: _locationRepository),
+            create: (_) => CityBloc(
+                repository: LocationRepository(
+                    statesApi: LocationApi(apiClient: _apiClient))),
           )
         ],
         child: const EditProfileScreen(),
       );
-
-  static String citySearchName = 'city_search';
-  static String citySeacrRoute = '/city-search';
-  static Widget citySearchBuilder(BuildContext context, state) {
-    final String stateCode = state.extra['stateCode'] ?? '';
-    final String stateName = state.extra['stateName'];
-    final int stateId = state.extra['stateId'];
-
-    return BlocProvider<CityBloc>(
-      create: (BuildContext context) =>
-          CityBloc(repository: _locationRepository),
-      child: CitySearch(
-        onSelected: state.extra['onSelected'],
-        stateCode: stateCode,
-        stateName: stateName,
-        stateId: stateId,
-      ),
-    );
-  }
 }

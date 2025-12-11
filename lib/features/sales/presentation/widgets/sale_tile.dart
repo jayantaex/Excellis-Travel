@@ -1,4 +1,4 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
+import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
@@ -71,7 +71,7 @@ class SaleTile extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 8),
+                              margin: const EdgeInsets.only(left: 8),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
                                 vertical: 3,
