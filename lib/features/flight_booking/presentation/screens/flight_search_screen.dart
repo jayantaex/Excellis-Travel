@@ -306,7 +306,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         Transform.scale(
                                           scale: 0.6,
                                           child: CupertinoSwitch(
-                                              activeColor: AppColors.primary,
+                                              activeTrackColor:
+                                                  AppColors.primary,
                                               value: isRoundTrip,
                                               onChanged: (bool value) {
                                                 setState(() {

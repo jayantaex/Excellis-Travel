@@ -24,7 +24,6 @@ class AppDropDown extends StatelessWidget {
         dropdownColor: AppColors.white,
         style: const TextStyle(
             fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.black),
-        value: value,
         icon: const SizedBox(),
         borderRadius: BorderRadius.circular(12),
         items: items,
@@ -41,17 +40,20 @@ class AppDropDown extends StatelessWidget {
               : null,
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               Radius.circular(16),
             ),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           labelText: label,
         ),

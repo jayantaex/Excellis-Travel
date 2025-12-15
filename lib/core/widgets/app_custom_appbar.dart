@@ -29,7 +29,7 @@ class AppCustomAppbar extends StatelessWidget {
           children: <Widget>[
             isBackButtonRequired ?? true
                 ? CircleAvatar(
-                    backgroundColor: AppColors.white.withOpacity(0.2),
+                    backgroundColor: AppColors.white.withValues(alpha: 0.2),
                     child: IconButton(
                       onPressed: () {
                         Navigator.pop(context);

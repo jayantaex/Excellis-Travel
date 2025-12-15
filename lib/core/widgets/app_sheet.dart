@@ -69,7 +69,7 @@ Future<void> showAppSheet({
               const SizedBox(height: 8),
               Divider(
                 thickness: 1,
-                color: AppColors.grey.withOpacity(0.2),
+                color: AppColors.grey.withValues(alpha: 0.2),
               ),
               Padding(
                 padding:

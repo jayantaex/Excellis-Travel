@@ -94,7 +94,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                                   color: getColorByStatus(
                                           widget.ticketData?.bookingStatus ??
                                               '')
-                                      .withOpacity(0.1),
+                                      .withValues(alpha: 0.1),
                                 ),
                                 child: Text(
                                   (widget.ticketData?.bookingStatus ?? '')
@@ -177,8 +177,8 @@ class _TicketWidgetState extends State<TicketWidget> {
                                       ),
                                       Divider(
                                         thickness: 0.5,
-                                        color:
-                                            AppColors.primary.withOpacity(0.3),
+                                        color: AppColors.primary
+                                            .withValues(alpha: 0.3),
                                       ),
                                       Text(
                                         '${widget.ticketData?.flightData?.itineraries?.first.segments?.length ?? 0} stops',
@@ -232,12 +232,13 @@ class _TicketWidgetState extends State<TicketWidget> {
                     ),
                     const SizedBox(height: 16),
                     DottedBorder(
-                        dashPattern: const <double>[8, 4],
-                        customPath: (Size size) => Path()
-                          ..moveTo(0, size.height)
-                          ..relativeLineTo(size.width, 0),
-                        color: AppColors.grey,
-                        strokeWidth: 0.5,
+                        options: CustomPathDottedBorderOptions(
+                          customPath: (Size size) => Path()
+                            ..moveTo(0, size.height)
+                            ..relativeLineTo(size.width, 0),
+                          dashPattern: <double>[5, 5],
+                          color: AppColors.grey.withValues(alpha: 0.5),
+                        ),
                         child:
                             const SizedBox(height: 1, width: double.infinity)),
                     const Spacer(),

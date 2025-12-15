@@ -51,7 +51,7 @@
 //                   borderRadius: BorderRadius.circular(32),
 //                   border: Border.all(
 //                     width: 1,
-//                     color: AppColors.grey.withOpacity(0.2),
+//                     color: AppColors.grey.withValues(alpha:0.2),
 //                   ),
 //                 ),
 //                 width: AppHelpers.getScreenWidth(context),

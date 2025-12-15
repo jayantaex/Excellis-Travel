@@ -71,7 +71,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                 return const SizedBox.shrink();
               }
 
-              final profile = profileState.profileData;
+              // final profile = profileState.profileData;
 
               return SizedBox(
                 width: AppHelpers.getScreenWidth(context),
@@ -114,16 +114,14 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
 
                         final Map<String, dynamic> billingAddress =
                             getBillingAddress(
-                          address: profile.address ?? '',
+                          addressLine1: widget.addressLine1,
+                          addressLine2: widget.addressLine2,
                         );
-                        log('${billingAddress}');
-
                         final Map<String, dynamic> contactDetails =
                             getContactDetails(
-                          email: profile.email ?? '',
-                          phone: profile.phone ?? '',
+                          email: widget.email,
+                          phone: widget.mobileNumber,
                         );
-                        log('${contactDetails}');
                         final Map<String, dynamic> fareDetails =
                             calculateFareDetails(
                           myMarkupPrice: myMarkup?.value ?? '0',
@@ -133,7 +131,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                           showTotalFare: widget.offerFareEnabled,
                           myMarkupType: myMarkup?.fareType ?? 'Fixed',
                         );
-                        log('${fareDetails}');
+                        log('$fareDetails');
                         createPaymentBody = getCreatePaymentBody(
                           markupPrice: markup,
                           myMarkupPrice: myMarkup?.value ?? '0',
@@ -145,7 +143,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                           fareDetails: fareDetails,
                           isOfferEnabled: widget.offerFareEnabled,
                         );
-                        log('${createPaymentBody}');
+                        log('$createPaymentBody');
 
                         if (context.mounted) {
                           context
@@ -153,7 +151,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                               .add(CreateFlightOrder(body: createPaymentBody));
                         }
                       } catch (e) {
-                        log(e.toString());
+                        log('ERROR: ${e.toString()}');
                       }
                     },
                     style: const TextStyle(
@@ -194,18 +192,21 @@ Map<String, dynamic> getCreatePaymentBody(
       'currency': 'INR'
     };
 
-Map<String, dynamic> getBillingAddress({required String address}) {
-  final int addressLenght = address.split(',').length;
-  final String pinCode = address.split(',').last.trim();
-  final String state = address.split(',')[addressLenght - 2].trim();
-  final String city = address.split(',')[addressLenght - 3].trim();
+Map<String, dynamic> getBillingAddress(
+    {required String addressLine1, required String addressLine2}) {
+  final int addressLenght = addressLine1.split(',').length;
+  final String countryCode = addressLine1.split(',').last.trim();
+  final String pinCode = addressLine1.split(',')[addressLenght - 2].trim();
+  final String city = addressLine1.split(',')[addressLenght - 4].trim();
+  final String state = addressLine1.split(',')[addressLenght - 3].trim();
+
   return <String, dynamic>{
-    'addressLine1': address,
-    'addressLine2': address,
+    'addressLine1': addressLine1,
+    'addressLine2': addressLine2,
     'city': city,
     'state': state,
     'pinCode': pinCode,
-    'country': 'IN'
+    'country': countryCode.isEmpty ? 'IN' : countryCode.toUpperCase()
   };
 }
 

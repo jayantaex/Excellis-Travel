@@ -15,7 +15,7 @@ class BillingInfo extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.grey.withOpacity(0.05),
+          color: AppColors.grey.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(

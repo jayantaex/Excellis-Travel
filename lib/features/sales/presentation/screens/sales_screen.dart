@@ -105,7 +105,7 @@ class _SalesScreenState extends State<SalesScreen> {
                               _bookingIdController.text.isNotEmpty ||
                               _selectedUserIds.isNotEmpty ||
                               _selectedUserType != null
-                          ? SizedBox()
+                          ? const SizedBox()
                           : SizedBox(
                               width: 45,
                               child: IconButton(
@@ -261,7 +261,7 @@ class _SalesScreenState extends State<SalesScreen> {
                                               boxShadow: [
                                                 BoxShadow(
                                                   color: AppColors.primary
-                                                      .withOpacity(0.3),
+                                                      .withValues(alpha: 0.3),
                                                   blurRadius: 20,
                                                   offset: const Offset(0, 8),
                                                 ),
@@ -289,8 +289,8 @@ class _SalesScreenState extends State<SalesScreen> {
                                                                 FontWeight.w500,
                                                             color: AppColors
                                                                 .white
-                                                                .withOpacity(
-                                                                    0.9),
+                                                                .withValues(
+                                                                    alpha: 0.9),
                                                           ),
                                                         ),
                                                         const SizedBox(
@@ -315,7 +315,8 @@ class _SalesScreenState extends State<SalesScreen> {
                                                               16),
                                                       decoration: BoxDecoration(
                                                         color: AppColors.white
-                                                            .withOpacity(0.2),
+                                                            .withValues(
+                                                                alpha: 0.2),
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(16),
@@ -341,8 +342,8 @@ class _SalesScreenState extends State<SalesScreen> {
                                                         decoration:
                                                             BoxDecoration(
                                                           color: AppColors.white
-                                                              .withOpacity(
-                                                                  0.15),
+                                                              .withValues(
+                                                                  alpha: 0.15),
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(12),
@@ -369,8 +370,9 @@ class _SalesScreenState extends State<SalesScreen> {
                                                                 fontSize: 12,
                                                                 color: AppColors
                                                                     .white
-                                                                    .withOpacity(
-                                                                        0.8),
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.8),
                                                               ),
                                                             ),
                                                           ],
@@ -386,8 +388,8 @@ class _SalesScreenState extends State<SalesScreen> {
                                                         decoration:
                                                             BoxDecoration(
                                                           color: AppColors.white
-                                                              .withOpacity(
-                                                                  0.15),
+                                                              .withValues(
+                                                                  alpha: 0.15),
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(12),
@@ -414,8 +416,9 @@ class _SalesScreenState extends State<SalesScreen> {
                                                                 fontSize: 12,
                                                                 color: AppColors
                                                                     .white
-                                                                    .withOpacity(
-                                                                        0.8),
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.8),
                                                               ),
                                                             ),
                                                           ],

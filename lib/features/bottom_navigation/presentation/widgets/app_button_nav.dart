@@ -18,7 +18,7 @@ class AppButtonNav extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-                AppColors.black.withOpacity(0.05),
+                AppColors.black.withValues(alpha: 0.05),
                 AppColors.transparent
               ]),
           border: const Border(top: BorderSide(width: 2)),
@@ -52,7 +52,7 @@ class AppButtonNav extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-                AppColors.black.withOpacity(0.05),
+                AppColors.black.withValues(alpha: 0.05),
                 AppColors.transparent
               ]),
           border: const Border(top: BorderSide(width: 2)),
@@ -86,7 +86,7 @@ class AppButtonNav extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-                AppColors.black.withOpacity(0.05),
+                AppColors.black.withValues(alpha: 0.05),
                 AppColors.transparent
               ]),
           border: const Border(top: BorderSide(width: 2)),
@@ -124,7 +124,7 @@ class AppButtonNav extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-                AppColors.black.withOpacity(0.05),
+                AppColors.black.withValues(alpha: 0.05),
                 AppColors.transparent
               ]),
           border: const Border(top: BorderSide(width: 2)),

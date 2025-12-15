@@ -33,7 +33,7 @@ class _LoginSheetState extends State<LoginSheet> {
     AppConstants.env == 'development'
         ? <String>{
             _userNameController.text = 'agent@reiselab.com',
-            _passwordController.text = 'SuperAdmin123!'
+            _passwordController.text = 'Excellis@#2025'
           }
         : null;
     super.initState();

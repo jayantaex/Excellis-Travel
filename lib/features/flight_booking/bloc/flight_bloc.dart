@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
-import '../../../core/services/temp_store.dart';
 import '../data/models/airline_model.dart';
 import '../data/models/filter_data_model.dart';
 import '../data/repository/flight_booking_repository.dart';
@@ -275,18 +274,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         meta: dataToSort.meta,
       );
 
-      // // Extract aircraft codes
-      // final List<String> aircaftCodes = [];
-      // for (var flight in sortedData.datam ?? []) {
-      //   for (var itinerary in flight.itineraries ?? []) {
-      //     for (var segment in itinerary.segments ?? []) {
-      //       final aircraftCode = segment.aircraft?.code;
-      //       if (aircraftCode != null && !aircaftCodes.contains(aircraftCode)) {
-      //         aircaftCodes.add(aircraftCode);
-      //       }
-      //     }
-      //   }
-      // }
+
 
       // Apply sorting based on filter name
       switch (event.filterName) {

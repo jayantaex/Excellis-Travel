@@ -8,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/services/file_downloader.dart';
-import '../../../../core/services/temp_store.dart';
 import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
@@ -125,13 +124,21 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                         ?.isNotEmpty ??
                                                     false)
                                                 ? Text(
-                                                    '${airlineName.isNotEmpty ? '$airlineName | ' : ''} ${widget.data.flightData?.itineraries?.first.segments?.first.aircraft?.code ?? ''}',
+                                                    airlineName.isNotEmpty
+                                                        ? '$airlineName '
+                                                        : '',
                                                     style: const TextStyle(
                                                         fontSize: 10,
                                                         fontWeight:
                                                             FontWeight.w500),
                                                   )
                                                 : null,
+                                            subtitle: Text(
+                                              '${widget.data.flightData?.itineraries?.first.segments?.first.number ?? ''} | ${widget.data.flightData?.itineraries?.first.segments?.first.aircraft?.code ?? ''}',
+                                              style: const TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -224,7 +231,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                     Divider(
                                                       thickness: 0.5,
                                                       color: AppColors.primary
-                                                          .withOpacity(0.3),
+                                                          .withValues(
+                                                              alpha: 0.3),
                                                     ),
                                                     Text(
                                                       e.segments?.length == 1
@@ -297,12 +305,14 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                   ),
                                   const SizedBox(height: 18),
                                   DottedBorder(
-                                    dashPattern: const [8, 4],
-                                    customPath: (size) => Path()
-                                      ..moveTo(0, size.height)
-                                      ..relativeLineTo(size.width, 0),
-                                    color: AppColors.grey,
-                                    strokeWidth: 0.5,
+                                    options: CustomPathDottedBorderOptions(
+                                      customPath: (Size size) => Path()
+                                        ..moveTo(0, size.height)
+                                        ..relativeLineTo(size.width, 0),
+                                      dashPattern: <double>[5, 5],
+                                      color:
+                                          AppColors.grey.withValues(alpha: 0.5),
+                                    ),
                                     child: Column(
                                       children: [
                                         ...?widget
@@ -313,7 +323,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                 const EdgeInsets.all(0),
                                             leading: CircleAvatar(
                                               backgroundColor: AppColors.grey
-                                                  .withOpacity(0.2),
+                                                  .withValues(alpha: 0.2),
                                               child: const Icon(
                                                 Icons.person,
                                                 size: 18,
@@ -350,7 +360,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                 const EdgeInsets.all(0),
                                             leading: CircleAvatar(
                                               backgroundColor: AppColors.grey
-                                                  .withOpacity(0.2),
+                                                  .withValues(alpha: 0.2),
                                               child: const Icon(
                                                 Icons.person,
                                                 size: 18,
@@ -387,7 +397,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                 const EdgeInsets.all(0),
                                             leading: CircleAvatar(
                                               backgroundColor: AppColors.grey
-                                                  .withOpacity(0.2),
+                                                  .withValues(alpha: 0.2),
                                               child: const Icon(
                                                 Icons.person,
                                                 size: 18,
@@ -471,7 +481,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: AppColors.grey.withOpacity(0.2),
+                color: AppColors.grey.withValues(alpha: 0.2),
                 blurRadius: 4,
                 offset: const Offset(0, -4),
               ),

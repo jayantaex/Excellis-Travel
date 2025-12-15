@@ -91,10 +91,10 @@ Future<void> showAddAndEditPassengerSheet(
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.info.withOpacity(0.1),
+                  color: AppColors.info.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: AppColors.info.withOpacity(0.3),
+                    color: AppColors.info.withValues(alpha: 0.3),
                   ),
                 ),
                 child: const Row(
@@ -354,20 +354,20 @@ class _SegmenCardState extends State<SegmenCard> {
             border: Border.all(
               color: widget.isSelected
                   ? AppColors.primary
-                  : AppColors.grey.withOpacity(0.3),
+                  : AppColors.grey.withValues(alpha: 0.3),
               width: widget.isSelected ? 2 : 1,
             ),
             boxShadow: widget.isSelected
                 ? [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
                   ]
                 : [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha: 0.05),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -396,7 +396,7 @@ class _SegmenCardState extends State<SegmenCard> {
                               decoration: BoxDecoration(
                                 color: widget.isSelected
                                     ? AppColors.primary
-                                    : AppColors.primary.withOpacity(0.1),
+                                    : AppColors.primary.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
@@ -418,7 +418,7 @@ class _SegmenCardState extends State<SegmenCard> {
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: AppColors.grey.withOpacity(0.2),
+                                  color: AppColors.grey.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
@@ -456,7 +456,7 @@ class _SegmenCardState extends State<SegmenCard> {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.grey.withOpacity(0.1),
+                          color: AppColors.grey.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Row(
@@ -491,7 +491,7 @@ class _SegmenCardState extends State<SegmenCard> {
                         // Divider
                         Container(
                           height: 1,
-                          color: AppColors.grey.withOpacity(0.2),
+                          color: AppColors.grey.withValues(alpha: 0.2),
                         ),
                         const SizedBox(height: 6),
                         // Baggage

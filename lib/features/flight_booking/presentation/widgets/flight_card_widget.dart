@@ -2,7 +2,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:excellistravel/utils/airline_image_provider.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/services/temp_store.dart';
 import '../../../../utils/app_helpers.dart';
 import '../../data/models/flights_data_model.dart';
 
@@ -153,7 +152,7 @@ class FlightCardWidget extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
                                 color: getColorByStatus('fastest')
-                                    .withOpacity(0.3),
+                                    .withValues(alpha: 0.3),
                               ),
                               child: Text(
                                 '${data.numberOfBookableSeats} seats available'
@@ -270,7 +269,7 @@ class FlightCardWidget extends StatelessWidget {
                                         Divider(
                                           thickness: 0.5,
                                           color: AppColors.primary
-                                              .withOpacity(0.3),
+                                              .withValues(alpha: 0.3),
                                         ),
                                         Text(
                                           (itinerary.segments?.length ?? 0) == 1
@@ -356,12 +355,13 @@ class FlightCardWidget extends StatelessWidget {
                   ((isRoundTrip) && (isItRecentSeach))
                       ? const SizedBox()
                       : DottedBorder(
-                          dashPattern: const <double>[8, 4],
-                          customPath: (Size size) => Path()
-                            ..moveTo(0, size.height)
-                            ..relativeLineTo(size.width, 0),
-                          color: AppColors.grey,
-                          strokeWidth: 0.5,
+                          options: CustomPathDottedBorderOptions(
+                            customPath: (Size size) => Path()
+                              ..moveTo(0, size.height)
+                              ..relativeLineTo(size.width, 0),
+                            dashPattern: <double>[5, 5],
+                            color: AppColors.grey.withValues(alpha: 0.5),
+                          ),
                           child: const SizedBox(
                               height: 1, width: double.infinity)),
                   const Spacer(),
@@ -505,7 +505,8 @@ class FlightCardWidget extends StatelessWidget {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
-                            color: getColorByStatus('fastest').withOpacity(0.3),
+                            color: getColorByStatus('fastest')
+                                .withValues(alpha: 0.3),
                           ),
                           child: Text(
                             '${data.numberOfBookableSeats} seats available'
@@ -596,7 +597,8 @@ class FlightCardWidget extends StatelessWidget {
                                     ),
                                     Divider(
                                       thickness: 0.5,
-                                      color: AppColors.primary.withOpacity(0.3),
+                                      color: AppColors.primary
+                                          .withValues(alpha: 0.3),
                                     ),
                                     Text(
                                       (itinerary.segments?.length ?? 0) == 1
@@ -661,12 +663,13 @@ class FlightCardWidget extends StatelessWidget {
               ((isRoundTrip) && (isItRecentSeach))
                   ? const SizedBox()
                   : DottedBorder(
-                      dashPattern: const <double>[8, 4],
-                      customPath: (Size size) => Path()
-                        ..moveTo(0, size.height)
-                        ..relativeLineTo(size.width, 0),
-                      color: AppColors.grey,
-                      strokeWidth: 0.5,
+                      options: CustomPathDottedBorderOptions(
+                        customPath: (Size size) => Path()
+                          ..moveTo(0, size.height)
+                          ..relativeLineTo(size.width, 0),
+                        dashPattern: <double>[5, 5],
+                        color: AppColors.grey.withValues(alpha: 0.5),
+                      ),
                       child: const SizedBox(height: 1, width: double.infinity)),
               const Spacer(),
               if ((isRoundTrip && !isItRecentSeach) ||

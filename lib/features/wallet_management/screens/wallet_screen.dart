@@ -133,10 +133,21 @@ class _WalletScreenState extends State<WalletScreen>
                   return Column(
                     children: [
                       // App Bar
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: AppCustomAppbar(
                           centerTitle: 'My Wallet',
+                          trailing: InkWell(
+                            onTap: () {},
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  AppColors.white.withValues(alpha: 0.2),
+                              child: const Icon(
+                                Icons.more_vert_rounded,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
 
@@ -264,7 +275,6 @@ class _WalletScreenState extends State<WalletScreen>
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                     color: AppColors.border,
-                                    width: 1,
                                   ),
                                 ),
                                 child: TabBar(
@@ -314,7 +324,7 @@ class _WalletScreenState extends State<WalletScreen>
                                             Icons.receipt_long_outlined,
                                             size: 64,
                                             color: AppColors.textHint
-                                                .withOpacity(0.5),
+                                                .withValues(alpha: 0.5),
                                           ),
                                           const SizedBox(height: 16),
                                           const Text(
@@ -327,7 +337,7 @@ class _WalletScreenState extends State<WalletScreen>
                                           ),
                                           const SizedBox(height: 8),
                                           Text(
-                                            'Your ${selectedFilter} transactions will appear here',
+                                            'Your $selectedFilter transactions will appear here',
                                             style: const TextStyle(
                                               fontSize: 13,
                                               color: AppColors.textHint,

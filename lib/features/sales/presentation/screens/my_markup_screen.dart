@@ -44,7 +44,7 @@ class _MyMarkupScreenState extends State<MyMarkupScreen> {
                     AppCustomAppbar(
                       centerTitle: 'My Markup',
                       trailing: CircleAvatar(
-                        backgroundColor: AppColors.black.withOpacity(0.1),
+                        backgroundColor: AppColors.black.withValues(alpha: 0.1),
                         child: IconButton(
                           onPressed: () {
                             final sheetKey =

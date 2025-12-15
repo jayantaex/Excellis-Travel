@@ -1,4 +1,3 @@
-import 'package:excellistravel/utils/app_toast.dart';
 import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,7 +86,7 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                 trailing: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: CircleAvatar(
-                    backgroundColor: AppColors.white.withOpacity(0.1),
+                    backgroundColor: AppColors.white.withValues(alpha: 0.1),
                     child: IconButton(
                       onPressed: () async {
                         await showAppSheet(

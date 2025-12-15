@@ -46,7 +46,7 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.black.withOpacity(0.5),
+                        color: AppColors.black.withValues(alpha: 0.5),
                       ),
                     ),
                   ),

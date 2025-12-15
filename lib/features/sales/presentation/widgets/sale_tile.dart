@@ -77,7 +77,7 @@ class SaleTile extends StatelessWidget {
                                 vertical: 3,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.primary.withOpacity(0.1),
+                                color: AppColors.primary.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
@@ -97,7 +97,7 @@ class SaleTile extends StatelessWidget {
                             Icon(
                               Icons.calendar_today_rounded,
                               size: 11,
-                              color: AppColors.grey.withOpacity(0.7),
+                              color: AppColors.grey.withValues(alpha: 0.7),
                             ),
                             const SizedBox(width: 4),
                             Text(
@@ -108,7 +108,7 @@ class SaleTile extends StatelessWidget {
                               ),
                               style: TextStyle(
                                 fontSize: 11,
-                                color: AppColors.grey.withOpacity(0.8),
+                                color: AppColors.grey.withValues(alpha: 0.8),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -119,7 +119,7 @@ class SaleTile extends StatelessWidget {
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.1),
+                                color: Colors.green.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
@@ -142,7 +142,7 @@ class SaleTile extends StatelessWidget {
                   Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 16,
-                    color: AppColors.grey.withOpacity(0.5),
+                    color: AppColors.grey.withValues(alpha: 0.5),
                   ),
                 ],
               ),

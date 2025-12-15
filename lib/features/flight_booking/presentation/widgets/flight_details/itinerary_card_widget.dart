@@ -105,7 +105,7 @@ class ItineraryCard extends StatelessWidget {
                             ),
                             Divider(
                               thickness: 0.5,
-                              color: AppColors.primary.withOpacity(0.3),
+                              color: AppColors.primary.withValues(alpha: 0.3),
                             ),
                             Text(
                               data.segments?.length == 1
@@ -171,12 +171,13 @@ class ItineraryCard extends StatelessWidget {
             ),
           ),
           DottedBorder(
-            dashPattern: const <double>[8, 4],
-            customPath: (Size size) => Path()
-              ..moveTo(0, size.height)
-              ..relativeLineTo(size.width, 0),
-            color: AppColors.grey,
-            strokeWidth: 0.5,
+            options: CustomPathDottedBorderOptions(
+              customPath: (Size size) => Path()
+                ..moveTo(0, size.height)
+                ..relativeLineTo(size.width, 0),
+              dashPattern: <double>[5, 5],
+              color: AppColors.grey.withValues(alpha: 0.5),
+            ),
             child: Column(
               children: isSegmentRequired ?? true
                   ? <Widget>[

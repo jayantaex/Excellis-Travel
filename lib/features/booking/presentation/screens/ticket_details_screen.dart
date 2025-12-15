@@ -1,5 +1,4 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/core/services/temp_store.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -91,14 +90,13 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
 
                           ...widget.ticketData!.flightData!.itineraries!.map(
                             (Itinerary e) => DottedBorder(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 10),
-                              dashPattern: const <double>[8, 4],
-                              customPath: (Size size) => Path()
-                                ..moveTo(0, size.height)
-                                ..relativeLineTo(size.width, 0),
-                              color: AppColors.grey,
-                              strokeWidth: 0.5,
+                              options: CustomPathDottedBorderOptions(
+                                customPath: (Size size) => Path()
+                                  ..moveTo(0, size.height)
+                                  ..relativeLineTo(size.width, 0),
+                                dashPattern: <double>[5, 5],
+                                color: AppColors.grey.withValues(alpha: 0.5),
+                              ),
                               child: Column(
                                 children: <Widget>[
                                   Row(

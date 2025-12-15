@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../../../core/network/amadeus_client.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_response.dart';
@@ -144,13 +142,10 @@ class FlightBookingRemoteSrc {
           queryParameters: <String, dynamic>{
             'airlineCodes': airlineCode,
           },
-          fromJson: (Map<String, dynamic> jsonData) {
-            log(jsonData['data'][0]['businessName'].toString());
-            return jsonData['data'][0]['businessName'];
-          });
+          fromJson: (Map<String, dynamic> jsonData) =>
+              jsonData['data'][0]['businessName']);
       return resp;
     } catch (e) {
-      log(e.toString());
       return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../core/common/api/location_api.dart';
 import '../../core/common/bloc/cities/city_bloc.dart';
 import '../../core/common/bloc/states/states_bloc.dart';
@@ -10,7 +9,6 @@ import '../../core/network/api_client.dart';
 import 'apis/profile_management_api.dart';
 import 'bloc/profile_bloc.dart';
 import 'data/repository/profile_management_repository.dart';
-import '../../core/common/screens/city_search.dart';
 import 'presentation/screens/edit_profile_screen.dart';
 import 'presentation/screens/my_profile_screen.dart';
 

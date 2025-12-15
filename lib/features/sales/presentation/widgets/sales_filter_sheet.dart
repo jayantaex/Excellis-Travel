@@ -167,8 +167,9 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                           height: 50,
                           width: AppHelpers.getScreenWidth(context),
                           child: LoadingEffect(
-                              baseColor: AppColors.grey.withOpacity(0.1),
-                              heighLightColor: AppColors.grey.withOpacity(0.3),
+                              baseColor: AppColors.grey.withValues(alpha: 0.1),
+                              heighLightColor:
+                                  AppColors.grey.withValues(alpha: 0.3),
                               radius: 12,
                               height: 50,
                               width: AppHelpers.getScreenWidth(context)),

@@ -11,7 +11,7 @@ class LaungeAccessWidget extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: bgColor ?? AppColors.grey.withOpacity(0.1),
+          color: bgColor ?? AppColors.grey.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         width: AppHelpers.getScreenWidth(context),

@@ -1,16 +1,14 @@
-import 'dart:developer';
-
-import 'package:excellistravel/core/widgets/app_sheet.dart';
-import 'package:excellistravel/features/flight_booking/presentation/widgets/flight_details/baggae_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../../core/common/bloc/cities/city_bloc.dart';
 import '../../../../core/common/bloc/states/states_bloc.dart';
+import '../../../../core/common/models/profile_data_model.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
 import '../../../../core/services/razorpay.dart';
+import '../../../../core/widgets/app_sheet.dart';
 import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
@@ -22,6 +20,7 @@ import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart' show FlightDictionary, Datam;
 import '../../data/models/passenger_model.dart';
+import '../widgets/flight_details/baggae_card_widget.dart';
 import '../widgets/flight_details/billing_sheet.dart';
 import '../widgets/flight_details/offer_fare_toggler_widget.dart';
 import '../widgets/loading/flight_details_loading_widget.dart';
@@ -67,16 +66,24 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   final TextEditingController _addressLine1Controller = TextEditingController();
   final TextEditingController _addressLine2Controller = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
   final TextEditingController _pinCodeController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
+  ProfileModel _newBillingInfo = ProfileModel();
+  bool _isBillingInfoChanged = false;
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
       if (mounted) {
         context.read<ProfileBloc>().add(const LoadProfileEvent());
-        context.read<FlightBloc>().add(GetFlightsOfferPriceEvent(
-            offerData: getOfferPriceBody(data: widget.data.toJson())));
+        context.read<FlightBloc>().add(
+              GetFlightsOfferPriceEvent(
+                offerData: getOfferPriceBody(
+                  data: widget.data.toJson(),
+                ),
+              ),
+            );
       }
     });
   }
@@ -153,14 +160,14 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                         }
                         if (flightState is FlightPaymentVerificationFailed) {
                           return ErrorScreen(
-                              bg: AppColors.primary.withOpacity(0.3),
+                              bg: AppColors.primary.withValues(alpha: 0.3),
                               errorDesc: flightState.error,
                               errorMessage: 'Flight Payment Error');
                         }
 
                         if (flightState is FlightOrderCreationError) {
                           return ErrorScreen(
-                              bg: AppColors.primary.withOpacity(0.3),
+                              bg: AppColors.primary.withValues(alpha: 0.3),
                               errorDesc: flightState.error,
                               errorMessage: 'Flight Payment Error');
                         }
@@ -254,7 +261,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Text(
-                                                'Travellers Details',
+                                                'Billing Details',
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w600,
@@ -273,89 +280,147 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                                 flightState.data.data?.myMarkup,
                                           ),
                                           const SizedBox(height: 16),
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 16),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                'Billing Information',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          ListTile(
-                                            leading: CircleAvatar(
-                                              child: Text(
-                                                (state.profileData.firstName
-                                                            ?.isNotEmpty ??
-                                                        false)
-                                                    ? state.profileData
-                                                        .firstName![0]
-                                                    : '?',
-                                              ),
-                                            ),
-                                            title: Text(
-                                              '${state.profileData.firstName} ${state.profileData.lastName}',
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              '${state.profileData.email}',
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                            trailing: InkWell(
-                                              onTap: () {
-                                                showAppSheet(
-                                                  context: context,
-                                                  title: 'Billing Information',
-                                                  child: MultiBlocProvider(
-                                                    providers: [
-                                                      BlocProvider.value(
-                                                          value: context.read<
-                                                              StatesBloc>()),
-                                                      BlocProvider.value(
-                                                          value: context.read<
-                                                              CityBloc>()),
-                                                    ],
-                                                    child: BillingSheet(
-                                                      onSavePressed:
-                                                          (profileData) {
-                                                        log('${profileData.address}');
-                                                      },
-                                                      firstNameController:
-                                                          _firstNameController,
-                                                      lastNameController:
-                                                          _lastNameController,
-                                                      emailController:
-                                                          _emailController,
-                                                      mobileNumberController:
-                                                          _mobileNumberController,
-                                                      addressLine1Controller:
-                                                          _addressLine1Controller,
-                                                      addressLine2Controller:
-                                                          _addressLine2Controller,
-                                                      cityController:
-                                                          _cityController,
-                                                      pinCodeController:
-                                                          _pinCodeController,
-                                                      profileData:
-                                                          state.profileData,
-                                                    ),
+                                          _isBillingInfoChanged
+                                              ? ListTile(
+                                                  leading: const CircleAvatar(
+                                                      child:
+                                                          Icon(Icons.person)),
+                                                  title: Text(
+                                                      '${_newBillingInfo.firstName ?? ''} ${_newBillingInfo.lastName ?? ''}'),
+                                                  subtitle: (_newBillingInfo
+                                                              .email
+                                                              ?.isNotEmpty ??
+                                                          false)
+                                                      ? Text(
+                                                          '${_newBillingInfo.email}',
+                                                        )
+                                                      : const Text(''),
+                                                  trailing: InkWell(
+                                                    onTap: () {
+                                                      showAppSheet(
+                                                        context: context,
+                                                        title:
+                                                            'Billing Information',
+                                                        child:
+                                                            MultiBlocProvider(
+                                                          providers: [
+                                                            BlocProvider.value(
+                                                                value: context.read<
+                                                                    StatesBloc>()),
+                                                            BlocProvider.value(
+                                                                value: context.read<
+                                                                    CityBloc>()),
+                                                          ],
+                                                          child: BillingSheet(
+                                                              stateController:
+                                                                  _stateController,
+                                                              onSavePressed:
+                                                                  (profileData) {
+                                                                _newBillingInfo =
+                                                                    profileData;
+                                                                _isBillingInfoChanged =
+                                                                    true;
+
+                                                                setState(() {});
+                                                                context.pop();
+                                                              },
+                                                              firstNameController:
+                                                                  _firstNameController,
+                                                              lastNameController:
+                                                                  _lastNameController,
+                                                              emailController:
+                                                                  _emailController,
+                                                              mobileNumberController:
+                                                                  _mobileNumberController,
+                                                              addressLine1Controller:
+                                                                  _addressLine1Controller,
+                                                              addressLine2Controller:
+                                                                  _addressLine2Controller,
+                                                              cityController:
+                                                                  _cityController,
+                                                              pinCodeController:
+                                                                  _pinCodeController,
+                                                              profileData:
+                                                                  _newBillingInfo,
+                                                              countryController:
+                                                                  _countryController),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: const Text('Change'),
                                                   ),
-                                                );
-                                              },
-                                              child: const Text('Change'),
-                                            ),
-                                          ),
+                                                )
+                                              : ListTile(
+                                                  leading: const CircleAvatar(
+                                                      child:
+                                                          Icon(Icons.person)),
+                                                  title: Text(
+                                                      '${state.profileData.firstName ?? ''} ${state.profileData.lastName ?? ''}'),
+                                                  subtitle: (state
+                                                              .profileData
+                                                              .email
+                                                              ?.isNotEmpty ??
+                                                          false)
+                                                      ? Text(
+                                                          '${state.profileData.email}',
+                                                        )
+                                                      : const Text(''),
+                                                  trailing: InkWell(
+                                                    onTap: () {
+                                                      showAppSheet(
+                                                        context: context,
+                                                        title:
+                                                            'Billing Information',
+                                                        child:
+                                                            MultiBlocProvider(
+                                                          providers: [
+                                                            BlocProvider.value(
+                                                                value: context.read<
+                                                                    StatesBloc>()),
+                                                            BlocProvider.value(
+                                                                value: context.read<
+                                                                    CityBloc>()),
+                                                          ],
+                                                          child: BillingSheet(
+                                                            stateController:
+                                                                _stateController,
+                                                            onSavePressed:
+                                                                (profileData) {
+                                                              _newBillingInfo =
+                                                                  profileData;
+                                                              _isBillingInfoChanged =
+                                                                  true;
+
+                                                              setState(() {});
+                                                              context.pop();
+                                                            },
+                                                            firstNameController:
+                                                                _firstNameController,
+                                                            lastNameController:
+                                                                _lastNameController,
+                                                            emailController:
+                                                                _emailController,
+                                                            mobileNumberController:
+                                                                _mobileNumberController,
+                                                            addressLine1Controller:
+                                                                _addressLine1Controller,
+                                                            addressLine2Controller:
+                                                                _addressLine2Controller,
+                                                            cityController:
+                                                                _cityController,
+                                                            pinCodeController:
+                                                                _pinCodeController,
+                                                            profileData: state
+                                                                .profileData,
+                                                            countryController:
+                                                                _countryController,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: const Text('Change'),
+                                                  ),
+                                                ),
                                         ],
                                       );
                                     }
@@ -417,12 +482,20 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
         lastName: _lastNameController.text,
         email: _emailController.text,
         mobileNumber: _mobileNumberController.text,
-        addressLine1: _addressLine1Controller.text,
-        addressLine2: _addressLine2Controller.text,
+        addressLine1: _addressLine2Controller.text.isNotEmpty
+            ? '${_addressLine1Controller.text}, ${_addressLine2Controller.text}, ${_cityController.text}, ${_stateController.text}, ${_pinCodeController.text}, ${_countryController.text}'
+            : '${_addressLine1Controller.text}, ${_cityController.text}, ${_stateController.text}, ${_pinCodeController.text}, ${_countryController.text}',
+        addressLine2: _addressLine2Controller.text.isNotEmpty
+            ? _addressLine2Controller.text
+            : '',
         city: _cityController.text,
         pinCode: _pinCodeController.text,
-        country: _countryController.text,
-        countryCode: _countryController.text,
+        country: _countryController.text.isNotEmpty
+            ? _countryController.text
+            : 'India',
+        countryCode: _countryController.text.isNotEmpty
+            ? _countryController.text
+            : '+91',
       ),
     );
   }

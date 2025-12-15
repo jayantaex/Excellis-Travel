@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         title: 'Excellis Travel',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
+        darkTheme: AppTheme.lightTheme,
         routerConfig: AppRouter.router,
         localizationsDelegates: context.localizationDelegates,
         locale: supportedLocales().first,

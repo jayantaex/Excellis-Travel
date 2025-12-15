@@ -28,7 +28,6 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
 
   void _processWithdrawal() {
     if (_formKey.currentState?.validate() ?? false) {
-      // TODO: Implement actual withdrawal logic
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -66,7 +65,7 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.1),
+                          color: AppColors.primary.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(
@@ -112,10 +111,10 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.05),
+                      color: AppColors.primary.withValues(alpha: 0.05),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: AppColors.primary.withOpacity(0.2),
+                        color: AppColors.primary.withValues(alpha: 0.2),
                       ),
                     ),
                     child: Row(

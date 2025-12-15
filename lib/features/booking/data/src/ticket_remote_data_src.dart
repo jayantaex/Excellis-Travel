@@ -13,11 +13,11 @@ class TicketRemoteDataSrc {
     required String bookingId,
     required String status,
     required String startDate,
-    required String endDate,
+    required String endDate,  
     required String dateType,
   }) async {
     try {
-      Map<String, dynamic> queryParameters = <String, dynamic>{};
+      final Map<String, dynamic> queryParameters = <String, dynamic>{};
       if (bookingId.isNotEmpty) {
         queryParameters['searchCriteria'] = 'Reference No';
         queryParameters['searchText'] = bookingId;

@@ -68,15 +68,16 @@ class CitySearch extends StatelessWidget {
                                         AppHelpers.getScreenHeight(context) *
                                             0.8,
                                     child: ListView.builder(
-                                      itemBuilder: (BuildContext context, int index) =>
-                                          Container(
+                                      itemBuilder:
+                                          (BuildContext context, int index) =>
+                                              Container(
                                         margin:
                                             const EdgeInsets.only(bottom: 8),
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(12),
-                                          color:
-                                              AppColors.grey.withOpacity(0.1),
+                                          color: AppColors.grey
+                                              .withValues(alpha: 0.1),
                                         ),
                                         child: ListTile(
                                           onTap: () {

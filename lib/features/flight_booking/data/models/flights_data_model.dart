@@ -1,5 +1,3 @@
-import '../../../../core/services/temp_store.dart';
-
 class FlightsDataModel {
   factory FlightsDataModel.fromJson(Map<String, dynamic> json) =>
       FlightsDataModel(

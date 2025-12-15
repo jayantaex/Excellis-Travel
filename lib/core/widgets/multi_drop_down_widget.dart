@@ -24,7 +24,7 @@ class MultiDropDownWidget<T extends Object> extends StatelessWidget {
         controller: controller,
         searchEnabled: true,
         chipDecoration: ChipDecoration(
-          backgroundColor: AppColors.primary.withOpacity(0.1),
+          backgroundColor: AppColors.primary.withValues(alpha: 0.1),
           runSpacing: 2,
           spacing: 10,
         ),
@@ -36,7 +36,7 @@ class MultiDropDownWidget<T extends Object> extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
             ),
           ),
           suffixIcon: const Icon(Icons.keyboard_arrow_down_rounded,

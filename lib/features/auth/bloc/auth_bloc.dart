@@ -64,9 +64,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return;
       }
       //save token into local
-      await StorageService.saveTokens(
-          res.data?.data?.token ?? '', res.data?.data?.token ?? '');
-      emit(Authenticated());
+      if (res.data?.data?.user?.role == 'agent') {
+        await StorageService.saveTokens(
+          res.data?.data?.token ?? '',
+          res.data?.data?.token ?? '',
+        );
+        emit(Authenticated());
+      } else {
+        emit(const AuthError(
+            message: 'You are not authorized to access this application'));
+        return;
+      }
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }

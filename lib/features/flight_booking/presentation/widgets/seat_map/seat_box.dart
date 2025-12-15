@@ -45,7 +45,7 @@ class _SeatBoxState extends State<SeatBox> {
                     ? AppColors.grey
                     : selectedSeat.contains(widget.data?.number)
                         ? AppColors.primary
-                        : AppColors.grey.withOpacity(0.2),
+                        : AppColors.grey.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,

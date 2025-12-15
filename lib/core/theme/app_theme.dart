@@ -92,13 +92,6 @@ class AppTheme {
         ),
 
         // Card Theme
-        cardTheme: CardTheme(
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-          ),
-          margin: const EdgeInsets.all(AppSizes.sm),
-        ),
 
         // Bottom Navigation Bar Theme
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -232,14 +225,6 @@ class AppTheme {
               AppTextStyles.bodyMedium.copyWith(color: AppColors.textHint),
           labelStyle:
               AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-        ),
-        cardTheme: CardTheme(
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.radiusMd),
-          ),
-          color: const Color(0xFF1E1E1E),
-          margin: const EdgeInsets.all(AppSizes.sm),
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           type: BottomNavigationBarType.fixed,

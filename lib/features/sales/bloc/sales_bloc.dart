@@ -59,7 +59,7 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
       final String userType = event.userType ?? 'agent';
 
       // Call API for each agentId and aggregate results
-      List<Commissions> allCommissions = [];
+      final List<Commissions> allCommissions = [];
       int totalItems = 0;
       double totalMarkup = 0.0;
       double totalSales = 0.0;
@@ -240,7 +240,7 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
     if (event.agentIds.isEmpty) {
       // If we have sales data, preserve it by emitting the current state with sales data
       if (salesData != null && currentState is! SalesLoaded) {
-        emit(SalesLoaded(sales: salesData, isLoadingMore: false));
+        emit(SalesLoaded(sales: salesData));
       }
       return;
     }

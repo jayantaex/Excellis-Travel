@@ -13,9 +13,9 @@
 //         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
 //         decoration: BoxDecoration(
 //           borderRadius: BorderRadius.circular(8),
-//           color: AppColors.grey.withOpacity(0.05),
+//           color: AppColors.grey.withValues(alpha:0.05),
 //           border: Border.all(
-//             color: AppColors.grey.withOpacity(0.1),
+//             color: AppColors.grey.withValues(alpha:0.1),
 //           ),
 //         ),
 //         child: Column(
@@ -93,7 +93,7 @@
 //         visualDensity: const VisualDensity(vertical: -4),
 //         leading: CircleAvatar(
 //             radius: 14,
-//             backgroundColor: AppColors.grey.withOpacity(0.1),
+//             backgroundColor: AppColors.grey.withValues(alpha:0.1),
 //             child: AppHelpers.svgAsset(
 //                 assetName: iconName, isIcon: true, height: 16, width: 16)),
 //         title: Text(

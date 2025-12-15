@@ -19,7 +19,7 @@ class BaggaeCardWidget extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         leading: CircleAvatar(
             radius: 16,
-            backgroundColor: AppColors.grey.withOpacity(0.1),
+            backgroundColor: AppColors.grey.withValues(alpha: 0.1),
             child: AppHelpers.svgAsset(
                 assetName: iconName, isIcon: true, height: 16, width: 16)),
         title: Text(

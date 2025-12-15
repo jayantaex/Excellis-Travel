@@ -144,8 +144,8 @@ class _FlightListScreenState extends State<FlightListScreen> {
                                     isLabelVisible: state.isFiltered,
                                     child: CircleAvatar(
                                       radius: 20,
-                                      backgroundColor:
-                                          AppColors.white.withOpacity(0.2),
+                                      backgroundColor: AppColors.white
+                                          .withValues(alpha: 0.2),
                                       child: const Icon(
                                         Icons.filter_alt_rounded,
                                         color: AppColors.white,

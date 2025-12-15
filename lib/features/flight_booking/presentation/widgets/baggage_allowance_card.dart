@@ -20,7 +20,7 @@
 //   Widget build(BuildContext context) => Container(
 //       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
 //       decoration: BoxDecoration(
-//         color: AppColors.grey.withOpacity(0.05),
+//         color: AppColors.grey.withValues(alpha:0.05),
 //         borderRadius: BorderRadius.circular(8),
 //       ),
 //       child: Column(
@@ -29,7 +29,7 @@
 //             contentPadding: const EdgeInsets.all(0),
 //             leading: CircleAvatar(
 //               radius: 16,
-//               backgroundColor: AppColors.grey.withOpacity(0.1),
+//               backgroundColor: AppColors.grey.withValues(alpha:0.1),
 //               child: AppHelpers.svgAsset(
 //                 assetName: 'baggage',
 //                 isIcon: true,
@@ -57,7 +57,7 @@
 //             contentPadding: const EdgeInsets.all(0),
 //             leading: CircleAvatar(
 //                 radius: 16,
-//                 backgroundColor: AppColors.grey.withOpacity(0.1),
+//                 backgroundColor: AppColors.grey.withValues(alpha:0.1),
 //                 child: AppHelpers.svgAsset(
 //                     assetName: 'baggage', isIcon: true, height: 20, width: 20)),
 //             title: const Text(
@@ -80,7 +80,7 @@
 //             contentPadding: const EdgeInsets.all(0),
 //             leading: CircleAvatar(
 //                 radius: 16,
-//                 backgroundColor: AppColors.grey.withOpacity(0.1),
+//                 backgroundColor: AppColors.grey.withValues(alpha:0.1),
 //                 child: AppHelpers.svgAsset(
 //                     assetName: 'baggage', isIcon: true, height: 20, width: 20)),
 //             title: const Text(
@@ -132,7 +132,7 @@
 //                             leading: CircleAvatar(
 //                                 radius: 16,
 //                                 backgroundColor:
-//                                     AppColors.grey.withOpacity(0.1),
+//                                     AppColors.grey.withValues(alpha:0.1),
 //                                 child: AppHelpers.svgAsset(
 //                                     assetName: 'baggage',
 //                                     isIcon: true,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:country_code_picker/country_code_picker.dart';
 
 import 'package:flutter/material.dart';
@@ -19,18 +17,21 @@ import '../../../../../core/widgets/primary_input.dart';
 import '../../../../../utils/app_helpers.dart';
 
 class BillingSheet extends StatefulWidget {
-  const BillingSheet(
-      {super.key,
-      required this.firstNameController,
-      required this.lastNameController,
-      required this.emailController,
-      required this.mobileNumberController,
-      required this.addressLine1Controller,
-      required this.addressLine2Controller,
-      required this.cityController,
-      required this.pinCodeController,
-      this.profileData,
-      required this.onSavePressed});
+  const BillingSheet({
+    super.key,
+    required this.firstNameController,
+    required this.lastNameController,
+    required this.emailController,
+    required this.mobileNumberController,
+    required this.addressLine1Controller,
+    required this.addressLine2Controller,
+    required this.cityController,
+    required this.pinCodeController,
+    this.profileData,
+    required this.onSavePressed,
+    required this.stateController,
+    required this.countryController,
+  });
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
   final TextEditingController emailController;
@@ -39,8 +40,10 @@ class BillingSheet extends StatefulWidget {
   final TextEditingController addressLine2Controller;
   final TextEditingController cityController;
   final TextEditingController pinCodeController;
+  final TextEditingController stateController;
+  final TextEditingController countryController;
   final ProfileModel? profileData;
-  final Function(ProfileModel) onSavePressed;
+  final Function(ProfileModel profileData) onSavePressed;
   @override
   State<BillingSheet> createState() => _BillingSheetState();
 }
@@ -67,10 +70,26 @@ class _BillingSheetState extends State<BillingSheet> {
         widget.addressLine1Controller.text = widget.profileData?.address ?? '';
 
         final addressParts = widget.profileData?.address?.split(',');
+
+        //remove state and city from address
         if (addressParts != null && addressParts.length > 2) {
+          final List<String> addressList = [];
           widget.cityController.text = addressParts[1].trim();
           widget.pinCodeController.text = addressParts.last.trim();
           _selectedState = addressParts[2].trim();
+          widget.stateController.text = _selectedState;
+          for (var element in addressParts) {
+            if ((element.toLowerCase().trim() ==
+                    _selectedState.toLowerCase().trim()) ||
+                (element.toLowerCase().trim() ==
+                    widget.cityController.text.toLowerCase().trim()) ||
+                (element.toLowerCase().trim() ==
+                    widget.pinCodeController.text.toLowerCase().trim())) {
+              continue;
+            }
+            addressList.add(element);
+          }
+          widget.addressLine1Controller.text = addressList.join(',');
         }
       }
 
@@ -135,7 +154,7 @@ class _BillingSheetState extends State<BillingSheet> {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(16)),
                           border: Border.all(
-                              color: AppColors.grey.withOpacity(0.3)),
+                              color: AppColors.grey.withValues(alpha: 0.3)),
                         ),
                         height: 50,
                         width: AppHelpers.getScreenWidth(context) * 0.3,
@@ -143,14 +162,14 @@ class _BillingSheetState extends State<BillingSheet> {
                           initialSelection: '+91',
                           favorite: const ['+91'],
                           onChanged: (CountryCode countryCode) {
-                            widget.mobileNumberController.text =
-                                countryCode.name ?? '';
+                            widget.countryController.text =
+                                countryCode.code ?? 'IN';
                           },
                           hideSearch: true,
                           margin: const EdgeInsets.all(0),
                           dialogSize: Size(AppHelpers.getScreenWidth(context),
                               AppHelpers.getScreenHeight(context) * 0.6),
-                          barrierColor: AppColors.black.withOpacity(0.5),
+                          barrierColor: AppColors.black.withValues(alpha: 0.5),
                           flagDecoration: const BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(2))),
@@ -177,10 +196,11 @@ class _BillingSheetState extends State<BillingSheet> {
                   hint: 'Enter your address line 1',
                 ),
                 const SizedBox(height: 10),
-                const AppPrimaryInput(
+                AppPrimaryInput(
                   maxCharacters: 100,
                   label: 'Address Line 2',
                   hint: 'Enter your address line 2',
+                  controller: widget.addressLine2Controller,
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
@@ -204,6 +224,8 @@ class _BillingSheetState extends State<BillingSheet> {
                                         _selectedState.toLowerCase().trim()) {
                                       // Update all state-related values when match is found
                                       setState(() {
+                                        widget.stateController.text =
+                                            e.name ?? '';
                                         _selectedState = e.name ?? '';
                                         _selectedStateCode = e.code ?? '';
                                         _selectedStateId = e.id ?? 0;
@@ -276,6 +298,8 @@ class _BillingSheetState extends State<BillingSheet> {
                                   if (stateName == null) return;
                                   for (StateModel element in state.states) {
                                     if (element.name == stateName) {
+                                      widget.stateController.text =
+                                          element.name ?? '';
                                       _selectedState = element.name ?? '';
                                       _selectedStateCode = element.code ?? '';
                                       _selectedStateId = element.id ?? 0;
@@ -334,11 +358,16 @@ class _BillingSheetState extends State<BillingSheet> {
                   title: 'Save',
                   isLoading: false,
                   onPressed: () {
-                    log('${widget.addressLine1Controller.text}, ${widget.cityController.text}, $_selectedState, ${widget.pinCodeController.text}');
-                    widget.onSavePressed(ProfileModel(
+                    final ProfileModel data = ProfileModel(
                       address:
-                          '${widget.addressLine1Controller.text}, ${widget.cityController.text}, $_selectedState, ${widget.pinCodeController.text}',
-                    ));
+                          '${widget.addressLine1Controller.text},${widget.cityController.text},$_selectedState,${widget.pinCodeController.text}',
+                      firstName: widget.firstNameController.text,
+                      lastName: widget.lastNameController.text,
+                      email: widget.emailController.text,
+                      phone: widget.mobileNumberController.text,
+                      role: 'user',
+                    );
+                    widget.onSavePressed(data);
                   },
                 ),
               ],

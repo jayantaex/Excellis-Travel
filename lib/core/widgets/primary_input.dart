@@ -67,21 +67,25 @@ class AppPrimaryInput extends StatelessWidget {
           suffixIcon: suffixIcon,
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               Radius.circular(16),
             ),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.error.withOpacity(0.7)),
+            borderSide:
+                BorderSide(color: AppColors.error.withValues(alpha: 0.7)),
           ),
           focusedErrorBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../../core/network/amadeus_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/services/local_db.dart';

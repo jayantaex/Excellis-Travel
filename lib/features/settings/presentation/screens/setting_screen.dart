@@ -141,7 +141,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               showAppSheet(
                                   context: context,
                                   title: 'Reset Password',
-                                  child: ResetPassSheet());
+                                  child: const ResetPassSheet());
                             },
                             contentPadding: const EdgeInsets.all(0),
                             title: const Text('Reset Password',

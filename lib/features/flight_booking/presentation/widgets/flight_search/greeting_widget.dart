@@ -53,7 +53,7 @@ class GreetingWidget extends StatelessWidget {
               ),
             ),
             CircleAvatar(
-              backgroundColor: AppColors.white.withOpacity(0.2),
+              backgroundColor: AppColors.white.withValues(alpha: 0.2),
               child: IconButton(
                   onPressed: () {
                     context.pushNamed(NotificationModule.routeName);

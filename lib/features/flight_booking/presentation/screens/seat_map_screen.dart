@@ -136,7 +136,7 @@
 //                 children: <Widget>[
 //                   SeatSelectionInformation(
 //                     title: 'Availabe',
-//                     bg: AppColors.grey.withOpacity(0.4),
+//                     bg: AppColors.grey.withValues(alpha:0.4),
 //                   ),
 //                   const SeatSelectionInformation(
 //                     title: 'Reserved',
@@ -245,9 +245,9 @@
 //         padding: const EdgeInsets.symmetric(vertical: 4),
 //         decoration: BoxDecoration(
 //           color: widget.isExitRow
-//               ? AppColors.primary.withOpacity(0.1)
+//               ? AppColors.primary.withValues(alpha:0.1)
 //               : widget.isWingsRow
-//                   ? AppColors.primary.withOpacity(0.1)
+//                   ? AppColors.primary.withValues(alpha:0.1)
 //                   : null,
 //           borderRadius: BorderRadius.circular(12),
 //         ),

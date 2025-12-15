@@ -19,22 +19,22 @@ class TypeCardWidget extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: isCredit
               ? [
-                  AppColors.white.withOpacity(0.25),
-                  AppColors.white.withOpacity(0.15),
+                  AppColors.white.withValues(alpha: 0.25),
+                  AppColors.white.withValues(alpha: 0.15),
                 ]
               : [
-                  AppColors.white.withOpacity(0.2),
-                  AppColors.white.withOpacity(0.1),
+                  AppColors.white.withValues(alpha: 0.2),
+                  AppColors.white.withValues(alpha: 0.1),
                 ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.white.withOpacity(0.3),
+          color: AppColors.white.withValues(alpha: 0.3),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withOpacity(0.1),
+            color: AppColors.black.withValues(alpha: 0.1),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -50,7 +50,7 @@ class TypeCardWidget extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: AppColors.white.withOpacity(0.25),
+                  color: AppColors.white.withValues(alpha: 0.25),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Icon(

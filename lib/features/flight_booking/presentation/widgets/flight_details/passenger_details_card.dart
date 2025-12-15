@@ -111,7 +111,7 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.grey.withOpacity(0.05),
+          color: AppColors.grey.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
@@ -309,7 +309,7 @@ class PassengerCard extends StatelessWidget {
         contentPadding: const EdgeInsets.all(0),
         leading: CircleAvatar(
           radius: 18,
-          backgroundColor: AppColors.grey.withOpacity(0.1),
+          backgroundColor: AppColors.grey.withValues(alpha: 0.1),
           child: Text(
             '${passenger.firstName!.substring(0, 1)}${passenger.lastName!.substring(0, 1)}',
             style: const TextStyle(
@@ -350,7 +350,7 @@ class PassengerCard extends StatelessWidget {
           },
           child: CircleAvatar(
             radius: 16,
-            backgroundColor: AppColors.error.withOpacity(0.1),
+            backgroundColor: AppColors.error.withValues(alpha: 0.1),
             child: const Icon(
               Icons.delete,
               size: 14,

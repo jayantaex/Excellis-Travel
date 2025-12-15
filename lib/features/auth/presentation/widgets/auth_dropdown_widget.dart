@@ -22,7 +22,7 @@ class _AuthDropdownWidgetState extends State<AuthDropdownWidget> {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
         decoration: BoxDecoration(
-          color: AppColors.textHint.withOpacity(0.15),
+          color: AppColors.textHint.withValues(alpha: 0.15),
           border: Border.all(color: AppColors.grey),
           borderRadius: BorderRadius.circular(90),
         ),
