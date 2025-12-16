@@ -29,3 +29,17 @@ Generate SHA Key - Release :
 Generate ARB Files
 
 ```flutter gen-l10n```
+
+Release Build
+
+```./build_flutter.sh patch```
+```./build_flutter.sh minor```
+```./build_flutter.sh major```
+
+| Flag  | Result              |
+| ----- | --------------------|
+| patch | 1.2.3+45 → 1.2.4+46 |
+| minor | 1.2.3+45 → 1.3.0+46 |
+| major | 1.2.3+45 → 2.0.0+46 |
+
+
