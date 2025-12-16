@@ -44,7 +44,7 @@ fi
 
 STORE_FILE=$(grep storeFile $KEY_PROPERTIES | cut -d'=' -f2)
 
-if [ ! -f "android/$STORE_FILE" ]; then
+if [ ! -f "android/app/$STORE_FILE" ]; then
   echo "❌ Keystore file not found: android/$STORE_FILE"
   exit 1
 fi
