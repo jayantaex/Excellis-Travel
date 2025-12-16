@@ -1,11 +1,10 @@
 import 'dart:developer';
-
-import 'package:excellistravel/core/common/common_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/common/bloc/cities/city_bloc.dart';
 import '../../../../core/common/bloc/states/states_bloc.dart';
+import '../../../../core/common/common_module.dart';
 import '../../../../core/common/models/city_model.dart';
 import '../../../../core/common/models/state_model.dart';
 import '../../../../core/constants/app_styles.dart';

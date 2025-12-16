@@ -1,11 +1,12 @@
-import 'package:excellistravel/core/constants/app_styles.dart';
-import 'package:excellistravel/utils/app_helpers.dart';
-import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
-import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
-import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/constants/app_styles.dart' show AppColors;
+import '../../../core/widgets/app_custom_appbar.dart' show AppCustomAppbar;
+import '../../../core/widgets/app_gradient_bg.dart' show AppGradientBg;
+import '../../../core/widgets/trans_white_bg_widget.dart'
+    show TransWhiteBgWidget;
+import '../../../utils/app_helpers.dart' show AppHelpers;
 import '../bloc/wallet_bloc.dart';
 import '../data/models/transaction_model.dart';
 import '../widgets/transaction_card_widget.dart';

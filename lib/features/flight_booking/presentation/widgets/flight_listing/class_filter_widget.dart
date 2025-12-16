@@ -1,9 +1,9 @@
-import 'package:excellistravel/features/flight_booking/bloc/flight_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
+import '../../../bloc/flight_bloc.dart';
 
 class ClassFilterWidget extends StatefulWidget {
   const ClassFilterWidget(

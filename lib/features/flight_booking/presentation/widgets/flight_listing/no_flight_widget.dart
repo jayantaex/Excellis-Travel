@@ -1,6 +1,7 @@
-import 'package:excellistravel/core/constants/app_styles.dart';
-import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../utils/app_helpers.dart';
 
 class NoFlightWidget extends StatelessWidget {
   const NoFlightWidget({super.key});

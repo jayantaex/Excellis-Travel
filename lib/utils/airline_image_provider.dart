@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:excellistravel/core/network/api_urls.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/app_styles.dart';
+import '../core/network/api_urls.dart';
 
 Widget getAirlineLogo({required String airlineCode}) {
   final String imageUrl = '${EndPoints.airlineLogoUrl}$airlineCode.png';

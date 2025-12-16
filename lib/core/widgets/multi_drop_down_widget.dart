@@ -1,6 +1,7 @@
-import 'package:excellistravel/core/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
+
+import '../constants/app_styles.dart';
 
 class MultiDropDownWidget<T extends Object> extends StatelessWidget {
   const MultiDropDownWidget(

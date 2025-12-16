@@ -1,7 +1,6 @@
-import 'package:excellistravel/core/network/api_response.dart';
-import 'package:excellistravel/core/network/api_urls.dart';
-
 import '../../../core/network/api_client.dart';
+import '../../../core/network/api_response.dart';
+import '../../../core/network/api_urls.dart';
 import '../data/models/markup_data_model.dart';
 import '../data/models/sates_data_model.dart';
 import '../presentation/screens/child_data_model.dart';

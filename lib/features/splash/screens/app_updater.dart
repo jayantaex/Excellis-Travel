@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:excellistravel/utils/app_updater.dart';
-import 'package:excellistravel/core/constants/app_constants.dart';
+
 import 'package:open_filex/open_filex.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/app_styles.dart';
+import '../../../utils/app_updater.dart';
 
 class AppUpdaterScreen extends StatefulWidget {
   const AppUpdaterScreen({

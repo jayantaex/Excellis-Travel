@@ -1,6 +1,5 @@
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/utils/airline_image_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/services/file_downloader.dart';
+import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
 import '../../../../utils/airline_info_provider.dart' show AirlineInfoProvider;
 import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';

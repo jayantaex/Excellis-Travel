@@ -1,7 +1,7 @@
-import 'package:excellistravel/core/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/widgets/primary_button.dart';
 
 class NoSales extends StatelessWidget {
   const NoSales({super.key, this.isForFilter, this.onFilter});

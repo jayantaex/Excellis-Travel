@@ -1,9 +1,9 @@
-import 'package:excellistravel/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/widgets/text_widget.dart';
 import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';

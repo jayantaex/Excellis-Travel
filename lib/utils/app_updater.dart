@@ -1,8 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:excellistravel/core/constants/app_constants.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../core/constants/app_constants.dart';
 // import 'package:r_upgrade/r_upgrade.dart';
 
 class AppUpdater {
