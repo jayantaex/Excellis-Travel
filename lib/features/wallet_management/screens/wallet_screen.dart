@@ -138,7 +138,26 @@ class _WalletScreenState extends State<WalletScreen>
                         child: AppCustomAppbar(
                           centerTitle: 'My Wallet',
                           trailing: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              showMenu(
+                                  context: context,
+                                  position: RelativeRect.fromLTRB(
+                                    MediaQuery.of(context).size.width,
+                                    100,
+                                    0,
+                                    MediaQuery.of(context).size.height,
+                                  ),
+                                  items: [
+                                    const PopupMenuItem(
+                                      value: 'Withdraw',
+                                      child: Text('Withdraw'),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: 'Deposit',
+                                      child: Text('Deposit'),
+                                    ),
+                                  ]);
+                            },
                             child: CircleAvatar(
                               backgroundColor:
                                   AppColors.white.withValues(alpha: 0.2),
@@ -205,33 +224,6 @@ class _WalletScreenState extends State<WalletScreen>
                               ),
                             ),
                             const SizedBox(height: 10),
-
-                            // Withdrawal Button
-                            SizedBox(
-                              width: double.infinity,
-                              height: 44,
-                              child: ElevatedButton.icon(
-                                onPressed: _showWithdrawalSheet,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.white,
-                                  foregroundColor: AppColors.primary,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                icon: const Icon(Icons.account_balance_outlined,
-                                    size: 18),
-                                label: const Text(
-                                  'Withdraw Money',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
                           ],
                         ),
                       ),

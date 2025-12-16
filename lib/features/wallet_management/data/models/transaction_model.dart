@@ -125,7 +125,7 @@ class Metadata {
     fareType = json['fare_type'];
     userRole = json['user_role'];
     baseAmount = json['base_amount'];
-    markupAmount = json['markup_amount'];
+    markupAmount = double.parse(json['markup_amount']?.toString() ?? '0');
     hierarchyLevel = json['hierarchy_level'];
   }
   String? fareType;

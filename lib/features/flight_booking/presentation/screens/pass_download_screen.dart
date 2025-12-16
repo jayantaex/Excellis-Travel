@@ -8,13 +8,13 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/services/file_downloader.dart';
+import '../../../../utils/airline_info_provider.dart' show AirlineInfoProvider;
 import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
-import '../../data/airline_info_service.dart';
 import '../../data/models/payment_verify_res_model.dart';
 
 class PassDownloadScreen extends StatefulWidget {
@@ -28,6 +28,7 @@ class PassDownloadScreen extends StatefulWidget {
 class _PassDownloadScreenState extends State<PassDownloadScreen> {
   String barCodeSvg = '';
   String airlineName = '';
+  AirlineInfoProvider airlineInfoProvider = AirlineInfoProvider();
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -37,7 +38,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
         width: 250,
         height: 60,
       );
-      airlineName = await AirlinInfoService().getAirlineName(
+      airlineName = await airlineInfoProvider.getAirlineName(
           airlineCode: widget.data.flightData?.itineraries?.first.segments
                   ?.first.carrierCode ??
               '');

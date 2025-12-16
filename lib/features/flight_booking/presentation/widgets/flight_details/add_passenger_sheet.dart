@@ -33,33 +33,51 @@ Future<void> showAddAndEditPassengerSheet(
   final List<String> genderList = <String>['Male', 'Female'];
   DateTime firstDate = DateTime(2000);
   DateTime lastDate = DateTime.now();
+  DateTime initialDate = DateTime.now();
   int? selectedSegmentIndex;
 
   switch (travellerType) {
     case 'ADULT':
       {
+        // Adults: 12 to 120 years old
         firstDate = DateTime.now().subtract(
-          const Duration(days: 365 * 120),
+          const Duration(days: 365 * 120), // 120 years ago
         );
         lastDate = DateTime.now().subtract(
-          const Duration(days: 365 * 12),
+          const Duration(days: 365 * 12), // 12 years ago
+        );
+        // Set initial date to 25 years ago (a reasonable default for adults)
+        initialDate = DateTime.now().subtract(
+          const Duration(days: 365 * 25),
         );
       }
       break;
     case 'CHILD':
       {
+        // Children: 2 to 12 years old
         firstDate = DateTime.now().subtract(
-          const Duration(days: 365 * 12),
+          const Duration(days: 365 * 12), // 12 years ago
         );
         lastDate = DateTime.now().subtract(
-          const Duration(days: 365 * 2),
+          const Duration(days: 365 * 2), // 2 years ago
+        );
+        // Set initial date to 7 years ago (middle of child age range)
+        initialDate = DateTime.now().subtract(
+          const Duration(days: 365 * 7),
         );
       }
       break;
     case 'HELD_INFANT':
       {
-        firstDate = DateTime.now().subtract(const Duration(days: 365 * 2));
-        lastDate = DateTime.now().subtract(const Duration(days: 1));
+        // Infants: 0 to 2 years old
+        firstDate = DateTime.now().subtract(
+          const Duration(days: 365 * 2), // 2 years ago
+        );
+        lastDate = DateTime.now(); // Today
+        // Set initial date to 1 year ago (middle of infant age range)
+        initialDate = DateTime.now().subtract(
+          const Duration(days: 365),
+        );
       }
       break;
     default:
@@ -199,6 +217,7 @@ Future<void> showAddAndEditPassengerSheet(
                         onTap: () async {
                           dob = await showAppDatePicker(
                             context: context,
+                            initialDate: initialDate,
                             firstDate: firstDate,
                             lastDate: lastDate,
                           );

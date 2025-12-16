@@ -279,7 +279,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                             myMarkup:
                                                 flightState.data.data?.myMarkup,
                                           ),
-                                          const SizedBox(height: 16),
                                           _isBillingInfoChanged
                                               ? ListTile(
                                                   leading: const CircleAvatar(
@@ -322,7 +321,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                                                     true;
 
                                                                 setState(() {});
-                                                                context.pop();
+                                                                // context.pop();
                                                               },
                                                               firstNameController:
                                                                   _firstNameController,
@@ -392,7 +391,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                                                   true;
 
                                                               setState(() {});
-                                                              context.pop();
                                                             },
                                                             firstNameController:
                                                                 _firstNameController,

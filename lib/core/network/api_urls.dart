@@ -22,9 +22,9 @@ class MainUrl {
 
   String getAirlineLogoUrl() {
     if (env == 'production') {
-      return AppConstants.airlineLogoUrl;
+      return '${AppConstants.imageKitUrl}/kp6vc3sud/ExTravel/logos/airlines-logos/';
     } else {
-      return 'https://ik.imagekit.io';
+      return '${AppConstants.imageKitUrl}/kp6vc3sud/ExTravel/logos/airlines-logos/';
     }
   }
 }

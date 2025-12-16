@@ -63,18 +63,18 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
       value: 'Economy',
       child: Text('Economy'),
     ),
-    // const DropdownMenuItem<String>(
-    //   value: 'Premium Economy',
-    //   child: Text('Premium Eco.'),
-    // ),
+    const DropdownMenuItem<String>(
+      value: 'Premium Economy',
+      child: Text('Premium Eco.'),
+    ),
     const DropdownMenuItem<String>(
       value: 'Business',
       child: Text('Business'),
     ),
-    // const DropdownMenuItem<String>(
-    //   value: 'First Class',
-    //   child: Text('First Class'),
-    // ),
+    const DropdownMenuItem<String>(
+      value: 'First Class',
+      child: Text('First Class'),
+    ),
   ];
 
   final List<DropdownMenuItem<String>> _fareTipes = <DropdownMenuItem<String>>[
@@ -486,6 +486,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             AppHelpers.getScreenWidth(context) *
                                                 0.4,
                                         child: AppDropDown(
+                                          
                                           label: 'Trending Search',
                                           prefixIconName: 'seat',
                                           title: 'Trending Search',

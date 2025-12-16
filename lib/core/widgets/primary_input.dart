@@ -91,6 +91,12 @@ class AppPrimaryInput extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(16)),
             borderSide: BorderSide(color: AppColors.error),
           ),
+          errorStyle: const TextStyle(
+            color: AppColors.error,
+            fontSize: 11,
+            fontWeight: FontWeight.w400,
+          ),
+          errorMaxLines: 2,
           labelText: label,
           hintText: hint,
         ),
