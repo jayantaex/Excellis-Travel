@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../utils/app_helpers.dart';
@@ -53,8 +54,8 @@ class PaymentFailedScreen extends StatelessWidget {
                   color: AppColors.white),
               isLoading: false,
               onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                context.pop();
+                context.pop();
               },
             ),
           ),

@@ -55,9 +55,15 @@ class AppRouter {
             BottomNavModule.builder(),
       ),
 
+      //payment
       GoRoute(
-          path: PaymentModule.paymentSucessPath,
-          name: PaymentModule.paymentSucessName,
+          path: PaymentModule.paymentProcessingPath,
+          name: PaymentModule.paymentProcessingName,
+          builder: (BuildContext context, GoRouterState state) =>
+              PaymentModule.paymentProcessingBuilder(context, state)),
+      GoRoute(
+          path: PaymentModule.paymentSuccessPath,
+          name: PaymentModule.paymentSuccessName,
           builder: (BuildContext context, GoRouterState state) =>
               PaymentModule.paymentSuccessBuilder(context, state)),
       GoRoute(
@@ -160,6 +166,7 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) =>
             LegalModule.policyBuilder(),
       ),
+
       //notification
       GoRoute(
         path: NotificationModule.routePath,
@@ -167,6 +174,7 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) =>
             NotificationModule.builder(),
       ),
+
       //settings
       GoRoute(
         path: SettingsModule.routePath,
@@ -189,6 +197,7 @@ class AppRouter {
               latestVersion: version,
             );
           }),
+      //wallet
       GoRoute(
           path: WalletModule.walletPath,
           name: WalletModule.wallet,
