@@ -1,8 +1,10 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
+import '../../../../../utils/get_duration.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import '../../../data/models/flights_data_model.dart' show FlightDictionary;
 import 'segement_card_widget.dart';
@@ -71,14 +73,15 @@ class ItineraryCard extends StatelessWidget {
                             color: AppColors.black),
                       ),
                       Text(
-                        index > 0 ? arrivalCity : departureCity,
+                        toTitleCase(index > 0 ? arrivalCity : departureCity),
                         style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: AppColors.black),
                       ),
                       Text(
-                        index > 0 ? arrivalAirport : departureAirport,
+                        toTitleCase(
+                            index > 0 ? arrivalAirport : departureAirport),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -97,9 +100,8 @@ class ItineraryCard extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             Text(
-                              getDuration(
-                                  duration:
-                                      data.segments?.first.duration ?? ''),
+                              formatIsoDuration(
+                                  data.segments?.first.duration ?? ''),
                               style: const TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.w400),
                             ),
@@ -133,7 +135,10 @@ class ItineraryCard extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 24, fontWeight: FontWeight.w600)),
                       Text(
-                        AppHelpers.formatDateTime(DateTime.now(),
+                        AppHelpers.formatDateTime(
+                            DateTime.parse(
+                                data.segments?.last.arrival?.at.toString() ??
+                                    ''),
                             pattern: 'dd MMM, yyyy'),
                         style: const TextStyle(
                             fontSize: 12,
@@ -149,14 +154,15 @@ class ItineraryCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        index > 0 ? departureCity : arrivalCity,
+                        toTitleCase(index > 0 ? departureCity : arrivalCity),
                         style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: AppColors.black),
                       ),
                       Text(
-                        index > 0 ? departureAirport : arrivalAirport,
+                        toTitleCase(
+                            index > 0 ? departureAirport : arrivalAirport),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -198,13 +204,4 @@ class ItineraryCard extends StatelessWidget {
           ),
         ],
       );
-}
-
-String getDuration({required String duration}) {
-  //input PT6H35M
-  duration = duration.replaceAll('PT', '');
-  final String hr = duration.split('H')[0].trim();
-  final String mn = duration.split('H')[1].split('M')[0].trim();
-
-  return '${hr}H ${mn}M';
 }

@@ -41,7 +41,6 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
   String _errorMessage = '';
   List<ChildDataModel>? _subSalesExecutives;
   List<ChildDataModel>? _selectedSubSalesExecutives;
-  List<ChildDataModel>? _agents;
   List<ChildDataModel>? _selectedAgents;
 
   final TextEditingController _subSalesExecutiveController =
@@ -67,9 +66,7 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
             _subSalesExecutives = state.subSalesExecutives;
           }
           // Store agents when loaded
-          if (state is SalesAgentsLoaded) {
-            _agents = state.agents;
-          }
+          if (state is SalesAgentsLoaded) {}
         },
         builder: (context, state) {
           if (state is LoadingSubSalesExecutives) {

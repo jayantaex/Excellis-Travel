@@ -10,9 +10,9 @@ String formatIsoDuration(String isoDuration) {
 
   final parts = <String>[];
 
-  if (hours > 0) parts.add('${hours}Hr');
-  if (minutes > 0) parts.add('${minutes}Min');
-  if (seconds > 0) parts.add('${seconds}Sec');
+  if (hours > 0) parts.add('${hours}H');
+  if (minutes > 0) parts.add('${minutes}M');
+  if (seconds > 0) parts.add('${seconds}S');
 
   return parts.join(' ');
 }

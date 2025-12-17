@@ -29,7 +29,7 @@ class AppDropDown extends StatelessWidget {
             fontWeight: FontWeight.w500,
             color: AppColors.black),
         padding: const EdgeInsets.symmetric(),
-        value: value,
+        initialValue: value,
         icon: const SizedBox(),
         borderRadius: BorderRadius.circular(12),
         items: items,

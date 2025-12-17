@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
@@ -105,7 +106,8 @@ class FlightCardWidget extends StatelessWidget {
                                   width:
                                       AppHelpers.getScreenWidth(context) * 0.27,
                                   child: Text(
-                                    (data.itineraries?.isNotEmpty ?? false) &&
+                                    toTitleCase((data.itineraries?.isNotEmpty ??
+                                                false) &&
                                             (data.itineraries!.first.segments
                                                     ?.isNotEmpty ??
                                                 false)
@@ -125,7 +127,7 @@ class FlightCardWidget extends StatelessWidget {
                                                 ''
                                             : ''
                                         : ''
-                                            '',
+                                            ''),
                                     softWrap: true,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -151,16 +153,25 @@ class FlightCardWidget extends StatelessWidget {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                color: getColorByStatus('fastest')
+                                color: getColorByStatus(
+                                        data.numberOfBookableSeats! > 20
+                                            ? 'best value'
+                                            : data.numberOfBookableSeats! > 10
+                                                ? 'fastest'
+                                                : 'cheapest')
                                     .withValues(alpha: 0.3),
                               ),
                               child: Text(
-                                '${data.numberOfBookableSeats} seats available'
-                                    .toUpperCase(),
+                                '${data.numberOfBookableSeats} Seats Available',
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w500,
-                                  color: getColorByStatus('fastest'),
+                                  color: getColorByStatus(
+                                      data.numberOfBookableSeats! > 20
+                                          ? 'best value'
+                                          : data.numberOfBookableSeats! > 10
+                                              ? 'fastest'
+                                              : 'cheapest'),
                                 ),
                               ),
                             ),
@@ -239,9 +250,9 @@ class FlightCardWidget extends StatelessWidget {
                                   //   ),
                                   if (departureCity != null)
                                     Text(
-                                      index > 0
+                                      toTitleCase(index > 0
                                           ? '$arrivalCity'
-                                          : '$departureCity',
+                                          : '$departureCity'),
                                       style: const TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
@@ -330,9 +341,11 @@ class FlightCardWidget extends StatelessWidget {
                                   //   ),
                                   if (arrivalCity != null)
                                     Text(
-                                      index > 0
-                                          ? '$departureCity'
-                                          : '$arrivalCity',
+                                      toTitleCase(
+                                        index > 0
+                                            ? '$departureCity'
+                                            : '$arrivalCity',
+                                      ),
                                       style: const TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
@@ -403,14 +416,22 @@ class FlightCardWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            (data.travelerPricings?.isNotEmpty ?? false) &&
-                                    (data.travelerPricings!.first
-                                            .fareDetailsBySegment?.isNotEmpty ??
-                                        false)
-                                ? data.travelerPricings!.first
-                                        .fareDetailsBySegment!.first.cabin ??
-                                    'NO_CABIN'
-                                : 'NO_CABIN',
+                            toTitleCase(
+                                (data.travelerPricings?.isNotEmpty ?? false) &&
+                                        (data
+                                                .travelerPricings!
+                                                .first
+                                                .fareDetailsBySegment
+                                                ?.isNotEmpty ??
+                                            false)
+                                    ? data
+                                            .travelerPricings!
+                                            .first
+                                            .fareDetailsBySegment!
+                                            .first
+                                            .cabin ??
+                                        'NO_CABIN'
+                                    : 'NO_CABIN'),
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           ),
@@ -710,14 +731,16 @@ class FlightCardWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        (data.travelerPricings?.isNotEmpty ?? false) &&
-                                (data.travelerPricings!.first
-                                        .fareDetailsBySegment?.isNotEmpty ??
-                                    false)
-                            ? data.travelerPricings!.first.fareDetailsBySegment!
-                                    .first.cabin ??
-                                'NO_CABIN'
-                            : 'NO_CABIN',
+                        toTitleCase(
+                          (data.travelerPricings?.isNotEmpty ?? false) &&
+                                  (data.travelerPricings!.first
+                                          .fareDetailsBySegment?.isNotEmpty ??
+                                      false)
+                              ? data.travelerPricings!.first
+                                      .fareDetailsBySegment!.first.cabin ??
+                                  'NO_CABIN'
+                              : 'NO_CABIN',
+                        ),
                         style: const TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w500),
                       ),

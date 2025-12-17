@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -362,7 +360,10 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                                         ),
                                                       );
                                                     },
-                                                    child: const Text('Change'),
+                                                    child: const Icon(
+                                                      Icons.mode_edit_rounded,
+                                                      color: AppColors.primary,
+                                                    ),
                                                   ),
                                                 )
                                               : ListTile(
@@ -432,7 +433,15 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                                         ),
                                                       );
                                                     },
-                                                    child: const Text('Change'),
+                                                    child: const CircleAvatar(
+                                                      radius: 16,
+                                                      child: Icon(
+                                                        Icons.mode_edit_rounded,
+                                                        color:
+                                                            AppColors.primary,
+                                                        size: 16,
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                         ],
