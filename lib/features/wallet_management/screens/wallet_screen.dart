@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:excellistravel/core/constants/app_styles.dart';
-import 'package:excellistravel/core/services/razorpay.dart';
 import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:excellistravel/features/payment/payment_module.dart';
-import 'package:excellistravel/features/wallet_management/wallet_module.dart';
 import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
@@ -12,8 +8,6 @@ import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
-
 import '../bloc/wallet_bloc.dart';
 import '../data/models/transaction_model.dart';
 import '../widgets/deposit_sheet.dart';
@@ -186,18 +180,14 @@ class _WalletScreenState extends State<WalletScreen>
                                                   'mobile': '',
                                                   'email': '',
                                                 });
-                                            // _razorpayService.initatePayment(
-                                            //     amount: amount,
-                                            //     description: 'Deposit',
-                                            //     orderId: '',
-                                            //     mobile: '',
-                                            //     email: '',
-                                            //     onSuccess:
-                                            //         _handlePaymentSuccess,
-                                            //     onError: _handlePaymentFailure);
                                           },
                                         );
                                       },
+                                    ),
+                                    PopupMenuItem(
+                                      value: 'Borrow',
+                                      child: const Text('Borrow Money'),
+                                      onTap: () {},
                                     ),
                                   ]);
                             },
