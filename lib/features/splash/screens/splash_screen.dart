@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final bool hasUpdate =
-          AppConstants.env == 'development' ? await _handleAppUpdate() : false;
+          AppConstants.env == 'development' && Platform.isAndroid
+              ? await _handleAppUpdate()
+              : false;
       if (!hasUpdate) {
         await _handleAuthentication();
       }
