@@ -71,6 +71,40 @@ class WalletError extends WalletState {
   List<Object?> get props => [message];
 }
 
+//deposit
+class InitDiposit extends WalletState {
+  const InitDiposit({
+    required this.description,
+    required this.amount,
+    required this.mobile,
+    required this.email,
+    required this.onRetryRoute,
+  });
+  final String description;
+  final int amount;
+  final String mobile;
+  final String email;
+  final String onRetryRoute;
+}
+
+class DepositSuccess extends WalletState {
+  const DepositSuccess({
+    this.message = 'Deposit request submitted successfully',
+  });
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class DepositError extends WalletState {
+  const DepositError({required this.message});
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}
+
 /// Withdrawal states
 class WithdrawalSubmitting extends WalletState {}
 

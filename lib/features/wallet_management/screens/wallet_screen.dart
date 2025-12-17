@@ -1,13 +1,22 @@
+import 'dart:developer';
+
 import 'package:excellistravel/core/constants/app_styles.dart';
+import 'package:excellistravel/core/services/razorpay.dart';
+import 'package:excellistravel/core/widgets/app_sheet.dart';
+import 'package:excellistravel/features/payment/payment_module.dart';
+import 'package:excellistravel/features/wallet_management/wallet_module.dart';
 import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
 import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
 import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../bloc/wallet_bloc.dart';
 import '../data/models/transaction_model.dart';
+import '../widgets/deposit_sheet.dart';
 import '../widgets/transaction_card_widget.dart';
 import '../widgets/type_card_widget.dart';
 import '../widgets/withdrawl_sheet.dart';
@@ -26,6 +35,8 @@ class _WalletScreenState extends State<WalletScreen>
   int limit = 10;
   String selectedFilter = 'all';
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _amountController =
+      TextEditingController(text: '10000');
 
   @override
   void initState() {
@@ -75,6 +86,7 @@ class _WalletScreenState extends State<WalletScreen>
   void dispose() {
     _tabController.dispose();
     _scrollController.dispose();
+    _amountController.dispose();
     super.dispose();
   }
 
@@ -89,21 +101,6 @@ class _WalletScreenState extends State<WalletScreen>
       return allTransactions
           .where((txn) => txn.transactionType?.toLowerCase() == 'debit')
           .toList();
-    }
-  }
-
-  void _showWithdrawalSheet() {
-    final state = context.read<WalletBloc>().state;
-    if (state is WalletLoaded) {
-      final balance = state.wallet?.balance ?? 0.0;
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (context) => WithdrawalSheet(
-          availableBalance: balance,
-        ),
-      );
     }
   }
 
@@ -148,13 +145,59 @@ class _WalletScreenState extends State<WalletScreen>
                                     MediaQuery.of(context).size.height,
                                   ),
                                   items: [
-                                    const PopupMenuItem(
-                                      value: 'Withdraw',
-                                      child: Text('Withdraw'),
+                                    PopupMenuItem(
+                                      value: 'Withdraw Money',
+                                      child: const Text('Withdraw Money'),
+                                      onTap: () {
+                                        showAppSheet(
+                                          context: context,
+                                          title: 'Withdraw Money',
+                                          child: WithdrawalSheet(
+                                            availableBalance:
+                                                state.wallet?.balance ?? 0.0,
+                                          ),
+                                        );
+                                      },
                                     ),
-                                    const PopupMenuItem(
+                                    PopupMenuItem(
                                       value: 'Deposit',
-                                      child: Text('Deposit'),
+                                      child: const Text('Deposit Money'),
+                                      onTap: () {
+                                        showAppSheet(
+                                          context: context,
+                                          title: 'Deposit Money',
+                                          child: DepositSheet(
+                                              amountController:
+                                                  _amountController),
+                                          submitButtonRequired: true,
+                                          onSubmitPressed: () {
+                                            final double doubleAmount =
+                                                double.parse(
+                                                    _amountController.text);
+                                            final int amount =
+                                                (doubleAmount * 100).toInt();
+                                            context.pushNamed(
+                                                PaymentModule
+                                                    .paymentProcessingName,
+                                                extra: {
+                                                  'amount': amount,
+                                                  'description':
+                                                      'Deposit Money in Wallet',
+                                                  'mobile': '',
+                                                  'email': '',
+                                                });
+                                            // _razorpayService.initatePayment(
+                                            //     amount: amount,
+                                            //     description: 'Deposit',
+                                            //     orderId: '',
+                                            //     mobile: '',
+                                            //     email: '',
+                                            //     onSuccess:
+                                            //         _handlePaymentSuccess,
+                                            //     onError: _handlePaymentFailure);
+                                          },
+                                        );
+                                      },
                                     ),
                                   ]);
                             },
