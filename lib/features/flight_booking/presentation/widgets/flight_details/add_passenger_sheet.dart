@@ -310,7 +310,8 @@ Future<void> showAddAndEditPassengerSheet(
                             return;
                           }
 
-                          if (selectedSegmentIndex == null) {
+                          if (filteredSegemnts != null &&
+                              selectedSegmentIndex == null) {
                             showToast(message: 'Please select a fare option');
                             return;
                           }

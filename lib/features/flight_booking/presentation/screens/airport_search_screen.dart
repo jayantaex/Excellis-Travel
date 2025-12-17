@@ -9,6 +9,7 @@ import '../../../../core/widgets/app_drop_down.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../../utils/title_case.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../data/models/air_port_model.dart';
 import '../widgets/airport_search/airport_card.dart';
@@ -149,23 +150,31 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
 
                                     return ListView.builder(
                                       itemCount: state.airports.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) =>
-                                              AirportCard(
-                                        airportCode:
-                                            state.airports[index].iataCode ??
-                                                '',
-                                        city: state.airports[index].address
-                                                ?.cityName ??
-                                            '',
-                                        airportName:
-                                            state.airports[index].name ?? '',
-                                        onAirportSelected: () {
-                                          widget.onAirportSelected!(
-                                              state.airports[index]);
-                                          Navigator.pop(context);
-                                        },
-                                      ),
+                                      itemBuilder: (BuildContext context,
+                                              int index) =>
+                                          state.airports[index].subType ==
+                                                  'CITY'
+                                              ? const SizedBox()
+                                              : AirportCard(
+                                                  airportCode: state
+                                                          .airports[index]
+                                                          .iataCode ??
+                                                      '',
+                                                  city: toTitleCase(state
+                                                          .airports[index]
+                                                          .address
+                                                          ?.cityName ??
+                                                      ''),
+                                                  airportName: toTitleCase(state
+                                                          .airports[index]
+                                                          .name ??
+                                                      ''),
+                                                  onAirportSelected: () {
+                                                    widget.onAirportSelected!(
+                                                        state.airports[index]);
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
                                     );
                                   }
                                   if (state is AirportSearchingError) {

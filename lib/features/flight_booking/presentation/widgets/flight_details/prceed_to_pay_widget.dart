@@ -210,6 +210,11 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                                     'Add all the travellers to proceed with flight booking');
                                 return;
                               }
+                              if (paymentMode == 'wallet') {
+                                AppHelpers.showSnackBar(
+                                    context, 'Feature not implemented yet');
+                                return;
+                              }
 
                               // Reset travellers lists
                               travellers = {

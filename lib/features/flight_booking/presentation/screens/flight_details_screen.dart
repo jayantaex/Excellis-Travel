@@ -535,7 +535,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   Future<void> _handlePaymentError(PaymentFailureResponse response) async {
     final String failureMessage = _extractPaymentFailureMessage(response);
     if (!mounted) return;
-    log('-------------------------$failureMessage');
     context.pushNamed(
       PaymentModule.paymentFailedName,
       queryParameters: {'message': failureMessage},
