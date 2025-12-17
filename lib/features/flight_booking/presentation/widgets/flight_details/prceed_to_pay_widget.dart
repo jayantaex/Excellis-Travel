@@ -1,6 +1,9 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../core/constants/app_styles.dart';
+import '../../../../../core/widgets/app_sheet.dart';
 import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../profile_management/bloc/profile_bloc.dart';
@@ -23,6 +26,7 @@ class ProceedToPayWidget extends StatefulWidget {
     required this.pinCode,
     required this.country,
     required this.countryCode,
+    required this.walletBalance,
   });
 
   final List<PassengerModel> passengers;
@@ -37,6 +41,7 @@ class ProceedToPayWidget extends StatefulWidget {
   final String pinCode;
   final String country;
   final String countryCode;
+  final double walletBalance;
 
   @override
   State<ProceedToPayWidget> createState() => _ProceedToPayWidgetState();
@@ -51,6 +56,11 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
     'infants': <Map<String, dynamic>>[],
     'children': <Map<String, dynamic>>[]
   };
+  String paymentMode = 'wallet';
+  final List<Map<String, dynamic>> paymentModes = [
+    {'name': 'Excellis Wallet', 'value': 'wallet', 'icon': 'wallet'},
+    {'name': 'Razorpay', 'value': 'Razorpay', 'icon': 'razorpay'}
+  ];
 
   @override
   Widget build(BuildContext context) => BlocBuilder<FlightBloc, FlightState>(
@@ -79,85 +89,203 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                   padding: const EdgeInsets.only(
                     left: 16,
                     right: 16,
-                    bottom: 10,
+                    bottom: 16,
                   ),
-                  child: AppPrimaryButton(
-                    onPressed: () async {
-                      try {
-                        if (travellersCount != widget.passengers.length) {
-                          AppHelpers.showSnackBar(context,
-                              'Add all the travellers to proceed with flight booking');
-                          return;
-                        }
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: AppHelpers.getScreenWidth(context) * 0.45,
+                        child: ListTile(
+                          onTap: () async {
+                            showAppSheet(
+                                context: context,
+                                title: 'Payment Mode',
+                                child: Column(
+                                  children: [
+                                    for (int i = 0;
+                                        i < paymentModes.length;
+                                        i++)
+                                      ListTile(
+                                        onTap: () {
+                                          setState(() {
+                                            paymentMode =
+                                                paymentModes[i]['value'];
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        leading: AppHelpers.assetImage(
+                                          assetName: paymentModes[i]['icon'],
+                                          width: 24,
+                                          height: 24,
+                                        ),
+                                        title: Text(
+                                          paymentModes[i]['name'],
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        subtitle: paymentModes[i]['value'] ==
+                                                'wallet'
+                                            ? Text(
+                                                double.parse(grandTotal) >
+                                                        widget.walletBalance
+                                                    ? 'Insufficient Balance'
+                                                    : 'Available Balance: ₹${widget.walletBalance}',
+                                                style: TextStyle(
+                                                  color:
+                                                      double.parse(grandTotal) >
+                                                              widget
+                                                                  .walletBalance
+                                                          ? AppColors.error
+                                                          : AppColors.success,
+                                                  fontSize: 12,
+                                                ),
+                                              )
+                                            : null,
+                                        trailing: paymentMode ==
+                                                paymentModes[i]['value']
+                                            ? const Icon(
+                                                Icons
+                                                    .check_circle_outline_rounded,
+                                                color: AppColors.primary,
+                                              )
+                                            : const SizedBox.shrink(),
+                                      )
+                                  ],
+                                ));
+                          },
+                          contentPadding: const EdgeInsets.all(0),
+                          horizontalTitleGap: 8,
+                          leading: AppHelpers.assetImage(
+                            assetName:
+                                paymentMode == 'wallet' ? 'wallet' : 'razorpay',
+                            width: 25,
+                            height: 25,
+                          ),
+                          title: const Row(
+                            children: [
+                              Text(
+                                'PAYING VIA',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.grey,
+                                ),
+                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                color: AppColors.black,
+                                size: 14,
+                              ),
+                            ],
+                          ),
+                          subtitle: Text(
+                            paymentModes.firstWhere(
+                              (element) => element['value'] == paymentMode,
+                            )['name'],
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: AppHelpers.getScreenWidth(context) * 0.45,
+                        child: AppPrimaryButton(
+                          onPressed: () async {
+                            try {
+                              if (paymentMode == 'wallet' &&
+                                  widget.walletBalance <
+                                      double.parse(grandTotal)) {
+                                AppHelpers.showSnackBar(
+                                    context, 'Insufficient balance in wallet');
+                                return;
+                              }
+                              if (travellersCount != widget.passengers.length) {
+                                AppHelpers.showSnackBar(context,
+                                    'Add all the travellers to proceed with flight booking');
+                                return;
+                              }
 
-                        // Reset travellers lists
-                        travellers = {
-                          'adults': <Map<String, dynamic>>[],
-                          'infants': <Map<String, dynamic>>[],
-                          'children': <Map<String, dynamic>>[]
-                        };
+                              // Reset travellers lists
+                              travellers = {
+                                'adults': <Map<String, dynamic>>[],
+                                'infants': <Map<String, dynamic>>[],
+                                'children': <Map<String, dynamic>>[]
+                              };
 
-                        for (int i = 0; i < widget.passengers.length; i++) {
-                          final Map<String, dynamic> data = getPassengetDetails(
-                            passenger: widget.passengers[i],
-                          );
-                          if (widget.passengers[i].type == 'ADULT') {
-                            travellers['adults']?.add(data);
-                          }
-                          if (widget.passengers[i].type == 'CHILD') {
-                            travellers['children']?.add(data);
-                          }
-                          if (widget.passengers[i].type == 'HELD_INFANT') {
-                            travellers['infants']?.add(data);
-                          }
-                        }
+                              for (int i = 0;
+                                  i < widget.passengers.length;
+                                  i++) {
+                                final Map<String, dynamic> data =
+                                    getPassengetDetails(
+                                  passenger: widget.passengers[i],
+                                );
+                                if (widget.passengers[i].type == 'ADULT') {
+                                  travellers['adults']?.add(data);
+                                }
+                                if (widget.passengers[i].type == 'CHILD') {
+                                  travellers['children']?.add(data);
+                                }
+                                if (widget.passengers[i].type ==
+                                    'HELD_INFANT') {
+                                  travellers['infants']?.add(data);
+                                }
+                              }
 
-                        final Map<String, dynamic> billingAddress =
-                            getBillingAddress(
-                          addressLine1: widget.addressLine1,
-                          addressLine2: widget.addressLine2,
-                        );
-                        final Map<String, dynamic> contactDetails =
-                            getContactDetails(
-                          email: widget.email,
-                          phone: widget.mobileNumber,
-                        );
-                        final Map<String, dynamic> fareDetails =
-                            calculateFareDetails(
-                          myMarkupPrice: myMarkup?.value ?? '0',
-                          grandTotal: grandTotal,
-                          markupPrice: markup,
-                          taxes: flightOffer.price?.fees,
-                          showTotalFare: widget.offerFareEnabled,
-                          myMarkupType: myMarkup?.fareType ?? 'Fixed',
-                        );
-                        log('$fareDetails');
-                        createPaymentBody = getCreatePaymentBody(
-                          markupPrice: markup,
-                          myMarkupPrice: myMarkup?.value ?? '0',
-                          myMarkupType: myMarkup?.type ?? 'Fixed',
-                          billingAddress: billingAddress,
-                          contactDetails: contactDetails,
-                          flightOfferData: flightOffer.toJson(),
-                          travellers: travellers,
-                          fareDetails: fareDetails,
-                          isOfferEnabled: widget.offerFareEnabled,
-                        );
-                        log('$createPaymentBody');
+                              final Map<String, dynamic> billingAddress =
+                                  getBillingAddress(
+                                addressLine1: widget.addressLine1,
+                                addressLine2: widget.addressLine2,
+                              );
+                              final Map<String, dynamic> contactDetails =
+                                  getContactDetails(
+                                email: widget.email,
+                                phone: widget.mobileNumber,
+                              );
+                              final Map<String, dynamic> fareDetails =
+                                  calculateFareDetails(
+                                myMarkupPrice: myMarkup?.value ?? '0',
+                                grandTotal: grandTotal,
+                                markupPrice: markup,
+                                taxes: flightOffer.price?.fees,
+                                showTotalFare: widget.offerFareEnabled,
+                                myMarkupType: myMarkup?.fareType ?? 'Fixed',
+                              );
+                              createPaymentBody = getCreatePaymentBody(
+                                markupPrice: markup,
+                                myMarkupPrice: myMarkup?.value ?? '0',
+                                myMarkupType: myMarkup?.type ?? 'Fixed',
+                                billingAddress: billingAddress,
+                                contactDetails: contactDetails,
+                                flightOfferData: flightOffer.toJson(),
+                                travellers: travellers,
+                                fareDetails: fareDetails,
+                                isOfferEnabled: widget.offerFareEnabled,
+                              );
+                              log('$createPaymentBody');
 
-                        if (context.mounted) {
-                          context
-                              .read<FlightBloc>()
-                              .add(CreateFlightOrder(body: createPaymentBody));
-                        }
-                      } catch (e) {
-                        log('ERROR: ${e.toString()}');
-                      }
-                    },
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w400),
-                    title: 'Book now',
-                    isLoading: false,
+                              if (context.mounted) {
+                                context.read<FlightBloc>().add(
+                                      CreateFlightOrder(
+                                          body: createPaymentBody),
+                                    );
+                              }
+                            } catch (e) {
+                              log('ERROR: ${e.toString()}');
+                            }
+                          },
+                          style: const TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w400),
+                          title: 'Book now',
+                          isLoading: false,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );

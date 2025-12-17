@@ -22,12 +22,15 @@ class PaymentFailedScreen extends StatelessWidget {
                   radius: 35,
                   backgroundColor: AppColors.error,
                   foregroundColor: AppColors.background,
-                  child: Icon(Icons.close),
+                  child: Icon(
+                    Icons.close_rounded,
+                    size: 32,
+                  ),
                 ),
                 const SizedBox(height: 25),
                 const Text(
-                  'Payment failed!',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  'Payment Failed!',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 12),
                 Text(
@@ -42,22 +45,19 @@ class PaymentFailedScreen extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: SizedBox(
-          height: 120,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 70),
-            child: AppPrimaryButton(
-              title: 'Retry Payment',
-              style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.white),
-              isLoading: false,
-              onPressed: () {
-                context.pop();
-                context.pop();
-              },
-            ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 35),
+          child: AppPrimaryButton(
+            title: 'Retry Payment',
+            style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.white),
+            isLoading: false,
+            onPressed: () {
+              context.pop();
+              context.pop();
+            },
           ),
         ),
       );

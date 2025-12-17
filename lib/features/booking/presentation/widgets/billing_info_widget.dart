@@ -76,8 +76,8 @@ class ItemRow extends StatelessWidget {
   final String value;
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 3),
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.only(top: 4, bottom: 4),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -85,12 +85,19 @@ class ItemRow extends StatelessWidget {
               title,
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
             ),
-            Text(
-              value,
-              style: const TextStyle(
+            SizedBox(
+              width: AppHelpers.getScreenWidth(context) * 0.6,
+              child: Text(
+                value,
+                textAlign: TextAlign.end,
+                maxLines: 2,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.grey),
+                  color: AppColors.grey,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             )
           ],
         ),

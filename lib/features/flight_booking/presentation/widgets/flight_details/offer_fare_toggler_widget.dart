@@ -1,5 +1,7 @@
+import 'package:excellistravel/features/wallet_management/wallet_module.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
@@ -8,10 +10,15 @@ import 'pricing_details.dart';
 
 class OfferFareTogglerWidget extends StatefulWidget {
   const OfferFareTogglerWidget(
-      {super.key, this.onToggle, required this.flightOffer, this.myMarkup});
+      {super.key,
+      this.onToggle,
+      required this.flightOffer,
+      this.myMarkup,
+      required this.walletBalance});
   final Function(bool)? onToggle;
   final FlightOffer flightOffer;
   final MyMarkup? myMarkup;
+  final double walletBalance;
 
   @override
   State<OfferFareTogglerWidget> createState() => _OfferFareTogglerWidgetState();
@@ -57,6 +64,30 @@ class _OfferFareTogglerWidgetState extends State<OfferFareTogglerWidget> {
                     }),
               ),
             ),
+          const SizedBox(height: 16),
+          ListTile(
+            onTap: () {
+              context.pushNamed(WalletModule.wallet);
+            },
+            leading: AppHelpers.assetImage(
+                assetName: 'wallet', height: 25, width: 25),
+            title: const Text(
+              ' Excellis Wallet',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            ),
+            subtitle: Text(
+              'Available Balance ₹${widget.walletBalance} ',
+              style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: widget.walletBalance > 20000
+                      ? AppColors.success
+                      : AppColors.error),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios,
+                size: 16, color: AppColors.grey),
+          ),
+          const SizedBox(height: 16),
           PricingDetails(
             offerFareEnabled: offerFare,
             flightOffer: widget.flightOffer,

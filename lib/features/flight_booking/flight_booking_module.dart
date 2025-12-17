@@ -1,3 +1,5 @@
+import 'package:excellistravel/features/wallet_management/api/wallet_api.dart';
+import 'package:excellistravel/features/wallet_management/data/repository/wallet_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/common/api/location_api.dart';
@@ -10,6 +12,7 @@ import '../../core/services/local_db.dart';
 import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
+import '../wallet_management/bloc/wallet_bloc.dart';
 import 'bloc/flight_bloc.dart';
 import 'data/src/flight_booking_local_src.dart';
 import 'data/src/flight_booking_remote_src.dart';
@@ -130,6 +133,10 @@ class FlightBookingModule {
         ),
         BlocProvider(
           create: (context) => CityBloc(repository: _statesRepository),
+        ),
+        BlocProvider(
+          create: (context) =>
+              WalletBloc(WalletRepository(WalletApi(_apiClient))),
         ),
       ],
       child: FlightDetailsScreen(

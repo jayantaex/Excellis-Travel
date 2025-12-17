@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +18,7 @@ import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../payment/payment_module.dart';
 import '../../../profile_management/bloc/profile_bloc.dart';
+import '../../../wallet_management/bloc/wallet_bloc.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart' show FlightDictionary, Datam;
@@ -84,6 +87,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                 ),
               ),
             );
+        context.read<WalletBloc>().add(const FetchWalletEvent());
       }
     });
   }
@@ -270,14 +274,27 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                             ),
                                           ),
                                           const SizedBox(height: 2),
-                                          OfferFareTogglerWidget(
-                                            onToggle: (bool value) {
-                                              isOfferEnabled = value;
+                                          BlocBuilder<WalletBloc, WalletState>(
+                                            builder: (context, state) {
+                                              if (state is WalletLoaded) {
+                                                return OfferFareTogglerWidget(
+                                                  walletBalance:
+                                                      state.wallet?.balance ??
+                                                          0,
+                                                  onToggle: (bool value) {
+                                                    isOfferEnabled = value;
+                                                  },
+                                                  flightOffer: flightState
+                                                      .data
+                                                      .data!
+                                                      .flightOffers!
+                                                      .first,
+                                                  myMarkup: flightState
+                                                      .data.data?.myMarkup,
+                                                );
+                                              }
+                                              return const SizedBox.shrink();
                                             },
-                                            flightOffer: flightState
-                                                .data.data!.flightOffers!.first,
-                                            myMarkup:
-                                                flightState.data.data?.myMarkup,
                                           ),
                                           _isBillingInfoChanged
                                               ? ListTile(
@@ -319,9 +336,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                                                     profileData;
                                                                 _isBillingInfoChanged =
                                                                     true;
-
                                                                 setState(() {});
-                                                                // context.pop();
+                                                                context.pop();
                                                               },
                                                               firstNameController:
                                                                   _firstNameController,
@@ -473,27 +489,35 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: ProceedToPayWidget(
-        passengers: passengers,
-        offerFareEnabled: isOfferEnabled,
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
-        email: _emailController.text,
-        mobileNumber: _mobileNumberController.text,
-        addressLine1: _addressLine2Controller.text.isNotEmpty
-            ? '${_addressLine1Controller.text}, ${_addressLine2Controller.text}, ${_cityController.text}, ${_stateController.text}, ${_pinCodeController.text}, ${_countryController.text}'
-            : '${_addressLine1Controller.text}, ${_cityController.text}, ${_stateController.text}, ${_pinCodeController.text}, ${_countryController.text}',
-        addressLine2: _addressLine2Controller.text.isNotEmpty
-            ? _addressLine2Controller.text
-            : '',
-        city: _cityController.text,
-        pinCode: _pinCodeController.text,
-        country: _countryController.text.isNotEmpty
-            ? _countryController.text
-            : 'India',
-        countryCode: _countryController.text.isNotEmpty
-            ? _countryController.text
-            : '+91',
+      bottomNavigationBar: BlocBuilder<WalletBloc, WalletState>(
+        builder: (context, state) {
+          if (state is WalletLoaded) {
+            return ProceedToPayWidget(
+              walletBalance: state.wallet?.balance ?? 0.0,
+              passengers: passengers,
+              offerFareEnabled: isOfferEnabled,
+              firstName: _firstNameController.text,
+              lastName: _lastNameController.text,
+              email: _emailController.text,
+              mobileNumber: _mobileNumberController.text,
+              addressLine1: _addressLine2Controller.text.isNotEmpty
+                  ? '${_addressLine1Controller.text}, ${_addressLine2Controller.text}, ${_cityController.text}, ${_stateController.text}, ${_pinCodeController.text}, ${_countryController.text}'
+                  : '${_addressLine1Controller.text}, ${_cityController.text}, ${_stateController.text}, ${_pinCodeController.text}, ${_countryController.text}',
+              addressLine2: _addressLine2Controller.text.isNotEmpty
+                  ? _addressLine2Controller.text
+                  : '',
+              city: _cityController.text,
+              pinCode: _pinCodeController.text,
+              country: _countryController.text.isNotEmpty
+                  ? _countryController.text
+                  : 'India',
+              countryCode: _countryController.text.isNotEmpty
+                  ? _countryController.text
+                  : '+91',
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }
@@ -511,6 +535,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   Future<void> _handlePaymentError(PaymentFailureResponse response) async {
     final String failureMessage = _extractPaymentFailureMessage(response);
     if (!mounted) return;
+    log('-------------------------$failureMessage');
     context.pushNamed(
       PaymentModule.paymentFailedName,
       queryParameters: {'message': failureMessage},
