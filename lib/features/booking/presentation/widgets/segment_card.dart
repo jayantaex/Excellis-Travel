@@ -4,6 +4,7 @@ import '../../../../core/constants/app_styles.dart' show AppColors;
 import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
 import '../../../../utils/airline_info_provider.dart' show AirlineInfoProvider;
 import '../../../../utils/app_helpers.dart' show AppHelpers;
+import '../../../../utils/get_duration.dart';
 import '../../data/models/ticket_model.dart';
 
 class SegmentCard extends StatelessWidget {
@@ -116,25 +117,10 @@ class _AirlineNameCardState extends State<AirlineNameCard> {
 
   @override
   Widget build(BuildContext context) => Text(
-        '$_airlineName -  ${getDuration(time: widget.duration)}',
+        '$_airlineName -  ${formatIsoDuration(widget.duration)}',
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
         ),
       );
-  String getDuration({required String time}) {
-    int minute = 0;
-    int hours = 0;
-
-    time.split('H').forEach((String element) {
-      if (element.contains('M')) {
-        minute = int.parse(element.split('M')[0]);
-      } else {
-        if (element.contains('PT')) {
-          hours = int.parse(element.split('PT')[1]);
-        }
-      }
-    });
-    return '${hours}H ${minute}M';
-  }
 }

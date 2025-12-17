@@ -16,6 +16,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<FetchWalletEvent>(_handleFetchWallet);
     on<FetchWalletTransactionsEvent>(_handleFetchWalletTransactions);
     on<FilterTransactionsEvent>(_handleFilterTransactions);
+    on<DepositEvent>(_handleDeposit);
   }
 
   final WalletRepository walletRepository;
@@ -141,5 +142,18 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         currentFilter: event.filterType.toLowerCase(),
       ));
     }
+  }
+
+  Future<void> _handleDeposit(
+    DepositEvent event,
+    Emitter<WalletState> emit,
+  ) async {
+    emit(InitDiposit(
+      description: event.description,
+      amount: event.amount,
+      mobile: event.mobile,
+      email: event.email,
+      onRetryRoute: event.onRetryRoute,
+    ));
   }
 }

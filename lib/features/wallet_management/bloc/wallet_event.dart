@@ -53,3 +53,22 @@ class SubmitWithdrawalEvent extends WalletEvent {
   @override
   List<Object?> get props => [request];
 }
+
+class DepositEvent extends WalletEvent {
+  const DepositEvent(
+      {required this.amount,
+      required this.description,
+      required this.mobile,
+      required this.email,
+      required this.onRetryRoute});
+  final int amount;
+  final String description;
+  final String mobile;
+  final String email;
+  final String onRetryRoute;
+}
+
+class WithdrawalEvent extends WalletEvent {
+  const WithdrawalEvent({required this.amount});
+  final int amount;
+}
