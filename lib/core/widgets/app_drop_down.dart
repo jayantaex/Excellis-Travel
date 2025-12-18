@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../utils/app_helpers.dart';
 
 class AppDropDown extends StatelessWidget {
   const AppDropDown(
@@ -29,7 +29,7 @@ class AppDropDown extends StatelessWidget {
             fontWeight: FontWeight.w500,
             color: AppColors.black),
         padding: const EdgeInsets.symmetric(),
-        value: value,
+        initialValue: value,
         icon: const SizedBox(),
         borderRadius: BorderRadius.circular(12),
         items: items,
@@ -46,17 +46,20 @@ class AppDropDown extends StatelessWidget {
               : null,
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               Radius.circular(16),
             ),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           labelText: label,
         ),

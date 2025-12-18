@@ -1,0 +1,59 @@
+name: Auto PR to Dev
+on:
+  push:
+    branches:
+      - "feature/*"
+
+jobs:
+  create_pull_request:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for existing PR
+        id: find_pr
+        uses: peter-evans/find-pull-request@v3
+        with:
+          head-branch: ${{ github.ref_name }}
+          base-branch: dev
+
+      - name: Create PR
+        if: steps.find_pr.outputs.pr == ''
+        uses: peter-evans/create-pull-request@v6
+        with:
+          base: dev
+          branch: ${{ github.ref_name }}
+          title: "Auto PR: ${{ github.ref_name }}"
+          body: |
+            ### 🔄 Automated Pull Request
+            This PR was automatically created from branch **${{ github.ref_name }}**.
+
+            Please review before merging.
+          labels: |
+            auto-pr
+            needs-review
+          reviewers: |
+            jayantaex
+          token: ${{ secrets.GH_TOKEN }}
+
+      # If PR exists → update it with new commits
+      - name: Update existing PR
+        if: steps.find_pr.outputs.pr != ''
+        uses: peter-evans/create-pull-request@v6
+        with:
+          base: dev
+          branch: ${{ github.ref_name }}
+          title: "Auto PR Updated: ${{ github.ref_name }}"
+          body: |
+            ### 🔄 PR Updated
+            New commits were pushed to **${{ github.ref_name }}**.
+
+            The PR has been automatically updated.
+          labels: auto-updated
+          update-pull-request-branch: true
+          token: ${{ secrets.GH_TOKEN }}

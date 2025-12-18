@@ -17,20 +17,20 @@ class LoadingEffect extends StatelessWidget {
   final Color? baseColor;
   final Color? heighLightColor;
 
-  final Color _baseColor = AppColors.white.withOpacity(0.3);
-  final Color _highlightColor = AppColors.white.withOpacity(0.8);
+  final Color _baseColor = AppColors.white.withValues(alpha: 0.3);
+  final Color _highlightColor = AppColors.white.withValues(alpha: 0.8);
 
   @override
   Widget build(BuildContext context) => Shimmer.fromColors(
-      baseColor: baseColor ?? _baseColor,
-      highlightColor: heighLightColor ?? _highlightColor,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius ?? 12),
-          color: Colors.red,
+        baseColor: baseColor ?? _baseColor,
+        highlightColor: heighLightColor ?? _highlightColor,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(radius ?? 12),
+            color: Colors.red,
+          ),
+          height: height ?? 6,
+          width: width ?? 45,
         ),
-        height: height ?? 6,
-        width: width ?? 45,
-      ),
-    );
+      );
 }

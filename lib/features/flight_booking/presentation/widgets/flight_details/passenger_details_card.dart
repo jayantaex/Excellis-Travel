@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
-import '../../../../../core/utils/app_toast.dart';
-import '../../../data/models/flights_data_model.dart';
+import '../../../../../utils/app_helpers.dart';
+import '../../../../../utils/app_toast.dart';
+// import '../../../data/models/flights_data_model.dart';
+import '../../../data/models/flight_offer_price_model.dart';
 import '../../../data/models/passenger_model.dart';
 import 'add_passenger_sheet.dart';
 
@@ -48,58 +49,113 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
     super.initState();
   }
 
+  void _addPassenger(PassengerModel passenger) {
+    // Generate unique ID if not exists
+    passenger.id ??= DateTime.now().millisecondsSinceEpoch.toString();
+
+    widget.onAddPassenger(passenger);
+    if (passenger.type == 'ADULT') {
+      _adultPassengers.add(passenger);
+    } else if (passenger.type == 'CHILD') {
+      _childPassengers.add(passenger);
+    } else if (passenger.type == 'HELD_INFANT') {
+      _infantPassengers.add(passenger);
+    }
+    setState(() {});
+  }
+
+  void _removePassenger(PassengerModel passenger) {
+    widget.onPassengerRemove(passenger);
+    if (passenger.type == 'ADULT') {
+      _adultPassengers.removeWhere((p) => p.id == passenger.id);
+    } else if (passenger.type == 'CHILD') {
+      _childPassengers.removeWhere((p) => p.id == passenger.id);
+    } else if (passenger.type == 'HELD_INFANT') {
+      _infantPassengers.removeWhere((p) => p.id == passenger.id);
+    }
+    setState(() {});
+  }
+
+  void _updatePassenger(
+      PassengerModel oldPassenger, PassengerModel newPassenger) {
+    // Keep the same ID
+    newPassenger.id = oldPassenger.id;
+
+    if (oldPassenger.type == 'ADULT') {
+      final index = _adultPassengers.indexWhere((p) => p.id == oldPassenger.id);
+      if (index != -1) {
+        _adultPassengers[index] = newPassenger;
+        widget.onPassengerRemove(oldPassenger);
+        widget.onAddPassenger(newPassenger);
+      }
+    } else if (oldPassenger.type == 'CHILD') {
+      final index = _childPassengers.indexWhere((p) => p.id == oldPassenger.id);
+      if (index != -1) {
+        _childPassengers[index] = newPassenger;
+        widget.onPassengerRemove(oldPassenger);
+        widget.onAddPassenger(newPassenger);
+      }
+    } else if (oldPassenger.type == 'HELD_INFANT') {
+      final index =
+          _infantPassengers.indexWhere((p) => p.id == oldPassenger.id);
+      if (index != -1) {
+        _infantPassengers[index] = newPassenger;
+        widget.onPassengerRemove(oldPassenger);
+        widget.onAddPassenger(newPassenger);
+      }
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.grey.withOpacity(0.05),
+          color: AppColors.grey.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
           children: <Widget>[
             // Adult
             PassengerTypeCard(
+              totalTravellers: widget.travelerPricing.length,
               allowedPassenger: _allowedAdult,
               currentPassenger: _adultPassengers.length,
-              passengerType: 'Adult',
-              onDone: (PassengerModel passenger) {
-                _adultPassengers.add(passenger);
-                widget.onAddPassenger(passenger);
-                setState(() {});
-              },
+              passengerType: 'ADULT',
+              onAddPassenger: _addPassenger,
+              onPassengerRemove: _removePassenger,
+              travelerPricing: widget.travelerPricing,
+              allowedAdult: _allowedAdult,
+              allowedChild: _allowedChild,
+              allowedInfant: _allowedInfant,
             ),
-            ..._adultPassengers.map((PassengerModel e) => PassengerCard(
-                  passenger: e,
-                  onDelete: () {
-                    _adultPassengers.remove(e);
-                    widget.onPassengerRemove(e);
-                    setState(() {});
-                    showToast(message: '${e.firstName} ${e.lastName} removed');
-                  },
-                )),
-
-            const Divider(),
+            ..._adultPassengers.map(
+              (PassengerModel e) => PassengerCard(
+                onPassengerRemove: _removePassenger,
+                onPassengerUpdate: _updatePassenger,
+                passenger: e,
+              ),
+            ),
+            if (_allowedChild > 0 || _allowedInfant > 0) const Divider(),
             // Child
             _allowedChild == 0
                 ? const SizedBox()
                 : PassengerTypeCard(
+                    totalTravellers: widget.travelerPricing.length,
                     allowedPassenger: _allowedChild,
                     currentPassenger: _childPassengers.length,
-                    passengerType: 'Child',
-                    onDone: (PassengerModel passenger) {
-                      _childPassengers.add(passenger);
-                      widget.onAddPassenger(passenger);
-                      setState(() {});
-                    },
+                    passengerType: 'CHILD',
+                    onAddPassenger: _addPassenger,
+                    onPassengerRemove: _removePassenger,
+                    travelerPricing: widget.travelerPricing,
+                    allowedAdult: _allowedAdult,
+                    allowedChild: _allowedChild,
+                    allowedInfant: _allowedInfant,
                   ),
             ..._childPassengers.map((PassengerModel e) => PassengerCard(
+                  onPassengerRemove: _removePassenger,
+                  onPassengerUpdate: _updatePassenger,
                   passenger: e,
-                  onDelete: () {
-                    _childPassengers.remove(e);
-                    widget.onPassengerRemove(e);
-                    setState(() {});
-                    showToast(message: '${e.firstName} ${e.lastName} removed');
-                  },
                 )),
             _allowedChild == 0 ? const SizedBox() : const Divider(),
 
@@ -107,23 +163,21 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
             _allowedInfant == 0
                 ? const SizedBox()
                 : PassengerTypeCard(
+                    totalTravellers: widget.travelerPricing.length,
                     allowedPassenger: _allowedInfant,
                     currentPassenger: _infantPassengers.length,
-                    passengerType: 'Infant',
-                    onDone: (PassengerModel passenger) {
-                      _infantPassengers.add(passenger);
-                      widget.onAddPassenger(passenger);
-                      setState(() {});
-                    },
+                    passengerType: 'HELD_INFANT',
+                    onAddPassenger: _addPassenger,
+                    onPassengerRemove: _removePassenger,
+                    travelerPricing: widget.travelerPricing,
+                    allowedAdult: _allowedAdult,
+                    allowedChild: _allowedChild,
+                    allowedInfant: _allowedInfant,
                   ),
             ..._infantPassengers.map((PassengerModel e) => PassengerCard(
                   passenger: e,
-                  onDelete: () {
-                    _infantPassengers.remove(e);
-                    widget.onPassengerRemove(e);
-                    setState(() {});
-                    showToast(message: '${e.firstName} ${e.lastName} removed');
-                  },
+                  onPassengerRemove: _removePassenger,
+                  onPassengerUpdate: _updatePassenger,
                 )),
             const SizedBox(height: 10),
           ],
@@ -132,19 +186,77 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
 }
 
 class PassengerTypeCard extends StatelessWidget {
-  const PassengerTypeCard(
-      {super.key,
-      required this.onDone,
-      required this.allowedPassenger,
-      required this.currentPassenger,
-      required this.passengerType});
+  const PassengerTypeCard({
+    super.key,
+    required this.allowedPassenger,
+    required this.currentPassenger,
+    required this.passengerType,
+    required this.onAddPassenger,
+    required this.travelerPricing,
+    required this.onPassengerRemove,
+    required this.totalTravellers,
+    required this.allowedAdult,
+    required this.allowedChild,
+    required this.allowedInfant,
+  });
   final int allowedPassenger;
+  final int totalTravellers;
+  final int allowedAdult;
+  final int allowedChild;
+  final int allowedInfant;
   final int currentPassenger;
   final String passengerType;
-  final Function(PassengerModel passenger) onDone;
+  final List<TravelerPricing>? travelerPricing;
+  final Function(PassengerModel passenger) onAddPassenger;
+  final Function(PassengerModel passenger) onPassengerRemove;
 
   @override
   Widget build(BuildContext context) => ListTile(
+        onTap: allowedPassenger > currentPassenger
+            ? () async {
+                int travellerId = 1;
+                List<FareDetailsBySegment> filterSegments =
+                    <FareDetailsBySegment>[];
+
+                switch (passengerType) {
+                  case 'ADULT':
+                    {
+                      travellerId = currentPassenger + 1;
+                    }
+                    break;
+                  case 'CHILD':
+                    {
+                      travellerId = allowedAdult + currentPassenger + 1;
+                    }
+                    break;
+                  case 'HELD_INFANT':
+                    {
+                      travellerId =
+                          allowedAdult + allowedChild + currentPassenger + 1;
+                    }
+                    break;
+                  default:
+                }
+
+                if (travelerPricing != null) {
+                  final List<TravelerPricing> filteredTravelerPricing =
+                      travelerPricing!
+                          .where((element) =>
+                              element.travelerId!.toString() ==
+                              travellerId.toString())
+                          .toList();
+
+                  filterSegments =
+                      filteredTravelerPricing.first.fareDetailsBySegment!;
+                }
+
+                await showAddAndEditPassengerSheet(
+                    context: context,
+                    onDone: onAddPassenger,
+                    travellerType: passengerType,
+                    filteredSegemnts: filterSegments);
+              }
+            : null,
         contentPadding: const EdgeInsets.all(0),
         title: Text('$passengerType ($currentPassenger/$allowedPassenger)',
             style: const TextStyle(
@@ -152,29 +264,20 @@ class PassengerTypeCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             )),
         subtitle: Text(
-            passengerType == 'Adult'
+            passengerType == 'ADULT'
                 ? 'Age 12 years or above'
-                : passengerType == 'Child'
+                : passengerType == 'CHILD'
                     ? 'Between age 2 to 12 years'
-                    : 'Between age 15 days to 2 years',
+                    : 'Between age 1 days to 2 years',
             style: const TextStyle(
               fontSize: 10,
               color: AppColors.grey,
               fontWeight: FontWeight.w400,
             )),
         trailing: allowedPassenger > currentPassenger
-            ? InkWell(
-                onTap: () async {
-                  await showAddPassengerSheet(
-                    context: context,
-                    onDone: onDone,
-                    travellerType: passengerType,
-                  );
-                },
-                child: const CircleAvatar(
-                  radius: 16,
-                  child: Icon(Icons.add, size: 18, color: AppColors.secondary),
-                ),
+            ? const CircleAvatar(
+                radius: 16,
+                child: Icon(Icons.add, size: 18, color: AppColors.secondary),
               )
             : const SizedBox(),
       );
@@ -182,16 +285,31 @@ class PassengerTypeCard extends StatelessWidget {
 
 class PassengerCard extends StatelessWidget {
   const PassengerCard(
-      {super.key, required this.passenger, required this.onDelete});
+      {super.key,
+      required this.passenger,
+      required this.onPassengerUpdate,
+      required this.onPassengerRemove});
   final PassengerModel passenger;
-  final Function onDelete;
+  final Function(PassengerModel oldPassenger, PassengerModel newPassenger)
+      onPassengerUpdate;
+  final Function(PassengerModel passenger) onPassengerRemove;
 
   @override
   Widget build(BuildContext context) => ListTile(
+        onTap: () async {
+          await showAddAndEditPassengerSheet(
+            context: context,
+            onDone: (PassengerModel newPassenger) {
+              onPassengerUpdate(passenger, newPassenger);
+            },
+            travellerType: passenger.type ?? 'ADULT',
+            passenger: passenger,
+          );
+        },
         contentPadding: const EdgeInsets.all(0),
         leading: CircleAvatar(
           radius: 18,
-          backgroundColor: AppColors.grey.withOpacity(0.1),
+          backgroundColor: AppColors.grey.withValues(alpha: 0.1),
           child: Text(
             '${passenger.firstName!.substring(0, 1)}${passenger.lastName!.substring(0, 1)}',
             style: const TextStyle(
@@ -206,20 +324,38 @@ class PassengerCard extends StatelessWidget {
               fontSize: 14,
               fontWeight: FontWeight.w500,
             )),
-        subtitle: Text(
-          '${passenger.gender} | ${AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now())}',
-          style: const TextStyle(
-            fontSize: 12,
-            color: AppColors.grey,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
+        subtitle: passenger.dateOfBirth != null
+            ? Text(
+                'Gender: ${passenger.gender} | DOB: ${passenger.dateOfBirth != null ? AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now()) : ''}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.grey,
+                  fontWeight: FontWeight.w400,
+                ),
+              )
+            : Text(
+                'Gender: ${passenger.gender} ',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.grey,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
         trailing: InkWell(
-          onTap: () => onDelete(),
-          child: const Icon(
-            Icons.remove_circle_outline_rounded,
-            size: 18,
-            color: AppColors.error,
+          onTap: () {
+            onPassengerRemove(passenger);
+            showToast(
+                message:
+                    '${passenger.firstName} ${passenger.lastName} removed');
+          },
+          child: CircleAvatar(
+            radius: 16,
+            backgroundColor: AppColors.error.withValues(alpha: 0.1),
+            child: const Icon(
+              Icons.delete,
+              size: 14,
+              color: AppColors.error,
+            ),
           ),
         ),
       );

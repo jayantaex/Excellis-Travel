@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -13,23 +12,18 @@ class FirebaseNotificationService {
   FirebaseNotificationService._();
   static FirebaseNotificationService instance = FirebaseNotificationService._();
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
   bool _isFlutterLocalNotificationsInitialized = false;
 
   Future<void> initialize() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await _requestPermission();
     await _setupMessageHandlers();
-    final String? token = await _messaging.getToken();
-    log('FCM Token: $token');
+    // final String? token = await _messaging.getToken();
   }
 
-  Future<void> _requestPermission() async {
-    final NotificationSettings settings = await _messaging.requestPermission(
-      
-    );
-    log('Permission status: ${settings.authorizationStatus}');
-  }
+  Future<void> _requestPermission() async {}
 
   Future<void> _setupMessageHandlers() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {

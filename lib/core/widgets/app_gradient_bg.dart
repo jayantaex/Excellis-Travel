@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/app_styles.dart';
-import '../utils/app_helpers.dart';
+import '../../utils/app_helpers.dart';
 
 class AppGradientBg extends StatelessWidget {
   const AppGradientBg({super.key, required this.child});

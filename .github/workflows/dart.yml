@@ -1,37 +1,44 @@
-name: Flutter Dev Build & Firebase Distribution
+name: Build & Release APK (Firebase App Distribution)
 
 on:
   push:
-    branches: [ "development" ]
+    branches:
+      - dev
+    tags:
+      - 'v*'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - dev
 
 jobs:
-  build:
+  build-and-distribute:
+    name: Build & Distribute APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Flutter
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.5'
+          channel: stable
+          cache: true
 
-      - name: Install dependencies
+      - name: Flutter Version
+        run: flutter --version
+
+      - name: Install Dependencies
         run: flutter pub get
 
-      - name: Build release APK
+      - name: Build Release APK
         run: flutter build apk --release
 
-      - name: Decode Firebase service account
-        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > firebase-service-account.json
+      - name: Upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          groups: excellis-testers
+          file: build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Distribute to Firebase App Distribution
-        run: |
-          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-            --app ${{ secrets.FIREBASE_APP_ID }} \
-            --groups "excellis-testers" \
-            --service-account-file firebase-service-account.json \
-            --release-notes "Automated build from development branch"

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/app_helpers.dart';
+import '../../utils/app_helpers.dart';
 
 class AppExitSheet extends StatelessWidget {
   const AppExitSheet({super.key});

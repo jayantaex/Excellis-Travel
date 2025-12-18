@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
 
 class AppDropDown extends StatelessWidget {
   const AppDropDown(
@@ -21,11 +21,12 @@ class AppDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DropdownButtonFormField(
-        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-        value: value,
+        dropdownColor: AppColors.white,
+        style: const TextStyle(
+            fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.black),
         icon: const SizedBox(),
         borderRadius: BorderRadius.circular(12),
+        initialValue: value,
         items: items,
         onChanged: onChanged,
         decoration: InputDecoration(
@@ -35,25 +36,25 @@ class AppDropDown extends StatelessWidget {
                   child: AppHelpers.svgAsset(
                     assetName: prefixIconName!,
                     isIcon: true,
-                    color: AppHelpers.isDarkMode(context)
-                        ? AppColors.white
-                        : AppColors.black,
                   ),
                 )
               : null,
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           border: OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               Radius.circular(16),
             ),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+            borderSide:
+                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
           ),
           labelText: label,
         ),

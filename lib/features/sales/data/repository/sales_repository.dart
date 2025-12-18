@@ -1,5 +1,6 @@
 import '../../../../core/network/api_response.dart';
 import '../../api/sales_api.dart';
+import '../../presentation/screens/child_data_model.dart';
 import '../models/markup_data_model.dart';
 import '../models/sates_data_model.dart';
 
@@ -13,13 +14,27 @@ class SalesRepository {
     required String startDate,
     required String endDate,
     String? keyword,
-  }) async =>
-      await salesApi.fetchSales(
-          page: page,
-          limit: limit,
-          startDate: startDate,
-          endDate: endDate,
-          keyword: keyword);
+    String? userType,
+    int? agentId,
+  }) async {
+    if (agentId != null) {
+      return await salesApi.filteredSalesByUser(
+        page: page,
+        limit: limit,
+        startDate: startDate,
+        endDate: endDate,
+        keyword: keyword,
+        agentId: agentId,
+        userType: userType ?? 'agent',
+      );
+    }
+    return await salesApi.fetchSales(
+        page: page,
+        limit: limit,
+        startDate: startDate,
+        endDate: endDate,
+        keyword: keyword);
+  }
 
   Future<ApiResponse<MarkupDataModel>> fetchMarkUp({
     required int page,
@@ -42,4 +57,12 @@ class SalesRepository {
     required int id,
   }) async =>
       await salesApi.deleteMarkUp(id: id);
+
+  Future<ApiResponse<List<ChildDataModel>>> fetchAgents({
+    required int agentId,
+  }) async =>
+      await salesApi.fetchAgents(agentId: agentId);
+
+  Future<ApiResponse<List<ChildDataModel>>> fetchSubSalesExecutives() async =>
+      await salesApi.fetchSubSalesExecutives();
 }

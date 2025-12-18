@@ -43,8 +43,8 @@ class MyMarkUpCard extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primary.withOpacity(0.1),
-                  AppColors.primary.withOpacity(0.05),
+                  AppColors.primary.withValues(alpha: 0.1),
+                  AppColors.primary.withValues(alpha: 0.05),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -90,7 +90,7 @@ class MyMarkUpCard extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.2),
+                          color: AppColors.primary.withValues(alpha: 0.2),
                           borderRadius:
                               BorderRadius.circular(AppSizes.radiusXs),
                         ),
@@ -113,8 +113,8 @@ class MyMarkUpCard extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: isActive
-                        ? AppColors.success.withOpacity(0.15)
-                        : AppColors.grey.withOpacity(0.15),
+                        ? AppColors.success.withValues(alpha: 0.15)
+                        : AppColors.grey.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(AppSizes.radiusSm),
                     border: Border.all(
                       color: isActive ? AppColors.success : AppColors.grey,
@@ -181,8 +181,9 @@ class MyMarkUpCard extends StatelessWidget {
                                 ),
                                 decoration: BoxDecoration(
                                   color: unit.toLowerCase() == 'percentage'
-                                      ? AppColors.info.withOpacity(0.15)
-                                      : AppColors.success.withOpacity(0.15),
+                                      ? AppColors.info.withValues(alpha: 0.15)
+                                      : AppColors.success
+                                          .withValues(alpha: 0.15),
                                   borderRadius:
                                       BorderRadius.circular(AppSizes.radiusXs),
                                 ),
@@ -373,7 +374,7 @@ class MyMarkUpCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: AppColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Icon(

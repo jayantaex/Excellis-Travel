@@ -8,6 +8,7 @@ class MainUrl {
       return AppConstants.baseUrl;
     } else {
       return 'https://api.excellistravel.com';
+      // return 'http://192.168.0.215:5000/api/v1';
     }
   }
 
@@ -18,11 +19,28 @@ class MainUrl {
       return 'https://test.api.amadeus.com';
     }
   }
+
+  String getAirlineLogoUrl() {
+    if (env == 'production') {
+      return '${AppConstants.imageKitUrl}/kp6vc3sud/ExTravel/logos/airlines-logos/';
+    } else {
+      return '${AppConstants.imageKitUrl}/kp6vc3sud/ExTravel/logos/airlines-logos/';
+    }
+  }
 }
 
 class EndPoints {
   static String baseUrl = MainUrl().getUrl();
   static String amaduesBaseUrl = MainUrl().getAmaduesUrl();
+  static String airlineLogoUrl = MainUrl().getAirlineLogoUrl();
+
+  //amadues
+  static const String amaduesAccessToken = '/v1/security/oauth2/token';
+  static const String airportSearchByKeyword = '/v1/reference-data/locations';
+  static const String flightSearch = '/v2/shopping/flight-offers';
+  static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
+  static const String airlineName = '/v1/reference-data/airlines';
+
   // Authentication
   static const String login = '/auth/login';
   static const String registration = '/auth/register';
@@ -49,13 +67,18 @@ class EndPoints {
   static const String ticket = '/bookings/filtered-auto';
   static const String downloadFile = '/bookings';
 
-  //amadues
-  static const String amaduesAccessToken = '/v1/security/oauth2/token';
-  static const String airportSearchByKeyword = '/v1/reference-data/locations';
-  static const String flightSearch = '/v2/shopping/flight-offers';
-  static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
-
+  //sales
   static const String sales = '/commissions/transactions-auto';
+  static const String salesByUsers = '/commissions/transactions/user';
+  static const String subSalesExecutives =
+      '/dynamic-user-hierarchy/my-direct-children';
+  static const String agents = '/dynamic-user-hierarchy/children';
   //markup
   static const String markup = '/markups';
+
+  //wallet
+  static const String wallet = '/wallet/summary';
+  static const String walletTransactions = '/wallet/transactions';
+  static const String walletWithdraw = '/wallet/withdraw';
+  static const String walletRecharge = '/wallet/recharge';
 }

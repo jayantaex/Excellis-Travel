@@ -1,11 +1,9 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../core/network/api_response.dart';
-import '../../../core/utils/storage_service.dart';
-import '../../../core/utils/validators.dart';
+import '../../../utils/storage_service.dart';
+import '../../../utils/validators.dart';
 import '../data/repository/auth_repository.dart';
 import '../data/models/auth_resp_model.dart';
 part 'auth_event.dart';
@@ -66,9 +64,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return;
       }
       //save token into local
-      await StorageService.saveTokens(
-          res.data?.data?.token ?? '', res.data?.data?.token ?? '');
-      emit(Authenticated());
+      if (res.data?.data?.user?.role == 'agent') {
+        await StorageService.saveTokens(
+          res.data?.data?.token ?? '',
+          res.data?.data?.token ?? '',
+        );
+        emit(Authenticated());
+      } else {
+        emit(const AuthError(
+            message: 'You are not authorized to access this application'));
+        return;
+      }
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }

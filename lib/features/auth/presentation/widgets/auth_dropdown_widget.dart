@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_styles.dart';
 
 class AuthDropdownWidget extends StatefulWidget {
@@ -18,7 +15,6 @@ class _AuthDropdownWidgetState extends State<AuthDropdownWidget> {
   @override
   void initState() {
     _defaultValue = widget.items?.first.value ?? '';
-    log(_defaultValue.toString());
     super.initState();
   }
 
@@ -26,7 +22,7 @@ class _AuthDropdownWidgetState extends State<AuthDropdownWidget> {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
         decoration: BoxDecoration(
-          color: AppColors.textHint.withOpacity(0.15),
+          color: AppColors.textHint.withValues(alpha: 0.15),
           border: Border.all(color: AppColors.grey),
           borderRadius: BorderRadius.circular(90),
         ),

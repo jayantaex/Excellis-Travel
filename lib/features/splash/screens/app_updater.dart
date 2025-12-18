@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:excellistravel/core/utils/app_updater.dart';
-import 'package:excellistravel/core/constants/app_constants.dart';
+
 import 'package:open_filex/open_filex.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/app_styles.dart';
+import '../../../utils/app_updater.dart';
 
 class AppUpdaterScreen extends StatefulWidget {
   const AppUpdaterScreen({
@@ -64,8 +65,8 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                theme.primaryColor.withOpacity(0.8),
-                theme.primaryColor.withOpacity(0.6),
+                theme.primaryColor.withValues(alpha: 0.8),
+                theme.primaryColor.withValues(alpha: 0.6),
                 Colors.deepPurple.shade300,
                 Colors.blue.shade400,
               ],
@@ -89,7 +90,7 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 30,
                             spreadRadius: 5,
                           ),
@@ -123,7 +124,7 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                     'A new version is ready to install',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -135,15 +136,15 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: Colors.white.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.3),
+                        color: Colors.white.withValues(alpha: 0.3),
                         width: 1.5,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 20,
                           spreadRadius: 5,
                         ),
@@ -162,7 +163,7 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                         const SizedBox(height: 16),
 
                         Divider(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                           thickness: 1,
                         ),
 
@@ -172,7 +173,7 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                           icon: Icons.phone_android_rounded,
                           label: 'Current Version',
                           value: AppConstants.appVersion,
-                          valueColor: Colors.white.withOpacity(0.8),
+                          valueColor: Colors.white.withValues(alpha: 0.8),
                         ),
                         const SizedBox(height: 16),
 
@@ -202,10 +203,10 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
+                        color: Colors.white.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(24),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
+                          color: Colors.white.withValues(alpha: 0.3),
                           width: 1.5,
                         ),
                       ),
@@ -225,7 +226,7 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                                     value: _downloadProgress,
                                     strokeWidth: 6,
                                     backgroundColor:
-                                        Colors.white.withOpacity(0.3),
+                                        Colors.white.withValues(alpha: 0.3),
                                     valueColor: AlwaysStoppedAnimation<Color>(
                                       Colors.greenAccent.shade200,
                                     ),
@@ -263,7 +264,8 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                             child: LinearProgressIndicator(
                               value: _downloadProgress,
                               minHeight: 6,
-                              backgroundColor: Colors.white.withOpacity(0.3),
+                              backgroundColor:
+                                  Colors.white.withValues(alpha: 0.3),
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 Colors.greenAccent.shade200,
                               ),
@@ -303,7 +305,7 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
@@ -321,7 +323,7 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
                   label,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -353,7 +355,7 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
           borderRadius: BorderRadius.circular(25),
           boxShadow: [
             BoxShadow(
-              color: Colors.green.withOpacity(0.4),
+              color: Colors.green.withValues(alpha: 0.4),
               blurRadius: 20,
               spreadRadius: 2,
               offset: const Offset(0, 8),
@@ -424,7 +426,7 @@ class _AppUpdaterScreenState extends State<AppUpdaterScreen>
           borderRadius: BorderRadius.circular(25),
           boxShadow: [
             BoxShadow(
-              color: Colors.blue.withOpacity(0.4),
+              color: Colors.blue.withValues(alpha: 0.4),
               blurRadius: 20,
               spreadRadius: 2,
               offset: const Offset(0, 8),

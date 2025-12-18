@@ -1,6 +1,6 @@
 import '../../../../core/network/api_response.dart';
-import '../data_source/flight_booking_local_src.dart';
-import '../data_source/flight_booking_remote_src.dart';
+import '../src/flight_booking_local_src.dart';
+import '../src/flight_booking_remote_src.dart';
 import '../models/air_port_model.dart';
 import '../models/create_order_res.dart';
 import '../models/flight_offer_price_model.dart';
@@ -57,4 +57,7 @@ class FlightBookingRepository {
 
   Future<ApiResponse<MyMarkup>> getMyMarkup() async =>
       await remoteSrc.getMyMarkup();
+  Future<ApiResponse<String>> getAirlineName(
+          {required String airlineCode}) async =>
+      await remoteSrc.getAirlineName(airlineCode: airlineCode);
 }

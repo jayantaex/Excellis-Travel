@@ -80,9 +80,9 @@ class AddEditMarkUpSheetState extends State<AddEditMarkUpSheet> {
               label: 'Select Product',
               items: const [
                 DropdownMenuItem(value: 'Airline', child: Text('Airline')),
-                DropdownMenuItem(value: 'Hotel', child: Text('Hotel')),
-                DropdownMenuItem(value: 'Bus', child: Text('Bus')),
-                DropdownMenuItem(value: 'Train', child: Text('Train')),
+                // DropdownMenuItem(value: 'Hotel', child: Text('Hotel')),
+                // DropdownMenuItem(value: 'Bus', child: Text('Bus')),
+                // DropdownMenuItem(value: 'Train', child: Text('Train')),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -163,10 +163,10 @@ class AddEditMarkUpSheetState extends State<AddEditMarkUpSheet> {
             Container(
               padding: const EdgeInsets.all(AppSizes.md),
               decoration: BoxDecoration(
-                color: AppColors.info.withOpacity(0.1),
+                color: AppColors.info.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppSizes.radiusSm),
                 border: Border.all(
-                  color: AppColors.info.withOpacity(0.3),
+                  color: AppColors.info.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(

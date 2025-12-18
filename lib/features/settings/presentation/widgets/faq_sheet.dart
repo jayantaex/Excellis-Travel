@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/app_helpers.dart';
 
 Future<void> showFaqSheet({required BuildContext context}) async {
   await showModalBottomSheet(

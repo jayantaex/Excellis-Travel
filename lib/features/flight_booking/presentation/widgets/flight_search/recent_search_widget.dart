@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/services/local_db.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../flight_booking_module.dart';
 import '../../../data/models/flights_data_model.dart';
 import '../../../data/models/hive/flight_hive_data_model.dart';
@@ -46,7 +46,7 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.black.withOpacity(0.5),
+                        color: AppColors.black.withValues(alpha: 0.5),
                       ),
                     ),
                   ),

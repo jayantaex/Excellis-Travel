@@ -1,9 +1,8 @@
-import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-
 import '../../../core/common/models/profile_data_model.dart';
 import '../../../core/network/api_response.dart';
 import '../data/repository/profile_management_repository.dart';
@@ -19,17 +18,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
   final ProfileManagementRepository profileRepository;
 
-  FutureOr<void> _handleLoadProfileEvent(
+  Future<void> _handleLoadProfileEvent(
       LoadProfileEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoading());
     try {
       final ApiResponse<ProfileModel> res =
           await profileRepository.getUserProfile();
+
+      if (res.errorMessage != null) {
+        emit(ProfileError(message: res.errorMessage ?? 'Something went wrong'));
+        return;
+      }
+      log('${res.errorMessage}');
       final ProfileModel profileData = res.data ?? ProfileModel();
       // emit(const ProfileError(message: 'Access denied'));
 
       emit(ProfileLoaded(profileData: profileData));
     } catch (e) {
+      log(e.toString());
       emit(ProfileError(message: e.toString()));
     }
   }

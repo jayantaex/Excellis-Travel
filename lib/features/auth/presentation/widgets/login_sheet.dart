@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/text_widget.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
 import '../../../legal/legal_module.dart';
@@ -32,7 +33,7 @@ class _LoginSheetState extends State<LoginSheet> {
     AppConstants.env == 'development'
         ? <String>{
             _userNameController.text = 'agent@reiselab.com',
-            _passwordController.text = 'SuperAdmin123!'
+            _passwordController.text = 'Excellis@#2025'
           }
         : null;
     super.initState();
@@ -91,13 +92,12 @@ class _LoginSheetState extends State<LoginSheet> {
                 ),
 
                 const SizedBox(height: 8),
-                const Text(
-                  'Welcome back!',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  'You can reach us anytime',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                const AppText(
+                    text: 'Welcome back!', size: 28, weight: FontWeight.bold),
+                const AppText(
+                  text: 'You can reach us anytime',
+                  size: 20,
+                  weight: FontWeight.normal,
                 ),
                 const SizedBox(height: 33),
                 // Padding(

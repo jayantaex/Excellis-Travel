@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
 
 Future<void> showPassengerSelectionSheet(
@@ -229,7 +229,7 @@ class InCrementDecrementButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       width: 120,
       decoration: BoxDecoration(
-        color: AppColors.grey.withOpacity(0.1),
+        color: AppColors.grey.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

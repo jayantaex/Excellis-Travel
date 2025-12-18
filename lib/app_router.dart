@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'core/common/common_module.dart';
 import 'features/auth/auth_module.dart';
 import 'features/bottom_navigation/bottom_nav_module.dart';
 import 'features/flight_booking/flight_booking_module.dart';
@@ -11,12 +12,19 @@ import 'features/sales/sales_module.dart';
 import 'features/settings/settings_module.dart';
 import 'features/splash/screens/app_updater.dart';
 import 'features/splash/splash_module.dart';
-import 'features/ticket/ticket_module.dart';
+import 'features/booking/booking_module.dart';
+import 'features/wallet_management/wallet_module.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: SplashModule.splashRoute,
     routes: <RouteBase>[
+      GoRoute(
+        path: CommonModule.citySeacrRoute,
+        name: CommonModule.citySearchName,
+        builder: (BuildContext context, GoRouterState state) =>
+            CommonModule.citySearchBuilder(context, state),
+      ),
       //Splash
       GoRoute(
         path: SplashModule.splashRoute,
@@ -47,9 +55,15 @@ class AppRouter {
             BottomNavModule.builder(),
       ),
 
+      //payment
       GoRoute(
-          path: PaymentModule.paymentSucessPath,
-          name: PaymentModule.paymentSucessName,
+          path: PaymentModule.paymentProcessingPath,
+          name: PaymentModule.paymentProcessingName,
+          builder: (BuildContext context, GoRouterState state) =>
+              PaymentModule.paymentProcessingBuilder(context, state)),
+      GoRoute(
+          path: PaymentModule.paymentSuccessPath,
+          name: PaymentModule.paymentSuccessName,
           builder: (BuildContext context, GoRouterState state) =>
               PaymentModule.paymentSuccessBuilder(context, state)),
       GoRoute(
@@ -61,16 +75,16 @@ class AppRouter {
 
       //ticket
       GoRoute(
-        path: TicketModule.ticketsRoute,
-        name: TicketModule.tickets,
+        path: BookingModule.bookingRoute,
+        name: BookingModule.booking,
         builder: (BuildContext context, GoRouterState state) =>
-            TicketModule.ticketBuilder(),
+            BookingModule.bookingBuilder(),
       ),
       GoRoute(
-        path: TicketModule.ticketDetailsRoute,
-        name: TicketModule.ticketDetails,
+        path: BookingModule.ticketDetailsRoute,
+        name: BookingModule.ticketDetails,
         builder: (BuildContext context, GoRouterState state) =>
-            TicketModule.ticketDetailsBuilder(state),
+            BookingModule.ticketDetailsBuilder(state),
       ),
 
       //Flight Booking
@@ -80,12 +94,12 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) =>
             FlightBookingModule.searchBuilder(context, state),
       ),
-      GoRoute(
-        path: FlightBookingModule.seatSelection,
-        name: FlightBookingModule.seatSelectionName,
-        builder: (BuildContext context, GoRouterState state) =>
-            FlightBookingModule.seatSelectionBuilder(),
-      ),
+      // GoRoute(
+      //   path: FlightBookingModule.seatSelection,
+      //   name: FlightBookingModule.seatSelectionName,
+      //   builder: (BuildContext context, GoRouterState state) =>
+      //       FlightBookingModule.seatSelectionBuilder(),
+      // ),
 
       //sales
       GoRoute(
@@ -138,12 +152,6 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) =>
             ProfileManagementModule.editProfileBuilder(context, state),
       ),
-      GoRoute(
-        path: ProfileManagementModule.citySeacrRoute,
-        name: ProfileManagementModule.citySearchName,
-        builder: (BuildContext context, GoRouterState state) =>
-            ProfileManagementModule.citySearchBuilder(context, state),
-      ),
 
       //legal
       GoRoute(
@@ -158,6 +166,7 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) =>
             LegalModule.policyBuilder(),
       ),
+
       //notification
       GoRoute(
         path: NotificationModule.routePath,
@@ -165,6 +174,7 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) =>
             NotificationModule.builder(),
       ),
+
       //settings
       GoRoute(
         path: SettingsModule.routePath,
@@ -186,7 +196,13 @@ class AppRouter {
               downloadUrl: url,
               latestVersion: version,
             );
-          })
+          }),
+      //wallet
+      GoRoute(
+          path: WalletModule.walletPath,
+          name: WalletModule.wallet,
+          builder: (BuildContext context, GoRouterState state) =>
+              WalletModule.builder())
     ],
     errorBuilder: (BuildContext context, GoRouterState state) => const Scaffold(
       body: Center(

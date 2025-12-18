@@ -1,14 +1,21 @@
+import 'package:excellistravel/features/wallet_management/api/wallet_api.dart';
+import 'package:excellistravel/features/wallet_management/data/repository/wallet_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/common/api/location_api.dart';
+import '../../core/common/bloc/cities/city_bloc.dart';
+import '../../core/common/bloc/states/states_bloc.dart';
+import '../../core/common/data/location_repository.dart';
 import '../../core/network/amadeus_client.dart';
 import '../../core/network/api_client.dart';
 import '../../core/services/local_db.dart';
 import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
+import '../wallet_management/bloc/wallet_bloc.dart';
 import 'bloc/flight_bloc.dart';
-import 'data/data_source/flight_booking_local_src.dart';
-import 'data/data_source/flight_booking_remote_src.dart';
+import 'data/src/flight_booking_local_src.dart';
+import 'data/src/flight_booking_remote_src.dart';
 import 'data/repository/flight_booking_repository.dart';
 import 'data/models/air_port_model.dart';
 import 'data/models/payment_verify_res_model.dart';
@@ -17,7 +24,6 @@ import 'presentation/screens/booking_policy.dart';
 import 'presentation/screens/flight_details_screen.dart';
 import 'presentation/screens/flight_list_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
-import 'presentation/screens/seat_map_screen.dart';
 
 class FlightBookingModule {
   static final AmadeusClient _amadeusClient = AmadeusClient();
@@ -33,6 +39,8 @@ class FlightBookingModule {
   static final _profileApi = ProfileManagementApi(apiClient: _apiClient);
   static final _profileRepo =
       ProfileManagementRepository(profileManagementApi: _profileApi);
+  static final _statesRepository =
+      LocationRepository(statesApi: LocationApi(apiClient: _apiClient));
 
   //airport search
   static const String airportSearch = '/airport-search';
@@ -78,7 +86,7 @@ class FlightBookingModule {
   //seat selection
   static const String seatSelection = '/seat-selection';
   static const String seatSelectionName = 'seatSelection';
-  static Widget seatSelectionBuilder() => const SeatMapScreen();
+  // static Widget seatSelectionBuilder() => const SeatMapScreen();
 
   // // passenger details
   // static const String passengerDetails = '/passenger-details';
@@ -120,10 +128,24 @@ class FlightBookingModule {
         BlocProvider(
           create: (context) => ProfileBloc(profileRepository: _profileRepo),
         ),
+        BlocProvider(
+          create: (context) => StatesBloc(repository: _statesRepository),
+        ),
+        BlocProvider(
+          create: (context) => CityBloc(repository: _statesRepository),
+        ),
+        BlocProvider(
+          create: (context) =>
+              WalletBloc(WalletRepository(WalletApi(_apiClient))),
+        ),
       ],
       child: FlightDetailsScreen(
         flightDictionary: extra['flightDictionary'] ?? {},
         data: extra['data'] ?? {},
+        arivalCity: extra['arivalCity'] ?? '',
+        arivalAirport: extra['arivalAirport'] ?? '',
+        departureCity: extra['departureCity'] ?? '',
+        departureAirport: extra['departureAirport'] ?? '',
       ),
     );
   }
