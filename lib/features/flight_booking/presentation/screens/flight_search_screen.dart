@@ -330,6 +330,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       firstDate: _today,
                                       initialDate: departureDate ?? _today,
                                     );
+                                    departureDate ??= _today;
                                     setState(() {});
 
                                     //hide keyboard
@@ -364,15 +365,14 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             FocusScope.of(context).unfocus();
                                           }
                                           roundTripDate = await _pickDate(
-                                              context: context,
-                                              firstDate: departureDate?.add(
-                                                      const Duration(
-                                                          hours: 2)) ??
-                                                  _today.add(_oneDay),
-                                              initialDate: roundTripDate ??
-                                                  departureDate
-                                                      ?.add(_fiveDay) ??
-                                                  _today.add(_fiveDay));
+                                            context: context,
+                                            firstDate: departureDate?.add(
+                                                    const Duration(hours: 2)) ??
+                                                _today.add(_oneDay),
+                                            initialDate: roundTripDate ??
+                                                departureDate?.add(_fiveDay) ??
+                                                _today.add(_fiveDay),
+                                          );
                                           setState(() {});
                                           //hide keyboard
                                         },
