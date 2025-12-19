@@ -6,6 +6,7 @@ import '../../../../../core/widgets/app_sheet.dart';
 import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../profile_management/bloc/profile_bloc.dart';
+import '../../../../wallet_management/bloc/wallet_bloc.dart';
 import '../../../bloc/flight_bloc.dart';
 import '../../../data/dto/billing_address_model.dart';
 import '../../../data/models/flight_offer_price_model.dart';
@@ -65,7 +66,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
               return const SizedBox.shrink();
             }
 
-            final profile = profileState.profileData;
+            // final profile = profileState.profileData;
 
             return SizedBox(
               width: AppHelpers.getScreenWidth(context),
@@ -193,6 +194,11 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                                   'Add all the travellers to proceed with flight booking');
                               return;
                             }
+                            if (widget.billingAddress == null) {
+                              AppHelpers.showSnackBar(context,
+                                  'Billing address is missing. Please wait or add one.');
+                              return;
+                            }
 
                             // Reset travellers lists
                             travellers = {
@@ -247,17 +253,17 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                               isOfferEnabled: widget.offerFareEnabled,
                             );
                             log(billingAddress.toString());
-                            // if (context.mounted) {
-                            //   context.read<WalletBloc>().add(
-                            //         const FetchWalletEvent(),
-                            //       );
-                            //   context.read<FlightBloc>().add(
-                            //         CreateFlightOrder(
-                            //           body: createPaymentBody,
-                            //           paymentVia: paymentMode,
-                            //         ),
-                            //       );
-                            // }
+                            if (context.mounted) {
+                              context.read<WalletBloc>().add(
+                                    const FetchWalletEvent(),
+                                  );
+                              context.read<FlightBloc>().add(
+                                    CreateFlightOrder(
+                                      body: createPaymentBody,
+                                      paymentVia: paymentMode,
+                                    ),
+                                  );
+                            }
                           } catch (e) {
                             log('ERROR: ${e.toString()}');
                           }

@@ -29,7 +29,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     FetchWalletEvent event,
     Emitter<WalletState> emit,
   ) async {
-    emit(WalletLoading());
+    if (state is! WalletLoaded) {
+      emit(WalletLoading());
+    }
 
     final ApiResponse<WalletBalanceModel> response =
         await walletRepository.fetchWallet();

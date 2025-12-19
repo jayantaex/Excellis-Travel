@@ -8,6 +8,7 @@ import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/errors/error_screen.dart';
 import '../bloc/wallet_bloc.dart';
 import '../data/models/transaction_model.dart';
 import '../widgets/deposit_sheet.dart';
@@ -37,7 +38,6 @@ class _WalletScreenState extends State<WalletScreen>
     super.initState();
     _scrollController.addListener(_onScroll);
     _fetchWalletBalance();
-    _fetchWalletTransactions(page: page, limit: limit);
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
       final newFilter = switch (_tabController.index) {
@@ -114,8 +114,9 @@ class _WalletScreenState extends State<WalletScreen>
                     );
                   }
                   if (state is WalletError) {
-                    return Center(
-                      child: Text(state.message),
+                    return ErrorScreen(
+                      errorMessage: state.message,
+                      bg: AppColors.white,
                     );
                   }
                   if (state is! WalletLoaded) {
@@ -373,46 +374,53 @@ class _WalletScreenState extends State<WalletScreen>
                                     );
                                   }
 
-                                  return ListView.builder(
-                                    controller: _scrollController,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    itemCount: filteredTransactions.length +
-                                        (state.isLoadingMore ? 1 : 0),
-                                    itemBuilder: (context, index) {
-                                      // Show loading indicator at the end
-                                      if (index ==
-                                          filteredTransactions.length) {
-                                        return const Padding(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              color: AppColors.primary,
-                                            ),
-                                          ),
-                                        );
-                                      }
-
-                                      final transaction =
-                                          filteredTransactions[index];
-                                      return TransactionCardWidget(
-                                        title:
-                                            transaction.transactionReference ??
-                                                '',
-                                        date: AppHelpers.formatDate(
-                                            DateTime.parse(
-                                                transaction.createdAt ??
-                                                    '2025-01-01')),
-                                        amount: transaction.amount ?? '0.00',
-                                        type: transaction.transactionType ??
-                                            'debit',
-                                        description:
-                                            transaction.description ?? '',
-                                        transactionId:
-                                            transaction.transactionReference ??
-                                                '',
-                                      );
+                                  return RefreshIndicator(
+                                    onRefresh: () async {
+                                      _fetchWalletBalance();
                                     },
+                                    child: ListView.builder(
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
+                                      controller: _scrollController,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      itemCount: filteredTransactions.length +
+                                          (state.isLoadingMore ? 1 : 0),
+                                      itemBuilder: (context, index) {
+                                        // Show loading indicator at the end
+                                        if (index ==
+                                            filteredTransactions.length) {
+                                          return const Padding(
+                                            padding: EdgeInsets.all(16.0),
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                color: AppColors.primary,
+                                              ),
+                                            ),
+                                          );
+                                        }
+
+                                        final transaction =
+                                            filteredTransactions[index];
+                                        return TransactionCardWidget(
+                                          title: transaction
+                                                  .transactionReference ??
+                                              '',
+                                          date: AppHelpers.formatDate(
+                                              DateTime.parse(
+                                                  transaction.createdAt ??
+                                                      '2025-01-01')),
+                                          amount: transaction.amount ?? '0.00',
+                                          type: transaction.transactionType ??
+                                              'debit',
+                                          description:
+                                              transaction.description ?? '',
+                                          transactionId: transaction
+                                                  .transactionReference ??
+                                              '',
+                                        );
+                                      },
+                                    ),
                                   );
                                 }(),
                               ),

@@ -85,43 +85,65 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   }
 
   void _loadInitialProfileData(ProfileModel profile) {
-    String addressLine1 = profile.address ?? '';
+    String addressLine1 = '';
     String addressLine2 = '';
     String cityName = '';
     String stateName = '';
     String pinCode = '';
-    String countryCode = '';
+    String countryCode = 'IN';
 
-    //address,city,state,pincode,country
-    final List<String> addressParts = profile.address?.split(',') ?? [];
+    // Split and clean parts
+    final List<String> rawParts = profile.address?.split(',') ?? [];
+    final List<String> addressParts = rawParts
+        .map((e) => e.trim())
+        .where((element) => element.isNotEmpty)
+        .toList();
 
     if (addressParts.isNotEmpty) {
-      final String lastPart = addressParts.last.trim();
-      if (lastPart.isNotEmpty) {
-        countryCode = 'IN';
+      final String lastPart = addressParts.last;
+      // Check if the last part is likely a country (not numeric, common names)
+      final bool isNumeric = int.tryParse(lastPart) != null;
+      if (!isNumeric) {
+        // Assume it is country
+        if (lastPart.length == 2) {
+          countryCode = lastPart.toUpperCase();
+        } else if (lastPart.toLowerCase() == 'india') {
+          countryCode = 'IN';
+        } else {
+          // Fallback/Use as is
+          countryCode = 'IN';
+        }
+        // Even if we default to IN, if the string was "India", we consume it so it's not set as Pin
+        if (lastPart.toLowerCase() == 'india' ||
+            lastPart.length == 2 ||
+            !isNumeric) {
+          addressParts.removeLast();
+        }
       }
     }
 
     if (addressParts.isNotEmpty) {
-      final String lastPart = addressParts.last.trim();
-      if (lastPart.isNotEmpty) {
-        pinCode = lastPart;
-      }
+      pinCode = addressParts.last;
       addressParts.removeLast();
     }
     if (addressParts.isNotEmpty) {
-      final String lastPart = addressParts.last.trim();
-      if (lastPart.isNotEmpty) {
-        stateName = lastPart;
-      }
+      stateName = addressParts.last;
       addressParts.removeLast();
     }
     if (addressParts.isNotEmpty) {
-      final String lastPart = addressParts.last.trim();
-      if (lastPart.isNotEmpty) {
-        cityName = lastPart;
-      }
+      cityName = addressParts.last;
       addressParts.removeLast();
+    }
+
+    // Any remaining parts are the address lines
+    if (addressParts.isNotEmpty) {
+      if (addressParts.length > 1) {
+        addressLine2 = addressParts.last;
+        addressParts.removeLast();
+        addressLine1 = addressParts.join(', ');
+      } else {
+        addressLine1 = addressParts.first;
+      }
     }
 
     if (_billingAddress == null) {
