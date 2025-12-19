@@ -20,6 +20,7 @@ class PricingDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
     for (TravelerPricing element in flightOffer.travelerPricings!) {
       log('${element.travelerType}----------');
       switch (element.travelerType) {
@@ -47,7 +48,9 @@ class PricingDetails extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.grey.withValues(alpha: 0.05),
+          color: isDark
+              ? AppColors.white.withValues(alpha: 0.05)
+              : AppColors.grey.withValues(alpha: 0.05),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(12),
             topRight: Radius.circular(12),
@@ -64,10 +67,11 @@ class PricingDetails extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Total Travelers: ${adult.length + child.length + infant.length} person(s)',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color:
+                            isDark ? AppColors.white : AppColors.textPrimary),
                   ),
                   const SizedBox(height: 12),
                   adult.isEmpty
@@ -140,42 +144,48 @@ class PriceCol extends StatelessWidget {
   final bool? isIconRequired;
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.only(left: 8),
-        width: AppHelpers.getScreenWidth(context),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            SizedBox(
-              height: 25,
-              child: Text(
-                titile,
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight:
-                        isBold ?? false ? FontWeight.w600 : FontWeight.w400),
-              ),
+  Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
+    return Container(
+      padding: const EdgeInsets.only(left: 8),
+      width: AppHelpers.getScreenWidth(context),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          SizedBox(
+            height: 25,
+            child: Text(
+              titile,
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight:
+                      isBold ?? false ? FontWeight.w600 : FontWeight.w400,
+                  color: isDark ? AppColors.white : AppColors.black),
             ),
-            SizedBox(
-              height: 25,
-              child: Text(
-                value == ''
-                    ? ''
-                    : value == '0.00'
-                        ? 'Free'
-                        : isIconRequired ?? true
-                            ? '₹ $value'
-                            : ' $value',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight:
-                        isBold ?? false ? FontWeight.w600 : FontWeight.w400,
-                    color: value == '0.00' ? AppColors.success : Colors.black),
-              ),
-            )
-          ],
-        ),
-      );
+          ),
+          SizedBox(
+            height: 25,
+            child: Text(
+              value == ''
+                  ? ''
+                  : value == '0.00'
+                      ? 'Free'
+                      : isIconRequired ?? true
+                          ? '₹ $value'
+                          : ' $value',
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight:
+                      isBold ?? false ? FontWeight.w600 : FontWeight.w400,
+                  color: value == '0.00'
+                      ? AppColors.success
+                      : (isDark ? AppColors.white : Colors.black)),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }
 
 String getCalculatedPrice(

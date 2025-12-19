@@ -120,10 +120,12 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                             controller: _subSalesExecutiveController,
                             label: 'Sub Sales Executive',
                             maxCharacters: 50,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
-                              color: AppColors.textPrimary,
+                              color: AppHelpers.isDarkMode(context)
+                                  ? AppColors.white
+                                  : AppColors.textPrimary,
                             ),
                             isMultiline: true,
                             hint: 'Select sub sales executive',
@@ -362,6 +364,9 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                       fontWeight: FontWeight.w700,
                       color: AppColors.white,
                     ),
+                    bgColor: AppHelpers.isDarkMode(context)
+                        ? AppColors.primary
+                        : AppColors.black,
                   ),
                 )
               ],

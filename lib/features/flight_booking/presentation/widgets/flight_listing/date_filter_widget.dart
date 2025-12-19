@@ -50,8 +50,12 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
                   color: selectedDate == thisDate
-                      ? AppColors.black
-                      : AppColors.white,
+                      ? AppHelpers.isDarkMode(context)
+                          ? AppColors.primaryDark
+                          : AppColors.black
+                      : AppHelpers.isDarkMode(context)
+                          ? AppColors.secondaryDark
+                          : AppColors.white,
                   borderRadius: BorderRadius.circular(14),
                 ),
                 height: 65,

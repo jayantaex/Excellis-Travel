@@ -184,19 +184,19 @@ class AppRouter {
       ),
 
       //updator
-      GoRoute(
-          path: '/update',
-          name: 'update',
-          builder: (BuildContext context, GoRouterState state) {
-            final Map<String, dynamic> data =
-                state.extra as Map<String, dynamic>;
-            final String url = data['url'];
-            final String version = data['version'];
-            return AppUpdaterScreen(
-              downloadUrl: url,
-              latestVersion: version,
-            );
-          }),
+      // GoRoute(
+      //     path: '/update',
+      //     name: 'update',
+      //     builder: (BuildContext context, GoRouterState state) {
+      //       final Map<String, dynamic> data =
+      //           state.extra as Map<String, dynamic>;
+      //       final String url = data['url'];
+      //       final String version = data['version'];
+      //       return AppUpdaterScreen(
+      //         downloadUrl: url,
+      //         latestVersion: version,
+      //       );
+      //     }),
       //wallet
       GoRoute(
           path: WalletModule.walletPath,

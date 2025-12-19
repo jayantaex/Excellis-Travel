@@ -185,7 +185,7 @@ class AppHelpers {
       showDialog<bool>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          backgroundColor: AppColors.white,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text(title),
           content: Text(content),
           actions: <Widget>[
@@ -313,4 +313,7 @@ class AppHelpers {
     final RegExp mobileRegex = RegExp(r'^[0-9]{10}$');
     return mobileRegex.hasMatch(text);
   }
+
+  static bool isDarkMode(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark;
 }

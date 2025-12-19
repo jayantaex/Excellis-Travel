@@ -524,6 +524,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                   }
                 },
               ),
+
               const SizedBox(height: 8),
               TextButton(
                   onPressed: () {

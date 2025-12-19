@@ -14,27 +14,40 @@ class BaggaeCardWidget extends StatelessWidget {
   final String allowance;
 
   @override
-  Widget build(BuildContext context) => ListTile(
-        dense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-        leading: CircleAvatar(
-            radius: 16,
-            backgroundColor: AppColors.grey.withValues(alpha: 0.1),
-            child: AppHelpers.svgAsset(
-                assetName: iconName, isIcon: true, height: 16, width: 16)),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-          ),
+  Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
+    return ListTile(
+      dense: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      leading: CircleAvatar(
+          radius: 16,
+          backgroundColor: isDark
+              ? AppColors.white.withValues(alpha: 0.1)
+              : AppColors.grey.withValues(alpha: 0.1),
+          child: AppHelpers.svgAsset(
+              assetName: iconName,
+              isIcon: true,
+              height: 16,
+              width: 16,
+              color: isDark ? AppColors.white : null)),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: isDark ? AppColors.white : AppColors.textPrimary,
         ),
-        subtitle: Text(
-          allowance,
-          style: const TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w400,
-          ),
+      ),
+      subtitle: Text(
+        allowance,
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w400,
+          color: isDark
+              ? AppColors.white.withOpacity(0.7)
+              : AppColors.textSecondary,
         ),
-      );
+      ),
+    );
+  }
 }

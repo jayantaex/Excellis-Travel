@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/app_styles.dart';
 import '../../../utils/app_toast.dart';
-import '../../../utils/app_updater.dart';
 import '../../../utils/storage_service.dart';
 import '../../auth/auth_module.dart';
 import '../../bottom_navigation/bottom_nav_module.dart';
@@ -23,13 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final bool hasUpdate =
-          AppConstants.env == 'development' && Platform.isAndroid
-              ? await _handleAppUpdate()
-              : false;
-      if (!hasUpdate) {
-        await _handleAuthentication();
-      }
+      await _handleAuthentication();
     });
     super.initState();
   }
@@ -80,21 +70,21 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  Future<bool> _handleAppUpdate() async {
-    try {
-      final bool isUpdateAvailable = await AppUpdater().isUpdateAvailable();
-      final info = await AppUpdater().getLatestVersion();
+  // Future<bool> _handleAppUpdate() async {
+  //   try {
+  //     final bool isUpdateAvailable = await AppUpdater().isUpdateAvailable();
+  //     final info = await AppUpdater().getLatestVersion();
 
-      if (isUpdateAvailable) {
-        _navigateToUpdate(url: info['url'], version: info['version']);
-        return true; // Update is available
-      }
-      return false; // No update available
-    } catch (e) {
-      showToast(message: 'Failed to check for updates');
-      return false; // On error, proceed with normal flow
-    }
-  }
+  //     if (isUpdateAvailable) {
+  //       _navigateToUpdate(url: info['url'], version: info['version']);
+  //       return true; // Update is available
+  //     }
+  //     return false; // No update available
+  //   } catch (e) {
+  //     showToast(message: 'Failed to check for updates');
+  //     return false; // On error, proceed with normal flow
+  //   }
+  // }
 
   void _navigateToLogin() {
     context.goNamed(AuthModule.loginName);
@@ -106,11 +96,11 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  void _navigateToUpdate({required String url, required String version}) {
-    if (context.mounted) {
-      context.goNamed('update', extra: {'url': url, 'version': version});
-    }
-  }
+  // void _navigateToUpdate({required String url, required String version}) {
+  //   if (context.mounted) {
+  //     context.goNamed('update', extra: {'url': url, 'version': version});
+  //   }
+  // }
 
   void _fetchProfile() {
     context.read<ProfileBloc>().add(const LoadProfileEvent());

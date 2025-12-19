@@ -95,10 +95,12 @@ class ContentRow extends StatelessWidget {
           Text(
             title,
             style: titleStyle ??
-                const TextStyle(
+                TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.black,
+                  color: AppHelpers.isDarkMode(context)
+                      ? AppColors.white
+                      : AppColors.black,
                 ),
           ),
           Text(

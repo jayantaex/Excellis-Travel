@@ -11,7 +11,9 @@ Future<void> showPassengerSelectionSheet(
     required int child,
     required int infant}) async {
   showModalBottomSheet(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppHelpers.isDarkMode(context)
+          ? AppColors.secondaryDark
+          : AppColors.white,
       context: context,
       builder: (context) => PassengerSelectionSheet(
             adult: adult,
@@ -81,12 +83,14 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
             ),
             const SizedBox(height: 15),
             ListTile(
-              title: const Text(
+              title: Text(
                 'Adults',
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.black),
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.white
+                        : AppColors.black),
               ),
               subtitle: const Text(
                 'Age above 12',
@@ -114,12 +118,14 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
               ),
             ),
             ListTile(
-              title: const Text(
+              title: Text(
                 'Children',
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.black),
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.white
+                        : AppColors.black),
               ),
               subtitle: const Text(
                 'Age 2 to 12 years',
@@ -147,12 +153,14 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
               ),
             ),
             ListTile(
-              title: const Text(
+              title: Text(
                 'Infants',
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.black),
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.white
+                        : AppColors.black),
               ),
               subtitle: const Text(
                 'Age below 2 years',
@@ -182,13 +190,20 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
               ),
             ),
             const SizedBox(height: 55),
-            AppPrimaryButton(
-              title: 'Done',
-              isLoading: false,
-              onPressed: () {
-                widget.onDone(adult, child, infant);
-                Navigator.pop(context);
-              },
+            SizedBox(
+              height: 50,
+              width: AppHelpers.getScreenWidth(context),
+              child: AppPrimaryButton(
+                bgColor: AppHelpers.isDarkMode(context)
+                    ? AppColors.primaryDark
+                    : AppColors.black,
+                title: 'Done',
+                isLoading: false,
+                onPressed: () {
+                  widget.onDone(adult, child, infant);
+                  Navigator.pop(context);
+                },
+              ),
             )
           ],
         ),
@@ -234,10 +249,12 @@ class InCrementDecrementButton extends StatelessWidget {
           ),
           Text(
             '$value',
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: AppColors.black),
+                color: AppHelpers.isDarkMode(context)
+                    ? AppColors.primary
+                    : AppColors.black),
           ),
           InkWell(
             borderRadius: BorderRadius.circular(8),

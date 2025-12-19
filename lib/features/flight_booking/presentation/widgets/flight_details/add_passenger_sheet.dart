@@ -84,7 +84,9 @@ Future<void> showAddAndEditPassengerSheet(
   }
 
   await showModalBottomSheet(
-    backgroundColor: AppColors.white,
+    backgroundColor: AppHelpers.isDarkMode(context)
+        ? AppColors.secondaryDark
+        : AppColors.white,
     isScrollControlled: true,
     useSafeArea: true,
     context: context,
@@ -237,14 +239,16 @@ Future<void> showAddAndEditPassengerSheet(
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 8),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
                       child: Text(
                         'Select Fare Option *',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.textPrimary,
+                          color: AppHelpers.isDarkMode(context)
+                              ? AppColors.white
+                              : AppColors.textPrimary,
                         ),
                       ),
                     ),
@@ -329,6 +333,9 @@ Future<void> showAddAndEditPassengerSheet(
                             ),
                           );
                         },
+                        bgColor: AppHelpers.isDarkMode(context)
+                            ? AppColors.primary
+                            : AppColors.black,
                         title: 'Confirm',
                         isLoading: false),
                   ),
@@ -370,7 +377,9 @@ class _SegmenCardState extends State<SegmenCard> {
           width: AppHelpers.getScreenWidth(context) * 0.42,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: AppColors.white,
+            color: AppHelpers.isDarkMode(context)
+                ? AppColors.secondaryDark
+                : AppColors.white,
             border: Border.all(
               color: widget.isSelected
                   ? AppColors.primary
@@ -457,10 +466,12 @@ class _SegmenCardState extends State<SegmenCard> {
                         if (widget.data.brandedFare != null)
                           Text(
                             widget.data.brandedFare!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
+                              color: AppHelpers.isDarkMode(context)
+                                  ? AppColors.white
+                                  : AppColors.textPrimary,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -552,8 +563,10 @@ class _SegmenCardState extends State<SegmenCard> {
                   right: 8,
                   child: Container(
                     padding: const EdgeInsets.all(2),
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
+                    decoration: BoxDecoration(
+                      color: AppHelpers.isDarkMode(context)
+                          ? AppColors.primary.withValues(alpha: 0.1)
+                          : AppColors.primary,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(

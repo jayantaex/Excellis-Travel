@@ -27,72 +27,81 @@ class OfferFareTogglerWidget extends StatefulWidget {
 class _OfferFareTogglerWidgetState extends State<OfferFareTogglerWidget> {
   bool offerFare = false;
   @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          if (widget.myMarkup != null)
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor: AppColors.success.withValues(alpha: 0.9),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child:
-                      AppHelpers.svgAsset(assetName: 'offerIcon', isIcon: true),
-                ),
-              ),
-              title: const Text('Offer Fare',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  )),
-              subtitle: const Text(
-                  'By enabling this, you may not get your commission',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.grey,
-                  )),
-              trailing: ScaleTransition(
-                scale: const AlwaysStoppedAnimation<double>(0.7),
-                child: CupertinoSwitch(
-                    value: offerFare,
-                    onChanged: (value) {
-                      setState(() {
-                        offerFare = value;
-                      });
-                      if (widget.onToggle != null) {
-                        widget.onToggle!(value);
-                      }
-                    }),
-              ),
-            ),
-          const SizedBox(height: 16),
+  Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
+    return Column(
+      children: [
+        if (widget.myMarkup != null)
           ListTile(
-            onTap: () {
-              context.pushNamed(WalletModule.wallet);
-            },
-            leading: AppHelpers.assetImage(
-                assetName: 'wallet', height: 25, width: 25),
-            title: const Text(
-              ' Excellis Wallet',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+            leading: CircleAvatar(
+              backgroundColor: AppColors.success.withValues(alpha: 0.9),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child:
+                    AppHelpers.svgAsset(assetName: 'offerIcon', isIcon: true),
+              ),
             ),
-            subtitle: Text(
-              'Available Balance ₹${widget.walletBalance} ',
-              style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: widget.walletBalance > 20000
-                      ? AppColors.success
-                      : AppColors.error),
+            title: Text('Offer Fare',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? AppColors.white : AppColors.textPrimary,
+                )),
+            subtitle: Text('By enabling this, you may not get your commission',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isDark
+                      ? AppColors.white.withOpacity(0.7)
+                      : AppColors.grey,
+                )),
+            trailing: ScaleTransition(
+              scale: const AlwaysStoppedAnimation<double>(0.7),
+              child: CupertinoSwitch(
+                  value: offerFare,
+                  onChanged: (value) {
+                    setState(() {
+                      offerFare = value;
+                    });
+                    if (widget.onToggle != null) {
+                      widget.onToggle!(value);
+                    }
+                  }),
             ),
-            trailing: const Icon(Icons.arrow_forward_ios,
-                size: 16, color: AppColors.grey),
           ),
-          const SizedBox(height: 16),
-          PricingDetails(
-            offerFareEnabled: offerFare,
-            flightOffer: widget.flightOffer,
-            myMarkup: widget.myMarkup,
-          )
-        ],
-      );
+        const SizedBox(height: 16),
+        ListTile(
+          onTap: () {
+            context.pushNamed(WalletModule.wallet);
+          },
+          leading:
+              AppHelpers.assetImage(assetName: 'wallet', height: 25, width: 25),
+          title: Text(
+            ' Excellis Wallet',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: isDark ? AppColors.white : AppColors.textPrimary,
+            ),
+          ),
+          subtitle: Text(
+            'Available Balance ₹${widget.walletBalance} ',
+            style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+                color: widget.walletBalance > 20000
+                    ? AppColors.success
+                    : AppColors.error),
+          ),
+          trailing: const Icon(Icons.arrow_forward_ios,
+              size: 16, color: AppColors.grey),
+        ),
+        const SizedBox(height: 16),
+        PricingDetails(
+          offerFareEnabled: offerFare,
+          flightOffer: widget.flightOffer,
+          myMarkup: widget.myMarkup,
+        )
+      ],
+    );
+  }
 }

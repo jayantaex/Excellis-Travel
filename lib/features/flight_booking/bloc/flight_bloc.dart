@@ -187,12 +187,28 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         basePrice: double.parse(
             res.data!.data!.flightOffers!.first.price!.grandTotal!),
       );
+      if (markupRes.data == null) {
+        emit(FlightOfferPriceError(
+          message: '${markupRes.errorMessage}',
+        ));
+        return;
+      }
       res.data!.data!.flightOffers!.first.price?.markup =
           markupRes.data!.toStringAsFixed(2);
       final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
-      res.data!.data!.myMarkup = myMarkup.data;
+      if (myMarkup.data == null) {
+        emit(FlightOfferPriceError(
+          message: '${myMarkup.errorMessage}',
+        ));
+        return;
+      }
+      if (myMarkup.data != null) {
+        res.data!.data!.myMarkup = myMarkup.data;
+      }
       emit(FlightOfferPriceLoaded(data: res.data!));
     } catch (e) {
+      log("*************************");
+      log("${e.toString()}");
       emit(FlightOfferPriceError(
         message: '$e',
       ));
@@ -213,7 +229,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
             error: res.errorMessage ?? 'Something went wrong'));
         return;
       }
-      emit(FlightOrderCreated(data: res.data!));
+      emit(FlightOrderCreated(data: res.data!, paymentVia: event.paymentVia));
     } catch (e) {
       emit(FlightOrderCreationError(error: '$e'));
     }
@@ -273,8 +289,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         dictionaries: dataToSort.dictionaries,
         meta: dataToSort.meta,
       );
-
-
 
       // Apply sorting based on filter name
       switch (event.filterName) {

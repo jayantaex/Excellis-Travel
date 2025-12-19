@@ -109,11 +109,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   ];
 
   bool isRoundTrip = false;
-  final TextStyle _defaultTextStyple = const TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    color: AppColors.black,
-  );
 
   Future<DateTime?> _pickDate({
     required BuildContext context,
@@ -186,8 +181,15 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                         horizontal: 16, vertical: 12),
                     width: AppHelpers.getScreenWidth(context),
                     decoration: BoxDecoration(
-                      color: AppColors.white,
+                      color: AppHelpers.isDarkMode(context)
+                          ? AppColors.secondaryDark
+                          : AppColors.white,
                       borderRadius: BorderRadius.circular(24),
+                      border: AppHelpers.isDarkMode(context)
+                          ? Border.all(
+                              color: AppColors.white.withValues(alpha: 0.05),
+                              width: 1)
+                          : null,
                     ),
                     child: SizedBox(
                       width: AppHelpers.getScreenWidth(context),
@@ -209,12 +211,19 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   prefixIcon: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: AppHelpers.svgAsset(
-                                        assetName: 'from', isIcon: true),
+                                      assetName: 'from',
+                                      isIcon: true,
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : null,
+                                    ),
                                   ),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.black),
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : AppColors.black),
                                   onTap: () async {
                                     context.pushNamed(
                                         FlightBookingModule.airportSearchName,
@@ -248,12 +257,19 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   prefixIcon: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: AppHelpers.svgAsset(
-                                        assetName: 'to', isIcon: true),
+                                      assetName: 'to',
+                                      isIcon: true,
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : null,
+                                    ),
                                   ),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.black),
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : AppColors.black),
                                   onTap: () async {
                                     context.pushNamed(
                                         FlightBookingModule.airportSearchName,
@@ -288,6 +304,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     padding: const EdgeInsets.all(12.0),
                                     child: SvgPicture.asset(
                                       '${AppConstants.assetIcontUrl}calender.svg',
+                                      colorFilter:
+                                          AppHelpers.isDarkMode(context)
+                                              ? const ColorFilter.mode(
+                                                  AppColors.white,
+                                                  BlendMode.srcIn)
+                                              : null,
                                     ),
                                   ),
                                   suffixIcon: SizedBox(
@@ -323,7 +345,13 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       ],
                                     ),
                                   ),
-                                  style: _defaultTextStyple,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppHelpers.isDarkMode(context)
+                                        ? AppColors.white
+                                        : AppColors.black,
+                                  ),
                                   onTap: () async {
                                     departureDate = await _pickDate(
                                       context: context,
@@ -357,9 +385,21 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           padding: const EdgeInsets.all(12.0),
                                           child: SvgPicture.asset(
                                             '${AppConstants.assetIcontUrl}calender.svg',
+                                            colorFilter:
+                                                AppHelpers.isDarkMode(context)
+                                                    ? const ColorFilter.mode(
+                                                        AppColors.white,
+                                                        BlendMode.srcIn)
+                                                    : null,
                                           ),
                                         ),
-                                        style: _defaultTextStyple,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppHelpers.isDarkMode(context)
+                                              ? AppColors.white
+                                              : AppColors.black,
+                                        ),
                                         onTap: () async {
                                           if (context.mounted) {
                                             FocusScope.of(context).unfocus();
@@ -400,6 +440,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             padding: const EdgeInsets.all(12.0),
                                             child: SvgPicture.asset(
                                               '${AppConstants.assetIcontUrl}users.svg',
+                                              colorFilter:
+                                                  AppHelpers.isDarkMode(context)
+                                                      ? const ColorFilter.mode(
+                                                          AppColors.white,
+                                                          BlendMode.srcIn)
+                                                      : null,
                                             ),
                                           ),
                                           onTap: () {
@@ -424,16 +470,26 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             width: AppHelpers.getScreenWidth(
                                                     context) *
                                                 0.19,
-                                            child: const Text(
+                                            child: Text(
                                               'Travellers',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
-                                                color: AppColors.black,
+                                                color: AppHelpers.isDarkMode(
+                                                        context)
+                                                    ? AppColors.white
+                                                    : AppColors.black,
                                               ),
                                             ),
                                           ),
-                                          style: _defaultTextStyple,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                AppHelpers.isDarkMode(context)
+                                                    ? AppColors.white
+                                                    : AppColors.black,
+                                          ),
                                           onChange: (String p0) {},
                                         ),
                                       ),

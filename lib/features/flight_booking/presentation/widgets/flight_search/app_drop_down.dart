@@ -20,43 +20,61 @@ class AppDropDown extends StatelessWidget {
   final void Function(String?)? onChanged;
 
   @override
-  Widget build(BuildContext context) => DropdownButtonFormField(
-        dropdownColor: AppColors.white,
-        style: const TextStyle(
-            fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.black),
-        icon: const SizedBox(),
-        borderRadius: BorderRadius.circular(12),
-        initialValue: value,
-        items: items,
-        onChanged: onChanged,
-        decoration: InputDecoration(
-          prefixIcon: prefixIconName != null
-              ? Padding(
-                  padding: const EdgeInsets.all(11.0),
-                  child: AppHelpers.svgAsset(
-                    assetName: prefixIconName!,
-                    isIcon: true,
-                  ),
-                )
-              : null,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide:
-                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
+  Widget build(BuildContext context) {
+    final bool isDarkMode = AppHelpers.isDarkMode(context);
+    return DropdownButtonFormField(
+      dropdownColor: isDarkMode ? AppColors.surfaceDark : AppColors.white,
+      style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: isDarkMode ? AppColors.white : AppColors.black),
+      icon: const SizedBox(),
+      borderRadius: BorderRadius.circular(12),
+      initialValue: value,
+      items: items,
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        prefixIcon: prefixIconName != null
+            ? Padding(
+                padding: const EdgeInsets.all(11.0),
+                child: AppHelpers.svgAsset(
+                  assetName: prefixIconName!,
+                  isIcon: true,
+                  color: isDarkMode ? AppColors.white : null,
+                ),
+              )
+            : null,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(
+            color: isDarkMode
+                ? AppColors.white.withOpacity(0.1)
+                : AppColors.grey.withValues(alpha: 0.3),
           ),
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(16),
-            ),
-            borderSide:
-                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide:
-                BorderSide(color: AppColors.grey.withValues(alpha: 0.3)),
-          ),
-          labelText: label,
         ),
-      );
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(16),
+          ),
+          borderSide: BorderSide(
+            color: isDarkMode
+                ? AppColors.white.withOpacity(0.1)
+                : AppColors.grey.withValues(alpha: 0.3),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(
+            color: isDarkMode
+                ? AppColors.white.withOpacity(0.1)
+                : AppColors.grey.withValues(alpha: 0.3),
+          ),
+        ),
+        labelText: label,
+        labelStyle: TextStyle(
+          color: isDarkMode ? AppColors.textHint : AppColors.textSecondary,
+        ),
+      ),
+    );
+  }
 }

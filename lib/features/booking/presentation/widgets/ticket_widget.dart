@@ -40,7 +40,9 @@ class _TicketWidgetState extends State<TicketWidget> {
               clipper: TicketClipper(),
               child: Container(
                 decoration: BoxDecoration(
-                  color: AppColors.white,
+                  color: AppHelpers.isDarkMode(context)
+                      ? AppColors.secondaryDark
+                      : AppColors.white,
                   borderRadius: BorderRadius.circular(24),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 16),

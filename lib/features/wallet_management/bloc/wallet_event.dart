@@ -68,7 +68,13 @@ class DepositEvent extends WalletEvent {
   final String onRetryRoute;
 }
 
-class WithdrawalEvent extends WalletEvent {
-  const WithdrawalEvent({required this.amount});
-  final int amount;
+class ChargeMoneyEvent extends WalletEvent {
+  const ChargeMoneyEvent({
+    required this.amount,
+    required this.description,
+    required this.paymentId,
+  });
+  final double amount;
+  final String description;
+  final int paymentId;
 }

@@ -260,6 +260,9 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
             height: 50,
             width: AppHelpers.getScreenWidth(context),
             child: AppPrimaryButton(
+              bgColor: AppHelpers.isDarkMode(context)
+                  ? AppColors.primary
+                  : AppColors.black,
               onPressed: () {
                 // Clear previous error
                 setState(() {

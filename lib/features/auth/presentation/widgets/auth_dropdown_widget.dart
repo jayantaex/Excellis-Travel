@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../utils/app_helpers.dart';
 
 class AuthDropdownWidget extends StatefulWidget {
   const AuthDropdownWidget({super.key, this.onChanged, this.items});
@@ -29,12 +30,16 @@ class _AuthDropdownWidgetState extends State<AuthDropdownWidget> {
         child: DropdownButton<String>(
           value: _defaultValue,
           borderRadius: BorderRadius.circular(8),
-          dropdownColor: AppColors.white,
+          dropdownColor: AppHelpers.isDarkMode(context)
+              ? AppColors.secondaryDark
+              : AppColors.white,
           underline: const SizedBox(),
           icon: const Icon(Icons.keyboard_arrow_down_rounded),
-          style: const TextStyle(
+          style: TextStyle(
               fontSize: 16,
-              color: AppColors.black,
+              color: AppHelpers.isDarkMode(context)
+                  ? AppColors.white
+                  : AppColors.black,
               fontWeight: FontWeight.w400),
           isExpanded: true,
           items: widget.items,

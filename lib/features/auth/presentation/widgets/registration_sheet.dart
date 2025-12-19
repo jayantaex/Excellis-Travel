@@ -349,11 +349,12 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: AuthInputWidget(
-                          isPassword: true,
-                          maxCharacters: 20,
-                          controller: _conPasswordController,
-                          label: 'Confirm Password',
-                          hint: 'Re-Enter your Password'),
+                        isPassword: true,
+                        maxCharacters: 20,
+                        controller: _conPasswordController,
+                        label: 'Confirm Password',
+                        hint: 'Re-Enter your Password',
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Padding(
@@ -375,31 +376,38 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: AppPrimaryButton(
-                        title: 'REGISTER',
-                        isLoading: state is RegistrationInProgress,
-                        onPressed: () {
-                          context.read<AuthBloc>().add(
-                                RegisterEvent(
-                                  confirmPassword: _conPasswordController.text,
-                                  password: _passwordController.text,
-                                  nearByAirport: _nearbyAirportController.text,
-                                  userType: usertype,
-                                  companyName: _companyNameController.text,
-                                  firstName: _firstNameController.text,
-                                  lastName: _lastNameController.text,
-                                  panNumber: _panNoController.text,
-                                  emailId: _emailController.text,
-                                  phoneNumber: _phoneController.text,
-                                  officeAddress: _officeAddressController.text,
-                                  pinCode: _pinController.text,
-                                  city: selectedCity,
-                                  state: selectedState,
-                                  gstNumber: _gstNoController.text,
-                                  aadhaarNumber: _aadhaarNoController.text,
-                                ),
-                              );
-                        },
+                      child: SizedBox(
+                        height: 45,
+                        width: AppHelpers.getScreenWidth(context),
+                        child: AppPrimaryButton(
+                          title: 'REGISTER',
+                          isLoading: state is RegistrationInProgress,
+                          onPressed: () {
+                            context.read<AuthBloc>().add(
+                                  RegisterEvent(
+                                    confirmPassword:
+                                        _conPasswordController.text,
+                                    password: _passwordController.text,
+                                    nearByAirport:
+                                        _nearbyAirportController.text,
+                                    userType: usertype,
+                                    companyName: _companyNameController.text,
+                                    firstName: _firstNameController.text,
+                                    lastName: _lastNameController.text,
+                                    panNumber: _panNoController.text,
+                                    emailId: _emailController.text,
+                                    phoneNumber: _phoneController.text,
+                                    officeAddress:
+                                        _officeAddressController.text,
+                                    pinCode: _pinController.text,
+                                    city: selectedCity,
+                                    state: selectedState,
+                                    gstNumber: _gstNoController.text,
+                                    aadhaarNumber: _aadhaarNoController.text,
+                                  ),
+                                );
+                          },
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),

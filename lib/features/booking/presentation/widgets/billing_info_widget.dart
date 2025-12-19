@@ -12,62 +12,67 @@ class BillingInfo extends StatelessWidget {
   final String? billingDate;
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: AppColors.grey.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          children: [
-            ItemRow(
-              title: 'Address 1',
-              value: '${billingAddress?.addressLine1 ?? ''} ',
-            ),
-            ItemRow(
-              title: 'Address 2',
-              value: '${billingAddress?.addressLine2 ?? ''} ',
-            ),
-            ItemRow(
-              title: 'City',
-              value: '${billingAddress?.city ?? ''} ',
-            ),
-            ItemRow(
-              title: 'State',
-              value: '${billingAddress?.state ?? ''} ',
-            ),
-            ItemRow(
-              title: 'Pin Code',
-              value: '${billingAddress?.pinCode ?? ''} ',
-            ),
-            ItemRow(
-              title: 'Country',
-              value: '${billingAddress?.country ?? ''} ',
-            ),
-            const ItemRow(
-              title: '',
-              value: '',
-            ),
-            ItemRow(
-              title: 'Email',
-              value: '${contactDetails?.email ?? ''} ',
-            ),
-            ItemRow(
-              title: 'Phone',
-              value: '${contactDetails?.phoneNumber ?? ''} ',
-            ),
-            ItemRow(
-              title: 'Country Code',
-              value: '${contactDetails?.countryCode ?? ''} ',
-            ),
-            ItemRow(
-              title: 'Billing Date',
-              value:
-                  '${AppHelpers.formatDate(DateTime.parse(billingDate ?? DateTime.now().toString()), pattern: 'dd MMM, yyyy hh:mm:aa')} ',
-            )
-          ],
-        ),
-      );
+  Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: isDark
+            ? AppColors.white.withValues(alpha: 0.05)
+            : AppColors.grey.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        children: [
+          ItemRow(
+            title: 'Address 1',
+            value: '${billingAddress?.addressLine1 ?? ''} ',
+          ),
+          ItemRow(
+            title: 'Address 2',
+            value: '${billingAddress?.addressLine2 ?? ''} ',
+          ),
+          ItemRow(
+            title: 'City',
+            value: '${billingAddress?.city ?? ''} ',
+          ),
+          ItemRow(
+            title: 'State',
+            value: '${billingAddress?.state ?? ''} ',
+          ),
+          ItemRow(
+            title: 'Pin Code',
+            value: '${billingAddress?.pinCode ?? ''} ',
+          ),
+          ItemRow(
+            title: 'Country',
+            value: '${billingAddress?.country ?? ''} ',
+          ),
+          const ItemRow(
+            title: '',
+            value: '',
+          ),
+          ItemRow(
+            title: 'Email',
+            value: '${contactDetails?.email ?? ''} ',
+          ),
+          ItemRow(
+            title: 'Phone',
+            value: '${contactDetails?.phoneNumber ?? ''} ',
+          ),
+          ItemRow(
+            title: 'Country Code',
+            value: '${contactDetails?.countryCode ?? ''} ',
+          ),
+          ItemRow(
+            title: 'Billing Date',
+            value:
+                '${AppHelpers.formatDate(DateTime.parse(billingDate ?? DateTime.now().toString()), pattern: 'dd MMM, yyyy hh:mm:aa')} ',
+          )
+        ],
+      ),
+    );
+  }
 }
 
 class ItemRow extends StatelessWidget {
@@ -76,30 +81,37 @@ class ItemRow extends StatelessWidget {
   final String value;
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.only(top: 4, bottom: 4),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              width: AppHelpers.getScreenWidth(context) * 0.6,
-              child: Text(
-                value,
-                textAlign: TextAlign.end,
-                maxLines: 2,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.grey,
-                  overflow: TextOverflow.ellipsis,
-                ),
+  Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
+    return Container(
+      padding: const EdgeInsets.only(top: 4, bottom: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: isDark ? AppColors.white : AppColors.black),
+          ),
+          SizedBox(
+            width: AppHelpers.getScreenWidth(context) * 0.6,
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              maxLines: 2,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color:
+                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+                overflow: TextOverflow.ellipsis,
               ),
-            )
-          ],
-        ),
-      );
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }

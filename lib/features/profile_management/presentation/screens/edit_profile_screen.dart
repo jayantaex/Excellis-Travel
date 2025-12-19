@@ -335,28 +335,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       },
                                       builder: (BuildContext context,
                                               ProfileState state) =>
-                                          AppPrimaryButton(
-                                        onPressed: () {
-                                          final Map<String, String> data =
-                                              <String, String>{
-                                            'first_name': _firstNameController
-                                                .text
-                                                .trim(),
-                                            'last_name':
-                                                _lastNameController.text.trim(),
-                                            'email':
-                                                _emailController.text.trim(),
-                                            'phone':
-                                                _phoneController.text.trim(),
-                                            'address':
-                                                '${_addressController.text.trim().split(',').first}, ${_cityController.text.trim()}, $_selectedState, ${_pinController.text.trim()}',
-                                          };
-                                          context.read<ProfileBloc>().add(
-                                              UpdateProfileEvent(data: data));
-                                        },
-                                        title: 'Update',
-                                        isLoading: state is ProfileLoading,
-                                        bgColor: AppColors.primary,
+                                          SizedBox(
+                                        height: 45,
+                                        width:
+                                            AppHelpers.getScreenWidth(context),
+                                        child: AppPrimaryButton(
+                                          onPressed: () {
+                                            final Map<String, String> data =
+                                                <String, String>{
+                                              'first_name': _firstNameController
+                                                  .text
+                                                  .trim(),
+                                              'last_name': _lastNameController
+                                                  .text
+                                                  .trim(),
+                                              'email':
+                                                  _emailController.text.trim(),
+                                              'phone':
+                                                  _phoneController.text.trim(),
+                                              'address':
+                                                  '${_addressController.text.trim().split(',').first}, ${_cityController.text.trim()}, $_selectedState, ${_pinController.text.trim()}',
+                                            };
+                                            context.read<ProfileBloc>().add(
+                                                UpdateProfileEvent(data: data));
+                                          },
+                                          title: 'Update',
+                                          isLoading: state is ProfileLoading,
+                                          bgColor: AppColors.primary,
+                                        ),
                                       ),
                                     )
                                   ],

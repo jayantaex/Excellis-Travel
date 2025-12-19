@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/constants/app_styles.dart';
@@ -7,7 +6,9 @@ import '../../../../../core/widgets/app_sheet.dart';
 import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../profile_management/bloc/profile_bloc.dart';
+import '../../../../wallet_management/bloc/wallet_bloc.dart';
 import '../../../bloc/flight_bloc.dart';
+import '../../../data/dto/billing_address_model.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import '../../../data/models/passenger_model.dart';
 
@@ -16,32 +17,14 @@ class ProceedToPayWidget extends StatefulWidget {
     super.key,
     required this.passengers,
     required this.offerFareEnabled,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.mobileNumber,
-    required this.addressLine1,
-    required this.addressLine2,
-    required this.city,
-    required this.pinCode,
-    required this.country,
-    required this.countryCode,
     required this.walletBalance,
+    this.billingAddress,
   });
 
   final List<PassengerModel> passengers;
   final bool offerFareEnabled;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String mobileNumber;
-  final String addressLine1;
-  final String addressLine2;
-  final String city;
-  final String pinCode;
-  final String country;
-  final String countryCode;
   final double walletBalance;
+  final BillingAddressModel? billingAddress;
 
   @override
   State<ProceedToPayWidget> createState() => _ProceedToPayWidgetState();
@@ -63,241 +46,243 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
   ];
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<FlightBloc, FlightState>(
-        builder: (context, flightState) {
-          if (flightState is! FlightOfferPriceLoaded) {
-            return const SizedBox.shrink();
-          }
+  Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
+    return BlocBuilder<FlightBloc, FlightState>(
+      builder: (context, flightState) {
+        if (flightState is! FlightOfferPriceLoaded) {
+          return const SizedBox.shrink();
+        }
 
-          final flightOffer = flightState.data.data!.flightOffers!.first;
-          final grandTotal = flightOffer.price!.grandTotal!;
-          final markup = flightOffer.price!.markup!;
-          final myMarkup = flightState.data.data?.myMarkup;
-          final travellersCount = flightOffer.travelerPricings!.length;
+        final flightOffer = flightState.data.data!.flightOffers!.first;
+        final grandTotal = flightOffer.price!.grandTotal!;
+        final markup = flightOffer.price!.markup!;
+        final myMarkup = flightState.data.data?.myMarkup;
+        final travellersCount = flightOffer.travelerPricings!.length;
 
-          return BlocBuilder<ProfileBloc, ProfileState>(
-            builder: (context, profileState) {
-              if (profileState is! ProfileLoaded) {
-                return const SizedBox.shrink();
-              }
+        return BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, profileState) {
+            if (profileState is! ProfileLoaded) {
+              return const SizedBox.shrink();
+            }
 
-              // final profile = profileState.profileData;
+            // final profile = profileState.profileData;
 
-              return SizedBox(
-                width: AppHelpers.getScreenWidth(context),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    bottom: 16,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: AppHelpers.getScreenWidth(context) * 0.45,
-                        child: ListTile(
-                          onTap: () async {
-                            showAppSheet(
-                                context: context,
-                                title: 'Payment Mode',
-                                child: Column(
-                                  children: [
-                                    for (int i = 0;
-                                        i < paymentModes.length;
-                                        i++)
-                                      ListTile(
-                                        onTap: () {
-                                          setState(() {
-                                            paymentMode =
-                                                paymentModes[i]['value'];
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        leading: AppHelpers.assetImage(
-                                          assetName: paymentModes[i]['icon'],
-                                          width: 24,
-                                          height: 24,
-                                        ),
-                                        title: Text(
-                                          paymentModes[i]['name'],
-                                          style: const TextStyle(
+            return SizedBox(
+              width: AppHelpers.getScreenWidth(context),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  bottom: 16,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: AppHelpers.getScreenWidth(context) * 0.45,
+                      child: ListTile(
+                        onTap: () async {
+                          showAppSheet(
+                              context: context,
+                              title: 'Payment Mode',
+                              child: Column(
+                                children: [
+                                  for (int i = 0; i < paymentModes.length; i++)
+                                    ListTile(
+                                      onTap: () {
+                                        setState(() {
+                                          paymentMode =
+                                              paymentModes[i]['value'];
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      leading: AppHelpers.assetImage(
+                                        assetName: paymentModes[i]['icon'],
+                                        width: 24,
+                                        height: 24,
+                                      ),
+                                      title: Text(
+                                        paymentModes[i]['name'],
+                                        style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        subtitle: paymentModes[i]['value'] ==
-                                                'wallet'
-                                            ? Text(
-                                                double.parse(grandTotal) >
-                                                        widget.walletBalance
-                                                    ? 'Insufficient Balance'
-                                                    : 'Available Balance: ₹${widget.walletBalance}',
-                                                style: TextStyle(
-                                                  color:
-                                                      double.parse(grandTotal) >
-                                                              widget
-                                                                  .walletBalance
-                                                          ? AppColors.error
-                                                          : AppColors.success,
-                                                  fontSize: 12,
-                                                ),
-                                              )
-                                            : null,
-                                        trailing: paymentMode ==
-                                                paymentModes[i]['value']
-                                            ? const Icon(
-                                                Icons
-                                                    .check_circle_outline_rounded,
-                                                color: AppColors.primary,
-                                              )
-                                            : const SizedBox.shrink(),
-                                      )
-                                  ],
-                                ));
-                          },
-                          contentPadding: const EdgeInsets.all(0),
-                          horizontalTitleGap: 8,
-                          leading: AppHelpers.assetImage(
-                            assetName:
-                                paymentMode == 'wallet' ? 'wallet' : 'razorpay',
-                            width: 25,
-                            height: 25,
-                          ),
-                          title: const Row(
-                            children: [
-                              Text(
-                                'PAYING VIA',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.grey,
-                                ),
+                                            color: isDark
+                                                ? AppColors.white
+                                                : AppColors.black),
+                                      ),
+                                      subtitle: paymentModes[i]['value'] ==
+                                              'wallet'
+                                          ? Text(
+                                              double.parse(grandTotal) >
+                                                      widget.walletBalance
+                                                  ? 'Insufficient Balance'
+                                                  : 'Available Balance: ₹${widget.walletBalance}',
+                                              style: TextStyle(
+                                                color:
+                                                    double.parse(grandTotal) >
+                                                            widget.walletBalance
+                                                        ? AppColors.error
+                                                        : AppColors.success,
+                                                fontSize: 12,
+                                              ),
+                                            )
+                                          : null,
+                                      trailing: paymentMode ==
+                                              paymentModes[i]['value']
+                                          ? const Icon(
+                                              Icons
+                                                  .check_circle_outline_rounded,
+                                              color: AppColors.primary,
+                                            )
+                                          : const SizedBox.shrink(),
+                                    )
+                                ],
+                              ));
+                        },
+                        contentPadding: const EdgeInsets.all(0),
+                        horizontalTitleGap: 8,
+                        leading: AppHelpers.assetImage(
+                          assetName:
+                              paymentMode == 'wallet' ? 'wallet' : 'razorpay',
+                          width: 25,
+                          height: 25,
+                        ),
+                        title: Row(
+                          children: [
+                            const Text(
+                              'PAYING VIA',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.grey,
                               ),
-                              Icon(
-                                Icons.keyboard_arrow_down_rounded,
-                                color: AppColors.black,
-                                size: 14,
-                              ),
-                            ],
-                          ),
-                          subtitle: Text(
-                            paymentModes.firstWhere(
-                              (element) => element['value'] == paymentMode,
-                            )['name'],
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.black,
                             ),
+                            Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              color: isDark ? AppColors.white : AppColors.black,
+                              size: 14,
+                            ),
+                          ],
+                        ),
+                        subtitle: Text(
+                          paymentModes.firstWhere(
+                            (element) => element['value'] == paymentMode,
+                          )['name'],
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: isDark ? AppColors.white : AppColors.black,
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: AppHelpers.getScreenWidth(context) * 0.45,
-                        child: AppPrimaryButton(
-                          onPressed: () async {
-                            try {
-                              if (paymentMode == 'wallet' &&
-                                  widget.walletBalance <
-                                      double.parse(grandTotal)) {
-                                AppHelpers.showSnackBar(
-                                    context, 'Insufficient balance in wallet');
-                                return;
-                              }
-                              if (travellersCount != widget.passengers.length) {
-                                AppHelpers.showSnackBar(context,
-                                    'Add all the travellers to proceed with flight booking');
-                                return;
-                              }
-                              if (paymentMode == 'wallet') {
-                                AppHelpers.showSnackBar(
-                                    context, 'Feature not implemented yet');
-                                return;
-                              }
-
-                              // Reset travellers lists
-                              travellers = {
-                                'adults': <Map<String, dynamic>>[],
-                                'infants': <Map<String, dynamic>>[],
-                                'children': <Map<String, dynamic>>[]
-                              };
-
-                              for (int i = 0;
-                                  i < widget.passengers.length;
-                                  i++) {
-                                final Map<String, dynamic> data =
-                                    getPassengetDetails(
-                                  passenger: widget.passengers[i],
-                                );
-                                if (widget.passengers[i].type == 'ADULT') {
-                                  travellers['adults']?.add(data);
-                                }
-                                if (widget.passengers[i].type == 'CHILD') {
-                                  travellers['children']?.add(data);
-                                }
-                                if (widget.passengers[i].type ==
-                                    'HELD_INFANT') {
-                                  travellers['infants']?.add(data);
-                                }
-                              }
-
-                              final Map<String, dynamic> billingAddress =
-                                  getBillingAddress(
-                                addressLine1: widget.addressLine1,
-                                addressLine2: widget.addressLine2,
-                              );
-                              final Map<String, dynamic> contactDetails =
-                                  getContactDetails(
-                                email: widget.email,
-                                phone: widget.mobileNumber,
-                              );
-                              final Map<String, dynamic> fareDetails =
-                                  calculateFareDetails(
-                                myMarkupPrice: myMarkup?.value ?? '0',
-                                grandTotal: grandTotal,
-                                markupPrice: markup,
-                                taxes: flightOffer.price?.fees,
-                                showTotalFare: widget.offerFareEnabled,
-                                myMarkupType: myMarkup?.fareType ?? 'Fixed',
-                              );
-                              createPaymentBody = getCreatePaymentBody(
-                                markupPrice: markup,
-                                myMarkupPrice: myMarkup?.value ?? '0',
-                                myMarkupType: myMarkup?.type ?? 'Fixed',
-                                billingAddress: billingAddress,
-                                contactDetails: contactDetails,
-                                flightOfferData: flightOffer.toJson(),
-                                travellers: travellers,
-                                fareDetails: fareDetails,
-                                isOfferEnabled: widget.offerFareEnabled,
-                              );
-                              log('$createPaymentBody');
-
-                              if (context.mounted) {
-                                context.read<FlightBloc>().add(
-                                      CreateFlightOrder(
-                                          body: createPaymentBody),
-                                    );
-                              }
-                            } catch (e) {
-                              log('ERROR: ${e.toString()}');
+                    ),
+                    SizedBox(
+                      width: AppHelpers.getScreenWidth(context) * 0.45,
+                      child: AppPrimaryButton(
+                        onPressed: () async {
+                          try {
+                            if (paymentMode == 'wallet' &&
+                                widget.walletBalance <
+                                    double.parse(grandTotal)) {
+                              AppHelpers.showSnackBar(
+                                  context, 'Insufficient balance in wallet');
+                              return;
                             }
-                          },
-                          style: const TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w400),
-                          title: 'Book now',
-                          isLoading: false,
-                        ),
+                            if (travellersCount != widget.passengers.length) {
+                              AppHelpers.showSnackBar(context,
+                                  'Add all the travellers to proceed with flight booking');
+                              return;
+                            }
+                            if (widget.billingAddress == null) {
+                              AppHelpers.showSnackBar(context,
+                                  'Billing address is missing. Please wait or add one.');
+                              return;
+                            }
+
+                            // Reset travellers lists
+                            travellers = {
+                              'adults': <Map<String, dynamic>>[],
+                              'infants': <Map<String, dynamic>>[],
+                              'children': <Map<String, dynamic>>[]
+                            };
+
+                            for (int i = 0; i < widget.passengers.length; i++) {
+                              final Map<String, dynamic> data =
+                                  getPassengetDetails(
+                                passenger: widget.passengers[i],
+                              );
+                              if (widget.passengers[i].type == 'ADULT') {
+                                travellers['adults']?.add(data);
+                              }
+                              if (widget.passengers[i].type == 'CHILD') {
+                                travellers['children']?.add(data);
+                              }
+                              if (widget.passengers[i].type == 'HELD_INFANT') {
+                                travellers['infants']?.add(data);
+                              }
+                            }
+
+                            final Map<String, dynamic> billingAddress =
+                                getBillingAddress(
+                              billingAddress: widget.billingAddress!,
+                            );
+                            final Map<String, dynamic> contactDetails =
+                                getContactDetails(
+                              email: widget.billingAddress!.email,
+                              phone: widget.billingAddress!.mobileNumber,
+                            );
+                            final Map<String, dynamic> fareDetails =
+                                calculateFareDetails(
+                              myMarkupPrice: myMarkup?.value ?? '0',
+                              grandTotal: grandTotal,
+                              markupPrice: markup,
+                              taxes: flightOffer.price?.fees,
+                              showTotalFare: widget.offerFareEnabled,
+                              myMarkupType: myMarkup?.fareType ?? 'Fixed',
+                            );
+                            createPaymentBody = getCreatePaymentBody(
+                              markupPrice: markup,
+                              myMarkupPrice: myMarkup?.value ?? '0',
+                              myMarkupType: myMarkup?.type ?? 'Fixed',
+                              billingAddress: billingAddress,
+                              contactDetails: contactDetails,
+                              flightOfferData: flightOffer.toJson(),
+                              travellers: travellers,
+                              fareDetails: fareDetails,
+                              isOfferEnabled: widget.offerFareEnabled,
+                            );
+                            log(billingAddress.toString());
+                            if (context.mounted) {
+                              context.read<WalletBloc>().add(
+                                    const FetchWalletEvent(),
+                                  );
+                              context.read<FlightBloc>().add(
+                                    CreateFlightOrder(
+                                      body: createPaymentBody,
+                                      paymentVia: paymentMode,
+                                    ),
+                                  );
+                            }
+                          } catch (e) {
+                            log('ERROR: ${e.toString()}');
+                          }
+                        },
+                        style: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w400),
+                        title: 'Book now',
+                        isLoading: false,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              );
-            },
-          );
-        },
-      );
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 }
 
 Map<String, dynamic> getCreatePaymentBody(
@@ -326,22 +311,17 @@ Map<String, dynamic> getCreatePaymentBody(
     };
 
 Map<String, dynamic> getBillingAddress(
-    {required String addressLine1, required String addressLine2}) {
-  final int addressLenght = addressLine1.split(',').length;
-  final String countryCode = addressLine1.split(',').last.trim();
-  final String pinCode = addressLine1.split(',')[addressLenght - 2].trim();
-  final String city = addressLine1.split(',')[addressLenght - 4].trim();
-  final String state = addressLine1.split(',')[addressLenght - 3].trim();
-
-  return <String, dynamic>{
-    'addressLine1': addressLine1,
-    'addressLine2': addressLine2,
-    'city': city,
-    'state': state,
-    'pinCode': pinCode,
-    'country': countryCode.isEmpty ? 'IN' : countryCode.toUpperCase()
-  };
-}
+        {required BillingAddressModel billingAddress}) =>
+    <String, dynamic>{
+      'addressLine1': billingAddress.addressLine1,
+      'addressLine2': billingAddress.addressLine2,
+      'city': billingAddress.city,
+      'state': billingAddress.state,
+      'pinCode': billingAddress.pinCode,
+      'country': billingAddress.country.isEmpty
+          ? 'IN'
+          : billingAddress.country.toUpperCase()
+    };
 
 Map<String, dynamic> getContactDetails(
         {required String phone, required String email}) =>
