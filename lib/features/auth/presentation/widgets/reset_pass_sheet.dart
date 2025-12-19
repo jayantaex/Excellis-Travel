@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../utils/app_helpers.dart';
@@ -175,6 +176,9 @@ class _ResetPassSheetState extends State<ResetPassSheet> {
               title: 'Reset',
               isLoading: false,
               onPressed: _handleSubmit,
+              bgColor: AppHelpers.isDarkMode(context)
+                  ? AppColors.primary
+                  : AppColors.black,
             ),
           ],
         ),

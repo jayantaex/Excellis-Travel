@@ -5,7 +5,9 @@ import '../../../../utils/app_helpers.dart';
 Future<void> showFaqSheet({required BuildContext context}) async {
   await showModalBottomSheet(
     isScrollControlled: true,
-    backgroundColor: AppColors.white,
+    backgroundColor: AppHelpers.isDarkMode(context)
+        ? AppColors.secondaryDark
+        : AppColors.white,
     context: context,
     builder: (BuildContext context) => FaqSheet(),
   );
