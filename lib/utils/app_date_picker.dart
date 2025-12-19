@@ -1,4 +1,5 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 
 import '../core/constants/app_styles.dart';
@@ -10,7 +11,8 @@ Future<DateTime?> showAppDatePicker({
   DateTime? lastDate,
 }) async =>
     await showDatePickerDialog(
-      slidersColor: AppColors.black,
+      slidersColor:
+          AppHelpers.isDarkMode(context) ? AppColors.white : AppColors.black,
       padding: const EdgeInsets.all(16),
       splashColor: AppColors.primary,
       selectedCellDecoration: const BoxDecoration(
@@ -26,8 +28,9 @@ Future<DateTime?> showAppDatePicker({
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),
-      enabledCellsTextStyle: const TextStyle(
-        color: AppColors.black,
+      enabledCellsTextStyle: TextStyle(
+        color:
+            AppHelpers.isDarkMode(context) ? AppColors.white : AppColors.black,
         fontWeight: FontWeight.w400,
         fontSize: 16,
       ),

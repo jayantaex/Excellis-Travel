@@ -73,8 +73,15 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 20),
                         decoration: BoxDecoration(
-                          color: AppColors.white,
+                          color: AppHelpers.isDarkMode(context)
+                              ? AppColors.surfaceDark
+                              : AppColors.white,
                           borderRadius: BorderRadius.circular(24),
+                          border: AppHelpers.isDarkMode(context)
+                              ? Border.all(
+                                  color: AppColors.white.withOpacity(0.05),
+                                  width: 1)
+                              : null,
                         ),
                         child: Column(
                           children: <Widget>[
@@ -217,12 +224,17 @@ class NoAirPortFound extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => const Center(
-        child: Text('No Airport Found',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: AppColors.grey,
-            )),
-      );
+  Widget build(BuildContext context) {
+    final bool isDarkMode = AppHelpers.isDarkMode(context);
+    return Center(
+      child: Text('No Airport Found',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+            color: isDarkMode
+                ? AppColors.white.withOpacity(0.5)
+                : AppColors.textSecondary,
+          )),
+    );
+  }
 }

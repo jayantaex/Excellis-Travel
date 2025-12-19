@@ -32,8 +32,9 @@ class GetFlightsOfferPriceEvent extends FlightEvent {
 }
 
 class CreateFlightOrder extends FlightEvent {
-  const CreateFlightOrder({required this.body});
+  const CreateFlightOrder({required this.body, required this.paymentVia});
   final Map<String, dynamic> body;
+  final String paymentVia;
 }
 
 class VerifyPayment extends FlightEvent {

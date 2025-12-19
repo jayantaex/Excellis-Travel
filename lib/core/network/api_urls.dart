@@ -81,4 +81,6 @@ class EndPoints {
   static const String walletTransactions = '/wallet/transactions';
   static const String walletWithdraw = '/wallet/withdraw';
   static const String walletRecharge = '/wallet/recharge';
+
+  static const String walletCharge = '/wallet/debit';
 }

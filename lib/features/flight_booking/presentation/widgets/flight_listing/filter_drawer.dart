@@ -153,12 +153,14 @@ class _FilterContentState extends State<FilterContent> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Filters',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.black,
+                      color: AppHelpers.isDarkMode(context)
+                          ? AppColors.white
+                          : AppColors.black,
                     ),
                   ),
                   IconButton(
@@ -355,6 +357,9 @@ class _FilterContentState extends State<FilterContent> {
                       height: 45,
                       width: 120,
                       child: AppPrimaryButton(
+                        bgColor: AppHelpers.isDarkMode(context)
+                            ? AppColors.primary
+                            : AppColors.black,
                         onPressed: () {
                           widget.onApply(
                               FilterDataModel(

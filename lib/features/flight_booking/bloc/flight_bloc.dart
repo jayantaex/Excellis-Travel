@@ -213,7 +213,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
             error: res.errorMessage ?? 'Something went wrong'));
         return;
       }
-      emit(FlightOrderCreated(data: res.data!));
+      emit(FlightOrderCreated(data: res.data!, paymentVia: event.paymentVia));
     } catch (e) {
       emit(FlightOrderCreationError(error: '$e'));
     }
@@ -273,8 +273,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         dictionaries: dataToSort.dictionaries,
         meta: dataToSort.meta,
       );
-
-
 
       // Apply sorting based on filter name
       switch (event.filterName) {

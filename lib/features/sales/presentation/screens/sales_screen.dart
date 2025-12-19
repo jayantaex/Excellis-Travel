@@ -154,8 +154,10 @@ class _SalesScreenState extends State<SalesScreen> {
                                       },
                                     );
                                   },
-                                  icon: const Icon(Icons.filter_alt,
-                                      color: AppColors.white)),
+                                  icon: Icon(Icons.filter_alt,
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : AppColors.black)),
                             ),
                     );
                   }
@@ -450,9 +452,13 @@ class _SalesScreenState extends State<SalesScreen> {
                                               children: [
                                                 Text(
                                                   'Total Booking (${salesData.pagination?.totalItems ?? 0})',
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     fontSize: 12,
-                                                    color: AppColors.white,
+                                                    color:
+                                                        AppHelpers.isDarkMode(
+                                                                context)
+                                                            ? AppColors.white
+                                                            : AppColors.black,
                                                   ),
                                                 ),
                                                 _startDateController
@@ -472,15 +478,20 @@ class _SalesScreenState extends State<SalesScreen> {
                                                             onPressed: () {
                                                               _resetFilters();
                                                             },
-                                                            child: const Text(
+                                                            child: Text(
                                                               'Clear',
                                                               style: TextStyle(
                                                                 fontSize: 14,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
-                                                                color: AppColors
-                                                                    .white,
+                                                                color: AppHelpers
+                                                                        .isDarkMode(
+                                                                            context)
+                                                                    ? AppColors
+                                                                        .white
+                                                                    : AppColors
+                                                                        .primary,
                                                               ),
                                                             )),
                                                       )

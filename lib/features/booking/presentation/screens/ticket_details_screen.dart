@@ -33,6 +33,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final double width = AppHelpers.getScreenWidth(context);
+    final bool isDark = AppHelpers.isDarkMode(context);
 
     return Scaffold(
       body: AppGradientBg(
@@ -53,8 +54,11 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(32),
+                      color: isDark ? AppColors.secondaryDark : AppColors.white,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(32),
+                        topRight: Radius.circular(32),
+                      ),
                     ),
                     child: SingleChildScrollView(
                       child: Column(
@@ -89,7 +93,9 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                   ..moveTo(0, size.height)
                                   ..relativeLineTo(size.width, 0),
                                 dashPattern: <double>[5, 5],
-                                color: AppColors.grey.withValues(alpha: 0.5),
+                                color: isDark
+                                    ? AppColors.white.withValues(alpha: 0.3)
+                                    : AppColors.grey.withValues(alpha: 0.5),
                               ),
                               child: Padding(
                                 padding:
@@ -111,32 +117,41 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                               children: <Widget>[
                                                 Text(
                                                   '${e.segments?.first.departure?.iataCode}',
-                                                  style: const TextStyle(
-                                                    fontSize: 24,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
+                                                  style: TextStyle(
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: isDark
+                                                          ? AppColors.white
+                                                          : AppColors.black),
                                                 ),
                                                 Text(
                                                   AppHelpers.formatDateTime(
                                                       DateTime.parse(
                                                           '${e.segments?.first.departure?.at}'),
                                                       pattern: 'dd MMM, yyyy'),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 11,
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      color: AppColors.grey),
+                                                      color: isDark
+                                                          ? AppColors.white
+                                                              .withOpacity(0.7)
+                                                          : AppColors.grey),
                                                 ),
                                                 Text(
                                                   AppHelpers.formatDateTime(
                                                       DateTime.parse(
                                                           '${e.segments?.first.departure?.at}'),
                                                       pattern: 'hh:mm'),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                       fontSize: 11,
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      color: AppColors.grey),
+                                                      color: isDark
+                                                          ? AppColors.white
+                                                              .withOpacity(0.7)
+                                                          : AppColors.grey),
                                                 ),
                                               ],
                                             )),
@@ -146,13 +161,19 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                               children: <Widget>[
                                                 AppHelpers.svgAsset(
                                                     assetName: 'flight',
-                                                    width: 100),
-                                                const Text(
+                                                    width: 100,
+                                                    color: isDark
+                                                        ? AppColors.white
+                                                        : null),
+                                                Text(
                                                   '',
                                                   style: TextStyle(
                                                       fontSize: 12,
                                                       fontWeight:
-                                                          FontWeight.w500),
+                                                          FontWeight.w500,
+                                                      color: isDark
+                                                          ? AppColors.white
+                                                          : AppColors.black),
                                                 ),
                                               ],
                                             )),
@@ -167,30 +188,38 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                             children: <Widget>[
                                               Text(
                                                 '${e.segments?.last.arrival?.iataCode}',
-                                                style: const TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
+                                                style: TextStyle(
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: isDark
+                                                        ? AppColors.white
+                                                        : AppColors.black),
                                               ),
                                               Text(
                                                 AppHelpers.formatDateTime(
                                                     DateTime.parse(
                                                         '${e.segments?.last.arrival?.at}'),
                                                     pattern: 'dd MMM, yyyy'),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 11,
                                                     fontWeight: FontWeight.w400,
-                                                    color: AppColors.grey),
+                                                    color: isDark
+                                                        ? AppColors.white
+                                                            .withOpacity(0.7)
+                                                        : AppColors.grey),
                                               ),
                                               Text(
                                                 AppHelpers.formatDateTime(
                                                     DateTime.parse(
                                                         '${e.segments?.last.arrival?.at}'),
                                                     pattern: 'hh:mm'),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 11,
                                                     fontWeight: FontWeight.w400,
-                                                    color: AppColors.grey),
+                                                    color: isDark
+                                                        ? AppColors.white
+                                                            .withOpacity(0.7)
+                                                        : AppColors.grey),
                                               ),
                                             ],
                                           ),
@@ -208,23 +237,28 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 12),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text('Passenger Details',
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  )),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: isDark
+                                          ? AppColors.white
+                                          : AppColors.black)),
                             ),
                           ),
                           ...widget.ticketData!.travellerDetails!.adults!.map(
                             (Adult adult) => ListTile(
-                              leading: const CircleAvatar(
+                              leading: CircleAvatar(
                                 radius: 16,
-                                child: Icon(
+                                backgroundColor: isDark
+                                    ? AppColors.white.withValues(alpha: 0.1)
+                                    : null,
+                                child: const Icon(
                                   Icons.person,
                                   color: AppColors.primary,
                                   size: 16,
@@ -232,6 +266,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                               ),
                               title: Text(
                                 '${adult.firstName ?? ''} ${adult.lastName ?? ''}',
+                                style: TextStyle(
+                                    color: isDark
+                                        ? AppColors.white
+                                        : AppColors.black),
                               ),
                               subtitle: adult.dateOfBirth?.isEmpty ?? true
                                   ? null
@@ -240,14 +278,21 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                           DateTime.parse(adult.dateOfBirth ??
                                               DateTime.now().toString()),
                                           pattern: 'dd MMM yyy'),
+                                      style: TextStyle(
+                                          color: isDark
+                                              ? AppColors.white.withOpacity(0.7)
+                                              : AppColors.grey),
                                     ),
                             ),
                           ),
                           ...widget.ticketData!.travellerDetails!.children!.map(
                             (child) => ListTile(
-                              leading: const CircleAvatar(
+                              leading: CircleAvatar(
                                 radius: 16,
-                                child: Icon(
+                                backgroundColor: isDark
+                                    ? AppColors.white.withValues(alpha: 0.1)
+                                    : null,
+                                child: const Icon(
                                   Icons.person,
                                   color: AppColors.primary,
                                   size: 16,
@@ -255,6 +300,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                               ),
                               title: Text(
                                 '${child.firstName ?? ''} ${child.lastName ?? ''}',
+                                style: TextStyle(
+                                    color: isDark
+                                        ? AppColors.white
+                                        : AppColors.black),
                               ),
                               subtitle: child.dateOfBirth?.isEmpty ?? true
                                   ? null
@@ -263,14 +312,21 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                           DateTime.parse(child.dateOfBirth ??
                                               DateTime.now().toString()),
                                           pattern: 'dd MMM yyy'),
+                                      style: TextStyle(
+                                          color: isDark
+                                              ? AppColors.white.withOpacity(0.7)
+                                              : AppColors.grey),
                                     ),
                             ),
                           ),
                           ...widget.ticketData!.travellerDetails!.infants!.map(
                             (infant) => ListTile(
-                              leading: const CircleAvatar(
+                              leading: CircleAvatar(
                                 radius: 16,
-                                child: Icon(
+                                backgroundColor: isDark
+                                    ? AppColors.white.withValues(alpha: 0.1)
+                                    : null,
+                                child: const Icon(
                                   Icons.person,
                                   color: AppColors.primary,
                                   size: 16,
@@ -278,6 +334,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                               ),
                               title: Text(
                                 '${infant.firstName ?? ''} ${infant.lastName ?? ''}',
+                                style: TextStyle(
+                                    color: isDark
+                                        ? AppColors.white
+                                        : AppColors.black),
                               ),
                               subtitle: infant.dateOfBirth?.isEmpty ?? true
                                   ? null
@@ -286,21 +346,27 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                           DateTime.parse(infant.dateOfBirth ??
                                               DateTime.now().toString()),
                                           pattern: 'dd MMM yyy'),
+                                      style: TextStyle(
+                                          color: isDark
+                                              ? AppColors.white.withOpacity(0.7)
+                                              : AppColors.grey),
                                     ),
                             ),
                           ),
                           const SizedBox(height: 8),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 12),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'Billing Information',
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? AppColors.white
+                                        : AppColors.black),
                               ),
                             ),
                           ),
@@ -325,7 +391,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
       ),
       bottomNavigationBar: Container(
         height: 75,
-        color: AppColors.white,
+        color: isDark ? AppColors.secondaryDark : AppColors.white,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -339,10 +405,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                 children: <Widget>[
                   Text(
                     '₹${widget.ticketData?.totalAmount}',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.black),
+                        color: isDark ? AppColors.white : AppColors.black),
                   ),
                   Text(
                     '${widget.ticketData?.paymentStatus}'.toUpperCase(),

@@ -36,16 +36,23 @@ class SegmentCard extends StatelessWidget {
                           ''
                       : ''
                   : ''),
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: AppHelpers.isDarkMode(context)
+                      ? AppColors.white
+                      : AppColors.black),
             ),
             subtitle: Text(
               toTitleCase(
                   '${data.aircraft?.code != null ? (flightDictionary.dictionaries.aircraft?[data.aircraft!.code!] ?? '') : ''} | '
                   '${data.co2Emissions?.isNotEmpty ?? false ? data.co2Emissions!.first.cabin ?? '' : ''}'),
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.black),
+                  color: AppHelpers.isDarkMode(context)
+                      ? AppColors.white
+                      : AppColors.black),
             ),
             collapsedIconColor: AppColors.grey,
             iconColor: AppColors.primary,
@@ -54,13 +61,21 @@ class SegmentCard extends StatelessWidget {
               Column(
                 children: <Widget>[
                   ListTile(
-                    leading:
-                        AppHelpers.svgAsset(assetName: 'from', isIcon: true),
+                    leading: AppHelpers.svgAsset(
+                      assetName: 'from',
+                      isIcon: true,
+                      color: AppHelpers.isDarkMode(context)
+                          ? AppColors.white
+                          : AppColors.black,
+                    ),
                     title: Text(
                       '${data.departure?.iataCode} (T${data.departure?.terminal ?? '1'})',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
+                        color: AppHelpers.isDarkMode(context)
+                            ? AppColors.white
+                            : AppColors.black,
                       ),
                     ),
                     subtitle: Text(
@@ -73,10 +88,12 @@ class SegmentCard extends StatelessWidget {
                             data.departure?.at ?? DateTime.now().toString()),
                         pattern: 'hh:MM aa',
                       )}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.black,
+                        color: AppHelpers.isDarkMode(context)
+                            ? AppColors.white
+                            : AppColors.black,
                       ),
                     ),
                   ),
@@ -84,12 +101,21 @@ class SegmentCard extends StatelessWidget {
               ),
               //arriaval
               ListTile(
-                leading: AppHelpers.svgAsset(assetName: 'to', isIcon: true),
+                leading: AppHelpers.svgAsset(
+                  assetName: 'to',
+                  isIcon: true,
+                  color: AppHelpers.isDarkMode(context)
+                      ? AppColors.white
+                      : AppColors.black,
+                ),
                 title: Text(
                   '${data.arrival?.iataCode} (T${data.arrival?.terminal ?? '1'})',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.white
+                        : AppColors.black,
                   ),
                 ),
                 subtitle: Text(
@@ -102,10 +128,12 @@ class SegmentCard extends StatelessWidget {
                         data.arrival?.at ?? DateTime.now().toString()),
                     pattern: 'hh:MM aa',
                   )}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.black,
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.white
+                        : AppColors.black,
                   ),
                 ),
               )

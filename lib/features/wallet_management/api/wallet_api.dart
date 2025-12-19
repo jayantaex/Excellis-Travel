@@ -4,6 +4,7 @@ import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
 import '../data/models/transaction_model.dart';
+import '../data/models/wallet_charge_model.dart';
 import '../data/models/wallet_model.dart';
 import '../data/models/withdrawal_request_model.dart';
 
@@ -87,6 +88,20 @@ class WalletApi {
       return await apiClient.getRequest(
         endPoint: '${EndPoints.walletTransactions}/$transactionId',
         fromJson: (json) => TransactionDataModel.fromJson(json['data']),
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+//charge money
+  Future<ApiResponse<WalletChargeModel>> chargeMoney(
+      {required Map<String, dynamic> body}) async {
+    try {
+      return await apiClient.postRequest(
+        reqModel: body,
+        endPoint: EndPoints.walletCharge,
+        fromJson: (json) => WalletChargeModel.fromJson(json),
       );
     } catch (e) {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());

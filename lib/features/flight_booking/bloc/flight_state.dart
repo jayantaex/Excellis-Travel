@@ -72,8 +72,10 @@ final class FlightOfferPriceError extends FlightState {
 final class FlightOrderCreated extends FlightState {
   const FlightOrderCreated({
     required this.data,
+    required this.paymentVia,
   });
   final OrderModel data;
+  final String paymentVia;
 }
 
 final class FlightOrderLoading extends FlightState {

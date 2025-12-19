@@ -1,6 +1,7 @@
 import '../../../../core/network/api_response.dart';
 import '../../api/wallet_api.dart';
 import '../models/transaction_model.dart';
+import '../models/wallet_charge_model.dart';
 import '../models/wallet_model.dart';
 import '../models/withdrawal_request_model.dart';
 
@@ -47,4 +48,9 @@ class WalletRepository {
     required String transactionId,
   }) async =>
       await walletApi.getTransactionDetails(transactionId: transactionId);
+
+//charge money
+  Future<ApiResponse<WalletChargeModel>> chargeMoney(
+          {required Map<String, dynamic> body}) async =>
+      await walletApi.chargeMoney(body: body);
 }

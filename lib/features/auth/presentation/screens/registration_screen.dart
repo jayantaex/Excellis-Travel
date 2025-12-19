@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/app_exit_sheet.dart';
 import '../../../../core/widgets/app_sheet.dart';
+import '../../../../utils/app_helpers.dart';
 import '../widgets/registration_sheet.dart';
 
 class RegistrationScreen extends StatelessWidget {
@@ -38,9 +39,11 @@ class RegistrationScreen extends StatelessWidget {
               Expanded(
                 child: Container(
                   alignment: Alignment.bottomCenter,
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.secondaryDark
+                        : AppColors.white,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
                     ),

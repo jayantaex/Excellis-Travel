@@ -76,7 +76,7 @@ class FlightCardWidget extends StatelessWidget {
                   : 200,
               width: customWidth ?? width * 0.95,
               decoration: BoxDecoration(
-                color: AppColors.white,
+                color: isDarkMode ? AppColors.secondaryDark : AppColors.white,
                 borderRadius: BorderRadius.circular(24),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 23, vertical: 9),
@@ -132,10 +132,12 @@ class FlightCardWidget extends StatelessWidget {
                                     softWrap: true,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.black,
+                                      color: isDarkMode
+                                          ? AppColors.white
+                                          : AppColors.black,
                                     ),
                                   ),
                                 ),
@@ -517,30 +519,25 @@ class FlightCardWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          height: 22,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: getColorByStatus('fastest')
-                                .withValues(alpha: 0.3),
-                          ),
-                          child: Text(
-                            '${data.numberOfBookableSeats} seats available'
-                                .toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: getColorByStatus('fastest'),
-                            ),
-                          ),
+                    Container(
+                      margin: const EdgeInsets.only(right: 8),
+                      height: 22,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color:
+                            getColorByStatus('fastest').withValues(alpha: 0.3),
+                      ),
+                      child: Text(
+                        '${data.numberOfBookableSeats} seats available'
+                            .toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: getColorByStatus('fastest'),
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),

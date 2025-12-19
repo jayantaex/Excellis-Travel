@@ -45,11 +45,14 @@ class CitySearch extends StatelessWidget {
                     ),
                     Expanded(
                       child: Container(
+                        margin: EdgeInsets.only(top: 20),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(24),
-                          color: AppColors.white,
+                          color: AppHelpers.isDarkMode(context)
+                              ? AppColors.secondaryDark
+                              : AppColors.white,
                         ),
                         child: BlocConsumer<CityBloc, CityState>(
                           listener: (BuildContext context, CityState state) {},
@@ -86,8 +89,11 @@ class CitySearch extends StatelessWidget {
                                           },
                                           title: Text(
                                             '${state.cities[index].name}',
-                                            style: const TextStyle(
-                                                color: AppColors.black,
+                                            style: TextStyle(
+                                                color: AppHelpers.isDarkMode(
+                                                        context)
+                                                    ? AppColors.white
+                                                    : AppColors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500),
                                           ),

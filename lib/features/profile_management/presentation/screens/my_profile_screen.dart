@@ -80,149 +80,154 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => TransWhiteBgWidget(
-        child: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (BuildContext context, ProfileState state) => Column(
-            children: <Widget>[
-              const AppCustomAppbar(
-                isBackButtonRequired: false,
-                centerTitle: 'My Profile',
-              ),
-              //profile components
-              SizedBox(
-                width: AppHelpers.getScreenWidth(context),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    UserContentWidget(
-                      userImage: '',
-                      userName: state is ProfileLoaded
-                          ? state.profileData.firstName ?? 'Guest'
-                          : 'Guest',
-                    ),
-                  ],
-                ),
-              ),
-
-              //links
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 25),
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
+  Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
+    return TransWhiteBgWidget(
+      child: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (BuildContext context, ProfileState state) => Column(
+          children: <Widget>[
+            const AppCustomAppbar(
+              isBackButtonRequired: false,
+              centerTitle: 'My Profile',
+            ),
+            //profile components
+            SizedBox(
+              width: AppHelpers.getScreenWidth(context),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  UserContentWidget(
+                    userImage: '',
+                    userName: state is ProfileLoaded
+                        ? state.profileData.firstName ?? 'Guest'
+                        : 'Guest',
                   ),
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 20),
-                      ...options.map(
-                        (Map<String, String> option) => ListTile(
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            color: AppColors.primary,
-                            size: 12,
-                          ),
-                          leading: SvgPicture.asset(
-                            option['iconPath'] ?? '',
-                            height: 20,
-                            width: 20,
-                            colorFilter: const ColorFilter.mode(
-                                AppColors.primary, BlendMode.srcIn),
-                          ),
-                          title: Text(
-                            option['title'] == 'Sign Out'
-                                ? isLogedIn
-                                    ? 'Logout'
-                                    : 'Login'
-                                : option['title'] ?? '',
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w400),
-                          ),
-                          onTap: () async {
-                            if (option['routeName'] == 'edit_profile') {
-                              if (isLogedIn) {
-                                if (context.mounted) {
-                                  context.pushNamed(
-                                    option['routeName'] ?? '',
-                                    extra: context.read<ProfileBloc>(),
-                                  );
-                                }
-                                return;
-                              }
-                              showToast(
-                                  message: 'Please login to edit your profile');
-                              return;
-                            }
+                ],
+              ),
+            ),
 
-                            if (option['routeName'] == 'settings') {
-                              if (!isLogedIn) {
-                                showToast(
-                                    message: 'Please login to access settings');
-                                return;
-                              }
-
+            //links
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(top: 25),
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.secondaryDark : AppColors.white,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 20),
+                    ...options.map(
+                      (Map<String, String> option) => ListTile(
+                        trailing: Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: isDark ? AppColors.white : AppColors.primary,
+                          size: 12,
+                        ),
+                        leading: SvgPicture.asset(
+                          option['iconPath'] ?? '',
+                          height: 20,
+                          width: 20,
+                          colorFilter: ColorFilter.mode(
+                              isDark ? AppColors.white : AppColors.primary,
+                              BlendMode.srcIn),
+                        ),
+                        title: Text(
+                          option['title'] == 'Sign Out'
+                              ? isLogedIn
+                                  ? 'Logout'
+                                  : 'Login'
+                              : option['title'] ?? '',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color:
+                                  isDark ? AppColors.white : AppColors.black),
+                        ),
+                        onTap: () async {
+                          if (option['routeName'] == 'edit_profile') {
+                            if (isLogedIn) {
                               if (context.mounted) {
                                 context.pushNamed(
                                   option['routeName'] ?? '',
+                                  extra: context.read<ProfileBloc>(),
                                 );
-                                return;
                               }
+                              return;
                             }
+                            showToast(
+                                message: 'Please login to edit your profile');
+                            return;
+                          }
 
-                            if (option['title'] == 'My Markup') {
-                              if (isLogedIn) {
-                                if (context.mounted) {
-                                  context.pushNamed(SalesModule.myMarkupScreen);
-                                }
-                                return;
-                              }
+                          if (option['routeName'] == 'settings') {
+                            if (!isLogedIn) {
                               showToast(
-                                  message: 'Please login to access markup');
+                                  message: 'Please login to access settings');
                               return;
                             }
 
-                            if (option['title'] == 'Sign Out') {
-                              if (isLogedIn) {
-                                if (context.mounted) {
-                                  await showAppSheet(
-                                    context: context,
-                                    title: 'Logout',
-                                    child: const LogOutSheet(),
-                                    submitButtonRequired: true,
-                                    submitButtonTitle: 'Logout',
-                                    onSubmitPressed: () async {
-                                      await StorageService.clearTokens();
-                                      await _localDB.clearAllLocalDB();
-                                      context.mounted
-                                          ? context
-                                              .goNamed(AuthModule.loginName)
-                                          : null;
-                                    },
-                                  );
-                                }
-                                return;
-                              }
-                              if (context.mounted) {
-                                context.goNamed(AuthModule.loginName);
-                                return;
-                              }
+                            if (context.mounted) {
+                              context.pushNamed(
+                                option['routeName'] ?? '',
+                              );
+                              return;
                             }
+                          }
 
-                            context.pushNamed(option['routeName'] ?? '');
-                          },
-                        ),
-                      )
-                    ],
-                  ),
+                          if (option['title'] == 'My Markup') {
+                            if (isLogedIn) {
+                              if (context.mounted) {
+                                context.pushNamed(SalesModule.myMarkupScreen);
+                              }
+                              return;
+                            }
+                            showToast(message: 'Please login to access markup');
+                            return;
+                          }
+
+                          if (option['title'] == 'Sign Out') {
+                            if (isLogedIn) {
+                              if (context.mounted) {
+                                await showAppSheet(
+                                  context: context,
+                                  title: 'Logout',
+                                  child: const LogOutSheet(),
+                                  submitButtonRequired: true,
+                                  submitButtonTitle: 'Logout',
+                                  onSubmitPressed: () async {
+                                    await StorageService.clearTokens();
+                                    await _localDB.clearAllLocalDB();
+                                    context.mounted
+                                        ? context.goNamed(AuthModule.loginName)
+                                        : null;
+                                  },
+                                );
+                              }
+                              return;
+                            }
+                            if (context.mounted) {
+                              context.goNamed(AuthModule.loginName);
+                              return;
+                            }
+                          }
+
+                          context.pushNamed(option['routeName'] ?? '');
+                        },
+                      ),
+                    )
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
-      );
+      ),
+    );
+  }
 
   Future<bool> isLogedInFun() async {
     final String? token = await StorageService.getAccessToken();

@@ -12,84 +12,102 @@ class SegmentCard extends StatelessWidget {
   final Segment data;
 
   @override
-  Widget build(BuildContext context) => ExpansionTile(
-        collapsedShape: const Border(),
-        shape: const Border(),
-        tilePadding: const EdgeInsets.all(0),
-        childrenPadding: const EdgeInsets.all(0),
-        leading: SizedBox(
-          width: 50,
-          child: getAirlineLogo(airlineCode: data.carrierCode!),
-        ),
-        title: AirlineNameCard(
-            airlineCode: data.carrierCode!, duration: data.duration!),
-        subtitle: data.aircraft?.code != null
-            ? Text(
-                '${data.number}| ${data.aircraft?.code}',
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.grey,
-                ),
-              )
-            : Text(
-                '${data.number} ',
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.grey,
-                ),
+  Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
+    return ExpansionTile(
+      collapsedShape: const Border(),
+      shape: const Border(),
+      tilePadding: const EdgeInsets.all(0),
+      childrenPadding: const EdgeInsets.all(0),
+      leading: SizedBox(
+        width: 50,
+        child: getAirlineLogo(airlineCode: data.carrierCode!),
+      ),
+      title: AirlineNameCard(
+          airlineCode: data.carrierCode!, duration: data.duration!),
+      subtitle: data.aircraft?.code != null
+          ? Text(
+              '${data.number}| ${data.aircraft?.code}',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w400,
+                color:
+                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
               ),
-        children: <Widget>[
-          ListTile(
-            leading: AppHelpers.svgAsset(assetName: 'from', isIcon: true),
-            title: const Text(
-              'Departure ',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+            )
+          : Text(
+              '${data.number} ',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w400,
+                color:
+                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+              ),
             ),
-            subtitle: Text(
-              AppHelpers.formatDateTime(
-                  DateTime.parse(data.departure?.at ?? ''),
-                  pattern: 'dd MMM, yyyy | hh:mm'),
-              style: const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black
-                  // color: AppColors.grey
-                  ),
-            ),
-            trailing: Text(
-              '${data.departure?.iataCode}',
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
+      children: <Widget>[
+        ListTile(
+          leading: AppHelpers.svgAsset(
+              assetName: 'from',
+              isIcon: true,
+              color: isDark ? AppColors.white : null),
+          title: Text(
+            'Departure ',
+            style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: isDark ? AppColors.white : AppColors.black),
           ),
-          ListTile(
-            leading: AppHelpers.svgAsset(assetName: 'from', isIcon: true),
-            title: const Text('Arrival',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700)),
-            subtitle: Text(
-              AppHelpers.formatDateTime(DateTime.parse(data.arrival?.at ?? ''),
-                  pattern: 'dd MMM, yyyy | hh:mm'),
-              style: const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.black
-                  // color: AppColors.grey
-                  ),
-            ),
-            trailing: Text(
-              '${data.arrival?.iataCode}',
-              style: const TextStyle(
-                  color: AppColors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          )
-        ],
-      );
+          subtitle: Text(
+            AppHelpers.formatDateTime(DateTime.parse(data.departure?.at ?? ''),
+                pattern: 'dd MMM, yyyy | hh:mm'),
+            style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w500,
+                color:
+                    isDark ? AppColors.white.withOpacity(0.9) : AppColors.black
+                // color: AppColors.grey
+                ),
+          ),
+          trailing: Text(
+            '${data.departure?.iataCode}',
+            style: TextStyle(
+                color: isDark ? AppColors.white : AppColors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w700),
+          ),
+        ),
+        ListTile(
+          leading: AppHelpers.svgAsset(
+              assetName: 'from',
+              isIcon: true,
+              color: isDark ? AppColors.white : null),
+          title: Text('Arrival',
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: isDark ? AppColors.white : AppColors.black)),
+          subtitle: Text(
+            AppHelpers.formatDateTime(DateTime.parse(data.arrival?.at ?? ''),
+                pattern: 'dd MMM, yyyy | hh:mm'),
+            style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w500,
+                color:
+                    isDark ? AppColors.white.withOpacity(0.9) : AppColors.black
+                // color: AppColors.grey
+                ),
+          ),
+          trailing: Text(
+            '${data.arrival?.iataCode}',
+            style: TextStyle(
+                color: isDark ? AppColors.white : AppColors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w700),
+          ),
+        )
+      ],
+    );
+  }
 }
 
 class AirlineNameCard extends StatefulWidget {
@@ -110,17 +128,22 @@ class _AirlineNameCardState extends State<AirlineNameCard> {
     Future.delayed(Duration.zero, () async {
       _airlineName = await airlineInfoProvider.getAirlineName(
           airlineCode: widget.airlineCode);
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) => Text(
-        '$_airlineName -  ${formatIsoDuration(widget.duration)}',
-        style: const TextStyle(
+  Widget build(BuildContext context) {
+    final bool isDark = AppHelpers.isDarkMode(context);
+    return Text(
+      '$_airlineName -  ${formatIsoDuration(widget.duration)}',
+      style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
-        ),
-      );
+          color: isDark ? AppColors.white : AppColors.black),
+    );
+  }
 }

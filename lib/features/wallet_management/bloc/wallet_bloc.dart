@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../core/network/api_response.dart';
 import '../data/models/transaction_model.dart';
+import '../data/models/wallet_charge_model.dart' hide Datam;
 import '../data/models/wallet_model.dart';
 import '../data/models/withdrawal_request_model.dart';
 import '../data/repository/wallet_repository.dart';
@@ -17,6 +19,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<FetchWalletTransactionsEvent>(_handleFetchWalletTransactions);
     on<FilterTransactionsEvent>(_handleFilterTransactions);
     on<DepositEvent>(_handleDeposit);
+    on<ChargeMoneyEvent>(_handleChargeMoney);
   }
 
   final WalletRepository walletRepository;
@@ -155,5 +158,27 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       email: event.email,
       onRetryRoute: event.onRetryRoute,
     ));
+  }
+
+  Future<void> _handleChargeMoney(
+    ChargeMoneyEvent event,
+    Emitter<WalletState> emit,
+  ) async {
+    final Map<String, dynamic> body = {
+      'amount': kDebugMode ? 20 : event.amount,
+      'description': event.description,
+    };
+    emit(ChargeMoneySubmitting());
+    final ApiResponse<WalletChargeModel> response =
+        await walletRepository.chargeMoney(body: body);
+    if (response.data != null) {
+      emit(ChargeMoneySubmitted(paymentId: event.paymentId));
+    } else {
+      emit(
+        ChargeMoneyError(
+          message: response.errorMessage ?? 'Failed to charge money',
+        ),
+      );
+    }
   }
 }

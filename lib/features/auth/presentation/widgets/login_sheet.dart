@@ -48,9 +48,11 @@ class _LoginSheetState extends State<LoginSheet> {
 
   @override
   Widget build(BuildContext context) => Container(
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: AppHelpers.isDarkMode(context)
+              ? AppColors.secondaryDark
+              : AppColors.white,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
           ),
@@ -160,13 +162,15 @@ class _LoginSheetState extends State<LoginSheet> {
                                 );
                           });
                         },
-                        child: const Text(
+                        child: Text(
                           'Recover Now',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.underline,
-                            color: AppColors.black,
+                            color: AppHelpers.isDarkMode(context)
+                                ? AppColors.white
+                                : AppColors.black,
                           ),
                         ),
                       )
@@ -181,6 +185,9 @@ class _LoginSheetState extends State<LoginSheet> {
                     height: 45,
                     width: AppHelpers.getScreenWidth(context),
                     child: AppPrimaryButton(
+                      bgColor: AppHelpers.isDarkMode(context)
+                          ? AppColors.primary
+                          : AppColors.black,
                       title: 'LOGIN',
                       isLoading: widget.isLoading,
                       onPressed: () {

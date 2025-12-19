@@ -16,7 +16,9 @@ Future<void> showAppSheet({
     showModalBottomSheet(
       useSafeArea: true,
       isScrollControlled: true,
-      backgroundColor: AppColors.white,
+      backgroundColor: AppHelpers.isDarkMode(context)
+          ? AppColors.secondaryDark
+          : AppColors.white,
       context: context,
       builder: (context) => SingleChildScrollView(
         child: Padding(
@@ -40,25 +42,31 @@ Future<void> showAppSheet({
                     ),
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.black,
+                        color: AppHelpers.isDarkMode(context)
+                            ? AppColors.white
+                            : AppColors.black,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 16),
                       child: CircleAvatar(
-                        backgroundColor: AppColors.divider,
+                        backgroundColor: AppHelpers.isDarkMode(context)
+                            ? AppColors.divider.withValues(alpha: 0.1)
+                            : AppColors.white,
                         child: IconButton(
                           onPressed: () {
                             onClosePressed?.call();
                             Navigator.pop(context);
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.close,
                             size: 20,
-                            color: AppColors.grey,
+                            color: AppHelpers.isDarkMode(context)
+                                ? AppColors.white
+                                : AppColors.grey,
                           ),
                         ),
                       ),
@@ -84,6 +92,9 @@ Future<void> showAppSheet({
                     height: 50,
                     width: AppHelpers.getScreenWidth(context),
                     child: AppPrimaryButton(
+                      bgColor: AppHelpers.isDarkMode(context)
+                          ? AppColors.primary
+                          : AppColors.black,
                       onPressed: onSubmitPressed,
                       title: submitButtonTitle,
                       isLoading: false,

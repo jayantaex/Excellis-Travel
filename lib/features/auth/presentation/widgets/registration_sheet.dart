@@ -349,11 +349,12 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: AuthInputWidget(
-                          isPassword: true,
-                          maxCharacters: 20,
-                          controller: _conPasswordController,
-                          label: 'Confirm Password',
-                          hint: 'Re-Enter your Password'),
+                        isPassword: true,
+                        maxCharacters: 20,
+                        controller: _conPasswordController,
+                        label: 'Confirm Password',
+                        hint: 'Re-Enter your Password',
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Padding(

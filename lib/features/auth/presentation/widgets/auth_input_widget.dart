@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../utils/app_helpers.dart';
 
 class AuthInputWidget extends StatefulWidget {
   const AuthInputWidget(
@@ -39,8 +40,12 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
         controller: widget.controller,
         keyboardType: widget.keyboardType,
         obscureText: _isPasswordVisible,
-        style: const TextStyle(
-            fontSize: 16, color: AppColors.black, fontWeight: FontWeight.w400),
+        style: TextStyle(
+            fontSize: 16,
+            color: AppHelpers.isDarkMode(context)
+                ? AppColors.white
+                : AppColors.black,
+            fontWeight: FontWeight.w400),
         inputFormatters: <TextInputFormatter>[
           if (widget.maxCharacters > 0)
             LengthLimitingTextInputFormatter(widget.maxCharacters),
@@ -57,7 +62,10 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
                         });
                       },
                       icon: SvgPicture.asset(
-                          'assets/icons/password_visisbility.svg'))
+                          'assets/icons/password_visisbility.svg',
+                          color: AppHelpers.isDarkMode(context)
+                              ? AppColors.white
+                              : AppColors.black))
                   : IconButton(
                       onPressed: () {
                         setState(() {
@@ -65,7 +73,10 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
                         });
                       },
                       icon: SvgPicture.asset(
-                          'assets/icons/password_visisbility.svg'))
+                          'assets/icons/password_visisbility.svg',
+                          color: AppHelpers.isDarkMode(context)
+                              ? AppColors.white
+                              : AppColors.black))
               : null,
           labelText: widget.label,
           hintText: widget.hint,

@@ -2,9 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../data/models/flight_offer_price_model.dart';
-import 'price_details_sheet.dart';
 
 class OfferFareTogglerTile extends StatefulWidget {
   const OfferFareTogglerTile(
@@ -61,11 +60,11 @@ class _OfferFareTogglerTileState extends State<OfferFareTogglerTile> {
                   }),
             ),
           ),
-          PriceDetailsSheet(
-            offerFareEnabled: offerFare,
-            flightOffer: widget.flightOffer,
-            myMarkup: widget.myMarkup,
-          )
+          // PriceDetailsSheet(
+          //   offerFareEnabled: offerFare,
+          //   flightOffer: widget.flightOffer,
+          //   myMarkup: widget.myMarkup,
+          // )
         ],
       );
 }

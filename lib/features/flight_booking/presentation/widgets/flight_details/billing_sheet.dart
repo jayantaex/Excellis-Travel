@@ -1,14 +1,12 @@
 import 'package:country_code_picker/country_code_picker.dart';
-
+import 'package:excellistravel/features/flight_booking/data/dto/billing_address_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../../core/common/bloc/cities/city_bloc.dart';
 import '../../../../../core/common/bloc/states/states_bloc.dart';
 import '../../../../../core/common/common_module.dart';
 import '../../../../../core/common/models/city_model.dart';
-import '../../../../../core/common/models/profile_data_model.dart';
 import '../../../../../core/common/models/state_model.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/widgets/app_drop_down.dart';
@@ -19,31 +17,12 @@ import '../../../../../utils/app_helpers.dart';
 class BillingSheet extends StatefulWidget {
   const BillingSheet({
     super.key,
-    required this.firstNameController,
-    required this.lastNameController,
-    required this.emailController,
-    required this.mobileNumberController,
-    required this.addressLine1Controller,
-    required this.addressLine2Controller,
-    required this.cityController,
-    required this.pinCodeController,
-    this.profileData,
+    this.billingProfile,
     required this.onSavePressed,
-    required this.stateController,
-    required this.countryController,
   });
-  final TextEditingController firstNameController;
-  final TextEditingController lastNameController;
-  final TextEditingController emailController;
-  final TextEditingController mobileNumberController;
-  final TextEditingController addressLine1Controller;
-  final TextEditingController addressLine2Controller;
-  final TextEditingController cityController;
-  final TextEditingController pinCodeController;
-  final TextEditingController stateController;
-  final TextEditingController countryController;
-  final ProfileModel? profileData;
-  final Function(ProfileModel profileData) onSavePressed;
+
+  final BillingAddressModel? billingProfile;
+  final Function(BillingAddressModel billingProfile) onSavePressed;
   @override
   State<BillingSheet> createState() => _BillingSheetState();
 }
@@ -53,6 +32,15 @@ class _BillingSheetState extends State<BillingSheet> {
   String _selectedState = '';
   String _selectedStateCode = '';
   int _selectedStateId = 0;
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController mobileNumberController = TextEditingController();
+  final TextEditingController addressLine1Controller = TextEditingController();
+  final TextEditingController addressLine2Controller = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController pinCodeController = TextEditingController();
+  final TextEditingController countryController = TextEditingController();
 
   @override
   void initState() {
@@ -63,35 +51,17 @@ class _BillingSheetState extends State<BillingSheet> {
       }
 
       // Extract user's state from profile data if available
-      if (widget.profileData != null) {
-        widget.firstNameController.text = widget.profileData?.firstName ?? '';
-        widget.lastNameController.text = widget.profileData?.lastName ?? '';
-        widget.emailController.text = widget.profileData?.email ?? '';
-        widget.mobileNumberController.text = widget.profileData?.phone ?? '';
-        widget.addressLine1Controller.text = widget.profileData?.address ?? '';
-
-        final addressParts = widget.profileData?.address?.split(',');
-
-        //remove state and city from address
-        if (addressParts != null && addressParts.length > 2) {
-          final List<String> addressList = [];
-          widget.cityController.text = addressParts[1].trim();
-          widget.pinCodeController.text = addressParts.last.trim();
-          _selectedState = addressParts[2].trim();
-          widget.stateController.text = _selectedState;
-          for (var element in addressParts) {
-            if ((element.toLowerCase().trim() ==
-                    _selectedState.toLowerCase().trim()) ||
-                (element.toLowerCase().trim() ==
-                    widget.cityController.text.toLowerCase().trim()) ||
-                (element.toLowerCase().trim() ==
-                    widget.pinCodeController.text.toLowerCase().trim())) {
-              continue;
-            }
-            addressList.add(element);
-          }
-          widget.addressLine1Controller.text = addressList.join(',');
-        }
+      if (widget.billingProfile != null) {
+        firstNameController.text = widget.billingProfile?.firstName ?? '';
+        lastNameController.text = widget.billingProfile?.lastName ?? '';
+        emailController.text = widget.billingProfile?.email ?? '';
+        mobileNumberController.text = widget.billingProfile?.mobileNumber ?? '';
+        addressLine1Controller.text = widget.billingProfile?.addressLine1 ?? '';
+        addressLine2Controller.text = widget.billingProfile?.addressLine2 ?? '';
+        cityController.text = widget.billingProfile?.city ?? '';
+        pinCodeController.text = widget.billingProfile?.pinCode ?? '';
+        _selectedState = widget.billingProfile?.state ?? '';
+        countryController.text = widget.billingProfile?.country ?? '';
       }
 
       // Fetch states - cities will be fetched after state is matched in listener
@@ -121,7 +91,7 @@ class _BillingSheetState extends State<BillingSheet> {
                             maxCharacters: 20,
                             label: 'First Name*',
                             hint: 'Enter your first name',
-                            controller: widget.firstNameController,
+                            controller: firstNameController,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'First name is required';
@@ -142,7 +112,7 @@ class _BillingSheetState extends State<BillingSheet> {
                             maxCharacters: 20,
                             label: 'Last Name*',
                             hint: 'Enter your last name',
-                            controller: widget.lastNameController,
+                            controller: lastNameController,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Last name is required';
@@ -162,7 +132,7 @@ class _BillingSheetState extends State<BillingSheet> {
                   ),
                   const SizedBox(height: 10),
                   AppPrimaryInput(
-                    controller: widget.emailController,
+                    controller: emailController,
                     maxCharacters: 50,
                     label: 'Email*',
                     hint: 'Enter your email',
@@ -201,8 +171,7 @@ class _BillingSheetState extends State<BillingSheet> {
                             initialSelection: '+91',
                             favorite: const ['+91'],
                             onChanged: (CountryCode countryCode) {
-                              widget.countryController.text =
-                                  countryCode.code ?? 'IN';
+                              countryController.text = countryCode.code ?? 'IN';
                             },
                             hideSearch: true,
                             margin: const EdgeInsets.all(0),
@@ -218,7 +187,7 @@ class _BillingSheetState extends State<BillingSheet> {
                         SizedBox(
                           width: AppHelpers.getScreenWidth(context) * 0.6,
                           child: AppPrimaryInput(
-                            controller: widget.mobileNumberController,
+                            controller: mobileNumberController,
                             maxCharacters: 10,
                             label: 'Mobile Number*',
                             hint: 'Enter your mobile number',
@@ -242,7 +211,7 @@ class _BillingSheetState extends State<BillingSheet> {
                   ),
                   const SizedBox(height: 10),
                   AppPrimaryInput(
-                    controller: widget.addressLine1Controller,
+                    controller: addressLine1Controller,
                     maxCharacters: 100,
                     label: 'Address Line 1*',
                     hint: 'Enter your address line 1',
@@ -261,7 +230,7 @@ class _BillingSheetState extends State<BillingSheet> {
                     maxCharacters: 100,
                     label: 'Address Line 2',
                     hint: 'Enter your address line 2',
-                    controller: widget.addressLine2Controller,
+                    controller: addressLine2Controller,
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
@@ -285,8 +254,7 @@ class _BillingSheetState extends State<BillingSheet> {
                                           _selectedState.toLowerCase().trim()) {
                                         // Update all state-related values when match is found
                                         setState(() {
-                                          widget.stateController.text =
-                                              e.name ?? '';
+                                          _selectedState = e.name ?? '';
                                           _selectedState = e.name ?? '';
                                           _selectedStateCode = e.code ?? '';
                                           _selectedStateId = e.id ?? 0;
@@ -346,10 +314,13 @@ class _BillingSheetState extends State<BillingSheet> {
                                           value: e.name ?? '',
                                           child: Text(
                                             e.name ?? '',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
-                                                color: AppColors.black),
+                                                color: AppHelpers.isDarkMode(
+                                                        context)
+                                                    ? AppColors.white
+                                                    : AppColors.black),
                                           ),
                                         ),
                                       )
@@ -359,8 +330,7 @@ class _BillingSheetState extends State<BillingSheet> {
                                     if (stateName == null) return;
                                     for (StateModel element in state.states) {
                                       if (element.name == stateName) {
-                                        widget.stateController.text =
-                                            element.name ?? '';
+                                        _selectedState = element.name ?? '';
                                         _selectedState = element.name ?? '';
                                         _selectedStateCode = element.code ?? '';
                                         _selectedStateId = element.id ?? 0;
@@ -386,7 +356,7 @@ class _BillingSheetState extends State<BillingSheet> {
                           width: AppHelpers.getScreenWidth(context) * 0.45,
                           child: AppPrimaryInput(
                             enable: _selectedStateId != 0,
-                            controller: widget.cityController,
+                            controller: cityController,
                             onTap: () {
                               context.pushNamed(CommonModule.citySearchName,
                                   extra: {
@@ -394,8 +364,7 @@ class _BillingSheetState extends State<BillingSheet> {
                                     'stateName': _selectedState,
                                     'stateId': _selectedStateId,
                                     'onSelected': (CityModel city) {
-                                      widget.cityController.text =
-                                          city.name ?? '';
+                                      cityController.text = city.name ?? '';
                                     },
                                   });
                             },
@@ -418,7 +387,7 @@ class _BillingSheetState extends State<BillingSheet> {
                     maxCharacters: 6,
                     label: 'Pin Code*',
                     hint: 'Enter your pin code',
-                    controller: widget.pinCodeController,
+                    controller: pinCodeController,
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -435,19 +404,26 @@ class _BillingSheetState extends State<BillingSheet> {
                   ),
                   const SizedBox(height: 10),
                   AppPrimaryButton(
+                    bgColor: AppHelpers.isDarkMode(context)
+                        ? AppColors.primary
+                        : AppColors.black,
                     title: 'Save',
                     isLoading: false,
                     onPressed: () {
                       // Validate the form before saving
                       if (_formKey.currentState?.validate() ?? false) {
-                        final ProfileModel data = ProfileModel(
-                          address:
-                              '${widget.addressLine1Controller.text},${widget.cityController.text},$_selectedState,${widget.pinCodeController.text}',
-                          firstName: widget.firstNameController.text,
-                          lastName: widget.lastNameController.text,
-                          email: widget.emailController.text,
-                          phone: widget.mobileNumberController.text,
-                          role: 'user',
+                        final BillingAddressModel data = BillingAddressModel(
+                          addressLine1: addressLine1Controller.text,
+                          addressLine2: addressLine2Controller.text,
+                          city: cityController.text,
+                          state: _selectedState,
+                          pinCode: pinCodeController.text,
+                          country: countryController.text,
+                          firstName: firstNameController.text,
+                          lastName: lastNameController.text,
+                          email: emailController.text,
+                          mobileNumber: mobileNumberController.text,
+                          countryCode: countryController.text,
                         );
                         widget.onSavePressed(data);
                       }
