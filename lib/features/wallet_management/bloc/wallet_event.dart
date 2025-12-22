@@ -54,20 +54,6 @@ class SubmitWithdrawalEvent extends WalletEvent {
   List<Object?> get props => [request];
 }
 
-class DepositEvent extends WalletEvent {
-  const DepositEvent(
-      {required this.amount,
-      required this.description,
-      required this.mobile,
-      required this.email,
-      required this.onRetryRoute});
-  final int amount;
-  final String description;
-  final String mobile;
-  final String email;
-  final String onRetryRoute;
-}
-
 class ChargeMoneyEvent extends WalletEvent {
   const ChargeMoneyEvent({
     required this.amount,
@@ -77,4 +63,21 @@ class ChargeMoneyEvent extends WalletEvent {
   final double amount;
   final String description;
   final int paymentId;
+}
+
+//re-charge
+
+class CreateRechargeOrderEvent extends WalletEvent {
+  const CreateRechargeOrderEvent({required this.body});
+  final Map<String, dynamic> body;
+}
+
+class VerifyWalletOrderEvent extends WalletEvent {
+  const VerifyWalletOrderEvent({required this.body});
+  final Map<String, dynamic> body;
+}
+
+class RechargeWalletEvent extends WalletEvent {
+  const RechargeWalletEvent({required this.body});
+  final Map<String, dynamic> body;
 }

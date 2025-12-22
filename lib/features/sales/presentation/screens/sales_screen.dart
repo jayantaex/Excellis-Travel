@@ -154,10 +154,10 @@ class _SalesScreenState extends State<SalesScreen> {
                                       },
                                     );
                                   },
-                                  icon: Icon(Icons.filter_alt,
-                                      color: AppHelpers.isDarkMode(context)
-                                          ? AppColors.white
-                                          : AppColors.black)),
+                                  icon: const Icon(
+                                    Icons.filter_alt,
+                                    color: AppColors.white,
+                                  )),
                             ),
                     );
                   }
@@ -452,14 +452,9 @@ class _SalesScreenState extends State<SalesScreen> {
                                               children: [
                                                 Text(
                                                   'Total Booking (${salesData.pagination?.totalItems ?? 0})',
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color:
-                                                        AppHelpers.isDarkMode(
-                                                                context)
-                                                            ? AppColors.white
-                                                            : AppColors.black,
-                                                  ),
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: AppColors.white),
                                                 ),
                                                 _startDateController
                                                             .text.isNotEmpty ||
@@ -489,9 +484,9 @@ class _SalesScreenState extends State<SalesScreen> {
                                                                         .isDarkMode(
                                                                             context)
                                                                     ? AppColors
-                                                                        .white
+                                                                        .primary
                                                                     : AppColors
-                                                                        .primary,
+                                                                        .white,
                                                               ),
                                                             )),
                                                       )

@@ -71,61 +71,48 @@ class WalletError extends WalletState {
   List<Object?> get props => [message];
 }
 
-//deposit
-class InitDiposit extends WalletState {
-  const InitDiposit({
-    required this.description,
+//Recharge
+
+class CreateWalletOrderSuccess extends WalletState {
+  const CreateWalletOrderSuccess({
+    required this.order,
+  });
+  final WalletOrderModel order;
+}
+
+class CreateWalletOrderError extends WalletState {
+  const CreateWalletOrderError({required this.message});
+  final String message;
+}
+
+class WalletOrderVerified extends WalletState {
+  const WalletOrderVerified({
+    required this.signature,
+    required this.orderId,
+    required this.paymentId,
     required this.amount,
-    required this.mobile,
-    required this.email,
-    required this.onRetryRoute,
+    required this.currency,
   });
-  final String description;
+  final String signature;
+  final String orderId;
+  final String paymentId;
   final int amount;
-  final String mobile;
-  final String email;
-  final String onRetryRoute;
+  final String currency;
 }
 
-class DepositSuccess extends WalletState {
-  const DepositSuccess({
-    this.message = 'Deposit request submitted successfully',
-  });
+class WalletOrderVerifiedError extends WalletState {
+  const WalletOrderVerifiedError({required this.message});
   final String message;
-
-  @override
-  List<Object?> get props => [message];
 }
 
-class DepositError extends WalletState {
-  const DepositError({required this.message});
+class RechargeWalletSuccess extends WalletState {}
+
+class RechargeWalletError extends WalletState {
+  const RechargeWalletError({required this.message});
   final String message;
-
-  @override
-  List<Object?> get props => [message];
 }
 
-/// Withdrawal states
-class WithdrawalSubmitting extends WalletState {}
-
-class WithdrawalSubmitted extends WalletState {
-  const WithdrawalSubmitted({
-    this.message = 'Withdrawal request submitted successfully',
-  });
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class WithdrawalError extends WalletState {
-  const WithdrawalError({required this.message});
-  final String message;
-
-  @override
-  List<Object?> get props => [message];
-}
-
+// Charge money states
 class ChargeMoneySubmitting extends WalletState {}
 
 class ChargeMoneySubmitted extends WalletState {

@@ -45,7 +45,7 @@ class SegmentCard extends StatelessWidget {
             ),
             subtitle: Text(
               toTitleCase(
-                  '${data.aircraft?.code != null ? (flightDictionary.dictionaries.aircraft?[data.aircraft!.code!] ?? '') : ''} | '
+                  '${data.aircraft?.code != null ? (flightDictionary.dictionaries.aircraft?[data.aircraft!.code!] ?? '${data.aircraft?.code}') : ''} | '
                   '${data.co2Emissions?.isNotEmpty ?? false ? data.co2Emissions!.first.cabin ?? '' : ''}'),
               style: TextStyle(
                   fontSize: 10,

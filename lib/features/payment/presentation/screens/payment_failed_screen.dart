@@ -11,6 +11,7 @@ class PaymentFailedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.white,
         body: SizedBox(
           width: AppHelpers.percenWidth(context: context),
           child: Padding(
@@ -55,7 +56,6 @@ class PaymentFailedScreen extends StatelessWidget {
                 color: AppColors.white),
             isLoading: false,
             onPressed: () {
-              context.pop();
               context.pop();
             },
           ),

@@ -175,20 +175,16 @@ class _WalletScreenState extends State<WalletScreen>
                                                 PaymentModule
                                                     .paymentProcessingName,
                                                 extra: {
-                                                  'amount': amount,
+                                                  'amount': doubleAmount,
                                                   'description':
                                                       'Deposit Money in Wallet',
                                                   'mobile': '',
                                                   'email': '',
+                                                  'orderFor': 'wallet',
                                                 });
                                           },
                                         );
                                       },
-                                    ),
-                                    PopupMenuItem(
-                                      value: 'Borrow',
-                                      child: const Text('Borrow Money'),
-                                      onTap: () {},
                                     ),
                                   ]);
                             },

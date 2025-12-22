@@ -31,8 +31,10 @@ class PaymentSuccessfulScreen extends StatelessWidget {
                   description:
                       'Your payment was successful. Thank you for your purchase! A confirmation email has been sent to you.',
                   // button: you can pass your custom button,
-                  btnText: 'Track Order',
-                  press: () {},
+                  btnText: 'Continue',
+                  press: () {
+                    context.pop();
+                  },
                 ),
               ],
             ),

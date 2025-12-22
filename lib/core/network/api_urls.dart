@@ -79,7 +79,9 @@ class EndPoints {
   //wallet
   static const String wallet = '/wallet/summary';
   static const String walletTransactions = '/wallet/transactions';
-  static const String walletWithdraw = '/wallet/withdraw';
-  static const String walletRecharge = '/wallet/recharge';
+
+  static const String createWalletOrder = '/wallet/create-order';
+  static const String verifyWalletOrder = '/wallet/verify-payment';
   static const String walletCharge = '/wallet/debit';
+  static const String walletRecharge = '/wallet/credit';
 }

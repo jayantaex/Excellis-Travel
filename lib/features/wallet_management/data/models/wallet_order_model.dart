@@ -1,5 +1,5 @@
-class OrderRespModel {
-  OrderRespModel(
+class WalletOrderModel {
+  WalletOrderModel(
       {this.amount,
       this.amountDue,
       this.amountPaid,
@@ -13,7 +13,7 @@ class OrderRespModel {
       this.receipt,
       this.status});
 
-  OrderRespModel.fromJson(Map<String, dynamic> json) {
+  WalletOrderModel.fromJson(Map<String, dynamic> json) {
     amount = json['amount'];
     amountDue = json['amount_due'];
     amountPaid = json['amount_paid'];

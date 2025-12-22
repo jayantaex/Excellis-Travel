@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -6,6 +8,7 @@ import '../../../core/network/api_response.dart';
 import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart' hide Datam;
 import '../data/models/wallet_model.dart';
+import '../data/models/wallet_order_model.dart';
 import '../data/models/withdrawal_request_model.dart';
 import '../data/repository/wallet_repository.dart';
 
@@ -18,8 +21,10 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<FetchWalletEvent>(_handleFetchWallet);
     on<FetchWalletTransactionsEvent>(_handleFetchWalletTransactions);
     on<FilterTransactionsEvent>(_handleFilterTransactions);
-    on<DepositEvent>(_handleDeposit);
+    on<CreateRechargeOrderEvent>(_handleCreateRechargeOrder);
     on<ChargeMoneyEvent>(_handleChargeMoney);
+    on<VerifyWalletOrderEvent>(_handleVerifyWalletOrder);
+    on<RechargeWalletEvent>(_handleRechargeWallet);
   }
 
   final WalletRepository walletRepository;
@@ -149,23 +154,29 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     }
   }
 
-  Future<void> _handleDeposit(
-    DepositEvent event,
+  Future<void> _handleCreateRechargeOrder(
+    CreateRechargeOrderEvent event,
     Emitter<WalletState> emit,
   ) async {
-    emit(InitDiposit(
-      description: event.description,
-      amount: event.amount,
-      mobile: event.mobile,
-      email: event.email,
-      onRetryRoute: event.onRetryRoute,
-    ));
+    emit(WalletLoading());
+    final ApiResponse<WalletOrderModel> response =
+        await walletRepository.createRechargeOrder(body: event.body);
+    if (response.data != null) {
+      emit(CreateWalletOrderSuccess(order: response.data!));
+    } else {
+      emit(
+        CreateWalletOrderError(
+          message: response.errorMessage ?? 'Failed to create recharge order',
+        ),
+      );
+    }
   }
 
   Future<void> _handleChargeMoney(
     ChargeMoneyEvent event,
     Emitter<WalletState> emit,
   ) async {
+    emit(WalletLoading());
     final Map<String, dynamic> body = {
       'amount': kDebugMode ? 20 : event.amount,
       'description': event.description,
@@ -179,6 +190,49 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       emit(
         ChargeMoneyError(
           message: response.errorMessage ?? 'Failed to charge money',
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleVerifyWalletOrder(
+    VerifyWalletOrderEvent event,
+    Emitter<WalletState> emit,
+  ) async {
+    emit(WalletLoading());
+    final ApiResponse<bool> response =
+        await walletRepository.verifyWalletOrder(body: event.body);
+    if (response.data != null) {
+      emit(WalletOrderVerified(
+        signature: event.body['razorpay_signature'],
+        orderId: event.body['razorpay_order_id'],
+        paymentId: event.body['razorpay_payment_id'],
+        amount: event.body['amount'],
+        currency: event.body['currency'],
+      ));
+    } else {
+      emit(
+        WalletOrderVerifiedError(
+          message: response.errorMessage ?? 'Failed to verify wallet order',
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleRechargeWallet(
+    RechargeWalletEvent event,
+    Emitter<WalletState> emit,
+  ) async {
+    emit(WalletLoading());
+    final ApiResponse<bool> response =
+        await walletRepository.rechargeWallet(body: event.body);
+    log('--------${response.data}');
+    if (response.data ?? false) {
+      emit(RechargeWalletSuccess());
+    } else {
+      emit(
+        RechargeWalletError(
+          message: response.errorMessage ?? 'Failed to recharge wallet',
         ),
       );
     }

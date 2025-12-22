@@ -6,6 +6,7 @@ import '../../../core/network/api_urls.dart';
 import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart';
 import '../data/models/wallet_model.dart';
+import '../data/models/wallet_order_model.dart';
 import '../data/models/withdrawal_request_model.dart';
 
 class WalletApi {
@@ -50,7 +51,7 @@ class WalletApi {
   }) async {
     try {
       return await apiClient.postRequest(
-        endPoint: EndPoints.walletWithdraw,
+        endPoint: EndPoints.refreshToken,
         reqModel: request.toJson(),
         fromJson: (json) {},
       );
@@ -59,40 +60,23 @@ class WalletApi {
     }
   }
 
-  /// Add money to wallet
-  Future<ApiResponse<void>> addMoney({
-    required double amount,
-    required String paymentMethod,
-    Map<String, dynamic>? additionalData,
-  }) async {
-    try {
-      return await apiClient.postRequest(
-        endPoint: EndPoints.walletRecharge,
-        reqModel: {
-          'amount': amount,
-          'payment_method': paymentMethod,
-          ...?additionalData,
-        },
-        fromJson: (json) {},
-      );
-    } catch (e) {
-      return ApiResponse(statusCode: 400, errorMessage: e.toString());
-    }
-  }
+//create order
 
-  /// Get transaction details
-  Future<ApiResponse<TransactionDataModel>> getTransactionDetails({
-    required String transactionId,
-  }) async {
-    try {
-      return await apiClient.getRequest(
-        endPoint: '${EndPoints.walletTransactions}/$transactionId',
-        fromJson: (json) => TransactionDataModel.fromJson(json['data']),
+  Future<ApiResponse<WalletOrderModel>> createWalletOrder(
+          {required Map<String, dynamic> body}) async =>
+      apiClient.postRequest(
+        endPoint: EndPoints.createWalletOrder,
+        reqModel: body,
+        fromJson: (jsonData) => WalletOrderModel.fromJson(jsonData['data']),
       );
-    } catch (e) {
-      return ApiResponse(statusCode: 400, errorMessage: e.toString());
-    }
-  }
+
+//verify order
+  Future<ApiResponse<bool>> verifyWalletOrder(
+          {required Map<String, dynamic> body}) async =>
+      apiClient.postRequest(
+          endPoint: EndPoints.verifyWalletOrder,
+          reqModel: body,
+          fromJson: (data) => data['success']);
 
 //charge money
   Future<ApiResponse<WalletChargeModel>> chargeMoney(
@@ -102,6 +86,20 @@ class WalletApi {
         reqModel: body,
         endPoint: EndPoints.walletCharge,
         fromJson: (json) => WalletChargeModel.fromJson(json),
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  //re-charge money
+  Future<ApiResponse<bool>> reChargeMoney(
+      {required Map<String, dynamic> body}) async {
+    try {
+      return await apiClient.postRequest(
+        reqModel: body,
+        endPoint: EndPoints.walletRecharge,
+        fromJson: (json) => json['success'],
       );
     } catch (e) {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());

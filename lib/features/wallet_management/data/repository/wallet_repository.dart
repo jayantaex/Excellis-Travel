@@ -3,6 +3,7 @@ import '../../api/wallet_api.dart';
 import '../models/transaction_model.dart';
 import '../models/wallet_charge_model.dart';
 import '../models/wallet_model.dart';
+import '../models/wallet_order_model.dart';
 import '../models/withdrawal_request_model.dart';
 
 class WalletRepository {
@@ -31,26 +32,26 @@ class WalletRepository {
   }) async =>
       await walletApi.submitWithdrawalRequest(request: request);
 
-  /// Add money to wallet (recharge)
-  Future<ApiResponse<void>> addMoney({
-    required double amount,
-    required String paymentMethod,
-    Map<String, dynamic>? additionalData,
-  }) async =>
-      await walletApi.addMoney(
-        amount: amount,
-        paymentMethod: paymentMethod,
-        additionalData: additionalData,
-      );
+  /// Recharge money to wallet (recharge)
 
-  /// Get transaction details by ID
-  Future<ApiResponse<TransactionDataModel>> getTransactionDetails({
-    required String transactionId,
+  Future<ApiResponse<WalletOrderModel>> createRechargeOrder({
+    required Map<String, dynamic> body,
   }) async =>
-      await walletApi.getTransactionDetails(transactionId: transactionId);
+      await walletApi.createWalletOrder(
+        body: body,
+      );
+  Future<ApiResponse<bool>> verifyWalletOrder({
+    required Map<String, dynamic> body,
+  }) async =>
+      await walletApi.verifyWalletOrder(body: body);
+  Future<ApiResponse<bool>> rechargeWallet({
+    required Map<String, dynamic> body,
+  }) async =>
+      await walletApi.reChargeMoney(body: body);
 
 //charge money
   Future<ApiResponse<WalletChargeModel>> chargeMoney(
           {required Map<String, dynamic> body}) async =>
       await walletApi.chargeMoney(body: body);
 }
+//verify money

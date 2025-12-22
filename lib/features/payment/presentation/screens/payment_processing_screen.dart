@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:excellistravel/core/constants/app_styles.dart';
 import 'package:excellistravel/core/services/razorpay.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-import '../../bloc/payment_bloc.dart';
+import '../../../wallet_management/bloc/wallet_bloc.dart';
 import '../../payment_module.dart';
 
 class PaymentProcessingScreen extends StatefulWidget {
@@ -17,12 +15,14 @@ class PaymentProcessingScreen extends StatefulWidget {
     required this.amount,
     required this.description,
     required this.mobile,
+    required this.orderFor,
     required this.email,
   });
-  final int amount;
+  final double amount;
   final String description;
   final String mobile;
   final String email;
+  final String orderFor;
 
   @override
   State<PaymentProcessingScreen> createState() =>
@@ -35,49 +35,79 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 2), () {
-      context.read<PaymentBloc>().add(const CreateOrder());
+      if (widget.orderFor == 'wallet') {
+        final Map<String, dynamic> body = {
+          'amount': widget.amount,
+        };
+        context.read<WalletBloc>().add(CreateRechargeOrderEvent(body: body));
+      }
     });
     super.initState();
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    context.read<PaymentBloc>().add(const VerifyPaymentOrder());
+    final Map<String, dynamic> body = {
+      'amount': (widget.amount * 100).toInt(),
+      'currency': 'INR',
+      'razorpay_order_id': response.orderId,
+      'razorpay_payment_id': response.paymentId,
+      'razorpay_signature': response.signature,
+    };
+    context.read<WalletBloc>().add(VerifyWalletOrderEvent(body: body));
   }
 
   void _handlePaymentFailure(PaymentFailureResponse response) {
-    context.pushNamed(PaymentModule.paymentSuccessName);
-
     // context.read<PaymentBloc>().add(const VerifyPaymentOrder());
     // log('${response.message}');
-    // context.pushNamed(PaymentModule.paymentFailedName,
-    //     queryParameters: {'message': response.message});
+    context.pushNamed(PaymentModule.paymentFailedName,
+        queryParameters: {'message': response.message});
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: BlocConsumer<PaymentBloc, PaymentState>(
+          child: BlocConsumer<WalletBloc, WalletState>(
             listener: (context, state) async {
-              if (state is PaymentFailure) {
-                log(state.errorMessage);
-                context.pushNamed(PaymentModule.paymentFailedName,
+              if (state is WalletError) {
+                context.pushReplacementNamed(PaymentModule.paymentFailedName,
                     queryParameters: {
-                      'message': state.errorMessage,
+                      'message': state.message,
                     });
               }
-              if (state is OrderCreated) {
+              if (state is CreateWalletOrderSuccess) {
                 await _razorpayService.initatePayment(
-                    amount: widget.amount,
+                    amount: state.order.amount ?? 0,
                     description: widget.description,
-                    orderId: '54845152',
+                    orderId: state.order.id ?? '',
                     mobile: widget.mobile,
                     email: widget.email,
                     onSuccess: _handlePaymentSuccess,
                     onError: _handlePaymentFailure);
               }
-              if (state is PaymentVerified) {
-                context.pushNamed(PaymentModule.paymentSuccessName);
+              if (state is WalletOrderVerified) {
+                //call api to credit balance
+                //call the recharge
+                final Map<String, dynamic> body = {
+                  'amount': (state.amount / 100).toInt(),
+                  'description': 'Wallet Recharge of amount ${widget.amount}',
+                  'metadata': {
+                    'source': 'wallet_page',
+                    'payment_method': 'manual',
+                    'verificationData': {
+                      'razorpay_payment_id': state.paymentId,
+                      'razorpay_order_id': state.orderId,
+                      'razorpay_signature': state.signature,
+                      'amount': state.amount,
+                      'currency': state.currency
+                    }
+                  }
+                };
+                context.read<WalletBloc>().add(RechargeWalletEvent(body: body));
+              }
+
+              if (state is RechargeWalletSuccess) {
+                context.pushReplacementNamed(PaymentModule.paymentSuccessName);
               }
             },
             builder: (context, state) => Padding(
