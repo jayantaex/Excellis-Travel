@@ -1,6 +1,6 @@
 class WalletBalanceModel {
   WalletBalanceModel.fromJson(Map<String, dynamic> json) {
-    balance = json['balance'];
+    balance = double.parse(json['balance'].toString());
     currency = json['currency'];
     status = json['status'];
     totalDebt = double.parse(json['totalDebits'].toString());

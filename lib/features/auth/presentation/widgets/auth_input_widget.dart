@@ -36,7 +36,9 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => TextField(
+  @override
+  Widget build(BuildContext context) => TextFormField(
+        validator: widget.validator,
         controller: widget.controller,
         keyboardType: widget.keyboardType,
         obscureText: _isPasswordVisible,
