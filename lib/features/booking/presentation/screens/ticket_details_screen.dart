@@ -141,9 +141,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                 ),
                                                 Text(
                                                   AppHelpers.formatDateTime(
-                                                      DateTime.parse(
-                                                          '${e.segments?.first.departure?.at}'),
-                                                      pattern: 'hh:mm'),
+                                                          DateTime.parse(
+                                                              '${e.segments?.first.departure?.at}'),
+                                                          pattern: 'hh:mm a')
+                                                      .toUpperCase(),
                                                   style: TextStyle(
                                                       fontSize: 11,
                                                       fontWeight:
@@ -210,9 +211,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                               ),
                                               Text(
                                                 AppHelpers.formatDateTime(
-                                                    DateTime.parse(
-                                                        '${e.segments?.last.arrival?.at}'),
-                                                    pattern: 'hh:mm'),
+                                                        DateTime.parse(
+                                                            '${e.segments?.last.arrival?.at}'),
+                                                        pattern: 'hh:mm a')
+                                                    .toUpperCase(),
                                                 style: TextStyle(
                                                     fontSize: 11,
                                                     fontWeight: FontWeight.w400,

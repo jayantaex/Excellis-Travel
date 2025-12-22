@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../core/network/amadeus_client.dart';
 import '../core/network/api_response.dart';
 import '../core/services/local_db.dart';
@@ -13,10 +15,12 @@ class AirlineInfoProvider {
   }
   late FlightBookingRepository repository;
   Future<String> getAirlineName({required String airlineCode}) async {
-    if (airlineCode.isEmpty) {
-      return '';
-    }
     try {
+      log('airlineCode: $airlineCode');
+      if (airlineCode.isEmpty) {
+        return '';
+      }
+
       final ApiResponse<String> resp =
           await repository.getAirlineName(airlineCode: airlineCode);
       return resp.data ?? '';

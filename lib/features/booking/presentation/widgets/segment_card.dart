@@ -1,3 +1,4 @@
+import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart' show AppColors;
@@ -27,7 +28,7 @@ class SegmentCard extends StatelessWidget {
           airlineCode: data.carrierCode!, duration: data.duration!),
       subtitle: data.aircraft?.code != null
           ? Text(
-              '${data.number}| ${data.aircraft?.code}',
+              '${data.number} | ${data.aircraft?.code}',
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
@@ -139,7 +140,7 @@ class _AirlineNameCardState extends State<AirlineNameCard> {
   Widget build(BuildContext context) {
     final bool isDark = AppHelpers.isDarkMode(context);
     return Text(
-      '$_airlineName -  ${formatIsoDuration(widget.duration)}',
+      '${toTitleCase(_airlineName)} -  ${formatIsoDuration(widget.duration)}',
       style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
