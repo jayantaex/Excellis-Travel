@@ -152,7 +152,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         Expanded(
                           child: Container(
                             decoration: BoxDecoration(
-                              color: AppColors.white,
+                              color: AppHelpers.isDarkMode(context)
+                                  ? AppColors.secondaryDark
+                                  : AppColors.white,
                               borderRadius: BorderRadius.circular(24),
                             ),
                             child: Padding(

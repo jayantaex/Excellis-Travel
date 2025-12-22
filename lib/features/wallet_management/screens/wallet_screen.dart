@@ -262,12 +262,14 @@ class _WalletScreenState extends State<WalletScreen>
                       Expanded(
                         child: Container(
                           width: AppHelpers.getScreenWidth(context),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(32),
                               topRight: Radius.circular(32),
                             ),
-                            color: AppColors.background,
+                            color: AppHelpers.isDarkMode(context)
+                                ? AppColors.secondaryDark
+                                : AppColors.white,
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,7 +284,6 @@ class _WalletScreenState extends State<WalletScreen>
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
                                   ),
                                 ),
                               ),
@@ -293,7 +294,7 @@ class _WalletScreenState extends State<WalletScreen>
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 decoration: BoxDecoration(
-                                  color: AppColors.white,
+                                  color: AppColors.white.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                     color: AppColors.border,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../utils/app_helpers.dart';
 
 class DeleteConfirmationDialog extends StatelessWidget {
   const DeleteConfirmationDialog({
@@ -20,7 +21,9 @@ class DeleteConfirmationDialog extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(AppSizes.lg),
           decoration: BoxDecoration(
-            color: AppColors.white,
+            color: AppHelpers.isDarkMode(context)
+                ? AppColors.secondaryDark
+                : AppColors.white,
             borderRadius: BorderRadius.circular(AppSizes.radiusMd),
           ),
           child: Column(
@@ -31,8 +34,10 @@ class DeleteConfirmationDialog extends StatelessWidget {
               // Title
               Text(
                 title,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
+                style: TextStyle(
+                  color: AppHelpers.isDarkMode(context)
+                      ? AppColors.white
+                      : AppColors.textPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -62,7 +67,9 @@ class DeleteConfirmationDialog extends StatelessWidget {
                     child: TextButton(
                       onPressed: () => Navigator.of(context).pop(false),
                       style: TextButton.styleFrom(
-                        foregroundColor: AppColors.textPrimary,
+                        foregroundColor: AppHelpers.isDarkMode(context)
+                            ? AppColors.white
+                            : AppColors.textPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       child: const Text('Cancel'),
@@ -78,7 +85,12 @@ class DeleteConfirmationDialog extends StatelessWidget {
                         Navigator.of(context).pop(true);
                         onConfirm();
                       },
-                      child: const Text('Delete'),
+                      child: Text('Delete',
+                          style: TextStyle(
+                            color: AppHelpers.isDarkMode(context)
+                                ? AppColors.error
+                                : AppColors.error,
+                          )),
                     ),
                   ),
                 ],

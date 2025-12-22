@@ -274,6 +274,9 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                             fontSize: 12, fontWeight: FontWeight.w400),
                         title: 'Book now',
                         isLoading: false,
+                        bgColor: AppHelpers.isDarkMode(context)
+                            ? AppColors.primary
+                            : AppColors.black,
                       ),
                     ),
                   ],

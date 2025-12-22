@@ -174,7 +174,6 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.white,
           body: AppGradientBg(
             child: TransWhiteBgWidget(
               child: SafeArea(
