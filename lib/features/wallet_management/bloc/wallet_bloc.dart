@@ -93,10 +93,21 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       final updatedState = state;
 
       if (updatedState is WalletLoaded) {
-        // If page 1, replace transactions; otherwise append
-        final allTransactions = event.page == 1
-            ? newTransactions
-            : [...updatedState.allTransactions, ...newTransactions];
+        // If page 1, replace transactions; otherwise append unique ones
+        List<Datam> allTransactions;
+        if (event.page == 1) {
+          allTransactions = newTransactions;
+        } else {
+          final existingIds =
+              updatedState.allTransactions.map((e) => e.id).toSet();
+          final uniqueNewTransactions = newTransactions
+              .where((e) => !existingIds.contains(e.id))
+              .toList();
+          allTransactions = [
+            ...updatedState.allTransactions,
+            ...uniqueNewTransactions
+          ];
+        }
 
         emit(updatedState.copyWith(
           transactions: transactionsResponse.data,

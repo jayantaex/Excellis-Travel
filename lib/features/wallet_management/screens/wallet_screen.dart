@@ -32,6 +32,7 @@ class _WalletScreenState extends State<WalletScreen>
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _amountController =
       TextEditingController(text: '10000');
+  bool _isFetching = false;
 
   @override
   void initState() {
@@ -62,12 +63,15 @@ class _WalletScreenState extends State<WalletScreen>
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
+      if (_isFetching) return;
+
       // Load more when 200px from bottom
       final state = context.read<WalletBloc>().state;
       if (state is WalletLoaded && !state.isLoadingMore) {
         final pagination = state.pagination;
         if (pagination != null && pagination.hasNext == true) {
           setState(() {
+            _isFetching = true;
             page++;
           });
           _fetchWalletTransactions(page: page, limit: limit);
@@ -105,7 +109,12 @@ class _WalletScreenState extends State<WalletScreen>
             child: SafeArea(
               child: BlocConsumer<WalletBloc, WalletState>(
                 listener: (context, state) {
-                  // Listener can be used for side effects if needed
+                  if (state is WalletLoaded && !state.isLoadingMore) {
+                    _isFetching = false;
+                  }
+                  if (state is WalletError) {
+                    _isFetching = false;
+                  }
                 },
                 builder: (context, state) {
                   if (state is WalletLoading) {
@@ -371,6 +380,9 @@ class _WalletScreenState extends State<WalletScreen>
 
                                   return RefreshIndicator(
                                     onRefresh: () async {
+                                      setState(() {
+                                        page = 1;
+                                      });
                                       _fetchWalletBalance();
                                     },
                                     child: ListView.builder(

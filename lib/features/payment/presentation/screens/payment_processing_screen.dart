@@ -59,7 +59,7 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
   void _handlePaymentFailure(PaymentFailureResponse response) {
     // context.read<PaymentBloc>().add(const VerifyPaymentOrder());
     // log('${response.message}');
-    context.pushNamed(PaymentModule.paymentFailedName,
+    context.pushReplacementNamed(PaymentModule.paymentFailedName,
         queryParameters: {'message': response.message});
   }
 
