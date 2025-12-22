@@ -107,7 +107,7 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
               }
 
               if (state is RechargeWalletSuccess) {
-                context.pushReplacementNamed(PaymentModule.paymentSuccessName);
+                _navigateToSuccess();
               }
             },
             builder: (context, state) => Padding(
@@ -145,6 +145,10 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
           ),
         ),
       );
+
+  void _navigateToSuccess() {
+    context.pushReplacementNamed(PaymentModule.paymentSuccessName);
+  }
 }
 
 class ErrorInfo extends StatelessWidget {

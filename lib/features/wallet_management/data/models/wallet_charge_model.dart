@@ -9,7 +9,7 @@ class WalletChargeModel {
   WalletChargeModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
-    datam = json['datam'] != null ? new Datam.fromJson(json['datam']) : null;
+    datam = json['datam'] != null ? Datam.fromJson(json['datam']) : null;
     statusCode = json['statusCode'];
     timestamp = json['timestamp'];
   }
@@ -38,7 +38,7 @@ class Datam {
   Datam.fromJson(Map<String, dynamic> json) {
     balance = json['balance'];
     transaction = json['transaction'] != null
-        ? new Transaction.fromJson(json['transaction'])
+        ? Transaction.fromJson(json['transaction'])
         : null;
   }
   double? balance;

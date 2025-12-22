@@ -48,7 +48,7 @@ class AppDropDown extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(
             color: isDarkMode
-                ? AppColors.white.withOpacity(0.1)
+                ? AppColors.white.withValues(alpha: 0.1)
                 : AppColors.grey.withValues(alpha: 0.3),
           ),
         ),
@@ -58,7 +58,7 @@ class AppDropDown extends StatelessWidget {
           ),
           borderSide: BorderSide(
             color: isDarkMode
-                ? AppColors.white.withOpacity(0.1)
+                ? AppColors.white.withValues(alpha: 0.1)
                 : AppColors.grey.withValues(alpha: 0.3),
           ),
         ),
@@ -66,7 +66,7 @@ class AppDropDown extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(
             color: isDarkMode
-                ? AppColors.white.withOpacity(0.1)
+                ? AppColors.white.withValues(alpha: 0.1)
                 : AppColors.grey.withValues(alpha: 0.3),
           ),
         ),

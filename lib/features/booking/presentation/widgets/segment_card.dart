@@ -32,8 +32,9 @@ class SegmentCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.7)
+                    : AppColors.grey,
               ),
             )
           : Text(
@@ -41,8 +42,9 @@ class SegmentCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.7)
+                    : AppColors.grey,
               ),
             ),
       children: <Widget>[
@@ -64,8 +66,9 @@ class SegmentCard extends StatelessWidget {
             style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w500,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.9) : AppColors.black
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.9)
+                    : AppColors.black
                 // color: AppColors.grey
                 ),
           ),
@@ -93,8 +96,9 @@ class SegmentCard extends StatelessWidget {
             style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w500,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.9) : AppColors.black
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.9)
+                    : AppColors.black
                 // color: AppColors.grey
                 ),
           ),

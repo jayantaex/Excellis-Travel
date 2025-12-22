@@ -169,8 +169,7 @@ class _WalletScreenState extends State<WalletScreen>
                                             final double doubleAmount =
                                                 double.parse(
                                                     _amountController.text);
-                                            final int amount =
-                                                (doubleAmount * 100).toInt();
+
                                             context.pushNamed(
                                                 PaymentModule
                                                     .paymentProcessingName,

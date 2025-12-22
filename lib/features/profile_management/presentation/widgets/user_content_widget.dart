@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_styles.dart';
-import '../../../../utils/app_helpers.dart';
 import 'profile_avatar_widget.dart';
 
 class UserContentWidget extends StatelessWidget {
@@ -21,11 +19,7 @@ class UserContentWidget extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               userName,
-              style: TextStyle(
-                  fontSize: 16,
-                  color: AppHelpers.isDarkMode(context)
-                      ? AppColors.white
-                      : AppColors.black),
+              style: const TextStyle(fontSize: 16, color: AppColors.white),
             )
           ],
         ),

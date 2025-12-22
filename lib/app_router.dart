@@ -10,7 +10,6 @@ import 'features/payment/payment_module.dart';
 import 'features/profile_management/profile_management_module.dart';
 import 'features/sales/sales_module.dart';
 import 'features/settings/settings_module.dart';
-import 'features/splash/screens/app_updater.dart';
 import 'features/splash/splash_module.dart';
 import 'features/booking/booking_module.dart';
 import 'features/wallet_management/wallet_module.dart';

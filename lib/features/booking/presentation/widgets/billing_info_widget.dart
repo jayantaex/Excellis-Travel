@@ -104,8 +104,9 @@ class ItemRow extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.7)
+                    : AppColors.grey,
                 overflow: TextOverflow.ellipsis,
               ),
             ),

@@ -68,13 +68,18 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     }
   ];
   bool isLogedIn = false;
+
+  void _loadProfile() {
+    context.read<ProfileBloc>().add(const LoadProfileEvent());
+  }
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
       isLogedIn = await isLogedInFun();
       if (context.mounted) {
-        context.read<ProfileBloc>().add(const LoadProfileEvent());
+        _loadProfile();
       }
     });
   }

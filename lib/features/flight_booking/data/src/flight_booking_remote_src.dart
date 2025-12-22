@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-
 import '../../../../core/network/amadeus_client.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_response.dart';

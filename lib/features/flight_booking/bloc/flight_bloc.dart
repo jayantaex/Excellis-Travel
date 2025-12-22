@@ -207,8 +207,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       }
       emit(FlightOfferPriceLoaded(data: res.data!));
     } catch (e) {
-      log("*************************");
-      log("${e.toString()}");
       emit(FlightOfferPriceError(
         message: '$e',
       ));

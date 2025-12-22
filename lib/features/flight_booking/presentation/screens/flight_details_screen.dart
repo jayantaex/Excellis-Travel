@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -349,12 +347,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                           curr is ProfileLoaded ||
                                           curr is ProfileError,
                                       listener: (context, state) {
-                                        log(":::::PROFILE DATA FROM STATE:::::");
-                                        log('${state}');
-                                        if (state is ProfileLoaded) {
-                                          log(":::::PROFILE DATA FROM STATE:::::");
-                                          log('${state.profileData}');
-                                        }
+                                        if (state is ProfileLoaded) {}
                                       },
                                       builder: (context, state) {
                                         if (state is ProfileLoaded) {
@@ -454,7 +447,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                           color: isDark
-                                              ? AppColors.white.withOpacity(0.7)
+                                              ? AppColors.white
+                                                  .withValues(alpha: 0.7)
                                               : AppColors.grey,
                                         ),
                                       ),

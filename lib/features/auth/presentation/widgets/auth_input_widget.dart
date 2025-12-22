@@ -63,9 +63,11 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
                       },
                       icon: SvgPicture.asset(
                           'assets/icons/password_visisbility.svg',
-                          color: AppHelpers.isDarkMode(context)
-                              ? AppColors.white
-                              : AppColors.black))
+                          colorFilter: ColorFilter.mode(
+                              AppHelpers.isDarkMode(context)
+                                  ? AppColors.white
+                                  : AppColors.black,
+                              BlendMode.srcIn)))
                   : IconButton(
                       onPressed: () {
                         setState(() {
@@ -73,10 +75,15 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
                         });
                       },
                       icon: SvgPicture.asset(
-                          'assets/icons/password_visisbility.svg',
-                          color: AppHelpers.isDarkMode(context)
+                        'assets/icons/password_visisbility.svg',
+                        colorFilter: ColorFilter.mode(
+                          AppHelpers.isDarkMode(context)
                               ? AppColors.white
-                              : AppColors.black))
+                              : AppColors.black,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    )
               : null,
           labelText: widget.label,
           hintText: widget.hint,

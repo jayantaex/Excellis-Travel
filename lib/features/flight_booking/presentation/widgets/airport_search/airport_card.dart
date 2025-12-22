@@ -65,7 +65,7 @@ class AirportCard extends StatelessWidget {
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
                 color: isDarkMode
-                    ? AppColors.white.withOpacity(0.6)
+                    ? AppColors.white.withValues(alpha: 0.6)
                     : AppColors.textSecondary)),
         onTap: () {
           onAirportSelected();

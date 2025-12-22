@@ -136,7 +136,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                           FontWeight.w400,
                                                       color: isDark
                                                           ? AppColors.white
-                                                              .withOpacity(0.7)
+                                                              .withValues(
+                                                                  alpha: 0.7)
                                                           : AppColors.grey),
                                                 ),
                                                 Text(
@@ -151,7 +152,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                           FontWeight.w400,
                                                       color: isDark
                                                           ? AppColors.white
-                                                              .withOpacity(0.7)
+                                                              .withValues(
+                                                                  alpha: 0.7)
                                                           : AppColors.grey),
                                                 ),
                                               ],
@@ -206,7 +208,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                     fontWeight: FontWeight.w400,
                                                     color: isDark
                                                         ? AppColors.white
-                                                            .withOpacity(0.7)
+                                                            .withValues(
+                                                                alpha: 0.7)
                                                         : AppColors.grey),
                                               ),
                                               Text(
@@ -220,7 +223,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                     fontWeight: FontWeight.w400,
                                                     color: isDark
                                                         ? AppColors.white
-                                                            .withOpacity(0.7)
+                                                            .withValues(
+                                                                alpha: 0.7)
                                                         : AppColors.grey),
                                               ),
                                             ],
@@ -282,7 +286,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                           pattern: 'dd MMM yyy'),
                                       style: TextStyle(
                                           color: isDark
-                                              ? AppColors.white.withOpacity(0.7)
+                                              ? AppColors.white
+                                                  .withValues(alpha: 0.7)
                                               : AppColors.grey),
                                     ),
                             ),
@@ -316,7 +321,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                           pattern: 'dd MMM yyy'),
                                       style: TextStyle(
                                           color: isDark
-                                              ? AppColors.white.withOpacity(0.7)
+                                              ? AppColors.white
+                                                  .withValues(alpha: 0.7)
                                               : AppColors.grey),
                                     ),
                             ),
@@ -350,7 +356,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                           pattern: 'dd MMM yyy'),
                                       style: TextStyle(
                                           color: isDark
-                                              ? AppColors.white.withOpacity(0.7)
+                                              ? AppColors.white
+                                                  .withValues(alpha: 0.7)
                                               : AppColors.grey),
                                     ),
                             ),

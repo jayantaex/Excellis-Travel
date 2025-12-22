@@ -26,7 +26,7 @@ class _OfferFareTogglerTileState extends State<OfferFareTogglerTile> {
         children: [
           ListTile(
             leading: CircleAvatar(
-              backgroundColor: AppColors.success.withOpacity(0.9),
+              backgroundColor: AppColors.success.withValues(alpha: 0.9),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: AppHelpers.svgAsset(

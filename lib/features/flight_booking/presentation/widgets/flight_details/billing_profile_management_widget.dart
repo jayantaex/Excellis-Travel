@@ -49,7 +49,7 @@ class _BillingProfileManagementWidgetState
               widget.billingAddress?.email ?? '',
               style: TextStyle(
                 color: isDark
-                    ? AppColors.white.withOpacity(0.7)
+                    ? AppColors.white.withValues(alpha: 0.7)
                     : AppColors.textSecondary,
               ),
             )

@@ -111,7 +111,7 @@ class SaleTile extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 11,
                               color: isDark
-                                  ? AppColors.white.withOpacity(0.7)
+                                  ? AppColors.white.withValues(alpha: 0.7)
                                   : AppColors.grey.withValues(alpha: 0.8),
                               fontWeight: FontWeight.w500,
                             ),

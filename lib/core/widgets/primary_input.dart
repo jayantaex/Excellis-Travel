@@ -74,7 +74,7 @@ class AppPrimaryInput extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(
             color: isDarkMode
-                ? AppColors.white.withOpacity(0.1)
+                ? AppColors.white.withValues(alpha: 0.1)
                 : AppColors.grey.withValues(alpha: 0.3),
           ),
         ),
@@ -84,7 +84,7 @@ class AppPrimaryInput extends StatelessWidget {
           ),
           borderSide: BorderSide(
             color: isDarkMode
-                ? AppColors.white.withOpacity(0.1)
+                ? AppColors.white.withValues(alpha: 0.1)
                 : AppColors.grey.withValues(alpha: 0.3),
           ),
         ),
@@ -92,7 +92,7 @@ class AppPrimaryInput extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           borderSide: BorderSide(
             color: isDarkMode
-                ? AppColors.white.withOpacity(0.1)
+                ? AppColors.white.withValues(alpha: 0.1)
                 : AppColors.grey.withValues(alpha: 0.3),
           ),
         ),
@@ -119,7 +119,7 @@ class AppPrimaryInput extends StatelessWidget {
         hintText: hint,
         hintStyle: TextStyle(
           color: isDarkMode
-              ? AppColors.textHint.withOpacity(0.5)
+              ? AppColors.textHint.withValues(alpha: 0.5)
               : AppColors.textHint,
         ),
       ),

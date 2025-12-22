@@ -79,7 +79,8 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                           borderRadius: BorderRadius.circular(24),
                           border: AppHelpers.isDarkMode(context)
                               ? Border.all(
-                                  color: AppColors.white.withOpacity(0.05),
+                                  color:
+                                      AppColors.white.withValues(alpha: 0.05),
                                   width: 1)
                               : null,
                         ),
@@ -232,7 +233,7 @@ class NoAirPortFound extends StatelessWidget {
             fontSize: 18,
             fontWeight: FontWeight.w500,
             color: isDarkMode
-                ? AppColors.white.withOpacity(0.5)
+                ? AppColors.white.withValues(alpha: 0.5)
                 : AppColors.textSecondary,
           )),
     );

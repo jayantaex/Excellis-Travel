@@ -2,6 +2,7 @@ import 'package:excellistravel/features/wallet_management/api/wallet_api.dart';
 import 'package:excellistravel/features/wallet_management/data/repository/wallet_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/common/api/location_api.dart';
 import '../../core/common/bloc/cities/city_bloc.dart';
 import '../../core/common/bloc/states/states_bloc.dart';
@@ -45,7 +46,7 @@ class FlightBookingModule {
   //airport search
   static const String airportSearch = '/airport-search';
   static const String airportSearchName = 'airportSearch';
-  static Widget airportSearchBuilder(context, state) {
+  static Widget airportSearchBuilder(BuildContext context, state) {
     // PaymentVerifiedModel _data = PaymentVerifiedModel.fromJson(bookedData);
     // return PassDownloadScreen(
     //   data: _data,
@@ -71,7 +72,7 @@ class FlightBookingModule {
   // search -result
   static const String flightSearchResult = '/search-result';
   static const String flightSearchResultName = 'flightSearchResult';
-  static Widget searchBuilder(context, state) {
+  static Widget searchBuilder(BuildContext context, GoRouterState state) {
     final extra = state.extra as Map<String, dynamic>?;
     return MultiBlocProvider(
       providers: [
@@ -110,7 +111,7 @@ class FlightBookingModule {
   //pass download
   static const String passDownload = '/pass-download';
   static const String passDownloadName = 'passDownload';
-  static Widget passDownloadBuilder(contex, state) {
+  static Widget passDownloadBuilder(BuildContext contex, state) {
     final PaymentVarifiedDataModel data = state.extra['data'];
     return PassDownloadScreen(data: data);
   }
@@ -118,7 +119,7 @@ class FlightBookingModule {
   //flight Details
   static const String flightDetails = '/flight-details';
   static const String flightDetailsName = 'flightDetails';
-  static Widget flightDetailsBuilder(context, state) {
+  static Widget flightDetailsBuilder(BuildContext context, state) {
     final extra = state.extra;
     return MultiBlocProvider(
       providers: [
