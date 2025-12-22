@@ -178,7 +178,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     emit(WalletLoading());
     final Map<String, dynamic> body = {
-      'amount': kDebugMode ? 20 : event.amount,
+      'amount': (event.amount / 100).toDouble(),
       'description': event.description,
     };
     emit(ChargeMoneySubmitting());
@@ -226,7 +226,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     emit(WalletLoading());
     final ApiResponse<bool> response =
         await walletRepository.rechargeWallet(body: event.body);
-    log('--------${response.data}');
     if (response.data ?? false) {
       emit(RechargeWalletSuccess());
     } else {

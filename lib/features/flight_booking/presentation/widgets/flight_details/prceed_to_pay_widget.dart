@@ -82,6 +82,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                     SizedBox(
                       width: AppHelpers.getScreenWidth(context) * 0.45,
                       child: ListTile(
+                        minVerticalPadding: 0,
                         onTap: () async {
                           showAppSheet(
                               context: context,
@@ -145,23 +146,24 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                         leading: AppHelpers.assetImage(
                           assetName:
                               paymentMode == 'wallet' ? 'wallet' : 'razorpay',
-                          width: 25,
-                          height: 25,
+                          width: 20,
+                          height: 20,
                         ),
-                        title: Row(
+                        title: const Row(
                           children: [
-                            const Text(
+                            Text(
                               'PAYING VIA',
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.grey,
+                                color: AppColors.primary,
                               ),
                             ),
+                            SizedBox(width: 8),
                             Icon(
                               Icons.keyboard_arrow_down_rounded,
-                              color: isDark ? AppColors.white : AppColors.black,
-                              size: 14,
+                              size: 18,
+                              color: AppColors.primary,
                             ),
                           ],
                         ),
