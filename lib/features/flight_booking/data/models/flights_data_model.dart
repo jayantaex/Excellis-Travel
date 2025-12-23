@@ -5,8 +5,8 @@ class FlightsDataModel {
             ? Meta.fromJson(json['meta'] as Map<String, dynamic>)
             : null,
         datam: json['data'] != null
-            ? List<Datam>.from(json['data'].map(
-                (dataItem) => Datam.fromJson(dataItem as Map<String, dynamic>)))
+            ? List<FlightOfferDatam>.from(json['data'].map((dataItem) =>
+                FlightOfferDatam.fromJson(dataItem as Map<String, dynamic>)))
             : null,
         // Corrected path to Dictionaries inside the 'dictionaries' key
         dictionaries: json['dictionaries'] != null
@@ -17,7 +17,7 @@ class FlightsDataModel {
 
   FlightsDataModel({this.meta, this.datam, this.dictionaries});
   final Meta? meta;
-  final List<Datam>? datam;
+  final List<FlightOfferDatam>? datam;
   final FlightDictionary? dictionaries;
 
   Map<String, dynamic> toJson() => {
@@ -42,8 +42,8 @@ class Meta {
       };
 }
 
-class Datam {
-  Datam({
+class FlightOfferDatam {
+  FlightOfferDatam({
     this.type,
     this.id,
     this.source,
@@ -61,7 +61,8 @@ class Datam {
     this.travelerPricings,
   });
 
-  factory Datam.fromJson(Map<String, dynamic> json) => Datam(
+  factory FlightOfferDatam.fromJson(Map<String, dynamic> json) =>
+      FlightOfferDatam(
         type: json['type'],
         id: json['id'],
         source: json['source'],

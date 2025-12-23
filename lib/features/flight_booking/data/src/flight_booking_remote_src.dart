@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '../../../../core/network/amadeus_client.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_response.dart';
@@ -7,6 +9,7 @@ import '../models/create_order_res.dart';
 import '../models/flight_offer_price_model.dart';
 import '../models/flights_data_model.dart';
 import '../models/payment_verify_res_model.dart';
+import '../models/seat_map_data_model.dart';
 
 class FlightBookingRemoteSrc {
   FlightBookingRemoteSrc(this.amadeusClient, {this.apiClient});
@@ -144,6 +147,24 @@ class FlightBookingRemoteSrc {
           },
           fromJson: (Map<String, dynamic> jsonData) =>
               jsonData['data'][0]['businessName']);
+      return resp;
+    } catch (e) {
+      return ApiResponse(errorMessage: e.toString(), statusCode: 400);
+    }
+  }
+
+  Future<ApiResponse<SeatMapDataModel>> getSeatMapData(
+      {required FlightOfferDatam flightOfferData}) async {
+    try {
+      final ApiResponse<SeatMapDataModel> resp =
+          await amadeusClient.postRequest(
+              endPoint: EndPoints.seatMap,
+              reqModel: {
+                'data': [flightOfferData.toJson()]
+              },
+              fromJson: (Map<String, dynamic> jsonData) =>
+                  SeatMapDataModel.fromJson(jsonData));
+      log('${resp.data!.seatData}');
       return resp;
     } catch (e) {
       return ApiResponse(errorMessage: e.toString(), statusCode: 400);

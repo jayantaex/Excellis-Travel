@@ -25,4 +25,8 @@ class TicketsRepository {
         startDate: startDate,
         dateType: dateType,
       );
+  Future<ApiResponse<bool>> updateMarkup(
+          {required String bookingId, required double markup}) async =>
+      await ticketRemoteDataSrc.updateMarkup(
+          bookingId: bookingId, markup: markup);
 }

@@ -18,9 +18,6 @@ class FetchWalletEvent extends WalletEvent {
   final int page;
   final int limit;
   final String? filterType;
-
-  @override
-  List<Object?> get props => [page, limit, filterType];
 }
 
 class FetchWalletTransactionsEvent extends WalletEvent {
@@ -28,13 +25,14 @@ class FetchWalletTransactionsEvent extends WalletEvent {
     required this.page,
     this.limit = 20,
     this.filterType,
+    this.isLoadingMore = false,
+    this.previousTransactions,
   });
   final int page;
   final int limit;
   final String? filterType;
-
-  @override
-  List<Object?> get props => [page, limit, filterType];
+  final bool isLoadingMore;
+  final List<Datam>? previousTransactions;
 }
 
 class FilterTransactionsEvent extends WalletEvent {

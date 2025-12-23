@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import '../../../../core/network/api_response.dart';
+import '../models/seat_map_data_model.dart';
 import '../src/flight_booking_local_src.dart';
 import '../src/flight_booking_remote_src.dart';
 import '../models/air_port_model.dart';
@@ -59,6 +60,7 @@ class FlightBookingRepository {
 
   Future<ApiResponse<MyMarkup>> getMyMarkup() async =>
       await remoteSrc.getMyMarkup();
+
   Future<ApiResponse<String>> getAirlineName(
       {required String airlineCode}) async {
     try {
@@ -89,6 +91,10 @@ class FlightBookingRepository {
           statusCode: 400, errorMessage: 'Failed to get airline name');
     }
   }
+
+  Future<ApiResponse<SeatMapDataModel>> getSeatMapData(
+          {required FlightOfferDatam flightOfferData}) async =>
+      await remoteSrc.getSeatMapData(flightOfferData: flightOfferData);
 }
 
 String getAirlineNameFromLocal(

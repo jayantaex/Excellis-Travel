@@ -338,7 +338,8 @@ class _FlightListScreenState extends State<FlightListScreen> {
 }
 
 Future<bool> _saveToLocal(
-    {required Datam data, required FlightDictionary flightDictionary}) async {
+    {required FlightOfferDatam data,
+    required FlightDictionary flightDictionary}) async {
   try {
     final String key =
         '${data.itineraries!.first.segments!.first.departure!.iataCode}_${data.itineraries!.first.segments!.last.arrival!.iataCode}_${data.itineraries?.first.segments?.first.departure?.at}_${data.itineraries?.first.segments?.last.arrival?.at}';

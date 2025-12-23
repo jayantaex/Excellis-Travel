@@ -25,6 +25,7 @@ import 'presentation/screens/booking_policy.dart';
 import 'presentation/screens/flight_details_screen.dart';
 import 'presentation/screens/flight_list_screen.dart';
 import 'presentation/screens/pass_download_screen.dart';
+import 'presentation/screens/seat_map_screen.dart';
 
 class FlightBookingModule {
   static final AmadeusClient _amadeusClient = AmadeusClient();
@@ -87,26 +88,21 @@ class FlightBookingModule {
   //seat selection
   static const String seatSelection = '/seat-selection';
   static const String seatSelectionName = 'seatSelection';
-  // static Widget seatSelectionBuilder() => const SeatMapScreen();
-
-  // // passenger details
-  // static const String passengerDetails = '/passenger-details';
-  // static const String passengerDetailsName = 'passengerDetails';
-  // static Widget passengerDetailsBuilder() => const PasengerDetailsScreen();
-
-  //payment details
-  // static const String paymentDetails = '/payment-details';
-  // static const String paymentDetailsName = 'paymentDetails';
-  // static Widget paymentDetailsBuilder(context, state) {
-  //   final extra = state.extra;
-  //   return BlocProvider(
-  //     create: (context) => FlightBloc(repository: _flightBookingRepository),
-  //     child: PaymentDetailsScreen(
-  //       data: extra['data'],
-  //       selectedPlan: extra['selectedPlan'],
-  //     ),
-  //   );
-  // }
+  static Widget seatSelectionBuilder(BuildContext context, state) {
+    final extra = state.extra;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => FlightBloc(repository: _flightBookingRepository),
+        ),
+      ],
+      child: SeatMapScreen(
+        flightOffer: extra['flightOffer'],
+        departureAirport: extra['departureAirport'],
+        arivalAirport: extra['arivalAirport'],
+      ),
+    );
+  }
 
   //pass download
   static const String passDownload = '/pass-download';

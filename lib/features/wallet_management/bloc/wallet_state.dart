@@ -11,7 +11,18 @@ abstract class WalletState extends Equatable {
 class WalletInitial extends WalletState {}
 
 /// Loading state
-class WalletLoading extends WalletState {}
+class WalletLoading extends WalletState {
+  const WalletLoading({
+    this.wallet,
+    this.currentFilter = 'all',
+    this.transactions,
+    this.isLoadingMore = false,
+  });
+  final WalletBalanceModel? wallet;
+  final String currentFilter;
+  final TransactionDataModel? transactions;
+  final bool isLoadingMore;
+}
 
 /// Loaded state with wallet data
 class WalletLoaded extends WalletState {
@@ -19,47 +30,14 @@ class WalletLoaded extends WalletState {
 
   const WalletLoaded({
     required this.wallet,
-    this.isLoadingMore = false,
     this.currentFilter = 'all',
     this.transactions,
-    this.allTransactions = const [],
-    this.pagination,
+    this.isLoadingMore = false,
   });
   final WalletBalanceModel? wallet;
-  final bool isLoadingMore;
   final String currentFilter;
   final TransactionDataModel? transactions;
-  final List<Datam> allTransactions;
-  final Pagination? pagination;
-
-  WalletLoaded copyWith({
-    WalletBalanceModel? wallet,
-    bool? isLoadingMore,
-    String? currentFilter,
-    TransactionDataModel? transactions,
-    List<Datam>? allTransactions,
-    Pagination? pagination,
-    bool clearTransactions = false,
-  }) =>
-      WalletLoaded(
-        wallet: wallet ?? this.wallet,
-        isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-        currentFilter: currentFilter ?? this.currentFilter,
-        transactions: transactions ?? this.transactions,
-        allTransactions: clearTransactions
-            ? (allTransactions ?? [])
-            : (allTransactions ?? this.allTransactions),
-        pagination: pagination ?? this.pagination,
-      );
-
-  @override
-  List<Object?> get props => [
-        wallet,
-        isLoadingMore,
-        currentFilter,
-        allTransactions,
-        pagination,
-      ];
+  final bool isLoadingMore;
 }
 
 /// Error state

@@ -32,3 +32,9 @@ class GetTicketDetails extends TicketEvent {
   const GetTicketDetails({required this.ticketId});
   final String ticketId;
 }
+
+class UpdateMarkup extends TicketEvent {
+  const UpdateMarkup({required this.bookingId, required this.markup});
+  final String bookingId;
+  final double markup;
+}

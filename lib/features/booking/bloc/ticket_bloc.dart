@@ -11,6 +11,7 @@ part 'ticket_state.dart';
 class TicketBloc extends Bloc<TicketEvent, TicketState> {
   TicketBloc({required this.repository}) : super(TicketInitial()) {
     on<FetchTickets>(_handleFetchTickets);
+    on<UpdateMarkup>(_handleUpdateMarkup);
   }
   final TicketsRepository repository;
 
@@ -97,6 +98,24 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
         } else {
           emit(TicketError(err: res.errorMessage ?? 'Something went wrong'));
         }
+      }
+    } catch (e) {
+      emit(TicketError(err: e.toString()));
+    }
+  }
+
+  Future<void> _handleUpdateMarkup(
+      UpdateMarkup event, Emitter<TicketState> emit) async {
+    try {
+      emit(TicketLoading());
+      final ApiResponse<bool> res = await repository.updateMarkup(
+        bookingId: event.bookingId,
+        markup: event.markup,
+      );
+      if (res.data != null) {
+        emit(const MarkupUpdated());
+      } else {
+        emit(TicketError(err: res.errorMessage ?? 'Something went wrong'));
       }
     } catch (e) {
       emit(TicketError(err: e.toString()));

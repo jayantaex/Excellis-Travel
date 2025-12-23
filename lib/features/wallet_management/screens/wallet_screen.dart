@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:excellistravel/core/constants/app_styles.dart';
 import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:excellistravel/features/payment/payment_module.dart';
@@ -26,8 +28,7 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int page = 1;
-  int limit = 10;
+  int limit = 2000000;
   String selectedFilter = 'all';
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _amountController =
@@ -37,7 +38,7 @@ class _WalletScreenState extends State<WalletScreen>
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
+    // _scrollController.addListener(_onScroll);
     _fetchWalletBalance();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
@@ -67,14 +68,15 @@ class _WalletScreenState extends State<WalletScreen>
 
       // Load more when 200px from bottom
       final state = context.read<WalletBloc>().state;
+
       if (state is WalletLoaded && !state.isLoadingMore) {
-        final pagination = state.pagination;
+        final pagination = state.transactions?.pagination;
         if (pagination != null && pagination.hasNext == true) {
           setState(() {
             _isFetching = true;
-            page++;
           });
-          _fetchWalletTransactions(page: page, limit: limit);
+          final nextPage = (pagination.page ?? 0) + 1;
+          _fetchWalletTransactions(page: nextPage, limit: limit);
         }
       }
     }
@@ -88,16 +90,16 @@ class _WalletScreenState extends State<WalletScreen>
     super.dispose();
   }
 
-  List<Datam> _getFilteredTransactions(List<Datam> allTransactions) {
+  List<Datam>? _getFilteredTransactions(TransactionDataModel? transactions) {
     if (selectedFilter == 'all') {
-      return allTransactions;
+      return transactions?.datam ?? [];
     } else if (selectedFilter == 'credit') {
-      return allTransactions
-          .where((txn) => txn.transactionType?.toLowerCase() == 'credit')
+      return transactions?.datam
+          ?.where((txn) => txn.transactionType?.toLowerCase() == 'credit')
           .toList();
     } else {
-      return allTransactions
-          .where((txn) => txn.transactionType?.toLowerCase() == 'debit')
+      return transactions?.datam
+          ?.where((txn) => txn.transactionType?.toLowerCase() == 'debit')
           .toList();
     }
   }
@@ -340,11 +342,10 @@ class _WalletScreenState extends State<WalletScreen>
                                 child: () {
                                   final filteredTransactions =
                                       _getFilteredTransactions(
-                                    state.allTransactions,
-                                  );
+                                          state.transactions);
 
-                                  if (filteredTransactions.isEmpty &&
-                                      !state.isLoadingMore) {
+                                  if (filteredTransactions?.isEmpty ??
+                                      true && !state.isLoadingMore) {
                                     return Center(
                                       child: Column(
                                         mainAxisAlignment:
@@ -380,9 +381,6 @@ class _WalletScreenState extends State<WalletScreen>
 
                                   return RefreshIndicator(
                                     onRefresh: () async {
-                                      setState(() {
-                                        page = 1;
-                                      });
                                       _fetchWalletBalance();
                                     },
                                     child: ListView.builder(
@@ -391,12 +389,13 @@ class _WalletScreenState extends State<WalletScreen>
                                       controller: _scrollController,
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
-                                      itemCount: filteredTransactions.length +
-                                          (state.isLoadingMore ? 1 : 0),
+                                      itemCount:
+                                          (filteredTransactions?.length ?? 0) +
+                                              (state.isLoadingMore ? 1 : 0),
                                       itemBuilder: (context, index) {
                                         // Show loading indicator at the end
                                         if (index ==
-                                            filteredTransactions.length) {
+                                            filteredTransactions?.length) {
                                           return const Padding(
                                             padding: EdgeInsets.all(16.0),
                                             child: Center(
@@ -408,22 +407,22 @@ class _WalletScreenState extends State<WalletScreen>
                                         }
 
                                         final transaction =
-                                            filteredTransactions[index];
+                                            filteredTransactions?[index];
                                         return TransactionCardWidget(
                                           title: transaction
-                                                  .transactionReference ??
+                                                  ?.transactionReference ??
                                               '',
                                           date: AppHelpers.formatDate(
                                               DateTime.parse(
-                                                  transaction.createdAt ??
+                                                  transaction?.createdAt ??
                                                       '2025-01-01')),
-                                          amount: transaction.amount ?? '0.00',
-                                          type: transaction.transactionType ??
+                                          amount: transaction?.amount ?? '0.00',
+                                          type: transaction?.transactionType ??
                                               'debit',
                                           description:
-                                              transaction.description ?? '',
+                                              transaction?.description ?? '',
                                           transactionId: transaction
-                                                  .transactionReference ??
+                                                  ?.transactionReference ??
                                               '',
                                         );
                                       },
@@ -446,13 +445,16 @@ class _WalletScreenState extends State<WalletScreen>
       );
 
   void _fetchWalletBalance() {
-    context.read<WalletBloc>().add(const FetchWalletEvent());
+    context
+        .read<WalletBloc>()
+        .add(const FetchWalletEvent(limit: 99999999999999999, page: 1));
   }
 
   void _fetchWalletTransactions({
     required int page,
     required int limit,
   }) {
+    log('Fetching wallet transactions $page $limit');
     context.read<WalletBloc>().add(FetchWalletTransactionsEvent(
           page: page,
           limit: limit,

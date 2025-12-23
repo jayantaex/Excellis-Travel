@@ -38,6 +38,7 @@ class EndPoints {
   static const String amaduesAccessToken = '/v1/security/oauth2/token';
   static const String airportSearchByKeyword = '/v1/reference-data/locations';
   static const String flightSearch = '/v2/shopping/flight-offers';
+  static const String seatMap = '/v1/shopping/seatmaps';
   static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
   static const String airlineName = '/v1/reference-data/airlines';
 
@@ -66,6 +67,7 @@ class EndPoints {
   //ticket
   static const String ticket = '/bookings/filtered-auto';
   static const String downloadFile = '/bookings';
+  static const String updateMarkup = '/bookings/update-instant-markup';
 
   //sales
   static const String sales = '/commissions/transactions-auto';

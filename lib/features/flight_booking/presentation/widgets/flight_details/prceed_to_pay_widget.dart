@@ -183,6 +183,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                       width: AppHelpers.getScreenWidth(context) * 0.45,
                       child: AppPrimaryButton(
                         onPressed: () async {
+                          log("////////////////////$paymentMode");
                           try {
                             if (paymentMode == 'wallet' &&
                                 widget.walletBalance <

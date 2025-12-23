@@ -17,7 +17,8 @@ import '../../../wallet_management/bloc/wallet_bloc.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../data/dto/billing_address_model.dart';
 import '../../flight_booking_module.dart';
-import '../../data/models/flights_data_model.dart' show FlightDictionary, Datam;
+import '../../data/models/flights_data_model.dart'
+    show FlightDictionary, FlightOfferDatam;
 import '../../data/models/passenger_model.dart';
 import '../widgets/flight_details/baggae_card_widget.dart';
 import '../widgets/flight_details/billing_profile_management_widget.dart';
@@ -37,7 +38,7 @@ class FlightDetailsScreen extends StatefulWidget {
     required this.departureCity,
     required this.departureAirport,
   });
-  final Datam data;
+  final FlightOfferDatam data;
   final FlightDictionary flightDictionary;
   final String arivalCity;
   final String arivalAirport;
@@ -207,7 +208,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               const String mobile = '';
                               const String email = '';
 
-                              if (state.paymentVia == 'razorpay') {
+                              if (state.paymentVia == 'Razorpay') {
                                 final int amount = state.data.amount ?? 0;
 
                                 await _razorpayService.initatePayment(
@@ -340,6 +341,75 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       ),
                                     ),
                                   ),
+                                  // widget.data.itineraries?.length == 1
+                                  //     ? SliverToBoxAdapter(
+                                  //         child: Padding(
+                                  //           padding: const EdgeInsets.symmetric(
+                                  //               horizontal: 8),
+                                  //           child: ListTile(
+                                  //             contentPadding:
+                                  //                 const EdgeInsets.symmetric(
+                                  //                     horizontal: 8),
+                                  //             leading: AppHelpers.svgAsset(
+                                  //                 assetName: 'seat',
+                                  //                 isIcon: true),
+                                  //             title: const Text('Choose Seat',
+                                  //                 style: TextStyle(
+                                  //                   fontSize: 14,
+                                  //                   fontWeight: FontWeight.w600,
+                                  //                 )),
+                                  //             subtitle: const Text(
+                                  //               'Choose your seat for this flight',
+                                  //               style: TextStyle(
+                                  //                 fontSize: 12,
+                                  //                 fontWeight: FontWeight.w400,
+                                  //               ),
+                                  //             ),
+                                  //             trailing: InkWell(
+                                  //               onTap: () {
+                                  //                 context.pushNamed(
+                                  //                     FlightBookingModule
+                                  //                         .seatSelectionName,
+                                  //                     extra: {
+                                  //                       'flightOffer':
+                                  //                           widget.data,
+                                  //                       'departureAirport':
+                                  //                           widget
+                                  //                                   .data
+                                  //                                   .itineraries
+                                  //                                   ?.first
+                                  //                                   .segments
+                                  //                                   ?.first
+                                  //                                   .departure
+                                  //                                   ?.iataCode ??
+                                  //                               '',
+                                  //                       'arivalAirport': widget
+                                  //                               .data
+                                  //                               .itineraries
+                                  //                               ?.first
+                                  //                               .segments
+                                  //                               ?.first
+                                  //                               .arrival
+                                  //                               ?.iataCode ??
+                                  //                           '',
+                                  //                     });
+                                  //               },
+                                  //               child: CircleAvatar(
+                                  //                 radius: 16,
+                                  //                 backgroundColor: AppColors
+                                  //                     .success
+                                  //                     .withValues(alpha: 0.2),
+                                  //                 child: const Icon(
+                                  //                   Icons.add,
+                                  //                   size: 16,
+                                  //                   color: AppColors.success,
+                                  //                 ),
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       )
+                                  //     : const SizedBox(),
                                   SliverToBoxAdapter(
                                     child:
                                         BlocConsumer<ProfileBloc, ProfileState>(
@@ -386,7 +456,10 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                                               ?.balance ??
                                                           0,
                                                       onToggle: (bool value) {
-                                                        isOfferEnabled = value;
+                                                        setState(() {
+                                                          isOfferEnabled =
+                                                              value;
+                                                        });
                                                       },
                                                       flightOffer: flightState
                                                           .data

@@ -24,7 +24,7 @@ class FlightCardWidget extends StatelessWidget {
       this.departureAirport,
       this.arrivalCity,
       this.arrivalAirport});
-  final Datam data;
+  final FlightOfferDatam data;
   final FlightDictionary? dictionaries;
   final String? markUpType;
   final String? markUpValue;

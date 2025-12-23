@@ -93,12 +93,12 @@ class AppRouter {
         builder: (BuildContext context, GoRouterState state) =>
             FlightBookingModule.searchBuilder(context, state),
       ),
-      // GoRoute(
-      //   path: FlightBookingModule.seatSelection,
-      //   name: FlightBookingModule.seatSelectionName,
-      //   builder: (BuildContext context, GoRouterState state) =>
-      //       FlightBookingModule.seatSelectionBuilder(),
-      // ),
+      GoRoute(
+        path: FlightBookingModule.seatSelection,
+        name: FlightBookingModule.seatSelectionName,
+        builder: (BuildContext context, GoRouterState state) =>
+            FlightBookingModule.seatSelectionBuilder(context, state),
+      ),
 
       //sales
       GoRoute(

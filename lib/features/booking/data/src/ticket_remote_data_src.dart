@@ -13,7 +13,7 @@ class TicketRemoteDataSrc {
     required String bookingId,
     required String status,
     required String startDate,
-    required String endDate,  
+    required String endDate,
     required String dateType,
   }) async {
     try {
@@ -46,6 +46,19 @@ class TicketRemoteDataSrc {
           endPoint: EndPoints.ticket,
           fromJson: (Map<String, dynamic> json) =>
               BookingListModel.fromJson(json['data']));
+      return resp;
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  Future<ApiResponse<bool>> updateMarkup(
+      {required String bookingId, required double markup}) async {
+    try {
+      final ApiResponse<bool> resp = await apiClient.postRequest(
+          endPoint: EndPoints.updateMarkup,
+          reqModel: {'bookingReference': bookingId, 'markup': markup},
+          fromJson: (Map<String, dynamic> json) => json['success']);
       return resp;
     } catch (e) {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());

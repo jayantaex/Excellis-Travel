@@ -83,7 +83,8 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                       final String strData =
                           jsonEncode(recentSearches[index].data);
                       final Map<String, dynamic> data = jsonDecode(strData);
-                      final Datam datam = Datam.fromJson(data);
+                      final FlightOfferDatam datam =
+                          FlightOfferDatam.fromJson(data);
                       final FlightDictionary flightDictionary =
                           FlightDictionary.fromJson(
                               recentSearches[index].dictionaries);
