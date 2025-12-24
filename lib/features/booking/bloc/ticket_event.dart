@@ -38,3 +38,16 @@ class UpdateMarkup extends TicketEvent {
   final String bookingId;
   final double markup;
 }
+
+class DeleteAllMarkup extends TicketEvent {}
+
+class GetMarkup extends TicketEvent {
+  const GetMarkup({required this.bookingId});
+  final String bookingId;
+}
+
+class SaveMarkup extends TicketEvent {
+  const SaveMarkup({required this.bookingId, required this.markup});
+  final String bookingId;
+  final double markup;
+}

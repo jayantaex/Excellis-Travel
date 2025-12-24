@@ -197,7 +197,7 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            ' Tickets (${state.tickets.pagination?.totalItems})',
+                                            'Tickets (${state.tickets.pagination?.totalItems})',
                                             style: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w600,

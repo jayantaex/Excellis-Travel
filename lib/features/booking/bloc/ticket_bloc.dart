@@ -12,6 +12,8 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
   TicketBloc({required this.repository}) : super(TicketInitial()) {
     on<FetchTickets>(_handleFetchTickets);
     on<UpdateMarkup>(_handleUpdateMarkup);
+    on<DeleteAllMarkup>(_handleDeleteAllMarkup);
+    on<GetMarkup>(_handleGetMarkup);
   }
   final TicketsRepository repository;
 
@@ -113,9 +115,36 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
         markup: event.markup,
       );
       if (res.data != null) {
+        await repository.saveMarkup(event.bookingId, event.markup);
         emit(const MarkupUpdated());
       } else {
         emit(TicketError(err: res.errorMessage ?? 'Something went wrong'));
+      }
+    } catch (e) {
+      emit(TicketError(err: e.toString()));
+    }
+  }
+
+  Future<void> _handleDeleteAllMarkup(
+      DeleteAllMarkup event, Emitter<TicketState> emit) async {
+    try {
+      emit(TicketLoading());
+      await repository.deleteAll();
+      emit(const MarkupDeleted());
+    } catch (e) {
+      emit(TicketError(err: e.toString()));
+    }
+  }
+
+  Future<void> _handleGetMarkup(
+      GetMarkup event, Emitter<TicketState> emit) async {
+    try {
+      emit(TicketLoading());
+      final double? markup = await repository.getMarkup(event.bookingId);
+      if (markup != null) {
+        emit(MarkupRetrieved(markup: markup));
+      } else {
+        emit(const MarkupRetrieved(markup: null));
       }
     } catch (e) {
       emit(TicketError(err: e.toString()));

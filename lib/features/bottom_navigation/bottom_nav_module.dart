@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/network/api_client.dart';
+import '../booking/data/src/ticker_local_data_src.dart';
 import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
@@ -16,7 +17,8 @@ class BottomNavModule {
   static const String path = '/bottom_nav';
   static const String name = 'bottom_nav_screen';
   static final TicketsRepository ticketRepository = TicketsRepository(
-      ticketRemoteDataSrc: TicketRemoteDataSrc(apiClient: ApiClient()));
+      ticketRemoteDataSrc: TicketRemoteDataSrc(apiClient: ApiClient()),
+      ticketLocalDataSrc: TicketLocalDataSrc());
   static Widget builder() {
     final ApiClient apiClient = ApiClient();
     final ProfileManagementApi profileApi =

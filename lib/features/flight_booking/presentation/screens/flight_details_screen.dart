@@ -232,7 +232,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
 
                             if (state is FlightPaymentVerified) {
                               if (context.mounted) {
-                                context.goNamed(
+                                context.pushReplacementNamed(
                                     FlightBookingModule.passDownloadName,
                                     extra: {'data': state.data});
                               }
@@ -497,7 +497,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                 ],
                               );
                             }
-                            if (flightState is FlightOrderLoading) {
+                            if (flightState is FlightOrderLoading ||
+                                flightState is FlightOrderCreated) {
                               return Center(
                                 child: SizedBox(
                                   height: 900,
@@ -590,7 +591,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   Future<void> _handlePaymentError(PaymentFailureResponse response) async {
     final String failureMessage = _extractPaymentFailureMessage(response);
     if (!mounted) return;
-    context.pushNamed(
+    context.pushReplacementNamed(
       PaymentModule.paymentFailedName,
       queryParameters: {'message': failureMessage},
     );

@@ -7,8 +7,8 @@ class MainUrl {
     if (env == 'production') {
       return AppConstants.baseUrl;
     } else {
-      return 'https://api.excellistravel.com';
-      // return 'http://192.168.0.215:5000/api/v1';
+      // return 'https://api.excellistravel.com';
+      return AppConstants.baseUrl;
     }
   }
 
@@ -16,7 +16,7 @@ class MainUrl {
     if (env == 'production') {
       return AppConstants.amaduesUrl;
     } else {
-      return 'https://test.api.amadeus.com';
+      return AppConstants.amaduesUrl;
     }
   }
 
