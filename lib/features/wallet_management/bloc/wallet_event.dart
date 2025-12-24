@@ -43,15 +43,6 @@ class FilterTransactionsEvent extends WalletEvent {
   List<Object?> get props => [filterType];
 }
 
-/// Event to submit withdrawal request
-class SubmitWithdrawalEvent extends WalletEvent {
-  const SubmitWithdrawalEvent({required this.request});
-  final WithdrawalRequestModel request;
-
-  @override
-  List<Object?> get props => [request];
-}
-
 class ChargeMoneyEvent extends WalletEvent {
   const ChargeMoneyEvent({
     required this.amount,
@@ -78,4 +69,13 @@ class VerifyWalletOrderEvent extends WalletEvent {
 class RechargeWalletEvent extends WalletEvent {
   const RechargeWalletEvent({required this.body});
   final Map<String, dynamic> body;
+}
+
+/// Event to submit withdrawal request
+class SubmitWithdrawalEvent extends WalletEvent {
+  const SubmitWithdrawalEvent({required this.request});
+  final WithdrawalRequestModel request;
+
+  @override
+  List<Object?> get props => [request];
 }

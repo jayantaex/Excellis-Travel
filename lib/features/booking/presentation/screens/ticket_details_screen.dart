@@ -380,7 +380,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                     }
                                                     return null;
                                                   },
-                                                  maxCharacters: 4,
+                                                  maxCharacters: 8,
                                                   controller: _markupController,
                                                   keyboardType:
                                                       TextInputType.number,
