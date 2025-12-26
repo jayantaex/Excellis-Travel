@@ -73,9 +73,9 @@ class RechargeWalletEvent extends WalletEvent {
 
 /// Event to submit withdrawal request
 class SubmitWithdrawalEvent extends WalletEvent {
-  const SubmitWithdrawalEvent({required this.request});
-  final WithdrawalRequestModel request;
+  const SubmitWithdrawalEvent({required this.body});
+  final Map<String, dynamic> body;
 
   @override
-  List<Object?> get props => [request];
+  List<Object?> get props => [body];
 }

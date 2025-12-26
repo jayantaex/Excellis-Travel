@@ -4,7 +4,6 @@ import '../models/transaction_model.dart';
 import '../models/wallet_charge_model.dart';
 import '../models/wallet_model.dart';
 import '../models/wallet_order_model.dart';
-import '../models/withdrawal_request_model.dart';
 
 class WalletRepository {
   WalletRepository(this.walletApi);
@@ -25,12 +24,6 @@ class WalletRepository {
         page: page,
         limit: limit,
       );
-
-  /// Submit withdrawal request
-  Future<ApiResponse<void>> submitWithdrawalRequest({
-    required WithdrawalRequestModel request,
-  }) async =>
-      await walletApi.submitWithdrawalRequest(request: request);
 
   /// Recharge money to wallet (recharge)
 
@@ -53,5 +46,8 @@ class WalletRepository {
   Future<ApiResponse<WalletChargeModel>> chargeMoney(
           {required Map<String, dynamic> body}) async =>
       await walletApi.chargeMoney(body: body);
+
+  Future<ApiResponse<bool>> submitWithdrawalRequest(
+          {required Map<String, dynamic> body}) async =>
+      await walletApi.submitWithdrawalRequest(body: body);
 }
-//verify money

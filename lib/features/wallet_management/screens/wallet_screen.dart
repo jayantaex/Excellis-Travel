@@ -117,6 +117,17 @@ class _WalletScreenState extends State<WalletScreen>
                   if (state is WalletError) {
                     _isFetching = false;
                   }
+
+                  if (state is SubmitWithdrawalSuccess) {
+                    AppHelpers.showSnackBar(
+                        context, 'Withdrawal request submitted successfully',
+                        backgroundColor: AppColors.success);
+                    _fetchWalletBalance();
+                  }
+                  if (state is SubmitWithdrawalError) {
+                    AppHelpers.showSnackBar(context, state.message,
+                        backgroundColor: AppColors.error);
+                  }
                 },
                 builder: (context, state) {
                   if (state is WalletLoading) {
@@ -155,12 +166,17 @@ class _WalletScreenState extends State<WalletScreen>
                                       value: 'Withdraw Money',
                                       child: const Text('Withdraw Money'),
                                       onTap: () {
+                                        final walletBloc =
+                                            context.read<WalletBloc>();
                                         showAppSheet(
                                           context: context,
                                           title: 'Withdraw Money',
-                                          child: WithdrawalSheet(
-                                            availableBalance:
-                                                state.wallet?.balance ?? 0.0,
+                                          child: BlocProvider.value(
+                                            value: walletBloc,
+                                            child: WithdrawalSheet(
+                                              availableBalance:
+                                                  state.wallet?.balance ?? 0.0,
+                                            ),
                                           ),
                                         );
                                       },

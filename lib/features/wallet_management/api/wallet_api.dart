@@ -7,7 +7,6 @@ import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart';
 import '../data/models/wallet_model.dart';
 import '../data/models/wallet_order_model.dart';
-import '../data/models/withdrawal_request_model.dart';
 
 class WalletApi {
   WalletApi(this.apiClient);
@@ -41,21 +40,6 @@ class WalletApi {
       );
     } catch (e) {
       log(e.toString());
-      return ApiResponse(statusCode: 400, errorMessage: e.toString());
-    }
-  }
-
-  /// Submit withdrawal request
-  Future<ApiResponse<void>> submitWithdrawalRequest({
-    required WithdrawalRequestModel request,
-  }) async {
-    try {
-      return await apiClient.postRequest(
-        endPoint: EndPoints.refreshToken,
-        reqModel: request.toJson(),
-        fromJson: (json) {},
-      );
-    } catch (e) {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());
     }
   }
@@ -99,6 +83,20 @@ class WalletApi {
       return await apiClient.postRequest(
         reqModel: body,
         endPoint: EndPoints.walletRecharge,
+        fromJson: (json) => json['success'],
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+//submit withdrawal request
+  Future<ApiResponse<bool>> submitWithdrawalRequest(
+      {required Map<String, dynamic> body}) async {
+    try {
+      return await apiClient.postRequest(
+        reqModel: body,
+        endPoint: EndPoints.walletWithdraw,
         fromJson: (json) => json['success'],
       );
     } catch (e) {

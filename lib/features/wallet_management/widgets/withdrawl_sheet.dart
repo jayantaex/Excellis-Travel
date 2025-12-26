@@ -1,6 +1,11 @@
+import 'dart:developer';
+
+import 'package:excellistravel/core/widgets/primary_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/app_styles.dart';
+import '../bloc/wallet_bloc.dart';
 
 class WithdrawalSheet extends StatefulWidget {
   const WithdrawalSheet({super.key, required this.availableBalance});
@@ -13,28 +18,25 @@ class WithdrawalSheet extends StatefulWidget {
 class _WithdrawalSheetState extends State<WithdrawalSheet> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
-  final _accountController = TextEditingController();
-  final _ifscController = TextEditingController();
-  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
 
   @override
   void dispose() {
     _amountController.dispose();
-    _accountController.dispose();
-    _ifscController.dispose();
-    _nameController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
   void _processWithdrawal() {
     if (_formKey.currentState?.validate() ?? false) {
+      final body = {
+        'amount': double.parse(_amountController.text),
+        'metadata': {'remarks': _descriptionController.text},
+        'bank_account_details': {}
+      };
+      context.read<WalletBloc>().add(SubmitWithdrawalEvent(body: body));
+
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Withdrawal request submitted successfully'),
-          backgroundColor: AppColors.success,
-        ),
-      );
     }
   }
 
@@ -97,183 +99,74 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
 
-                  // Amount Field
-                  const Text(
-                    'Withdrawal Amount',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                  const SizedBox(height: 32),
+                  AppPrimaryInput(
+                    prefixIcon: const Icon(
+                      Icons.currency_rupee,
+                      size: 18,
+                      color: AppColors.black,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextFormField(
+                    maxCharacters: 9,
+                    keyboardType: TextInputType.number,
+                    isMultiline: false,
                     controller: _amountController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: 'Enter amount',
-                      prefixIcon: const Icon(Icons.currency_rupee, size: 20),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.border),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.border),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            color: AppColors.primary, width: 2),
-                      ),
-                      filled: true,
-                      fillColor: AppColors.background,
-                    ),
+                    hint: 'Enter amount',
+                    label: 'Amount*',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter amount';
+                        return 'Please enter an amount';
                       }
-                      final amount = double.tryParse(value);
-                      if (amount == null || amount <= 0) {
-                        return 'Please enter a valid amount';
+                      if (double.parse(value) > widget.availableBalance) {
+                        return 'Amount must be less than available balance';
                       }
-                      if (amount > widget.availableBalance) {
-                        return 'Insufficient balance';
+                      if (double.parse(value) < 1000) {
+                        return 'Amount must be at least 1000';
                       }
+
                       return null;
                     },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Account Holder Name
-                  const Text(
-                    'Account Holder Name',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
                   ),
                   const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      hintText: 'Enter account holder name',
-                      prefixIcon: const Icon(Icons.person_outline, size: 20),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.border),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.border),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            color: AppColors.primary, width: 2),
-                      ),
-                      filled: true,
-                      fillColor: AppColors.background,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter account holder name';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
 
-                  // Account Number
-                  const Text(
-                    'Account Number',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _accountController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      hintText: 'Enter account number',
-                      prefixIcon: const Icon(Icons.account_balance, size: 20),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.border),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.border),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            color: AppColors.primary, width: 2),
-                      ),
-                      filled: true,
-                      fillColor: AppColors.background,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter account number';
-                      }
-                      if (value.length < 9 || value.length > 18) {
-                        return 'Please enter a valid account number';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
+                  // Description Field
 
-                  // IFSC Code
-                  const Text(
-                    'IFSC Code',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
                   const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _ifscController,
-                    textCapitalization: TextCapitalization.characters,
-                    decoration: InputDecoration(
-                      hintText: 'Enter IFSC code',
-                      prefixIcon: const Icon(Icons.code, size: 20),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.border),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.border),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(
-                            color: AppColors.primary, width: 2),
-                      ),
-                      filled: true,
-                      fillColor: AppColors.background,
+                  AppPrimaryInput(
+                    prefixIcon: const Icon(
+                      Icons.description,
+                      size: 18,
+                      color: AppColors.black,
                     ),
+                    maxCharacters: 500,
+                    keyboardType: TextInputType.multiline,
+                    isMultiline: true,
+                    controller: _descriptionController,
+                    hint: 'Enter remarks',
+                    label: 'Remarks*',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter IFSC code';
-                      }
-                      if (value.length != 11) {
-                        return 'IFSC code must be 11 characters';
+                        return 'Please enter remarks';
                       }
                       return null;
                     },
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
+                  const ListTile(
+                    leading: Icon(
+                      Icons.info_outline,
+                      color: AppColors.warning,
+                    ),
+                    title: Text(
+                      'Withdrawals are subject to approval and processing times.',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.warning,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
 
                   // Submit Button
                   SizedBox(

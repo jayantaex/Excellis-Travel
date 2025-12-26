@@ -112,3 +112,15 @@ class ChargeMoneyError extends WalletState {
   @override
   List<Object?> get props => [message];
 }
+
+class SubmitWithdrawalSuccess extends WalletState {
+  const SubmitWithdrawalSuccess();
+}
+
+class SubmitWithdrawalError extends WalletState {
+  const SubmitWithdrawalError({required this.message});
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}

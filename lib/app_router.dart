@@ -182,26 +182,17 @@ class AppRouter {
             SettingsModule.builder(),
       ),
 
-      //updator
-      // GoRoute(
-      //     path: '/update',
-      //     name: 'update',
-      //     builder: (BuildContext context, GoRouterState state) {
-      //       final Map<String, dynamic> data =
-      //           state.extra as Map<String, dynamic>;
-      //       final String url = data['url'];
-      //       final String version = data['version'];
-      //       return AppUpdaterScreen(
-      //         downloadUrl: url,
-      //         latestVersion: version,
-      //       );
-      //     }),
       //wallet
       GoRoute(
           path: WalletModule.walletPath,
           name: WalletModule.wallet,
           builder: (BuildContext context, GoRouterState state) =>
-              WalletModule.builder())
+              WalletModule.builder()),
+      GoRoute(
+          path: WalletModule.creditWalletPath,
+          name: WalletModule.creditWallet,
+          builder: (BuildContext context, GoRouterState state) =>
+              WalletModule.creditWalletBuilder()),
     ],
     errorBuilder: (BuildContext context, GoRouterState state) => const Scaffold(
       body: Center(

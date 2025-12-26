@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
@@ -5,7 +7,6 @@ import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart' hide Datam;
 import '../data/models/wallet_model.dart';
 import '../data/models/wallet_order_model.dart';
-import '../data/models/withdrawal_request_model.dart';
 import '../data/repository/wallet_repository.dart';
 
 part 'wallet_event.dart';
@@ -21,6 +22,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ChargeMoneyEvent>(_handleChargeMoney);
     on<VerifyWalletOrderEvent>(_handleVerifyWalletOrder);
     on<RechargeWalletEvent>(_handleRechargeWallet);
+    on<SubmitWithdrawalEvent>(_handleSubmitWithdrawal);
   }
 
   final WalletRepository walletRepository;
@@ -204,6 +206,22 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       emit(
         RechargeWalletError(
           message: response.errorMessage ?? 'Failed to recharge wallet',
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleSubmitWithdrawal(
+      SubmitWithdrawalEvent event, Emitter<WalletState> emit) async {
+    emit(const WalletLoading());
+    final ApiResponse<bool> response =
+        await walletRepository.submitWithdrawalRequest(body: event.body);
+    if (response.data ?? false) {
+      emit(const SubmitWithdrawalSuccess());
+    } else {
+      emit(
+        SubmitWithdrawalError(
+          message: response.errorMessage ?? 'Failed to submit withdrawal',
         ),
       );
     }
