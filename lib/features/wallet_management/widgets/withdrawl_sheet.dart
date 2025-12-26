@@ -117,11 +117,11 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter an amount';
                       }
+                      if (double.parse(value) <= 0) {
+                        return 'Amount must be greater than 0';
+                      }
                       if (double.parse(value) > widget.availableBalance) {
                         return 'Amount must be less than available balance';
-                      }
-                      if (double.parse(value) < 1000) {
-                        return 'Amount must be at least 1000';
                       }
 
                       return null;
@@ -153,6 +153,7 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
                   ),
                   const SizedBox(height: 12),
                   const ListTile(
+                    contentPadding: EdgeInsets.zero,
                     leading: Icon(
                       Icons.info_outline,
                       color: AppColors.warning,

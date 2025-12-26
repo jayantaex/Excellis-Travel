@@ -425,13 +425,16 @@ class _WalletScreenState extends State<WalletScreen>
                                         final transaction =
                                             filteredTransactions?[index];
                                         return TransactionCardWidget(
+                                          status: transaction?.status ?? '',
                                           title: transaction
                                                   ?.transactionReference ??
                                               '',
                                           date: AppHelpers.formatDate(
                                               DateTime.parse(
-                                                  transaction?.createdAt ??
-                                                      '2025-01-01')),
+                                                transaction?.createdAt ??
+                                                    '2025-01-01',
+                                              ),
+                                              pattern: 'dd MMM yyyy'),
                                           amount: transaction?.amount ?? '0.00',
                                           type: transaction?.transactionType ??
                                               'debit',
