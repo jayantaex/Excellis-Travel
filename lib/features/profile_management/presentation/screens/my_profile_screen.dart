@@ -46,6 +46,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       'iconPath': '${AppConstants.assetIcontUrl}wallet.svg',
       'routeName': WalletModule.wallet
     },
+    // <String, String>{
+    //   'title': 'Credit Wallet',
+    //   'iconPath': '${AppConstants.assetIcontUrl}credit_wallet.svg',
+    //   'routeName': WalletModule.creditWallet
+    // },
     <String, String>{
       'title': 'Terms & Conditions',
       'iconPath': '${AppConstants.assetIcontUrl}terms.svg',
@@ -168,7 +173,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             return;
                           }
 
-                          if (option['routeName'] == 'settings') {
+                          if (option['routeName'] == SettingsModule.routeName) {
                             if (!isLogedIn) {
                               showToast(
                                   message: 'Please login to access settings');
@@ -182,8 +187,38 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               return;
                             }
                           }
+                          if (option['routeName'] == WalletModule.wallet) {
+                            if (!isLogedIn) {
+                              showToast(
+                                  message: 'Please login to access wallet');
+                              return;
+                            }
 
-                          if (option['title'] == 'My Markup') {
+                            if (context.mounted) {
+                              context.pushNamed(
+                                option['routeName'] ?? '',
+                              );
+                              return;
+                            }
+                          }
+                          if (option['routeName'] ==
+                              WalletModule.creditWallet) {
+                            if (!isLogedIn) {
+                              showToast(
+                                  message: 'Please login to access wallet');
+                              return;
+                            }
+
+                            if (context.mounted) {
+                              context.pushNamed(
+                                option['routeName'] ?? '',
+                              );
+                              return;
+                            }
+                          }
+
+                          if (option['routeName'] ==
+                              SalesModule.myMarkupScreen) {
                             if (isLogedIn) {
                               if (context.mounted) {
                                 context.pushNamed(SalesModule.myMarkupScreen);
