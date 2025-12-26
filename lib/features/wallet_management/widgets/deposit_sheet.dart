@@ -17,7 +17,7 @@ class DepositSheet extends StatelessWidget {
           Form(
             key: _formKey,
             child: AppPrimaryInput(
-              maxCharacters: 5,
+              maxCharacters: 9,
               label: 'Amount',
               hint: 'Enter amount',
               keyboardType: TextInputType.number,
@@ -25,6 +25,9 @@ class DepositSheet extends StatelessWidget {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Amount is required';
+                }
+                if (double.parse(value) <= 0) {
+                  return 'Please enter a valid amount';
                 }
                 return null;
               },
