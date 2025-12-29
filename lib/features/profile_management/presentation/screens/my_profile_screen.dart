@@ -46,11 +46,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       'iconPath': '${AppConstants.assetIcontUrl}wallet.svg',
       'routeName': WalletModule.wallet
     },
-    // <String, String>{
-    //   'title': 'Credit Wallet',
-    //   'iconPath': '${AppConstants.assetIcontUrl}credit_wallet.svg',
-    //   'routeName': WalletModule.creditWallet
-    // },
+    <String, String>{
+      'title': 'Credit Wallet',
+      'iconPath': '${AppConstants.assetIcontUrl}credit_wallet.svg',
+      'routeName': WalletModule.creditWallet
+    },
     <String, String>{
       'title': 'Terms & Conditions',
       'iconPath': '${AppConstants.assetIcontUrl}terms.svg',
