@@ -1,4 +1,3 @@
-import 'package:excellistravel/core/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +10,6 @@ import '../../../utils/app_helpers.dart';
 import '../bloc/wallet_bloc.dart';
 import '../widgets/credit_wallet_transaction_card.dart';
 import '../widgets/credit_wallet_type_card.dart';
-import '../widgets/type_card_widget.dart';
 
 class CreditWalletScreen extends StatefulWidget {
   const CreditWalletScreen({super.key});
