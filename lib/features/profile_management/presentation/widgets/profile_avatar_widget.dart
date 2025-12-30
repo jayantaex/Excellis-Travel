@@ -60,7 +60,7 @@ class ProfileAvatarWidget extends StatelessWidget {
                 radius: 60,
                 backgroundColor: AppHelpers.isDarkMode(context)
                     ? AppColors.white.withValues(alpha: 0.1)
-                    : AppColors.grey.withValues(alpha: 0.2),
+                    : AppColors.white.withValues(alpha: 0.2),
                 backgroundImage: state is ProfileImageUpdating ||
                         state.profileData.profileImage == null ||
                         state.profileData.profileImage == ''
@@ -79,7 +79,7 @@ class ProfileAvatarWidget extends StatelessWidget {
                               fontSize: 45,
                               color: AppHelpers.isDarkMode(context)
                                   ? AppColors.white
-                                  : AppColors.primary,
+                                  : AppColors.white,
                             ),
                           )
                         : const SizedBox(),

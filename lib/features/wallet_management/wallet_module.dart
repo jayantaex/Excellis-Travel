@@ -7,6 +7,7 @@ import 'bloc/wallet_bloc.dart';
 import 'data/repository/wallet_repository.dart';
 import 'screens/credit_wallet_screen.dart';
 import 'screens/wallet_screen.dart';
+import 'screens/withdrawl_request_screen.dart';
 
 class WalletModule {
   static const walletPath = '/my-wallet';
@@ -23,5 +24,12 @@ class WalletModule {
         create: (context) =>
             WalletBloc(WalletRepository(WalletApi(ApiClient()))),
         child: const CreditWalletScreen(),
+      );
+  static const withdrawlRequestPath = '/withdrawl-request';
+  static const withdrawlRequest = 'withdrawl_request';
+  static Widget withdrawlRequestBuilder() => BlocProvider(
+        create: (context) =>
+            WalletBloc(WalletRepository(WalletApi(ApiClient()))),
+        child: const WithdrawlRequestScreen(),
       );
 }

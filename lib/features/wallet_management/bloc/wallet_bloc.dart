@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
@@ -7,6 +5,7 @@ import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart' hide Datam;
 import '../data/models/wallet_model.dart';
 import '../data/models/wallet_order_model.dart';
+import '../data/models/withdrawl_request_data_model.dart';
 import '../data/repository/wallet_repository.dart';
 
 part 'wallet_event.dart';
@@ -23,6 +22,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<VerifyWalletOrderEvent>(_handleVerifyWalletOrder);
     on<RechargeWalletEvent>(_handleRechargeWallet);
     on<SubmitWithdrawalEvent>(_handleSubmitWithdrawal);
+    on<FetchWithdrawalRequestsEvent>(_handleFetchWithdrawalRequests);
+    on<CancelWithdrawalRequestEvent>(_handleCancelWithdrawalRequest);
   }
 
   final WalletRepository walletRepository;
@@ -88,7 +89,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     );
 
     if (transactionsResponse.data != null) {
-      TransactionDataModel newTransactions = transactionsResponse.data!;
+      final TransactionDataModel newTransactions = transactionsResponse.data!;
 
       // Append data if page > 1 and we have previous data
       if (event.page > 1 && previousTransactions.isNotEmpty) {
@@ -224,6 +225,45 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           message: response.errorMessage ?? 'Failed to submit withdrawal',
         ),
       );
+    }
+  }
+
+  Future<void> _handleFetchWithdrawalRequests(
+      FetchWithdrawalRequestsEvent event, Emitter<WalletState> emit) async {
+    final currentState = state;
+    if (currentState is FetchWithdrawalRequestsSuccess) {
+      emit(FetchWithdrawalRequestsLoading(
+          isLoadingMore: true, data: currentState.data));
+    } else {
+      emit(const FetchWithdrawalRequestsLoading());
+    }
+
+    final ApiResponse<WithdrawlRequestDataModel> response =
+        await walletRepository.fetchWithdrawalRequests(
+      page: event.page,
+      limit: event.limit,
+      status: event.status,
+    );
+    if (response.data != null) {
+      emit(FetchWithdrawalRequestsSuccess(data: response.data!));
+    } else {
+      emit(FetchWithdrawalRequestsError(
+          message:
+              response.errorMessage ?? 'Failed to fetch withdrawal requests'));
+    }
+  }
+
+  Future<void> _handleCancelWithdrawalRequest(
+      CancelWithdrawalRequestEvent event, Emitter<WalletState> emit) async {
+    emit(const WalletLoading());
+    final ApiResponse<bool> response = await walletRepository
+        .cancelWithdrawalRequest(requestId: event.requestId);
+    if (response.data ?? false) {
+      emit(const CancelWithdrawalRequestSuccess());
+    } else {
+      emit(CancelWithdrawalRequestError(
+          message: response.errorMessage ??
+              'Withdrawal request cancellation failed'));
     }
   }
 }

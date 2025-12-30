@@ -79,3 +79,17 @@ class SubmitWithdrawalEvent extends WalletEvent {
   @override
   List<Object?> get props => [body];
 }
+
+//fetch withdrawal requests
+class FetchWithdrawalRequestsEvent extends WalletEvent {
+  const FetchWithdrawalRequestsEvent(
+      {required this.page, required this.limit, this.status});
+  final int page;
+  final int limit;
+  final String? status;
+}
+
+class CancelWithdrawalRequestEvent extends WalletEvent {
+  const CancelWithdrawalRequestEvent({required this.requestId});
+  final int requestId;
+}
