@@ -39,7 +39,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     <String, String>{
       'title': 'My Markup',
       'iconPath': '${AppConstants.assetIcontUrl}markup.svg',
-      'routeName': ''
+      'routeName': SalesModule.myMarkupScreen
     },
     <String, String>{
       'title': 'My Wallet',
