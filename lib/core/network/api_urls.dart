@@ -81,10 +81,11 @@ class EndPoints {
   //wallet
   static const String wallet = '/wallet/summary';
   static const String walletTransactions = '/wallet/transactions';
-
   static const String createWalletOrder = '/wallet/create-order';
   static const String verifyWalletOrder = '/wallet/verify-payment';
   static const String walletCharge = '/wallet/debit';
   static const String walletRecharge = '/wallet/credit';
-  static const String walletWithdraw = '/withdrawals/request';
+  static const String requestWithdrawal = '/withdrawals/request';
+  static const String withdrawalRequests = '/withdrawals';
+  static const String cancelWithdrawalRequest = '/withdrawals/';
 }

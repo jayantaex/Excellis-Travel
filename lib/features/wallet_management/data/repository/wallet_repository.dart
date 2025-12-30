@@ -4,6 +4,7 @@ import '../models/transaction_model.dart';
 import '../models/wallet_charge_model.dart';
 import '../models/wallet_model.dart';
 import '../models/wallet_order_model.dart';
+import '../models/withdrawl_request_data_model.dart';
 
 class WalletRepository {
   WalletRepository(this.walletApi);
@@ -46,8 +47,21 @@ class WalletRepository {
   Future<ApiResponse<WalletChargeModel>> chargeMoney(
           {required Map<String, dynamic> body}) async =>
       await walletApi.chargeMoney(body: body);
-
   Future<ApiResponse<bool>> submitWithdrawalRequest(
           {required Map<String, dynamic> body}) async =>
       await walletApi.submitWithdrawalRequest(body: body);
+
+//credit wallet
+  Future<ApiResponse<WithdrawlRequestDataModel>> fetchWithdrawalRequests({
+    required int page,
+    required int limit,
+    required String? status,
+  }) async =>
+      await walletApi.fetchWithdrawalRequests(
+          page: page, limit: limit, status: status);
+
+  Future<ApiResponse<bool>> cancelWithdrawalRequest({
+    required int requestId,
+  }) async =>
+      await walletApi.cancelWithdrawalRequest(requestId: requestId);
 }

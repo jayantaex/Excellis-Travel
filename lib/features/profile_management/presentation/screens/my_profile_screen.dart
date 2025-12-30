@@ -52,6 +52,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       'routeName': WalletModule.creditWallet
     },
     <String, String>{
+      'title': 'Withdrawl Request',
+      'iconPath': '${AppConstants.assetIcontUrl}withdrawl_request.svg',
+      'routeName': WalletModule.withdrawlRequest
+    },
+    <String, String>{
       'title': 'Terms & Conditions',
       'iconPath': '${AppConstants.assetIcontUrl}terms.svg',
       'routeName': LegalModule.termsName
@@ -109,7 +114,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   UserContentWidget(
                     userImage: '',
                     userName: state is ProfileLoaded
-                        ? state.profileData.firstName ?? 'Guest'
+                        ? '${state.profileData.firstName ?? ''} ${state.profileData.lastName ?? ''}'
                         : 'Guest',
                   ),
                 ],

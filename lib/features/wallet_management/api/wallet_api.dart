@@ -7,6 +7,7 @@ import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart';
 import '../data/models/wallet_model.dart';
 import '../data/models/wallet_order_model.dart';
+import '../data/models/withdrawl_request_data_model.dart';
 
 class WalletApi {
   WalletApi(this.apiClient);
@@ -96,7 +97,44 @@ class WalletApi {
     try {
       return await apiClient.postRequest(
         reqModel: body,
-        endPoint: EndPoints.walletWithdraw,
+        endPoint: EndPoints.requestWithdrawal,
+        fromJson: (json) => json['success'],
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+//fetch withdrawal requests
+  Future<ApiResponse<WithdrawlRequestDataModel>> fetchWithdrawalRequests({
+    required int page,
+    required int limit,
+    required String? status,
+  }) async {
+    try {
+      final Map<String, dynamic> queryParameters = <String, dynamic>{
+        'page': page,
+        'limit': limit,
+      };
+      if (status != null) {
+        queryParameters['status'] = status;
+      }
+      return await apiClient.getRequest(
+        endPoint: EndPoints.withdrawalRequests,
+        queryParameters: queryParameters,
+        fromJson: (json) => WithdrawlRequestDataModel.fromJson(json),
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  Future<ApiResponse<bool>> cancelWithdrawalRequest({
+    required int requestId,
+  }) async {
+    try {
+      return await apiClient.postRequest(
+        endPoint: '${EndPoints.cancelWithdrawalRequest}$requestId/cancel',
         fromJson: (json) => json['success'],
       );
     } catch (e) {

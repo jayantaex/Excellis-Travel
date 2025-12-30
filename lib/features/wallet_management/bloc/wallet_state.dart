@@ -124,3 +124,29 @@ class SubmitWithdrawalError extends WalletState {
   @override
   List<Object?> get props => [message];
 }
+
+class FetchWithdrawalRequestsSuccess extends WalletState {
+  const FetchWithdrawalRequestsSuccess({required this.data});
+  final WithdrawlRequestDataModel? data;
+}
+
+class FetchWithdrawalRequestsError extends WalletState {
+  const FetchWithdrawalRequestsError({required this.message});
+  final String message;
+}
+
+class FetchWithdrawalRequestsLoading extends WalletState {
+  const FetchWithdrawalRequestsLoading({this.isLoadingMore = false, this.data});
+  final bool isLoadingMore;
+  final WithdrawlRequestDataModel? data;
+}
+
+class CancelWithdrawalRequestSuccess extends WalletState {
+  const CancelWithdrawalRequestSuccess();
+}
+
+class CancelWithdrawalRequestError extends WalletState {
+  const CancelWithdrawalRequestError({required this.message, this.data});
+  final String message;
+  final WithdrawlRequestDataModel? data;
+}

@@ -82,7 +82,7 @@ class _CreditWalletScreenState extends State<CreditWalletScreen>
                               fontWeight: FontWeight.w700,
                               color: AppColors.white,
                             )),
-                        const Text('Available Balance',
+                        const Text('Credit Balance',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -96,15 +96,15 @@ class _CreditWalletScreenState extends State<CreditWalletScreen>
                             child: Row(
                               children: [
                                 Expanded(
-                                  child: TypeCardWidget(
-                                    type: 'Credits Balance',
+                                  child: CreditWalletTypeCard(
+                                    title: 'Used Balance',
                                     value: '2000',
                                   ),
                                 ),
                                 SizedBox(width: 10),
                                 Expanded(
                                   child: CreditWalletTypeCard(
-                                    title: 'Useble Balance',
+                                    title: 'Total Balance',
                                     value: '2000',
                                   ),
                                 ),
