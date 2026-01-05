@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import '../../../../core/network/api_response.dart';
 import '../models/seat_map_data_model.dart';
-import '../src/flight_booking_local_src.dart';
-import '../src/flight_booking_remote_src.dart';
+import '../data_source/flight_booking_local_src.dart';
+import '../data_source/flight_booking_remote_src.dart';
 import '../models/air_port_model.dart';
 import '../models/create_order_res.dart';
 import '../models/flight_offer_price_model.dart';

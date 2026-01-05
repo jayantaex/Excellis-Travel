@@ -1,6 +1,5 @@
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,6 +15,7 @@ import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../../utils/get_duration.dart';
+import '../../../../utils/title_case.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
 import '../../data/models/payment_verify_res_model.dart';
 

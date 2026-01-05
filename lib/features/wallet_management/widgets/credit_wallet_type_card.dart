@@ -1,7 +1,7 @@
-import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
+import '../../../utils/app_helpers.dart';
 
 class CreditWalletTypeCard extends StatelessWidget {
   const CreditWalletTypeCard(
@@ -72,7 +72,7 @@ class CreditWalletTypeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${AppHelpers.formatCurrency(amount)}',
+                  AppHelpers.formatCurrency(amount),
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,

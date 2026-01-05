@@ -1,10 +1,10 @@
-import 'package:excellistravel/features/wallet_management/wallet_module.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
+import '../../../../wallet_management/wallet_module.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import 'pricing_details.dart';
 

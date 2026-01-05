@@ -1,8 +1,8 @@
-import 'package:excellistravel/core/widgets/app_sheet.dart';
-import 'package:excellistravel/features/wallet_management/widgets/transaction_details_sheet.dart';
-import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_styles.dart';
+import '../../../core/widgets/app_sheet.dart';
+import '../../../utils/title_case.dart';
+import 'transaction_details_sheet.dart';
 
 class TransactionCardWidget extends StatelessWidget {
   const TransactionCardWidget({

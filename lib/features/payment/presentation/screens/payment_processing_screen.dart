@@ -1,11 +1,11 @@
-import 'package:excellistravel/core/constants/app_styles.dart';
-import 'package:excellistravel/core/services/razorpay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../../../../core/constants/app_styles.dart';
+import '../../../../core/services/razorpay.dart';
 import '../../../wallet_management/bloc/wallet_bloc.dart';
 import '../../payment_module.dart';
 

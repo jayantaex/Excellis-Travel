@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import '../../../core/common/models/profile_data_model.dart';
-import '../../../core/network/api_client.dart';
-import '../../../core/network/api_response.dart';
-import '../../../core/network/api_urls.dart';
+import '../../../../core/common/models/profile_data_model.dart';
+import '../../../../core/network/api_client.dart';
+import '../../../../core/network/api_response.dart';
+import '../../../../core/network/api_urls.dart';
 
-class ProfileManagementApi {
-  ProfileManagementApi({required this.apiClient});
+class ProfileManagementRemoteSrc {
+  ProfileManagementRemoteSrc({required this.apiClient});
   final ApiClient apiClient;
 
   Future<ApiResponse<ProfileModel>> fetchUserProfile() async =>

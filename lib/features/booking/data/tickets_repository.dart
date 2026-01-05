@@ -1,7 +1,7 @@
 import '../../../core/network/api_response.dart';
 import 'models/ticket_model.dart';
-import 'src/ticker_local_data_src.dart';
-import 'src/ticket_remote_data_src.dart';
+import 'data_source/ticker_local_data_src.dart';
+import 'data_source/ticket_remote_data_src.dart';
 
 class TicketsRepository {
   TicketsRepository({

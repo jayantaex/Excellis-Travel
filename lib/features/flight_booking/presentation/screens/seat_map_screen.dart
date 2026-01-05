@@ -1,14 +1,15 @@
 import 'dart:developer';
-import 'package:excellistravel/core/errors/error_screen.dart';
-import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
-import 'package:excellistravel/features/flight_booking/bloc/flight_bloc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/errors/error_screen.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../../utils/app_helpers.dart';
+import '../../bloc/flight_bloc.dart';
 import '../../data/models/flights_data_model.dart';
 import '../../data/models/seat_map_data_model.dart';
 import '../widgets/seat_map/facility_box.dart';

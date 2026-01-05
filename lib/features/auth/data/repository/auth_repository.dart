@@ -1,6 +1,6 @@
 import '../../../../core/network/api_response.dart';
 import '../models/auth_resp_model.dart';
-import '../src/auth_remote_data_src.dart';
+import '../data_source/auth_remote_data_src.dart';
 
 class AuthRepository {
   AuthRepository({required this.authRemoteDataSrc});

@@ -1,4 +1,3 @@
-import 'package:excellistravel/features/flight_booking/data/dto/billing_address_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +7,7 @@ import '../../../../../core/common/bloc/states/states_bloc.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/widgets/app_sheet.dart';
 import '../../../../profile_management/bloc/profile_bloc.dart';
+import '../../../data/dto/billing_address_model.dart';
 import 'billing_sheet.dart';
 
 class BillingProfileManagementWidget extends StatefulWidget {

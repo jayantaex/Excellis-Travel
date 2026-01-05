@@ -1,11 +1,11 @@
-import 'package:excellistravel/features/wallet_management/api/wallet_api.dart';
-import 'package:excellistravel/features/wallet_management/bloc/wallet_bloc.dart';
-import 'package:excellistravel/features/wallet_management/data/repository/wallet_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/network/api_client.dart';
+import '../wallet_management/api/wallet_api.dart';
+import '../wallet_management/bloc/wallet_bloc.dart';
+import '../wallet_management/data/repository/wallet_repository.dart';
 import 'presentation/screens/payment_failed_screen.dart';
 import 'presentation/screens/payment_processing_screen.dart';
 import 'presentation/screens/payment_success_screen.dart';

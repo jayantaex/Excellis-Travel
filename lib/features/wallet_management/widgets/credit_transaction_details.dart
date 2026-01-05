@@ -1,8 +1,8 @@
-import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
 import '../../../utils/app_helpers.dart';
+import '../../../utils/title_case.dart';
 import '../data/models/custom_cr_transaction_model.dart';
 
 class CreditTransactionDetails extends StatelessWidget {

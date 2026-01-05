@@ -1,5 +1,3 @@
-import 'package:excellistravel/features/wallet_management/api/wallet_api.dart';
-import 'package:excellistravel/features/wallet_management/data/repository/wallet_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,13 +8,15 @@ import '../../core/common/data/location_repository.dart';
 import '../../core/network/amadeus_client.dart';
 import '../../core/network/api_client.dart';
 import '../../core/services/local_db.dart';
-import '../profile_management/apis/profile_management_api.dart';
 import '../profile_management/bloc/profile_bloc.dart';
+import '../profile_management/data/data_source/profile_management_remote_src.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
+import '../wallet_management/api/wallet_api.dart';
 import '../wallet_management/bloc/wallet_bloc.dart';
+import '../wallet_management/data/repository/wallet_repository.dart';
 import 'bloc/flight_bloc.dart';
-import 'data/src/flight_booking_local_src.dart';
-import 'data/src/flight_booking_remote_src.dart';
+import 'data/data_source/flight_booking_local_src.dart';
+import 'data/data_source/flight_booking_remote_src.dart';
 import 'data/repository/flight_booking_repository.dart';
 import 'data/models/air_port_model.dart';
 import 'data/models/payment_verify_res_model.dart';
@@ -38,9 +38,9 @@ class FlightBookingModule {
   static final FlightBookingRepository _flightBookingRepository =
       FlightBookingRepository(
           remoteSrc: _flightBookingRemoteSrc, localSrc: _flightBookingLocalSrc);
-  static final _profileApi = ProfileManagementApi(apiClient: _apiClient);
+  static final _profileApi = ProfileManagementRemoteSrc(apiClient: _apiClient);
   static final _profileRepo =
-      ProfileManagementRepository(profileManagementApi: _profileApi);
+      ProfileManagementRepository(profileManagementRemoteSrc: _profileApi);
   static final _statesRepository =
       LocationRepository(statesApi: LocationApi(apiClient: _apiClient));
 

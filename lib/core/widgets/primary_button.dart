@@ -1,7 +1,7 @@
-import 'package:excellistravel/core/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/app_styles.dart';
+import 'text_widget.dart';
 
 class AppPrimaryButton extends StatelessWidget {
   const AppPrimaryButton(

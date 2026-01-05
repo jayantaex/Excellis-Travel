@@ -1,4 +1,3 @@
-import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart' show AppColors;
@@ -6,6 +5,7 @@ import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
 import '../../../../utils/airline_info_provider.dart' show AirlineInfoProvider;
 import '../../../../utils/app_helpers.dart' show AppHelpers;
 import '../../../../utils/get_duration.dart';
+import '../../../../utils/title_case.dart';
 import '../../data/models/ticket_model.dart';
 
 class SegmentCard extends StatelessWidget {
