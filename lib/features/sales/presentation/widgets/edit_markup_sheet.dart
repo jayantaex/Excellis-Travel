@@ -127,19 +127,33 @@ class AddEditMarkUpSheetState extends State<AddEditMarkUpSheet> {
                   : 'Enter amount (e.g., 250.00)',
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              maxCharacters: 10,
+              maxCharacters: selectedUnit == 'Percentage' ? 4 : 10,
               prefixIcon: Icon(
                 selectedUnit == 'Percentage'
                     ? Icons.percent_rounded
                     : Icons.currency_rupee_rounded,
                 color: AppColors.primary,
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a value';
+                }
+                if (selectedUnit == 'Percentage' && double.parse(value) < 0) {
+                  return 'Percentage must be greater than 0';
+                }
+                if (selectedUnit == 'Fixed' && double.parse(value) < 0) {
+                  return 'Amount must be greater than 0';
+                }
+                if (selectedUnit == 'Percentage' && double.parse(value) > 100) {
+                  return 'Percentage must be less than 100';
+                }
+                return null;
+              },
             ),
 
             const SizedBox(height: AppSizes.md),
 
             // Status Dropdown
-
             AppDropDown(
               title: 'Status',
               value: selectedStatus,

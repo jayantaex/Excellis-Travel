@@ -240,7 +240,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     DottedBorder(
                         options: CustomPathDottedBorderOptions(
                           customPath: (Size size) => Path()

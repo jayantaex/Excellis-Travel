@@ -45,12 +45,12 @@ class _MyMarkupScreenState extends State<MyMarkupScreen> {
                     AppCustomAppbar(
                       centerTitle: 'My Markup',
                       trailing: CircleAvatar(
-                        backgroundColor: AppColors.black.withValues(alpha: 0.1),
+                        backgroundColor: AppColors.white.withValues(alpha: 0.3),
                         child: IconButton(
-                          onPressed: () {
+                          onPressed: () async {
                             final sheetKey =
                                 GlobalKey<AddEditMarkUpSheetState>();
-                            showAppSheet(
+                            await showAppSheet(
                                 submitButtonRequired: true,
                                 onSubmitPressed: () {
                                   final body = sheetKey.currentState?.getBody();
