@@ -60,12 +60,14 @@ class SaleDetailsSheet extends StatelessWidget {
           const SizedBox(height: 8),
           ContentRow(
             title: 'Paid Amount:',
-            value: commission.booking?.totalAmount ?? '0.00',
+            value: AppHelpers.formatCurrency(
+                double.parse(commission.booking?.totalAmount ?? '0.0')),
           ),
           const SizedBox(height: 8),
           ContentRow(
             title: 'Earning:',
-            value: commission.markupAmount ?? '',
+            value: AppHelpers.formatCurrency(
+                double.parse(commission.markupAmount ?? '0.0')),
             valueStyle: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,

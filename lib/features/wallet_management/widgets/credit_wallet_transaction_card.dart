@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/app_sheet.dart';
-import '../../../utils/app_helpers.dart';
 import '../data/models/custom_cr_transaction_model.dart';
 import 'credit_transaction_details.dart';
-import 'transaction_details_sheet.dart';
 
 class CreditWalletTransactionCard extends StatelessWidget {
   const CreditWalletTransactionCard({
@@ -31,7 +29,7 @@ class CreditWalletTransactionCard extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.all(0),
         leading: const CircleAvatar(
           radius: 16,
           backgroundColor: AppColors.primary,

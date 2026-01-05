@@ -84,7 +84,7 @@ class _OfferFareTogglerWidgetState extends State<OfferFareTogglerWidget> {
             ),
           ),
           subtitle: Text(
-            'Available Balance ₹${widget.walletBalance} ',
+            'Available Balance ${AppHelpers.formatCurrency(widget.walletBalance)} ',
             style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w400,

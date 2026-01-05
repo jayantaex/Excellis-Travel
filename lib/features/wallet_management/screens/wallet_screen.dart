@@ -235,7 +235,8 @@ class _WalletScreenState extends State<WalletScreen>
                             const SizedBox(height: 4),
                             // Total Balance
                             Text(
-                              '₹${state.wallet?.balance?.toStringAsFixed(2) ?? '0.00'}',
+                              AppHelpers.formatCurrency(
+                                  state.wallet?.balance ?? 0.0),
                               style: const TextStyle(
                                 fontSize: 36,
                                 color: AppColors.white,

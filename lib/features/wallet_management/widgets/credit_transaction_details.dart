@@ -17,6 +17,10 @@ class CreditTransactionDetails extends StatelessWidget {
         children: [
           _buildRow(title: 'ID : ', value: data.txnId ?? 'N/A'),
           _buildRow(
+              title: 'Amount : ',
+              value: AppHelpers.formatCurrency(data.amount ?? 0.0)),
+          _buildRow(title: 'Used for : ', value: data.desc ?? ''),
+          _buildRow(
               title: 'Date : ',
               value: AppHelpers.formatDate(DateTime.parse(data.dateTime ?? ''),
                   pattern: 'dd MMM, yyyy')),
@@ -56,9 +60,6 @@ class CreditTransactionDetails extends StatelessWidget {
                     ? AppColors.success
                     : AppColors.error,
                 value: data.reminderSent == true ? 'Yes' : 'No'),
-          _buildRow(
-              title: 'Amount : ',
-              value: AppHelpers.formatCurrency(data.amount ?? 0.0)),
           if (data.rePaymentStatus != null)
             _buildRow(
                 title: 'Repayment Status : ',
@@ -75,20 +76,25 @@ class CreditTransactionDetails extends StatelessWidget {
 
 Widget _buildRow(
         {required String title, required String value, Color? valueColor}) =>
-    Row(
-      children: [
-        Text(title,
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Text(
+            title,
             style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w500,
-                fontSize: 12)),
-        const Spacer(),
-        Text(
-          value,
-          style: TextStyle(
-              color: valueColor ?? AppColors.textPrimary,
-              fontWeight: FontWeight.w600,
-              fontSize: 10),
-        ),
-      ],
+                fontSize: 12),
+          ),
+          const Spacer(),
+          Text(
+            value,
+            style: TextStyle(
+                color: valueColor ?? AppColors.textPrimary,
+                fontWeight: FontWeight.w600,
+                fontSize: 10),
+          ),
+        ],
+      ),
     );

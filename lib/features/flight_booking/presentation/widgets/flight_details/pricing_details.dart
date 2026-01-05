@@ -94,32 +94,39 @@ class PricingDetails extends StatelessWidget {
                           titile: 'INFANT',
                           value: '${infant.length} Person(s)'),
                   const SizedBox(height: 8),
-                  PriceCol(titile: 'Total', value: flightOffer.price!.markup!),
+                  PriceCol(
+                      titile: 'Total',
+                      value: AppHelpers.formatCurrency(
+                          double.parse(flightOffer.price!.markup!))),
                   if (myMarkup != null)
                     PriceCol(
-                        titile: 'Taxes, Surcharges & Fees',
-                        value: offerFareEnabled
-                            ? '0.00'
-                            : (double.parse(getCalculatedPrice(
-                                        basePrice: flightOffer.price!.markup!,
-                                        type: myMarkup?.fareType ?? 'Fixed',
-                                        value: myMarkup?.value ?? '0')) -
-                                    double.parse(flightOffer.price!.markup!))
-                                .toStringAsFixed(2)),
+                      titile: 'Taxes, Surcharges & Fees',
+                      value: offerFareEnabled
+                          ? '0.00'
+                          : AppHelpers.formatCurrency(
+                              double.parse(getCalculatedPrice(
+                                      basePrice: flightOffer.price!.markup!,
+                                      type: myMarkup?.fareType ?? 'Fixed',
+                                      value: myMarkup?.value ?? '0')) -
+                                  double.parse(flightOffer.price!.markup!),
+                            ),
+                      isIconRequired: false,
+                    ),
                   const SizedBox(height: 6),
                   const Divider(),
                   const SizedBox(height: 12),
                   PriceCol(
                     titile: 'Grand Total',
-                    value: offerFareEnabled
-                        ? flightOffer.price!.markup!
-                        : getCalculatedPrice(
-                            basePrice: flightOffer.price!.markup!,
-                            type: myMarkup?.fareType ?? 'Fixed',
-                            value: myMarkup?.value ?? '0',
-                          ),
+                    value:
+                        AppHelpers.formatCurrency(double.parse(offerFareEnabled
+                            ? flightOffer.price!.markup!
+                            : getCalculatedPrice(
+                                basePrice: flightOffer.price!.markup!,
+                                type: myMarkup?.fareType ?? 'Fixed',
+                                value: myMarkup?.value ?? '0',
+                              ))),
                     isBold: true,
-                    isIconRequired: true,
+                    isIconRequired: false,
                   ),
                 ],
               ),

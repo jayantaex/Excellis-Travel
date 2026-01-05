@@ -39,8 +39,8 @@ class AppHelpers {
 
   // Number formatting
   static String formatCurrency(double amount, {String symbol = '\$'}) {
-    var formatter =
-        NumberFormat.currency(locale: 'en_IN', symbol: '₹', decimalDigits: 0);
+    final formatter =
+        NumberFormat.currency(locale: 'en_IN', symbol: '₹', decimalDigits: 2);
     return formatter.format(amount);
   }
 

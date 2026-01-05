@@ -121,7 +121,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                                               double.parse(grandTotal) >
                                                       widget.walletBalance
                                                   ? 'Insufficient Balance'
-                                                  : 'Available Balance: ₹${widget.walletBalance}',
+                                                  : 'Available Balance: ${AppHelpers.formatCurrency(widget.walletBalance)}',
                                               style: TextStyle(
                                                 color:
                                                     double.parse(grandTotal) >
@@ -138,7 +138,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                                                           widget
                                                               .creditWalletBalance
                                                       ? 'Insufficient Balance'
-                                                      : 'Available Balance: ₹${widget.creditWalletBalance}',
+                                                      : 'Available Balance: ${AppHelpers.formatCurrency(widget.creditWalletBalance)}',
                                                   style: TextStyle(
                                                     color: double.parse(
                                                                 grandTotal) >

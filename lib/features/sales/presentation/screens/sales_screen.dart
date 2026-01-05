@@ -298,7 +298,10 @@ class _SalesScreenState extends State<SalesScreen> {
                                                         const SizedBox(
                                                             height: 8),
                                                         Text(
-                                                          '₹${salesData.totalMarkup ?? '0'}',
+                                                          AppHelpers.formatCurrency(
+                                                              salesData
+                                                                      .totalMarkup ??
+                                                                  0),
                                                           style:
                                                               const TextStyle(
                                                             fontSize: 36,
@@ -399,7 +402,11 @@ class _SalesScreenState extends State<SalesScreen> {
                                                         child: Column(
                                                           children: [
                                                             Text(
-                                                              '₹${salesData.totalSales ?? 0}',
+                                                              AppHelpers
+                                                                  .formatCurrency(
+                                                                      salesData
+                                                                              .totalSales ??
+                                                                          0),
                                                               style:
                                                                   const TextStyle(
                                                                 fontSize: 14,

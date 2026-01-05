@@ -336,7 +336,8 @@ class _TicketWidgetState extends State<TicketWidget> {
                             ),
                           ),
                           Text(
-                            '₹${widget.ticketData?.totalAmount ?? 0.00}',
+                            AppHelpers.formatCurrency(double.parse(
+                                widget.ticketData?.totalAmount ?? '0.0')),
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           ),
