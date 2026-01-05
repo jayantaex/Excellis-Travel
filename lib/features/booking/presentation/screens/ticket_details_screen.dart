@@ -624,8 +624,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                       if (state is MarkupRetrieved) {
                         return Text(
                           AppHelpers.formatCurrency(double.parse(
-                                  widget.ticketData?.totalAmount ?? '0.0') +
-                              _savedMarkup),
+                              widget.ticketData?.totalAmount ?? '0.0')),
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
