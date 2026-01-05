@@ -88,4 +88,9 @@ class EndPoints {
   static const String requestWithdrawal = '/withdrawals/request';
   static const String withdrawalRequests = '/withdrawals';
   static const String cancelWithdrawalRequest = '/withdrawals/';
+
+  static String getCreditBalance = '/credit-wallet/balance';
+
+  static String getCreditBalanceTransactions = '/credit-wallet/transactions';
+  static String getBokkingViaCreditBalance = '/credit-wallet/bookings';
 }

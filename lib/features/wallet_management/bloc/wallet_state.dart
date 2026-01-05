@@ -150,3 +150,31 @@ class CancelWithdrawalRequestError extends WalletState {
   final String message;
   final WithdrawlRequestDataModel? data;
 }
+
+class FetchCreditBalanceLoading extends WalletState {
+  const FetchCreditBalanceLoading({this.isLoadingMore = false, this.data});
+  final bool isLoadingMore;
+  final CreditBalanceModel? data;
+}
+
+class FetchCreditBalanceSuccess extends WalletState {
+  const FetchCreditBalanceSuccess({required this.data});
+  final CreditBalanceModel? data;
+}
+
+class FetchCreditBalanceError extends WalletState {
+  const FetchCreditBalanceError({required this.message});
+  final String message;
+}
+
+class FetchCreditBalanceTransactionsSuccess extends WalletState {
+  const FetchCreditBalanceTransactionsSuccess(
+      {this.availableBalance, required this.data});
+  final CurstomCrTransactionModel? data;
+  final double? availableBalance;
+}
+
+class FetchCreditBalanceTransactionsError extends WalletState {
+  const FetchCreditBalanceTransactionsError({required this.message});
+  final String message;
+}

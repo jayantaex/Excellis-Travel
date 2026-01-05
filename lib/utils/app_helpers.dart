@@ -38,8 +38,11 @@ class AppHelpers {
   }
 
   // Number formatting
-  static String formatCurrency(double amount, {String symbol = '\$'}) =>
-      '$symbol${amount.toStringAsFixed(2)}';
+  static String formatCurrency(double amount, {String symbol = '\$'}) {
+    var formatter =
+        NumberFormat.currency(locale: 'en_IN', symbol: '₹', decimalDigits: 0);
+    return formatter.format(amount);
+  }
 
   static String formatNumber(num number) =>
       NumberFormat('#,###').format(number);

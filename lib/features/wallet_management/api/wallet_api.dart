@@ -3,6 +3,9 @@ import 'dart:developer';
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
+import '../data/models/credit_balance_model.dart';
+import '../data/models/credit_balance_transaction_model.dart';
+import '../data/models/custom_cr_transaction_model.dart';
 import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart';
 import '../data/models/wallet_model.dart';
@@ -138,6 +141,102 @@ class WalletApi {
         fromJson: (json) => json['success'],
       );
     } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+//fetch credit balance
+  Future<ApiResponse<CreditBalanceModel>> fetchCreditBalance() async {
+    try {
+      return await apiClient.getRequest(
+        endPoint: EndPoints.getCreditBalance,
+        fromJson: (json) => CreditBalanceModel.fromJson(json),
+      );
+    } catch (e) {
+      log(e.toString());
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  Future<ApiResponse<CurstomCrTransactionModel>>
+      fetchCreditBalanceTransactions({
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      Map<String, dynamic> bookinData = <String, dynamic>{};
+      Map<String, dynamic> transactionData = <String, dynamic>{};
+      final Map<String, dynamic> allData = <String, dynamic>{
+        'summary': <String, dynamic>{
+          'totalCredits': 0,
+          'totalPending': 0,
+          'totalRepaid': 0,
+        },
+        'data': [],
+      };
+      await apiClient.getRequest(
+        endPoint: EndPoints.getCreditBalanceTransactions,
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+        },
+        fromJson: (json) {
+          transactionData = json;
+        },
+      );
+      await apiClient.getRequest(
+        endPoint: EndPoints.getBokkingViaCreditBalance,
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+        },
+        fromJson: (json) {
+          bookinData = json;
+        },
+      );
+      allData['summary'] = transactionData['data']['summary'];
+      transactionData['data']['data'].forEach((element) {
+        final Map<String, dynamic> data = {
+          'title': 'Credit Balance ',
+          'desc': element['description'],
+          'type': 'credit-transaction',
+          'amount': element['amount'],
+          'txnId': 'CT${element['id']}',
+          'dateTime': element['created_at'],
+          'repaymentDate': element['repayment_date'],
+          'recipient': element['recipient'],
+          'rePaymentStatus': element['repayment_status'],
+          'autoDeductionAttempted': element['auto_deduction_attempted'],
+          'autoDeductionDate': element['auto_deduction_date'],
+          'reminderSent': element['repayment_reminder_sent'],
+        };
+
+        allData['data'].add(data);
+      });
+      bookinData['data']['bookings'].forEach((element) {
+        final Map<String, dynamic> data = {
+          'title': 'Flight Booking',
+          'desc':
+              'Flight booking from ${element['flight_data']['itineraries'][0]['segments'].first['departure']['iataCode']} to ${element['flight_data']['itineraries'][0]['segments'].last['arrival']['iataCode']}',
+          'type': 'flight-booking',
+          'amount': element['total_amount'],
+          'txnId': 'BK${element['id']}',
+          'dateTime': element['created_at'],
+          'paymentReference': element['payment']['payment_reference'],
+          'bookingStatus': element['booking_status'],
+        };
+
+        allData['data'].add(data);
+      });
+      //filter it according to createdAt
+      log('Before Sorting allData: ${allData.toString()}');
+      allData['data'].sort((a, b) => DateTime.parse(b['dateTime'])
+          .compareTo(DateTime.parse(a['dateTime'])));
+      log('After Sorting allData: ${allData.toString()}');
+      return ApiResponse(
+          statusCode: 200, data: CurstomCrTransactionModel.fromJson(allData));
+    } catch (e) {
+      log(e.toString());
       return ApiResponse(statusCode: 400, errorMessage: e.toString());
     }
   }

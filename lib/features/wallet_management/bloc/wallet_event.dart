@@ -93,3 +93,14 @@ class CancelWithdrawalRequestEvent extends WalletEvent {
   const CancelWithdrawalRequestEvent({required this.requestId});
   final int requestId;
 }
+
+class FetchCreditBalanceEvent extends WalletEvent {
+  const FetchCreditBalanceEvent();
+}
+
+class FetchCreditBalanceTransactionsEvent extends WalletEvent {
+  const FetchCreditBalanceTransactionsEvent(
+      {required this.page, required this.limit});
+  final int page;
+  final int limit;
+}

@@ -1,12 +1,13 @@
+import 'package:excellistravel/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
 
 class CreditWalletTypeCard extends StatelessWidget {
   const CreditWalletTypeCard(
-      {super.key, required this.title, required this.value});
+      {super.key, required this.title, required this.amount});
   final String title;
-  final String value;
+  final double amount;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -45,7 +46,7 @@ class CreditWalletTypeCard extends StatelessWidget {
                     color: AppColors.white.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.trending_up_rounded,
                     size: 18,
                     color: AppColors.white,
@@ -71,7 +72,7 @@ class CreditWalletTypeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '₹$value',
+                  '${AppHelpers.formatCurrency(amount)}',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,

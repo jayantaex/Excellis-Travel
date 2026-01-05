@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
+import '../data/models/credit_balance_model.dart';
+import '../data/models/credit_balance_transaction_model.dart';
+import '../data/models/custom_cr_transaction_model.dart';
 import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart' hide Datam;
 import '../data/models/wallet_model.dart';
@@ -24,6 +29,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<SubmitWithdrawalEvent>(_handleSubmitWithdrawal);
     on<FetchWithdrawalRequestsEvent>(_handleFetchWithdrawalRequests);
     on<CancelWithdrawalRequestEvent>(_handleCancelWithdrawalRequest);
+    on<FetchCreditBalanceEvent>(_handleFetchCreditBalance);
+    on<FetchCreditBalanceTransactionsEvent>(
+        _handleFetchCreditBalanceTransactions);
   }
 
   final WalletRepository walletRepository;
@@ -264,6 +272,45 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       emit(CancelWithdrawalRequestError(
           message: response.errorMessage ??
               'Withdrawal request cancellation failed'));
+    }
+  }
+
+  Future<void> _handleFetchCreditBalance(
+      FetchCreditBalanceEvent event, Emitter<WalletState> emit) async {
+    emit(const FetchCreditBalanceLoading());
+    final ApiResponse<CreditBalanceModel> response =
+        await walletRepository.fetchCreditBalance();
+    if (response.data != null) {
+      emit(FetchCreditBalanceSuccess(data: response.data!));
+    } else {
+      emit(FetchCreditBalanceError(
+          message: response.errorMessage ?? 'Failed to fetch credit balance'));
+    }
+  }
+
+  Future<void> _handleFetchCreditBalanceTransactions(
+      FetchCreditBalanceTransactionsEvent event,
+      Emitter<WalletState> emit) async {
+    double? availableBalance = 0;
+    final currentState = state;
+    log('currentState: $currentState');
+    if (currentState is FetchCreditBalanceSuccess) {
+      log('availableBalance: ${currentState.data?.data?.balance}');
+      availableBalance =
+          double.parse(currentState.data?.data?.balance?.toString() ?? '0');
+    }
+    emit(const FetchCreditBalanceLoading());
+
+    final ApiResponse<CurstomCrTransactionModel> response =
+        await walletRepository.fetchCreditBalanceTransactions(
+            page: event.page, limit: event.limit);
+    if (response.data != null) {
+      emit(FetchCreditBalanceTransactionsSuccess(
+          data: response.data!, availableBalance: availableBalance));
+    } else {
+      emit(FetchCreditBalanceTransactionsError(
+          message: response.errorMessage ??
+              'Failed to fetch credit balance transactions'));
     }
   }
 }

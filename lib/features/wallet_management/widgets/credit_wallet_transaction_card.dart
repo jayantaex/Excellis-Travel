@@ -2,21 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/app_sheet.dart';
+import '../../../utils/app_helpers.dart';
+import '../data/models/custom_cr_transaction_model.dart';
+import 'credit_transaction_details.dart';
 import 'transaction_details_sheet.dart';
 
 class CreditWalletTransactionCard extends StatelessWidget {
-  const CreditWalletTransactionCard(
-      {super.key,
-      required this.title,
-      required this.date,
-      required this.amount,
-      required this.type,
-      required this.status});
-  final String title;
-  final String date;
-  final String amount;
-  final String type;
-  final String status;
+  const CreditWalletTransactionCard({
+    super.key,
+    required this.data,
+  });
+
+  final CreditTransactionData data;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -41,28 +38,23 @@ class CreditWalletTransactionCard extends StatelessWidget {
           child: Icon(Icons.trending_up_outlined,
               size: 16, color: AppColors.white),
         ),
-        title: Text(title,
+        title: Text(data.title ?? '',
             style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary)),
-        subtitle: Text(date,
+        subtitle: Text(data.desc ?? '',
             style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textSecondary)),
         trailing: const Icon(Icons.arrow_forward_ios_rounded,
-            size: 16, color: AppColors.textPrimary),
+            size: 16, color: AppColors.primary),
         onTap: () {
           showAppSheet(
             context: context,
             title: 'Transaction Details',
-            child: TransactionDetailsSheet(
-                title: title,
-                date: date,
-                amount: amount,
-                type: type,
-                status: status),
+            child: CreditTransactionDetails(data: data),
           );
         },
       ));
