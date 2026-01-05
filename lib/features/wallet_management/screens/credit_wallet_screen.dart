@@ -131,7 +131,7 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
 
                                 // TAB BAR
                                 const Text(
-                                  'Credit Transaction History',
+                                  'Credit Transaction History ',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -150,7 +150,8 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                                     is FetchCreditBalanceTransactionsSuccess)
                                   Expanded(
                                     child: ListView.builder(
-                                        itemCount: 10,
+                                        itemCount:
+                                            state.data?.data?.length ?? 0,
                                         itemBuilder: (context, index) =>
                                             CreditWalletTransactionCard(
                                               data: state.data?.data?[index] ??
