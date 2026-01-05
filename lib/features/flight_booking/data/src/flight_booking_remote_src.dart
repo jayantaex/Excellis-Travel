@@ -83,9 +83,18 @@ class FlightBookingRemoteSrc {
       final ApiResponse<OrderModel> resp = await apiClient!.postRequest(
           reqModel: body,
           endPoint: EndPoints.createPayment,
-          fromJson: (Map<String, dynamic> jsonData) =>
-              OrderModel.fromJson(jsonData['data']['order']));
-      return resp;
+          fromJson: (Map<String, dynamic> jsonData) => OrderModel(
+                id: jsonData['data']['order']['id'],
+                paymentId: jsonData['data']['payment']['id'],
+                bookingId: jsonData['data']['payment']['booking_id'],
+                amount:
+                    (double.parse(jsonData['data']['payment']['amount']) * 100)
+                        .toInt(),
+              ));
+      return ApiResponse(
+          data: resp.data,
+          errorMessage: resp.errorMessage,
+          statusCode: resp.statusCode);
     } catch (e) {
       return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }

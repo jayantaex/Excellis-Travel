@@ -82,4 +82,10 @@ class WalletRepository {
   }) async =>
           await walletApi.fetchCreditBalanceTransactions(
               page: page, limit: limit);
+
+// credit wallet charge money
+  Future<ApiResponse<bool>> chargeCreditWalletMoney({
+    required Map<String, dynamic> body,
+  }) async =>
+      await walletApi.chargeCreditWalletMoney(body: body);
 }

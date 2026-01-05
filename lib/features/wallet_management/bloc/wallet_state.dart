@@ -158,8 +158,10 @@ class FetchCreditBalanceLoading extends WalletState {
 }
 
 class FetchCreditBalanceSuccess extends WalletState {
-  const FetchCreditBalanceSuccess({required this.data});
+  const FetchCreditBalanceSuccess(
+      {required this.data, this.availableWalletBalance});
   final CreditBalanceModel? data;
+  final double? availableWalletBalance;
 }
 
 class FetchCreditBalanceError extends WalletState {
@@ -176,5 +178,15 @@ class FetchCreditBalanceTransactionsSuccess extends WalletState {
 
 class FetchCreditBalanceTransactionsError extends WalletState {
   const FetchCreditBalanceTransactionsError({required this.message});
+  final String message;
+}
+
+class ChargeCreditWalletMoneySuccess extends WalletState {
+  const ChargeCreditWalletMoneySuccess({required this.paymentId});
+  final int paymentId;
+}
+
+class ChargeCreditWalletMoneyError extends WalletState {
+  const ChargeCreditWalletMoneyError({required this.message});
   final String message;
 }

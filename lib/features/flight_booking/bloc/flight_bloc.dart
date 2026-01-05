@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
+import '../../wallet_management/bloc/wallet_bloc.dart';
 import '../data/models/airline_model.dart';
 import '../data/models/filter_data_model.dart';
 import '../data/models/seat_map_data_model.dart';

@@ -240,4 +240,18 @@ class WalletApi {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());
     }
   }
+
+// credit wallet charge money
+  Future<ApiResponse<bool>> chargeCreditWalletMoney(
+      {required Map<String, dynamic> body}) async {
+    try {
+      return await apiClient.postRequest(
+        reqModel: body,
+        endPoint: EndPoints.chargeCreditWallet,
+        fromJson: (json) => json['success'],
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -207,6 +209,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               final String orderId = state.data.id ?? '';
                               const String mobile = '';
                               const String email = '';
+                              log('state.paymentVia: ${state.data.amount}');
 
                               if (state.paymentVia == 'Razorpay') {
                                 final int amount = state.data.amount ?? 0;
@@ -222,12 +225,24 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                 return;
                               }
                               final String amountStr =
-                                  (state.data.amount ?? 0 / 100)
+                                  ((state.data.amount ?? 0) / 100)
                                       .toStringAsFixed(2);
-                              _chargeWallet(
-                                amount: double.parse(amountStr),
-                                paymentId: state.data.paymentId ?? 0,
-                              );
+                              if (state.paymentVia == 'wallet') {
+                                await _chargeWallet(
+                                  amount: double.parse(amountStr),
+                                  paymentId: state.data.paymentId ?? 0,
+                                );
+                                return;
+                              }
+
+                              if (state.paymentVia == 'credit_wallet') {
+                                await _chargeCreditWallet(
+                                  amount: double.parse(amountStr),
+                                  bookingId: state.data.bookingId ?? 0,
+                                  paymentId: state.data.paymentId ?? 0,
+                                );
+                                return;
+                              }
                             }
 
                             if (state is FlightPaymentVerified) {
@@ -449,11 +464,11 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                               BlocBuilder<WalletBloc,
                                                   WalletState>(
                                                 builder: (context, state) {
-                                                  if (state is WalletLoaded) {
+                                                  if (state
+                                                      is FetchCreditBalanceSuccess) {
                                                     return OfferFareTogglerWidget(
                                                       walletBalance: state
-                                                              .wallet
-                                                              ?.balance ??
+                                                              .availableWalletBalance ??
                                                           0,
                                                       onToggle: (bool value) {
                                                         setState(() {
@@ -544,6 +559,9 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
           ),
           bottomNavigationBar: BlocConsumer<WalletBloc, WalletState>(
             listener: (context, state) {
+              if (state is WalletLoaded) {
+                context.read<WalletBloc>().add(const FetchCreditBalanceEvent());
+              }
               if (state is ChargeMoneySubmitted) {
                 final Map<String, dynamic> body = {
                   'payment_id': state.paymentId,
@@ -557,11 +575,27 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                 _handlePaymentError(
                     PaymentFailureResponse(400, state.message, null));
               }
+
+              if (state is ChargeCreditWalletMoneySuccess) {
+                final Map<String, dynamic> body = {
+                  'payment_id': state.paymentId,
+                  'razorpay_order_id': null,
+                  'razorpay_payment_id': null,
+                  'razorpay_signature': null
+                };
+                _verifyPayment(body);
+              }
+
+              if (state is ChargeCreditWalletMoneyError) {
+                _handlePaymentError(
+                    PaymentFailureResponse(400, state.message, null));
+              }
             },
             builder: (context, state) {
-              if (state is WalletLoaded) {
+              if (state is FetchCreditBalanceSuccess) {
                 return ProceedToPayWidget(
-                  walletBalance: state.wallet?.balance ?? 0.0,
+                  walletBalance: state.availableWalletBalance ?? 0.0,
+                  creditWalletBalance: state.data?.data?.balance ?? 0.0,
                   passengers: passengers,
                   offerFareEnabled: isOfferEnabled,
                   billingAddress: _billingAddress,
@@ -647,6 +681,23 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
             amount: amount,
             description: 'Flight Booking',
             paymentId: paymentId,
+          ),
+        );
+  }
+
+  Future<void> _chargeCreditWallet(
+      {required double amount,
+      required int bookingId,
+      required int paymentId}) async {
+    final Map<String, dynamic> body = {
+      'amount': amount,
+      'description': 'Flight Booking via Credit Wallet',
+      'relatedBookingId': bookingId,
+      'paymentId': paymentId,
+    };
+    context.read<WalletBloc>().add(
+          ChargeCreditWalletMoneyEvent(
+            body: body,
           ),
         );
   }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' hide log;
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -32,6 +33,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<FetchCreditBalanceEvent>(_handleFetchCreditBalance);
     on<FetchCreditBalanceTransactionsEvent>(
         _handleFetchCreditBalanceTransactions);
+    on<ChargeCreditWalletMoneyEvent>(_handleChargeCreditWalletMoney);
   }
 
   final WalletRepository walletRepository;
@@ -161,7 +163,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
   ) async {
     emit(const WalletLoading());
     final Map<String, dynamic> body = {
-      'amount': (event.amount / 100).toDouble(),
+      'amount': event.amount,
       'description': event.description,
     };
     emit(ChargeMoneySubmitting());
@@ -277,11 +279,19 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
 
   Future<void> _handleFetchCreditBalance(
       FetchCreditBalanceEvent event, Emitter<WalletState> emit) async {
+    double? availableBalance = 0;
+    final currentState = state;
+    if (currentState is WalletLoaded) {
+      availableBalance =
+          double.parse(currentState.wallet?.balance?.toString() ?? '0');
+    }
     emit(const FetchCreditBalanceLoading());
+
     final ApiResponse<CreditBalanceModel> response =
         await walletRepository.fetchCreditBalance();
     if (response.data != null) {
-      emit(FetchCreditBalanceSuccess(data: response.data!));
+      emit(FetchCreditBalanceSuccess(
+          data: response.data!, availableWalletBalance: availableBalance));
     } else {
       emit(FetchCreditBalanceError(
           message: response.errorMessage ?? 'Failed to fetch credit balance'));
@@ -293,12 +303,11 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       Emitter<WalletState> emit) async {
     double? availableBalance = 0;
     final currentState = state;
-    log('currentState: $currentState');
     if (currentState is FetchCreditBalanceSuccess) {
-      log('availableBalance: ${currentState.data?.data?.balance}');
       availableBalance =
           double.parse(currentState.data?.data?.balance?.toString() ?? '0');
     }
+
     emit(const FetchCreditBalanceLoading());
 
     final ApiResponse<CurstomCrTransactionModel> response =
@@ -311,6 +320,21 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       emit(FetchCreditBalanceTransactionsError(
           message: response.errorMessage ??
               'Failed to fetch credit balance transactions'));
+    }
+  }
+
+  Future<void> _handleChargeCreditWalletMoney(
+      ChargeCreditWalletMoneyEvent event, Emitter<WalletState> emit) async {
+    emit(const WalletLoading());
+    final ApiResponse<bool> response =
+        await walletRepository.chargeCreditWalletMoney(body: event.body);
+    log('Response: ${response.data}');
+    if (response.data ?? false) {
+      emit(ChargeCreditWalletMoneySuccess(paymentId: event.body['paymentId']));
+    } else {
+      emit(ChargeCreditWalletMoneyError(
+          message:
+              response.errorMessage ?? 'Failed to charge credit wallet money'));
     }
   }
 }

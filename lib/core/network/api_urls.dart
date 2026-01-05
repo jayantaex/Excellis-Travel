@@ -93,4 +93,5 @@ class EndPoints {
 
   static String getCreditBalanceTransactions = '/credit-wallet/transactions';
   static String getBokkingViaCreditBalance = '/credit-wallet/bookings';
+  static String chargeCreditWallet = '/credit-wallet/debit';
 }
