@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class AppConstants {
   static const String env = 'development';
+  // static const String baseUrl = 'http://192.168.0.169:5000/api/v1';
   static const String baseUrl = 'https://api.excellistravel.com';
   static const String amaduesUrl = 'https://test.api.amadeus.com';
   static String imageKitUrl = 'https://ik.imagekit.io';

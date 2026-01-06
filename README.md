@@ -1,19 +1,15 @@
 # Excellis Travel
 
-A new Flutter project.
+A Flight boking app for Agents.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Flutter: 3.38.5
+Dart: 3.10.4
+Android SDK version: 36.1.0
+Emulator version: 36.3.10.0
+Java version: 21.0.8
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 
 Generate SHA Key - DEBUG :
 

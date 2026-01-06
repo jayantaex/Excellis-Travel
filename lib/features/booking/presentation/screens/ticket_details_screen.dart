@@ -110,60 +110,160 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                     topRight: Radius.circular(32),
                                   ),
                                 ),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Container(
-                                          height: 45,
-                                          width: width,
-                                          alignment: Alignment.center,
-                                          decoration: const BoxDecoration(
-                                            color: AppColors.info,
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(32),
-                                              topRight: Radius.circular(32),
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(32),
+                                    topRight: Radius.circular(32),
+                                  ),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Container(
+                                            height: 45,
+                                            width: width,
+                                            alignment: Alignment.center,
+                                            decoration: const BoxDecoration(
+                                              color: AppColors.info,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(32),
+                                                topRight: Radius.circular(32),
+                                              ),
                                             ),
-                                          ),
-                                          child: Padding(
+                                            child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 16,
+                                                ),
+                                                child: Text(
+                                                  '${widget.ticketData?.bookingReference}',
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: AppColors.white,
+                                                  ),
+                                                ))),
+                                        ...widget.ticketData!.flightData!
+                                            .itineraries!
+                                            .map(
+                                          (Itinerary e) => DottedBorder(
+                                            options:
+                                                CustomPathDottedBorderOptions(
+                                              customPath: (Size size) => Path()
+                                                ..moveTo(0, size.height)
+                                                ..relativeLineTo(size.width, 0),
+                                              dashPattern: <double>[5, 5],
+                                              color: isDark
+                                                  ? AppColors.white
+                                                      .withValues(alpha: 0.3)
+                                                  : AppColors.grey
+                                                      .withValues(alpha: 0.5),
+                                            ),
+                                            child: Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                horizontal: 16,
-                                              ),
-                                              child: Text(
-                                                '${widget.ticketData?.bookingReference}',
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: AppColors.white,
-                                                ),
-                                              ))),
-                                      ...widget
-                                          .ticketData!.flightData!.itineraries!
-                                          .map(
-                                        (Itinerary e) => DottedBorder(
-                                          options:
-                                              CustomPathDottedBorderOptions(
-                                            customPath: (Size size) => Path()
-                                              ..moveTo(0, size.height)
-                                              ..relativeLineTo(size.width, 0),
-                                            dashPattern: <double>[5, 5],
-                                            color: isDark
-                                                ? AppColors.white
-                                                    .withValues(alpha: 0.3)
-                                                : AppColors.grey
-                                                    .withValues(alpha: 0.5),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 16),
-                                            child: Column(
-                                              children: <Widget>[
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    SizedBox(
+                                                      horizontal: 16),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      SizedBox(
+                                                          height: 90,
+                                                          width: width * 0.25,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: <Widget>[
+                                                              Text(
+                                                                '${e.segments?.first.departure?.iataCode}',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        24,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: isDark
+                                                                        ? AppColors
+                                                                            .white
+                                                                        : AppColors
+                                                                            .black),
+                                                              ),
+                                                              Text(
+                                                                AppHelpers.formatDateTime(
+                                                                    DateTime.parse(
+                                                                        '${e.segments?.first.departure?.at}'),
+                                                                    pattern:
+                                                                        'dd MMM, yyyy'),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        11,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    color: isDark
+                                                                        ? AppColors.white.withValues(
+                                                                            alpha:
+                                                                                0.7)
+                                                                        : AppColors
+                                                                            .grey),
+                                                              ),
+                                                              Text(
+                                                                AppHelpers.formatDateTime(
+                                                                        DateTime.parse(
+                                                                            '${e.segments?.first.departure?.at}'),
+                                                                        pattern:
+                                                                            'hh:mm a')
+                                                                    .toUpperCase(),
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        11,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    color: isDark
+                                                                        ? AppColors.white.withValues(
+                                                                            alpha:
+                                                                                0.7)
+                                                                        : AppColors
+                                                                            .grey),
+                                                              ),
+                                                            ],
+                                                          )),
+                                                      SizedBox(
+                                                          width: width * 0.25,
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              AppHelpers.svgAsset(
+                                                                  assetName:
+                                                                      'flight',
+                                                                  width: 100,
+                                                                  color: isDark
+                                                                      ? AppColors
+                                                                          .white
+                                                                      : null),
+                                                              Text(
+                                                                '',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: isDark
+                                                                        ? AppColors
+                                                                            .white
+                                                                        : AppColors
+                                                                            .black),
+                                                              ),
+                                                            ],
+                                                          )),
+                                                      SizedBox(
                                                         height: 90,
                                                         width: width * 0.25,
                                                         child: Column(
@@ -172,10 +272,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                                   .center,
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
-                                                                  .start,
+                                                                  .end,
                                                           children: <Widget>[
                                                             Text(
-                                                              '${e.segments?.first.departure?.iataCode}',
+                                                              '${e.segments?.last.arrival?.iataCode}',
                                                               style: TextStyle(
                                                                   fontSize: 24,
                                                                   fontWeight:
@@ -190,7 +290,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                             Text(
                                                               AppHelpers.formatDateTime(
                                                                   DateTime.parse(
-                                                                      '${e.segments?.first.departure?.at}'),
+                                                                      '${e.segments?.last.arrival?.at}'),
                                                                   pattern:
                                                                       'dd MMM, yyyy'),
                                                               style: TextStyle(
@@ -210,7 +310,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                             Text(
                                                               AppHelpers.formatDateTime(
                                                                       DateTime.parse(
-                                                                          '${e.segments?.first.departure?.at}'),
+                                                                          '${e.segments?.last.arrival?.at}'),
                                                                       pattern:
                                                                           'hh:mm a')
                                                                   .toUpperCase(),
@@ -229,372 +329,327 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                                           .grey),
                                                             ),
                                                           ],
-                                                        )),
-                                                    SizedBox(
-                                                        width: width * 0.25,
-                                                        child: Column(
-                                                          children: <Widget>[
-                                                            AppHelpers.svgAsset(
-                                                                assetName:
-                                                                    'flight',
-                                                                width: 100,
-                                                                color: isDark
-                                                                    ? AppColors
-                                                                        .white
-                                                                    : null),
-                                                            Text(
-                                                              '',
-                                                              style: TextStyle(
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: isDark
-                                                                      ? AppColors
-                                                                          .white
-                                                                      : AppColors
-                                                                          .black),
-                                                            ),
-                                                          ],
-                                                        )),
-                                                    SizedBox(
-                                                      height: 90,
-                                                      width: width * 0.25,
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: <Widget>[
-                                                          Text(
-                                                            '${e.segments?.last.arrival?.iataCode}',
-                                                            style: TextStyle(
-                                                                fontSize: 24,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: isDark
-                                                                    ? AppColors
-                                                                        .white
-                                                                    : AppColors
-                                                                        .black),
-                                                          ),
-                                                          Text(
-                                                            AppHelpers.formatDateTime(
-                                                                DateTime.parse(
-                                                                    '${e.segments?.last.arrival?.at}'),
-                                                                pattern:
-                                                                    'dd MMM, yyyy'),
-                                                            style: TextStyle(
-                                                                fontSize: 11,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: isDark
-                                                                    ? AppColors
-                                                                        .white
-                                                                        .withValues(
-                                                                            alpha:
-                                                                                0.7)
-                                                                    : AppColors
-                                                                        .grey),
-                                                          ),
-                                                          Text(
-                                                            AppHelpers.formatDateTime(
-                                                                    DateTime.parse(
-                                                                        '${e.segments?.last.arrival?.at}'),
-                                                                    pattern:
-                                                                        'hh:mm a')
-                                                                .toUpperCase(),
-                                                            style: TextStyle(
-                                                                fontSize: 11,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: isDark
-                                                                    ? AppColors
-                                                                        .white
-                                                                        .withValues(
-                                                                            alpha:
-                                                                                0.7)
-                                                                    : AppColors
-                                                                        .grey),
-                                                          ),
-                                                        ],
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                ...widget
-                                                    .ticketData!
-                                                    .flightData!
-                                                    .itineraries!
-                                                    .first
-                                                    .segments!
-                                                    .map(
-                                                  (Segment e) =>
-                                                      SegmentCard(data: e),
-                                                ),
-                                              ],
+                                                    ],
+                                                  ),
+                                                  ...widget
+                                                      .ticketData!
+                                                      .flightData!
+                                                      .itineraries!
+                                                      .first
+                                                      .segments!
+                                                      .map(
+                                                    (Segment e) =>
+                                                        SegmentCard(data: e),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      widget.ticketData!.fareDetails
-                                                  ?.showTotalFare ==
-                                              true
-                                          ? Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 12),
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text('Update Markup',
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: isDark
-                                                            ? AppColors.white
-                                                            : AppColors.black)),
-                                              ),
-                                            )
-                                          : const SizedBox(),
-                                      widget.ticketData!.fareDetails
-                                                  ?.showTotalFare ==
-                                              true
-                                          ? Form(
-                                              key: _formKey,
-                                              child: ListTile(
-                                                title: AppPrimaryInput(
-                                                  validator: (value) {
-                                                    if (value!.isEmpty) {
-                                                      return 'Please enter markup';
-                                                    }
-                                                    if (double.parse(value) <
-                                                        0) {
-                                                      return 'Markup cannot be negative';
-                                                    }
-                                                    return null;
-                                                  },
-                                                  maxCharacters: 8,
-                                                  controller: _markupController,
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  isMultiline: false,
-                                                  hint:
-                                                      'Enter Markup (e.g. 100)',
-                                                  label: 'Markup',
+                                        const SizedBox(height: 8),
+                                        widget.ticketData!.fareDetails
+                                                    ?.showTotalFare ==
+                                                true
+                                            ? Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 12),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text('Update Markup',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: isDark
+                                                              ? AppColors.white
+                                                              : AppColors
+                                                                  .black)),
                                                 ),
-                                                trailing: InkWell(
-                                                  onTap: () {
-                                                    _handleUpdateMarkup();
-                                                  },
-                                                  child: Container(
-                                                    height: 50,
-                                                    width: 100,
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.primary,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                    ),
-                                                    child: const Center(
-                                                      child: Text(
-                                                        'Update',
-                                                        style: TextStyle(
-                                                            color:
-                                                                AppColors.white,
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
+                                              )
+                                            : const SizedBox(),
+                                        widget.ticketData!.fareDetails
+                                                    ?.showTotalFare ==
+                                                true
+                                            ? Form(
+                                                key: _formKey,
+                                                child: ListTile(
+                                                  title: AppPrimaryInput(
+                                                    validator: (value) {
+                                                      if (value!.isEmpty) {
+                                                        return 'Please enter markup';
+                                                      }
+                                                      if (double.parse(value) <
+                                                          0) {
+                                                        return 'Markup cannot be negative';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    maxCharacters: 8,
+                                                    controller:
+                                                        _markupController,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    isMultiline: false,
+                                                    hint:
+                                                        'Enter Markup (e.g. 100)',
+                                                    label: 'Markup',
+                                                  ),
+                                                  trailing: InkWell(
+                                                    onTap: () {
+                                                      _handleUpdateMarkup();
+                                                    },
+                                                    child: Container(
+                                                      height: 50,
+                                                      width: 100,
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            AppColors.primary,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      child: const Center(
+                                                        child: Text(
+                                                          'Update',
+                                                          style: TextStyle(
+                                                              color: AppColors
+                                                                  .white,
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
+                                              )
+                                            : const SizedBox(),
+                                        const SizedBox(height: 8),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 12),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text('Passenger Details',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: isDark
+                                                        ? AppColors.white
+                                                        : AppColors.black)),
+                                          ),
+                                        ),
+                                        ...widget.ticketData!.travellerDetails!
+                                            .adults!
+                                            .map(
+                                          (Adult adult) => ListTile(
+                                            leading: CircleAvatar(
+                                              radius: 16,
+                                              backgroundColor: isDark
+                                                  ? AppColors.white
+                                                      .withValues(alpha: 0.1)
+                                                  : null,
+                                              child: const Icon(
+                                                Icons.person,
+                                                color: AppColors.primary,
+                                                size: 16,
                                               ),
-                                            )
-                                          : const SizedBox(),
-                                      const SizedBox(height: 8),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 12),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text('Passenger Details',
+                                            ),
+                                            title: Text(
+                                              '${adult.firstName ?? ''} ${adult.lastName ?? ''}',
+                                              style: TextStyle(
+                                                  color: isDark
+                                                      ? AppColors.white
+                                                      : AppColors.black),
+                                            ),
+                                            subtitle: adult
+                                                        .dateOfBirth?.isEmpty ??
+                                                    true
+                                                ? null
+                                                : Text(
+                                                    AppHelpers.formatDate(
+                                                        DateTime.parse(adult
+                                                                .dateOfBirth ??
+                                                            DateTime.now()
+                                                                .toString()),
+                                                        pattern: 'dd MMM yyy'),
+                                                    style: TextStyle(
+                                                        color: isDark
+                                                            ? AppColors.white
+                                                                .withValues(
+                                                                    alpha: 0.7)
+                                                            : AppColors.grey),
+                                                  ),
+                                          ),
+                                        ),
+                                        ...widget.ticketData!.travellerDetails!
+                                            .children!
+                                            .map(
+                                          (child) => ListTile(
+                                            leading: CircleAvatar(
+                                              radius: 16,
+                                              backgroundColor: isDark
+                                                  ? AppColors.white
+                                                      .withValues(alpha: 0.1)
+                                                  : null,
+                                              child: const Icon(
+                                                Icons.person,
+                                                color: AppColors.primary,
+                                                size: 16,
+                                              ),
+                                            ),
+                                            title: Text(
+                                              '${child.firstName ?? ''} ${child.lastName ?? ''}',
+                                              style: TextStyle(
+                                                  color: isDark
+                                                      ? AppColors.white
+                                                      : AppColors.black),
+                                            ),
+                                            subtitle: child
+                                                        .dateOfBirth?.isEmpty ??
+                                                    true
+                                                ? null
+                                                : Text(
+                                                    AppHelpers.formatDate(
+                                                        DateTime.parse(child
+                                                                .dateOfBirth ??
+                                                            DateTime.now()
+                                                                .toString()),
+                                                        pattern: 'dd MMM yyy'),
+                                                    style: TextStyle(
+                                                        color: isDark
+                                                            ? AppColors.white
+                                                                .withValues(
+                                                                    alpha: 0.7)
+                                                            : AppColors.grey),
+                                                  ),
+                                          ),
+                                        ),
+                                        ...widget.ticketData!.travellerDetails!
+                                            .infants!
+                                            .map(
+                                          (infant) => ListTile(
+                                            leading: CircleAvatar(
+                                              radius: 16,
+                                              backgroundColor: isDark
+                                                  ? AppColors.white
+                                                      .withValues(alpha: 0.1)
+                                                  : null,
+                                              child: const Icon(
+                                                Icons.person,
+                                                color: AppColors.primary,
+                                                size: 16,
+                                              ),
+                                            ),
+                                            title: Text(
+                                              '${infant.firstName ?? ''} ${infant.lastName ?? ''}',
+                                              style: TextStyle(
+                                                  color: isDark
+                                                      ? AppColors.white
+                                                      : AppColors.black),
+                                            ),
+                                            subtitle: infant
+                                                        .dateOfBirth?.isEmpty ??
+                                                    true
+                                                ? null
+                                                : Text(
+                                                    AppHelpers.formatDate(
+                                                        DateTime.parse(infant
+                                                                .dateOfBirth ??
+                                                            DateTime.now()
+                                                                .toString()),
+                                                        pattern: 'dd MMM yyy'),
+                                                    style: TextStyle(
+                                                        color: isDark
+                                                            ? AppColors.white
+                                                                .withValues(
+                                                                    alpha: 0.7)
+                                                            : AppColors.grey),
+                                                  ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 12),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              'Billing Information',
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w600,
                                                   color: isDark
                                                       ? AppColors.white
-                                                      : AppColors.black)),
-                                        ),
-                                      ),
-                                      ...widget
-                                          .ticketData!.travellerDetails!.adults!
-                                          .map(
-                                        (Adult adult) => ListTile(
-                                          leading: CircleAvatar(
-                                            radius: 16,
-                                            backgroundColor: isDark
-                                                ? AppColors.white
-                                                    .withValues(alpha: 0.1)
-                                                : null,
-                                            child: const Icon(
-                                              Icons.person,
-                                              color: AppColors.primary,
-                                              size: 16,
+                                                      : AppColors.black),
                                             ),
                                           ),
-                                          title: Text(
-                                            '${adult.firstName ?? ''} ${adult.lastName ?? ''}',
-                                            style: TextStyle(
-                                                color: isDark
-                                                    ? AppColors.white
-                                                    : AppColors.black),
-                                          ),
-                                          subtitle: adult
-                                                      .dateOfBirth?.isEmpty ??
-                                                  true
-                                              ? null
-                                              : Text(
-                                                  AppHelpers.formatDate(
-                                                      DateTime.parse(
-                                                          adult.dateOfBirth ??
-                                                              DateTime.now()
-                                                                  .toString()),
-                                                      pattern: 'dd MMM yyy'),
-                                                  style: TextStyle(
-                                                      color: isDark
-                                                          ? AppColors.white
-                                                              .withValues(
-                                                                  alpha: 0.7)
-                                                          : AppColors.grey),
-                                                ),
                                         ),
-                                      ),
-                                      ...widget.ticketData!.travellerDetails!
-                                          .children!
-                                          .map(
-                                        (child) => ListTile(
-                                          leading: CircleAvatar(
-                                            radius: 16,
-                                            backgroundColor: isDark
-                                                ? AppColors.white
-                                                    .withValues(alpha: 0.1)
-                                                : null,
-                                            child: const Icon(
-                                              Icons.person,
-                                              color: AppColors.primary,
-                                              size: 16,
-                                            ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          child: BillingInfo(
+                                            billingAddress: widget
+                                                .ticketData?.billingAddress,
+                                            contactDetails: widget
+                                                .ticketData?.contactDetails,
+                                            billingDate:
+                                                widget.ticketData?.createdAt,
                                           ),
-                                          title: Text(
-                                            '${child.firstName ?? ''} ${child.lastName ?? ''}',
-                                            style: TextStyle(
-                                                color: isDark
-                                                    ? AppColors.white
-                                                    : AppColors.black),
-                                          ),
-                                          subtitle: child
-                                                      .dateOfBirth?.isEmpty ??
-                                                  true
-                                              ? null
-                                              : Text(
-                                                  AppHelpers.formatDate(
-                                                      DateTime.parse(
-                                                          child.dateOfBirth ??
-                                                              DateTime.now()
-                                                                  .toString()),
-                                                      pattern: 'dd MMM yyy'),
-                                                  style: TextStyle(
-                                                      color: isDark
-                                                          ? AppColors.white
-                                                              .withValues(
-                                                                  alpha: 0.7)
-                                                          : AppColors.grey),
-                                                ),
                                         ),
-                                      ),
-                                      ...widget.ticketData!.travellerDetails!
-                                          .infants!
-                                          .map(
-                                        (infant) => ListTile(
-                                          leading: CircleAvatar(
-                                            radius: 16,
-                                            backgroundColor: isDark
-                                                ? AppColors.white
-                                                    .withValues(alpha: 0.1)
-                                                : null,
-                                            child: const Icon(
-                                              Icons.person,
-                                              color: AppColors.primary,
-                                              size: 16,
-                                            ),
-                                          ),
-                                          title: Text(
-                                            '${infant.firstName ?? ''} ${infant.lastName ?? ''}',
-                                            style: TextStyle(
-                                                color: isDark
-                                                    ? AppColors.white
-                                                    : AppColors.black),
-                                          ),
-                                          subtitle: infant
-                                                      .dateOfBirth?.isEmpty ??
-                                                  true
-                                              ? null
-                                              : Text(
-                                                  AppHelpers.formatDate(
-                                                      DateTime.parse(
-                                                          infant.dateOfBirth ??
-                                                              DateTime.now()
-                                                                  .toString()),
-                                                      pattern: 'dd MMM yyy'),
-                                                  style: TextStyle(
-                                                      color: isDark
-                                                          ? AppColors.white
-                                                              .withValues(
-                                                                  alpha: 0.7)
-                                                          : AppColors.grey),
-                                                ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 12),
-                                        child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            'Billing Information',
+                                        ListTile(
+                                          title: const Text(
+                                            'Invoice',
                                             style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w600,
-                                                color: isDark
-                                                    ? AppColors.white
-                                                    : AppColors.black),
+                                                color: AppColors.black),
                                           ),
+                                          subtitle: const Text(
+                                            'Download the invoice for this booking',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.grey),
+                                          ),
+                                          trailing: IconButton(
+                                              onPressed: () async {
+                                                try {
+                                                  Fluttertoast.showToast(
+                                                      msg: 'Downloading...');
+                                                  final bool res =
+                                                      await FileDownloaderService
+                                                          .invoiceDownload(
+                                                    bokkingRefId:
+                                                        '${widget.ticketData?.bookingReference}',
+                                                    showDownloadProgress:
+                                                        (count, total) {},
+                                                  );
+
+                                                  if (res) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            'Downloaded successfully');
+                                                  }
+                                                } catch (e) {
+                                                  Fluttertoast.showToast(
+                                                      msg: '$e');
+                                                }
+                                              },
+                                              icon: const Icon(
+                                                Icons.download,
+                                                color: AppColors.primary,
+                                              )),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16),
-                                        child: BillingInfo(
-                                          billingAddress:
-                                              widget.ticketData?.billingAddress,
-                                          contactDetails:
-                                              widget.ticketData?.contactDetails,
-                                          billingDate:
-                                              widget.ticketData?.createdAt,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 45),
-                                    ],
+                                        const SizedBox(height: 45),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
