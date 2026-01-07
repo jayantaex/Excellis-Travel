@@ -153,36 +153,52 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                       const SizedBox(height: 12),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: AuthInputWidget(
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return 'First Name is required';
-                              }
-                              return null;
-                            },
-                            isPassword: false,
-                            maxCharacters: 40,
-                            controller: _firstNameController,
-                            label: 'First Name*',
-                            hint: 'Enter your first name (required)'),
+                        child: SizedBox(
+                          width: AppHelpers.getScreenWidth(context),
+                          height: 60,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width:
+                                    AppHelpers.getScreenWidth(context) * 0.42,
+                                height: 60,
+                                child: AuthInputWidget(
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'First Name is required';
+                                      }
+                                      return null;
+                                    },
+                                    isPassword: false,
+                                    maxCharacters: 40,
+                                    controller: _firstNameController,
+                                    label: 'First Name*',
+                                    hint: 'Enter your first name (required)'),
+                              ),
+                              SizedBox(
+                                width:
+                                    AppHelpers.getScreenWidth(context) * 0.42,
+                                height: 60,
+                                child: AuthInputWidget(
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Last Name is required';
+                                      }
+                                      return null;
+                                    },
+                                    isPassword: false,
+                                    maxCharacters: 40,
+                                    controller: _lastNameController,
+                                    label: 'Last Name*',
+                                    hint: 'Enter your last name (required)'),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 12),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: AuthInputWidget(
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Last Name is required';
-                              }
-                              return null;
-                            },
-                            isPassword: false,
-                            maxCharacters: 40,
-                            controller: _lastNameController,
-                            label: 'Last Name*',
-                            hint: 'Enter your last name (required)'),
-                      ),
-                      const SizedBox(height: 12),
+
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: AuthInputWidget(
@@ -248,17 +264,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                             label: 'Address*',
                             hint: 'Enter your Address(required)'),
                       ),
-                      const SizedBox(height: 12),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: AuthInputWidget(
-                            isPassword: false,
-                            maxCharacters: 6,
-                            controller: _pinController,
-                            keyboardType: TextInputType.number,
-                            label: 'Pin Code',
-                            hint: 'Enter your Pin Code'),
-                      ),
+
                       const SizedBox(height: 12),
                       BlocConsumer<StatesBloc, StatesState>(
                         listener: (BuildContext context, StatesState state) {
@@ -314,38 +320,69 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                         },
                       ),
                       const SizedBox(height: 12),
-                      BlocConsumer<CityBloc, CityState>(
-                        listener: (BuildContext context, CityState state) {
-                          if (state is CityLoaded) {
-                            selectedCity =
-                                state.cities.first.name ?? 'Visakhapatnam';
-                            _cities.clear();
-                            for (CityModel element in state.cities) {
-                              _cities.add(
-                                DropdownMenuItem<String>(
-                                  value: element.name,
-                                  child: Text(element.name ?? ''),
-                                ),
-                              );
-                            }
-                          }
-                        },
-                        builder: (BuildContext context, CityState state) {
-                          if (state is CityLoaded) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: AuthDropdownWidget(
-                                items: _cities,
-                                onChanged: (String? value) {
-                                  selectedCity = value ?? 'Visakhapatnam';
+
+                      SizedBox(
+                        width: AppHelpers.getScreenWidth(context),
+                        height: 60,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              BlocConsumer<CityBloc, CityState>(
+                                listener:
+                                    (BuildContext context, CityState state) {
+                                  if (state is CityLoaded) {
+                                    selectedCity = state.cities.first.name ??
+                                        'Visakhapatnam';
+                                    _cities.clear();
+                                    for (CityModel element in state.cities) {
+                                      _cities.add(
+                                        DropdownMenuItem<String>(
+                                          value: element.name,
+                                          child: Text(element.name ?? ''),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                                builder:
+                                    (BuildContext context, CityState state) {
+                                  if (state is CityLoaded) {
+                                    return SizedBox(
+                                      width:
+                                          AppHelpers.getScreenWidth(context) *
+                                              0.52,
+                                      height: 60,
+                                      child: AuthDropdownWidget(
+                                        items: _cities,
+                                        onChanged: (String? value) {
+                                          selectedCity =
+                                              value ?? 'Visakhapatnam';
+                                        },
+                                      ),
+                                    );
+                                  }
+                                  return const SizedBox();
                                 },
                               ),
-                            );
-                          }
-                          return const SizedBox();
-                        },
+                              SizedBox(
+                                width:
+                                    AppHelpers.getScreenWidth(context) * 0.32,
+                                height: 60,
+                                child: AuthInputWidget(
+                                    isPassword: false,
+                                    maxCharacters: 6,
+                                    controller: _pinController,
+                                    keyboardType: TextInputType.number,
+                                    label: 'Pin Code',
+                                    hint: 'Enter your Pin Code'),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
+
                       const SizedBox(height: 12),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),

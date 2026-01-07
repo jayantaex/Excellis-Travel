@@ -229,10 +229,8 @@ class WalletApi {
         allData['data'].add(data);
       });
       //filter it according to createdAt
-      log('Before Sorting allData: ${allData.toString()}');
       allData['data'].sort((a, b) => DateTime.parse(a['dateTime'])
           .compareTo(DateTime.parse(b['dateTime'])));
-      log('After Sorting allData: ${allData.toString()}');
       return ApiResponse(
           statusCode: 200, data: CurstomCrTransactionModel.fromJson(allData));
     } catch (e) {

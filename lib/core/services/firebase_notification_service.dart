@@ -59,9 +59,7 @@ class FirebaseNotificationService {
       final int notificationId = message.notification?.hashCode ?? 0;
       final String title = message.notification?.title ?? '';
       final String body = message.notification?.body ?? '';
-      log('showNotification: $title');
-      log('showNotification: $body');
-      log('showNotification: $notificationId');
+
       const AndroidNotificationDetails andriod = AndroidNotificationDetails(
           'Excellis Travel Notification Channel',
           'Excellis Travel Notification ',

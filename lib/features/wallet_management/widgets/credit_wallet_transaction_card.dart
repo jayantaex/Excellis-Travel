@@ -30,11 +30,17 @@ class CreditWalletTransactionCard extends StatelessWidget {
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.all(0),
-        leading: const CircleAvatar(
+        leading: CircleAvatar(
+          backgroundColor: data.type == 'credit-transaction'
+              ? AppColors.success
+              : AppColors.error,
           radius: 16,
-          backgroundColor: AppColors.primary,
-          child: Icon(Icons.trending_up_outlined,
-              size: 16, color: AppColors.white),
+          child: Icon(
+              data.type == 'credit-transaction'
+                  ? Icons.trending_up_outlined
+                  : Icons.trending_down_outlined,
+              size: 16,
+              color: AppColors.white),
         ),
         title: Text(data.title ?? '',
             style: const TextStyle(

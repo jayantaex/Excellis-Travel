@@ -22,11 +22,13 @@ class CreditTransactionDetails extends StatelessWidget {
           _buildRow(title: 'Used for : ', value: data.desc ?? ''),
           _buildRow(
               title: 'Date : ',
-              value: AppHelpers.formatDate(DateTime.parse(data.dateTime ?? ''),
+              value: AppHelpers.formatDate(
+                  DateTime.parse(data.dateTime ?? '').toLocal(),
                   pattern: 'dd MMM, yyyy')),
           _buildRow(
               title: 'Time : ',
-              value: AppHelpers.formatTime(DateTime.parse(data.dateTime ?? ''),
+              value: AppHelpers.formatTime(
+                  DateTime.parse(data.dateTime ?? '').toLocal(),
                   pattern: 'hh:mm a')),
           _buildRow(title: 'Type : ', value: data.type ?? 'N/A'),
           if (data.recipient != null)
