@@ -9,7 +9,7 @@ import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../bloc/sales_bloc.dart';
-import '../screens/child_data_model.dart';
+import '../../data/models/child_data_model.dart';
 import 'sub_sales_executive_selector.dart';
 
 class SalesFilterSheet extends StatefulWidget {
