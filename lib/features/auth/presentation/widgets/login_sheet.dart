@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/services/firebase_notification_service.dart';
 import '../../../../core/widgets/text_widget.dart';
 import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -190,7 +193,11 @@ class _LoginSheetState extends State<LoginSheet> {
                           : AppColors.black,
                       title: 'LOGIN',
                       isLoading: widget.isLoading,
-                      onPressed: () {
+                      onPressed: () async {
+                        final fcmToken = await FirebaseNotificationService
+                            .instance
+                            .getFcmToken();
+                        log('fcmToken: $fcmToken');
                         context.read<AuthBloc>().add(
                               LoginEvent(
                                 fcmToken: '',

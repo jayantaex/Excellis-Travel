@@ -603,50 +603,52 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                 widget.ticketData?.createdAt,
                                           ),
                                         ),
-                                        ListTile(
-                                          title: const Text(
-                                            'Invoice',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: AppColors.black),
-                                          ),
-                                          subtitle: const Text(
-                                            'Download the invoice for this booking',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                                color: AppColors.grey),
-                                          ),
-                                          trailing: IconButton(
-                                              onPressed: () async {
-                                                try {
-                                                  Fluttertoast.showToast(
-                                                      msg: 'Downloading...');
-                                                  final bool res =
-                                                      await FileDownloaderService
-                                                          .invoiceDownload(
-                                                    bokkingRefId:
-                                                        '${widget.ticketData?.bookingReference}',
-                                                    showDownloadProgress:
-                                                        (count, total) {},
-                                                  );
-
-                                                  if (res) {
+                                        if (widget.ticketData?.bookingStatus ==
+                                            'confirmed')
+                                          ListTile(
+                                            title: const Text(
+                                              'Invoice',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppColors.black),
+                                            ),
+                                            subtitle: const Text(
+                                              'Download the invoice for this booking',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: AppColors.grey),
+                                            ),
+                                            trailing: IconButton(
+                                                onPressed: () async {
+                                                  try {
                                                     Fluttertoast.showToast(
-                                                        msg:
-                                                            'Downloaded successfully');
+                                                        msg: 'Downloading...');
+                                                    final bool res =
+                                                        await FileDownloaderService
+                                                            .invoiceDownload(
+                                                      bokkingRefId:
+                                                          '${widget.ticketData?.bookingReference}',
+                                                      showDownloadProgress:
+                                                          (count, total) {},
+                                                    );
+
+                                                    if (res) {
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              'Downloaded successfully');
+                                                    }
+                                                  } catch (e) {
+                                                    Fluttertoast.showToast(
+                                                        msg: '$e');
                                                   }
-                                                } catch (e) {
-                                                  Fluttertoast.showToast(
-                                                      msg: '$e');
-                                                }
-                                              },
-                                              icon: const Icon(
-                                                Icons.download,
-                                                color: AppColors.primary,
-                                              )),
-                                        ),
+                                                },
+                                                icon: const Icon(
+                                                  Icons.download,
+                                                  color: AppColors.primary,
+                                                )),
+                                          ),
                                         const SizedBox(height: 45),
                                       ],
                                     ),
