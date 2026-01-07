@@ -1,5 +1,4 @@
 class OrderModel {
-
   OrderModel(
       {this.amount,
       this.amountDue,
@@ -9,6 +8,8 @@ class OrderModel {
       this.currency,
       this.entity,
       this.id,
+      this.paymentId,
+      this.bookingId,
       this.notes,
       this.offerId,
       this.receipt,
@@ -27,6 +28,8 @@ class OrderModel {
     offerId = json['offer_id'];
     receipt = json['receipt'];
     status = json['status'];
+    bookingId = json['booking_id'];
+    paymentId = int.parse(json['receipt'].split('_')[1]);
   }
   int? amount;
   int? amountDue;
@@ -36,6 +39,8 @@ class OrderModel {
   String? currency;
   String? entity;
   String? id;
+  int? paymentId;
+  int? bookingId;
   Notes? notes;
   String? offerId;
   String? receipt;
@@ -62,7 +67,6 @@ class OrderModel {
 }
 
 class Notes {
-
   Notes({this.bookingId, this.bookingReference});
 
   Notes.fromJson(Map<String, dynamic> json) {

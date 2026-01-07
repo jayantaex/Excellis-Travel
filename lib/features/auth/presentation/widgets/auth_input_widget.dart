@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constants/app_styles.dart';
+import '../../../../utils/app_helpers.dart';
 
 class AuthInputWidget extends StatefulWidget {
-
   const AuthInputWidget(
       {super.key,
       this.label,
@@ -36,60 +36,79 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => TextField(
-      controller: widget.controller,
-      keyboardType: widget.keyboardType,
-      obscureText: _isPasswordVisible,
-      style: const TextStyle(
-          fontSize: 16, color: AppColors.black, fontWeight: FontWeight.w400),
-      inputFormatters: <TextInputFormatter>[
-        if (widget.maxCharacters > 0)
-          LengthLimitingTextInputFormatter(widget.maxCharacters),
-      ],
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: AppColors.grey.withOpacity(0.15),
-        suffixIcon: widget.isPassword
-            ? _isPasswordVisible
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                    icon: SvgPicture.asset(
-                        'assets/icons/password_visisbility.svg'))
-                : IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                    icon: SvgPicture.asset(
-                        'assets/icons/password_visisbility.svg'))
-            : null,
-        labelText: widget.label,
-        hintText: widget.hint,
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(90)),
-          borderSide: BorderSide(color: AppColors.grey),
+  @override
+  Widget build(BuildContext context) => TextFormField(
+        validator: widget.validator,
+        controller: widget.controller,
+        keyboardType: widget.keyboardType,
+        obscureText: _isPasswordVisible,
+        style: TextStyle(
+            fontSize: 16,
+            color: AppHelpers.isDarkMode(context)
+                ? AppColors.white
+                : AppColors.black,
+            fontWeight: FontWeight.w400),
+        inputFormatters: <TextInputFormatter>[
+          if (widget.maxCharacters > 0)
+            LengthLimitingTextInputFormatter(widget.maxCharacters),
+        ],
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: AppColors.grey.withValues(alpha: 0.15),
+          suffixIcon: widget.isPassword
+              ? _isPasswordVisible
+                  ? IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                      icon: SvgPicture.asset(
+                          'assets/icons/password_visisbility.svg',
+                          colorFilter: ColorFilter.mode(
+                              AppHelpers.isDarkMode(context)
+                                  ? AppColors.white
+                                  : AppColors.black,
+                              BlendMode.srcIn)))
+                  : IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                      icon: SvgPicture.asset(
+                        'assets/icons/password_visisbility.svg',
+                        colorFilter: ColorFilter.mode(
+                          AppHelpers.isDarkMode(context)
+                              ? AppColors.white
+                              : AppColors.black,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                    )
+              : null,
+          labelText: widget.label,
+          hintText: widget.hint,
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(90)),
+            borderSide: BorderSide(color: AppColors.grey),
+          ),
+          focusedErrorBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(90)),
+            borderSide: BorderSide(color: AppColors.error),
+          ),
+          errorBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(90)),
+            borderSide: BorderSide(color: AppColors.error),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(90)),
+            borderSide: BorderSide(color: AppColors.primary),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(90)),
+            borderSide: BorderSide(color: AppColors.grey),
+          ),
         ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(90)),
-          borderSide: BorderSide(color: AppColors.error),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(90)),
-          borderSide: BorderSide(color: AppColors.error),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(90)),
-          borderSide: BorderSide(color: AppColors.primary),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(90)),
-          borderSide: BorderSide(color: AppColors.grey),
-        ),
-      ),
-    );
+      );
 }

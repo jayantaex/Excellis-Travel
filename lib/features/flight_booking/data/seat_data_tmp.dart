@@ -1,4 +1,4 @@
-Map<String, dynamic> seatData = <String,dynamic >{
+Map<String, dynamic> seatData = <String, dynamic>{
   'data': <Map<String, Object>>[
     <String, Object>{
       'id': '1',
@@ -118,60 +118,144 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '1D',
-              'characteristicsCodes': <String>['1B', 'A', 'FC', 'K', 'O', 'RS', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                'A',
+                'FC',
+                'K',
+                'O',
+                'RS',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 1, 'y': 4}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '1E',
-              'characteristicsCodes': <String>['1B', '9', 'FC', 'K', 'O', 'RS', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                '9',
+                'FC',
+                'K',
+                'O',
+                'RS',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 1, 'y': 5}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '1F',
-              'characteristicsCodes': <String>['1B', 'FC', 'K', 'O', 'RS', 'W', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                'FC',
+                'K',
+                'O',
+                'RS',
+                'W',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 1, 'y': 6}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '2A',
-              'characteristicsCodes': <String>['1B', 'FC', 'K', 'LS', 'O', 'W', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                'FC',
+                'K',
+                'LS',
+                'O',
+                'W',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 0}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '2B',
-              'characteristicsCodes': <String>['1B', '9', 'FC', 'K', 'LS', 'O', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                '9',
+                'FC',
+                'K',
+                'LS',
+                'O',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 1}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '2C',
-              'characteristicsCodes': <String>['1B', 'A', 'FC', 'K', 'LS', 'O', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                'A',
+                'FC',
+                'K',
+                'LS',
+                'O',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 2}
             },
@@ -180,8 +264,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '2D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 4}
             },
@@ -190,8 +280,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '2E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 5}
             },
@@ -200,8 +296,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '2F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 6}
             },
@@ -210,8 +312,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3A',
               'characteristicsCodes': <String>['FC', 'LS', 'O', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 0}
             },
@@ -220,8 +328,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3B',
               'characteristicsCodes': <String>['9', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 1}
             },
@@ -230,8 +344,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3C',
               'characteristicsCodes': <String>['A', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 2}
             },
@@ -240,8 +360,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 4}
             },
@@ -250,8 +376,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 5}
             },
@@ -260,8 +392,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 6}
             },
@@ -270,8 +408,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4A',
               'characteristicsCodes': <String>['FC', 'LS', 'O', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 0}
             },
@@ -280,8 +424,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4B',
               'characteristicsCodes': <String>['9', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 1}
             },
@@ -290,8 +440,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4C',
               'characteristicsCodes': <String>['A', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 2}
             },
@@ -300,8 +456,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 4}
             },
@@ -310,8 +472,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 5}
             },
@@ -320,8 +488,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 6}
             },
@@ -330,8 +504,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5A',
               'characteristicsCodes': <String>['FC', 'LS', 'O', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 0}
             },
@@ -340,8 +520,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5B',
               'characteristicsCodes': <String>['9', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 1}
             },
@@ -350,8 +536,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5C',
               'characteristicsCodes': <String>['A', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 2}
             },
@@ -360,8 +552,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 4}
             },
@@ -370,8 +568,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 5}
             },
@@ -380,8 +584,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 6}
             },
@@ -390,8 +600,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6A',
               'characteristicsCodes': <String>['FC', 'LS', 'O', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 0}
             },
@@ -400,8 +616,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6B',
               'characteristicsCodes': <String>['9', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 1}
             },
@@ -410,8 +632,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6C',
               'characteristicsCodes': <String>['A', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 2}
             },
@@ -420,8 +648,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 4}
             },
@@ -430,8 +664,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 5}
             },
@@ -440,8 +680,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 6}
             },
@@ -1360,7 +1606,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -1392,7 +1643,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -1424,7 +1680,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -1456,7 +1717,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -1488,7 +1754,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -1520,7 +1791,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2056,7 +2332,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2088,7 +2369,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2120,7 +2406,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2152,7 +2443,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2184,7 +2480,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2216,7 +2517,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2248,7 +2554,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2280,7 +2591,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2312,7 +2628,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2344,7 +2665,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2376,7 +2702,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2408,7 +2739,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2440,7 +2776,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2472,7 +2813,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2504,7 +2850,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2536,7 +2887,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2568,7 +2924,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2600,7 +2961,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2632,7 +2998,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2664,7 +3035,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2696,7 +3072,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2728,7 +3109,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2760,7 +3146,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2792,7 +3183,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2824,7 +3220,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2856,7 +3257,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2888,7 +3294,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2920,7 +3331,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2952,7 +3368,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -2984,7 +3405,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3133,7 +3559,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '20D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3165,7 +3596,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '20E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3197,7 +3633,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '20F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3346,7 +3787,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '21D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3378,7 +3824,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '21E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3410,7 +3861,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '21F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3559,7 +4015,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '22D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3591,7 +4052,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '22E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3623,7 +4089,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '22F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3772,7 +4243,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '23D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3804,7 +4280,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '23E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3836,7 +4317,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '23F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -3985,7 +4471,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '24D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4017,7 +4508,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '24E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4049,7 +4545,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '24F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4198,7 +4699,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '25D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4230,7 +4736,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '25E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4262,7 +4773,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '25F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4411,7 +4927,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '26D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4443,7 +4964,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '26E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4475,7 +5001,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '26F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4624,7 +5155,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '27D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4656,7 +5192,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '27E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4688,7 +5229,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '27F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4720,7 +5266,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4752,7 +5303,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4784,7 +5340,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4816,7 +5377,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4848,7 +5414,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4880,7 +5451,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4912,7 +5488,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4944,7 +5525,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -4976,7 +5562,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5008,7 +5599,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5040,7 +5636,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5072,7 +5673,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5104,7 +5710,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5136,7 +5747,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5168,7 +5784,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5200,7 +5821,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5232,7 +5858,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5264,7 +5895,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5296,7 +5932,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '31A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5328,7 +5969,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '31B',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -5603,7 +6249,10 @@ Map<String, dynamic> seatData = <String,dynamic >{
         },
         'wifi': <String, Object>{'isChargeable': true, 'wifiCoverage': 'FULL'},
         'entertainment': <Map<String, Object>>[
-          <String, Object>{'isChargeable': false, 'entertainmentType': 'AUDIO_VIDEO_ON_DEMAND'},
+          <String, Object>{
+            'isChargeable': false,
+            'entertainmentType': 'AUDIO_VIDEO_ON_DEMAND'
+          },
           <String, Object>{'isChargeable': false, 'entertainmentType': 'IP_TV'}
         ],
         'food': <String, Object>{'isChargeable': false, 'foodType': 'SNACK'},
@@ -5735,60 +6384,144 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '1D',
-              'characteristicsCodes': <String>['1B', 'A', 'FC', 'K', 'O', 'RS', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                'A',
+                'FC',
+                'K',
+                'O',
+                'RS',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 1, 'y': 4}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '1E',
-              'characteristicsCodes': <String>['1B', '9', 'FC', 'K', 'O', 'RS', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                '9',
+                'FC',
+                'K',
+                'O',
+                'RS',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 1, 'y': 5}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '1F',
-              'characteristicsCodes': <String>['1B', 'FC', 'K', 'O', 'RS', 'W', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                'FC',
+                'K',
+                'O',
+                'RS',
+                'W',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 1, 'y': 6}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '2A',
-              'characteristicsCodes': <String>['1B', 'FC', 'K', 'LS', 'O', 'W', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                'FC',
+                'K',
+                'LS',
+                'O',
+                'W',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 0}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '2B',
-              'characteristicsCodes': <String>['1B', '9', 'FC', 'K', 'LS', 'O', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                '9',
+                'FC',
+                'K',
+                'LS',
+                'O',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 1}
             },
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '2C',
-              'characteristicsCodes': <String>['1B', 'A', 'FC', 'K', 'LS', 'O', '1'],
+              'characteristicsCodes': <String>[
+                '1B',
+                'A',
+                'FC',
+                'K',
+                'LS',
+                'O',
+                '1'
+              ],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 2}
             },
@@ -5797,8 +6530,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '2D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 4}
             },
@@ -5807,8 +6546,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '2E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 5}
             },
@@ -5817,8 +6562,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '2F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 2, 'y': 6}
             },
@@ -5827,8 +6578,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3A',
               'characteristicsCodes': <String>['FC', 'LS', 'O', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 0}
             },
@@ -5837,8 +6594,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3B',
               'characteristicsCodes': <String>['9', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 1}
             },
@@ -5847,8 +6610,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3C',
               'characteristicsCodes': <String>['A', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 2}
             },
@@ -5857,8 +6626,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 4}
             },
@@ -5867,8 +6642,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 5}
             },
@@ -5877,8 +6658,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '3F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 3, 'y': 6}
             },
@@ -5887,8 +6674,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4A',
               'characteristicsCodes': <String>['FC', 'LS', 'O', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 0}
             },
@@ -5897,8 +6690,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4B',
               'characteristicsCodes': <String>['9', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 1}
             },
@@ -5907,8 +6706,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4C',
               'characteristicsCodes': <String>['A', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 2}
             },
@@ -5917,8 +6722,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 4}
             },
@@ -5927,8 +6738,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 5}
             },
@@ -5937,8 +6754,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '4F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 4, 'y': 6}
             },
@@ -5947,8 +6770,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5A',
               'characteristicsCodes': <String>['FC', 'LS', 'O', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 0}
             },
@@ -5957,8 +6786,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5B',
               'characteristicsCodes': <String>['9', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 1}
             },
@@ -5967,8 +6802,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5C',
               'characteristicsCodes': <String>['A', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 2}
             },
@@ -5977,8 +6818,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 4}
             },
@@ -5987,8 +6834,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 5}
             },
@@ -5997,8 +6850,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '5F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 5, 'y': 6}
             },
@@ -6007,8 +6866,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6A',
               'characteristicsCodes': <String>['FC', 'LS', 'O', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 0}
             },
@@ -6017,8 +6882,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6B',
               'characteristicsCodes': <String>['9', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 1}
             },
@@ -6027,8 +6898,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6C',
               'characteristicsCodes': <String>['A', 'FC', 'LS', 'O', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 2}
             },
@@ -6037,8 +6914,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6D',
               'characteristicsCodes': <String>['A', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 4}
             },
@@ -6047,8 +6930,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6E',
               'characteristicsCodes': <String>['9', 'FC', 'O', 'RS', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 5}
             },
@@ -6057,8 +6946,14 @@ Map<String, dynamic> seatData = <String,dynamic >{
               'number': '6F',
               'characteristicsCodes': <String>['FC', 'O', 'RS', 'W', '1'],
               'travelerPricing': <Map<String, String>>[
-                <String, String>{'travelerId': '1', 'seatAvailabilityStatus': 'BLOCKED'},
-                <String, String>{'travelerId': '2', 'seatAvailabilityStatus': 'BLOCKED'}
+                <String, String>{
+                  'travelerId': '1',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                },
+                <String, String>{
+                  'travelerId': '2',
+                  'seatAvailabilityStatus': 'BLOCKED'
+                }
               ],
               'coordinates': <String, int>{'x': 6, 'y': 6}
             },
@@ -6977,7 +7872,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7009,7 +7909,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7041,7 +7946,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7073,7 +7983,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7105,7 +8020,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7137,7 +8057,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '11F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7673,7 +8598,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7705,7 +8635,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7737,7 +8672,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7769,7 +8709,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7801,7 +8746,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7833,7 +8783,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '15F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7865,7 +8820,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7897,7 +8857,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7929,7 +8894,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7961,7 +8931,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -7993,7 +8968,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8025,7 +9005,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '16F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8057,7 +9042,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8089,7 +9079,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8121,7 +9116,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8153,7 +9153,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8185,7 +9190,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8217,7 +9227,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '17F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8249,7 +9264,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8281,7 +9301,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8313,7 +9338,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8345,7 +9375,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8377,7 +9412,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8409,7 +9449,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '18F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8441,7 +9486,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8473,7 +9523,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8505,7 +9560,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8537,7 +9597,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8569,7 +9634,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8601,7 +9671,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '19F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8750,7 +9825,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '20D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8782,7 +9862,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '20E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8814,7 +9899,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '20F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8963,7 +10053,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '21D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -8995,7 +10090,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '21E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9027,7 +10127,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '21F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9176,7 +10281,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '22D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9208,7 +10318,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '22E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9240,7 +10355,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '22F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9389,7 +10509,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '23D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9421,7 +10546,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '23E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9453,7 +10583,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '23F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9602,7 +10737,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '24D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9634,7 +10774,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '24E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9666,7 +10811,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '24F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9815,7 +10965,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '25D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9847,7 +11002,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '25E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -9879,7 +11039,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '25F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10028,7 +11193,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '26D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10060,7 +11230,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '26E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10092,7 +11267,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '26F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10241,7 +11421,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '27D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10273,7 +11458,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '27E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10305,7 +11495,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '27F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10337,7 +11532,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10369,7 +11569,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10401,7 +11606,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10433,7 +11643,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10465,7 +11680,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10497,7 +11717,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '28F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10529,7 +11754,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10561,7 +11791,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10593,7 +11828,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10625,7 +11865,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10657,7 +11902,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10689,7 +11939,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '29F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10721,7 +11976,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10753,7 +12013,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30B',
-              'characteristicsCodes': <String>['9', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10785,7 +12050,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30C',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10817,7 +12087,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30D',
-              'characteristicsCodes': <String>['A', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10849,7 +12124,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30E',
-              'characteristicsCodes': <String>['9', 'CH', 'RS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                '9',
+                'CH',
+                'RS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10881,7 +12161,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '30F',
-              'characteristicsCodes': <String>['CH', 'RS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'RS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10913,7 +12198,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '31A',
-              'characteristicsCodes': <String>['CH', 'LS', 'W', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'CH',
+                'LS',
+                'W',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -10945,7 +12235,12 @@ Map<String, dynamic> seatData = <String,dynamic >{
             <String, Object>{
               'cabin': 'ECONOMY',
               'number': '31B',
-              'characteristicsCodes': <String>['A', 'CH', 'LS', '1A_AQC_PREMIUM_SEAT'],
+              'characteristicsCodes': <String>[
+                'A',
+                'CH',
+                'LS',
+                '1A_AQC_PREMIUM_SEAT'
+              ],
               'travelerPricing': <Map<String, Object>>[
                 <String, Object>{
                   'travelerId': '1',
@@ -11220,7 +12515,10 @@ Map<String, dynamic> seatData = <String,dynamic >{
         },
         'wifi': <String, Object>{'isChargeable': true, 'wifiCoverage': 'FULL'},
         'entertainment': <Map<String, Object>>[
-          <String, Object>{'isChargeable': false, 'entertainmentType': 'AUDIO_VIDEO_ON_DEMAND'},
+          <String, Object>{
+            'isChargeable': false,
+            'entertainmentType': 'AUDIO_VIDEO_ON_DEMAND'
+          },
           <String, Object>{'isChargeable': false, 'entertainmentType': 'IP_TV'}
         ],
         'food': <String, Object>{'isChargeable': false, 'foodType': 'SNACK'},

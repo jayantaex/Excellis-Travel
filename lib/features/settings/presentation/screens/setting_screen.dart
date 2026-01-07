@@ -1,10 +1,10 @@
-import 'package:excellistravel/core/constants/app_constants.dart';
-import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/widgets/app_sheet.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../auth/bloc/auth_bloc.dart';
@@ -51,9 +51,11 @@ class _SettingScreenState extends State<SettingScreen> {
                       margin: const EdgeInsets.only(top: 24),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 20),
-                      decoration: const BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        color: AppHelpers.isDarkMode(context)
+                            ? AppColors.secondaryDark
+                            : AppColors.white,
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(24),
                           topRight: Radius.circular(24),
                         ),
@@ -62,11 +64,13 @@ class _SettingScreenState extends State<SettingScreen> {
                         children: <Widget>[
                           ListTile(
                             contentPadding: const EdgeInsets.all(0),
-                            title: const Text('Notifications',
+                            title: Text('Notifications',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.black,
+                                  color: AppHelpers.isDarkMode(context)
+                                      ? AppColors.white
+                                      : AppColors.black,
                                 )),
                             subtitle:
                                 const Text('You will receive notifications',
@@ -95,11 +99,13 @@ class _SettingScreenState extends State<SettingScreen> {
                                   child: HelpAndSupportSheet());
                             },
                             contentPadding: const EdgeInsets.all(0),
-                            title: const Text('Help & Support',
+                            title: Text('Help & Support',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.black,
+                                  color: AppHelpers.isDarkMode(context)
+                                      ? AppColors.white
+                                      : AppColors.black,
                                 )),
                             subtitle: const Text('we are here for you 24/7',
                                 style: TextStyle(
@@ -118,11 +124,13 @@ class _SettingScreenState extends State<SettingScreen> {
                               showFaqSheet(context: context);
                             },
                             contentPadding: const EdgeInsets.all(0),
-                            title: const Text('FAQs',
+                            title: Text('FAQs',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.black,
+                                  color: AppHelpers.isDarkMode(context)
+                                      ? AppColors.white
+                                      : AppColors.black,
                                 )),
                             subtitle: const Text('Frequently asked questions',
                                 style: TextStyle(
@@ -138,22 +146,19 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           ListTile(
                             onTap: () {
-                              showResetPassSheet(
+                              showAppSheet(
                                   context: context,
-                                  onDone: (String oldPass, String newPass) {
-                                    context.read<AuthBloc>().add(
-                                        ResetPasswordEvent(
-                                            currentPassword: oldPass,
-                                            newPassword: newPass));
-                                    Navigator.of(context).pop();
-                                  });
+                                  title: 'Reset Password',
+                                  child: const ResetPassSheet());
                             },
                             contentPadding: const EdgeInsets.all(0),
-                            title: const Text('Reset Password',
+                            title: Text('Reset Password',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.black,
+                                  color: AppHelpers.isDarkMode(context)
+                                      ? AppColors.white
+                                      : AppColors.black,
                                 )),
                             subtitle: const Text('Reset your account password',
                                 style: TextStyle(
@@ -206,7 +211,9 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
         ),
         bottomNavigationBar: Container(
-          color: AppColors.white,
+          color: AppHelpers.isDarkMode(context)
+              ? AppColors.secondaryDark
+              : AppColors.white,
           height: 55,
           child: Column(
             children: <Widget>[

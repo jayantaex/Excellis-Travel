@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/utils/app_helpers.dart';
+import '../../../../../utils/app_helpers.dart';
 import '../../../data/models/seat_map_data_model.dart';
 
 class SeatBox extends StatefulWidget {
@@ -17,9 +17,8 @@ class _SeatBoxState extends State<SeatBox> {
   @override
   Widget build(BuildContext context) {
     final bool isBlocked =
-        widget.data?.travelerPricing[0].seatAvailabilityStatus ==
-            SeatAvailabilityStatus.BLOCKED;
-    final int allowedToSelect = widget.data?.travelerPricing.length ?? 0;
+        widget.data?.travelerPricing?[0].seatAvailabilityStatus == 'BLOCKED';
+    final int allowedToSelect = widget.data?.travelerPricing?.length ?? 0;
     return SizedBox(
       height: AppHelpers.getScreenWidth(context) * 0.12,
       width: AppHelpers.getScreenWidth(context) * 0.12,
@@ -31,10 +30,10 @@ class _SeatBoxState extends State<SeatBox> {
                 if (allowedToSelect == selectedSeat.length) {
                   return;
                 }
-                if (selectedSeat.contains(widget.data!.number)) {
-                  selectedSeat.remove(widget.data!.number);
+                if (selectedSeat.contains(widget.data?.number)) {
+                  selectedSeat.remove(widget.data?.number);
                 } else {
-                  selectedSeat.add(widget.data!.number);
+                  selectedSeat.add(widget.data?.number ?? '');
                 }
                 setState(() {});
               }
@@ -45,7 +44,7 @@ class _SeatBoxState extends State<SeatBox> {
                     ? AppColors.grey
                     : selectedSeat.contains(widget.data?.number)
                         ? AppColors.primary
-                        : AppColors.grey.withOpacity(0.2),
+                        : AppColors.grey.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,

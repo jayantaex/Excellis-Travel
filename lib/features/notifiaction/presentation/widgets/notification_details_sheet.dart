@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/app_helpers.dart';
 
 Future<void> showNotificationDetailsSheet({
   required BuildContext context,
@@ -88,7 +88,7 @@ class NotificationDetailsSheet extends StatelessWidget {
                     width: 56,
                     height: 56,
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.15),
+                      color: color.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
@@ -119,17 +119,17 @@ class NotificationDetailsSheet extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.grey.withOpacity(0.05),
+                  color: AppColors.grey.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.grey.withOpacity(0.1),
+                    color: AppColors.grey.withValues(alpha: 0.1),
                   ),
                 ),
                 child: Text(
                   body,
                   style: TextStyle(
                     fontSize: 15,
-                    color: AppColors.grey.withOpacity(0.9),
+                    color: AppColors.grey.withValues(alpha: 0.9),
                     height: 1.6,
                   ),
                 ),

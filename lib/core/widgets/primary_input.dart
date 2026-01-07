@@ -21,6 +21,8 @@ class AppPrimaryInput extends StatelessWidget {
     this.onChange,
     this.focusNode,
     this.isMultiline,
+    this.validator,
+    this.focus,
   });
   final String? label;
   final String? hint;
@@ -37,44 +39,90 @@ class AppPrimaryInput extends StatelessWidget {
   final VoidCallback? onTap;
   final FocusNode? focusNode;
   final Function(String)? onChange;
+  final String? Function(String?)? validator;
+  final bool? focus;
 
   @override
-  Widget build(BuildContext context) => TextField(
-        cursorColor: AppColors.primary,
-        obscureText: isPassword == true ? true : false,
-        enabled: enable ?? true,
-        maxLines: isMultiline == true ? null : 1,
-        onChanged: onChange,
-        onTap: onTap,
-        controller: controller,
-        keyboardType: onTap != null ? TextInputType.none : keyboardType,
-        focusNode: focusNode,
-        style: style,
-        inputFormatters: <TextInputFormatter>[
-          if (maxCharacters > 0)
-            LengthLimitingTextInputFormatter(maxCharacters),
-        ],
-        cursorWidth: onTap == null ? 2 : 0,
-        showCursor: showCursor,
-        decoration: InputDecoration(
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+  Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return TextFormField(
+      autofocus: focus ?? false,
+      cursorColor: AppColors.primary,
+      obscureText: isPassword == true ? true : false,
+      enabled: enable ?? true,
+      maxLines: isMultiline == true ? null : 1,
+      onChanged: onChange,
+      onTap: onTap,
+      controller: controller,
+      keyboardType: onTap != null ? TextInputType.none : keyboardType,
+      focusNode: focusNode,
+      style: style ??
+          TextStyle(
+            color: isDarkMode ? AppColors.white : AppColors.textPrimary,
           ),
-          border: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(16),
-            ),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
+      validator: validator,
+      inputFormatters: <TextInputFormatter>[
+        if (maxCharacters > 0) LengthLimitingTextInputFormatter(maxCharacters),
+      ],
+      cursorWidth: onTap == null ? 2 : 0,
+      showCursor: showCursor,
+      decoration: InputDecoration(
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(
+            color: isDarkMode
+                ? AppColors.white.withValues(alpha: 0.1)
+                : AppColors.grey.withValues(alpha: 0.3),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-            borderSide: BorderSide(color: AppColors.grey.withOpacity(0.3)),
-          ),
-          labelText: label,
-          hintText: hint,
         ),
-      );
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(16),
+          ),
+          borderSide: BorderSide(
+            color: isDarkMode
+                ? AppColors.white.withValues(alpha: 0.1)
+                : AppColors.grey.withValues(alpha: 0.3),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(
+            color: isDarkMode
+                ? AppColors.white.withValues(alpha: 0.1)
+                : AppColors.grey.withValues(alpha: 0.3),
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(
+            color: AppColors.error.withValues(alpha: 0.7),
+          ),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderSide: BorderSide(color: AppColors.error),
+        ),
+        errorStyle: const TextStyle(
+          color: AppColors.error,
+          fontSize: 11,
+          fontWeight: FontWeight.w400,
+        ),
+        errorMaxLines: 2,
+        labelText: label,
+        labelStyle: TextStyle(
+          color: isDarkMode ? AppColors.textHint : AppColors.textSecondary,
+        ),
+        hintText: hint,
+        hintStyle: TextStyle(
+          color: isDarkMode
+              ? AppColors.textHint.withValues(alpha: 0.5)
+              : AppColors.textHint,
+        ),
+      ),
+    );
+  }
 }

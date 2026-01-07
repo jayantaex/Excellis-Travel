@@ -2,32 +2,25 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
+import '../../../../utils/app_helpers.dart';
 
-Future<void> showResetPassSheet(
-    {required BuildContext context,
-    required void Function(String oldPass, String newPass) onDone}) async {
-  await showModalBottomSheet(
-    backgroundColor: AppColors.white,
-    context: context,
-    builder: (BuildContext context) =>
-        ResetPass(parentContext: context, onDone: onDone),
-  );
-}
-
-class ResetPass extends StatefulWidget {
-  const ResetPass({super.key, this.onDone, this.parentContext});
+class ResetPassSheet extends StatefulWidget {
+  const ResetPassSheet({super.key, this.onDone, this.parentContext});
   final void Function(String oldPass, String newPass)? onDone;
   final BuildContext? parentContext;
 
   @override
-  State<ResetPass> createState() => _ResetPassState();
+  State<ResetPassSheet> createState() => _ResetPassSheetState();
 }
 
-class _ResetPassState extends State<ResetPass> {
+class _ResetPassSheetState extends State<ResetPassSheet> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _oldPassController = TextEditingController();
   final TextEditingController _newPassController = TextEditingController();
   final TextEditingController _confirmPassController = TextEditingController();
-  String errMessage = '';
+  bool _isOldPasswordVisible = true;
+  bool _isNewPasswordVisible = true;
+  bool _isConfirmPasswordVisible = true;
 
   @override
   void dispose() {
@@ -37,116 +30,157 @@ class _ResetPassState extends State<ResetPass> {
     super.dispose();
   }
 
+  String? _validateOldPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter old password';
+    }
+    if (value.length < 8) {
+      return 'Old password must be at least 8 characters';
+    }
+    return null;
+  }
+
+  String? _validateNewPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter new password';
+    }
+    if (value.length < 8) {
+      return 'New password must be at least 8 characters';
+    }
+    if (value == _oldPassController.text) {
+      return 'New password must be different from old password';
+    }
+    return null;
+  }
+
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm your password';
+    }
+    if (value.length < 8) {
+      return 'Confirm password must be at least 8 characters';
+    }
+    if (value != _newPassController.text) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
+  void _handleSubmit() {
+    if (_formKey.currentState!.validate()) {
+      widget.onDone?.call(_oldPassController.text, _newPassController.text);
+    }
+  }
+
+  void _toggleOldPasswordVisibility() {
+    setState(() {
+      _isOldPasswordVisible = !_isOldPasswordVisible;
+    });
+  }
+
+  void _toggleNewPasswordVisibility() {
+    setState(() {
+      _isNewPasswordVisible = !_isNewPasswordVisible;
+    });
+  }
+
+  void _toggleConfirmPasswordVisibility() {
+    setState(() {
+      _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+    });
+  }
+
   @override
-  Widget build(BuildContext selfContext) => Padding(
-        padding:
-            const EdgeInsets.only(left: 16.0, right: 16.0, top: 8, bottom: 24),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 8),
-              const Text(
-                'Reset Password',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.black,
+  Widget build(BuildContext selfContext) => Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppPrimaryInput(
+              suffixIcon: InkWell(
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: _toggleOldPasswordVisibility,
+                child: SizedBox(
+                  height: 15,
+                  width: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: AppHelpers.svgAsset(
+                        assetName: 'password_visisbility', isIcon: true),
+                  ),
                 ),
               ),
-              const SizedBox(height: 11),
-              const Text(
-                'Are you sure you want to reset your password? All your account data will remain intact but other devices will be logged out.',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.grey,
+              isPassword: _isOldPasswordVisible,
+              maxCharacters: 21,
+              controller: _oldPassController,
+              hint: 'Enter your old password',
+              label: 'Old Password',
+              validator: _validateOldPassword,
+            ),
+            const SizedBox(height: 16),
+            AppPrimaryInput(
+              suffixIcon: InkWell(
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: _toggleNewPasswordVisibility,
+                child: SizedBox(
+                  height: 15,
+                  width: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: AppHelpers.svgAsset(
+                        assetName: 'password_visisbility', isIcon: true),
+                  ),
                 ),
               ),
-              const SizedBox(height: 16),
-              const Divider(),
-              const SizedBox(height: 16),
-              AppPrimaryInput(
-                isPassword: true,
-                maxCharacters: 21,
-                controller: _oldPassController,
-                hint: 'Enter your old password',
-                label: 'Old Password',
-              ),
-              const SizedBox(height: 16),
-              AppPrimaryInput(
-                isPassword: true,
-                maxCharacters: 21,
-                controller: _newPassController,
-                hint: 'Enter your new password',
-                label: 'New  Password',
-              ),
-              const SizedBox(height: 16),
-              AppPrimaryInput(
-                isPassword: true,
-                controller: _confirmPassController,
-                maxCharacters: 21,
-                hint: 'Confirm your new password',
-                label: 'Confirm Password',
-              ),
-              const SizedBox(height: 8),
-              Text(
-                errMessage,
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.error,
+              isPassword: _isNewPasswordVisible,
+              maxCharacters: 21,
+              controller: _newPassController,
+              hint: 'Enter your new password',
+              label: 'New Password',
+              validator: _validateNewPassword,
+            ),
+            const SizedBox(height: 16),
+            AppPrimaryInput(
+              suffixIcon: InkWell(
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: _toggleConfirmPasswordVisibility,
+                child: SizedBox(
+                  height: 15,
+                  width: 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: AppHelpers.svgAsset(
+                        assetName: 'password_visisbility', isIcon: true),
+                  ),
                 ),
               ),
-              const SizedBox(height: 24),
-              AppPrimaryButton(
-                title: 'Reset',
-                isLoading: false,
-                onPressed: () async {
-                  if (_oldPassController.text == _newPassController.text) {
-                    errMessage =
-                        'Old password and new password cannot be the same';
-                    setState(() {});
-
-                    return;
-                  }
-                  if (_oldPassController.text.isEmpty ||
-                      _oldPassController.text.length < 8) {
-                    errMessage = 'Please enter a valid old password';
-                    setState(() {});
-
-                    return;
-                  }
-
-                  if (_newPassController.text.isEmpty ||
-                      _newPassController.text.length < 8) {
-                    errMessage = 'Please enter a valid new password';
-                    setState(() {});
-
-                    return;
-                  }
-
-                  if (_confirmPassController.text.isEmpty ||
-                      _confirmPassController.text.length < 8) {
-                    errMessage = 'Please enter a valid confirm password';
-                    setState(() {});
-
-                    return;
-                  }
-
-                  if (_newPassController.text != _confirmPassController.text) {
-                    errMessage =
-                        'New password and confirm password do not match';
-                    setState(() {});
-                    return;
-                  }
-                  widget.onDone
-                      ?.call(_oldPassController.text, _newPassController.text);
-                },
-              ),
-            ],
-          ),
+              isPassword: _isConfirmPasswordVisible,
+              controller: _confirmPassController,
+              maxCharacters: 21,
+              hint: 'Confirm your new password',
+              label: 'Confirm Password',
+              validator: _validateConfirmPassword,
+            ),
+            const SizedBox(height: 24),
+            AppPrimaryButton(
+              title: 'Reset',
+              isLoading: false,
+              onPressed: _handleSubmit,
+              bgColor: AppHelpers.isDarkMode(context)
+                  ? AppColors.primary
+                  : AppColors.black,
+            ),
+          ],
         ),
       );
 }

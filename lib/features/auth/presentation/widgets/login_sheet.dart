@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/services/firebase_notification_service.dart';
+import '../../../../core/widgets/text_widget.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
 import '../../../legal/legal_module.dart';
@@ -31,8 +35,8 @@ class _LoginSheetState extends State<LoginSheet> {
   void initState() {
     AppConstants.env == 'development'
         ? <String>{
-            _userNameController.text = 'agent@reiselab.com',
-            _passwordController.text = 'SuperAdmin123!'
+            _userNameController.text = 'agent@yopmail.com',
+            _passwordController.text = 'Excellis@#2025'
           }
         : null;
     super.initState();
@@ -47,9 +51,11 @@ class _LoginSheetState extends State<LoginSheet> {
 
   @override
   Widget build(BuildContext context) => Container(
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: AppHelpers.isDarkMode(context)
+              ? AppColors.secondaryDark
+              : AppColors.white,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),
           ),
@@ -91,13 +97,12 @@ class _LoginSheetState extends State<LoginSheet> {
                 ),
 
                 const SizedBox(height: 8),
-                const Text(
-                  'Welcome back!',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  'You can reach us anytime',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                const AppText(
+                    text: 'Welcome back!', size: 28, weight: FontWeight.bold),
+                const AppText(
+                  text: 'You can reach us anytime',
+                  size: 20,
+                  weight: FontWeight.normal,
                 ),
                 const SizedBox(height: 33),
                 // Padding(
@@ -160,13 +165,15 @@ class _LoginSheetState extends State<LoginSheet> {
                                 );
                           });
                         },
-                        child: const Text(
+                        child: Text(
                           'Recover Now',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.underline,
-                            color: AppColors.black,
+                            color: AppHelpers.isDarkMode(context)
+                                ? AppColors.white
+                                : AppColors.black,
                           ),
                         ),
                       )
@@ -177,19 +184,30 @@ class _LoginSheetState extends State<LoginSheet> {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: AppPrimaryButton(
-                    title: 'LOGIN',
-                    isLoading: widget.isLoading,
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                            LoginEvent(
-                              fcmToken: '',
-                              userName: _userNameController.text,
-                              password: _passwordController.text,
-                              userType: usertype,
-                            ),
-                          );
-                    },
+                  child: SizedBox(
+                    height: 45,
+                    width: AppHelpers.getScreenWidth(context),
+                    child: AppPrimaryButton(
+                      bgColor: AppHelpers.isDarkMode(context)
+                          ? AppColors.primary
+                          : AppColors.black,
+                      title: 'LOGIN',
+                      isLoading: widget.isLoading,
+                      onPressed: () async {
+                        final fcmToken = await FirebaseNotificationService
+                            .instance
+                            .getFcmToken();
+                        log('fcmToken: $fcmToken');
+                        context.read<AuthBloc>().add(
+                              LoginEvent(
+                                fcmToken: '',
+                                userName: _userNameController.text,
+                                password: _passwordController.text,
+                                userType: usertype,
+                              ),
+                            );
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),

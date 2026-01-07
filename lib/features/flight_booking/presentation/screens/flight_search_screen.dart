@@ -6,9 +6,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
-import '../../../../core/utils/app_toast.dart';
-import '../../../../core/utils/storage_service.dart';
+import '../../../../utils/app_date_picker.dart' show showAppDatePicker;
+import '../../../../utils/app_helpers.dart';
+import '../../../../utils/app_toast.dart';
+import '../../../../utils/storage_service.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
@@ -39,10 +40,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   final TextEditingController _arrivalController = TextEditingController(
     text: 'DEL(DELHI)\nINDRA GANDHI INTL',
   );
+  String departureAirport = 'SUBHASH CHANDRA BOSE INTL';
   String departureCode = 'CCU';
-  String departureCity = '';
+  String departureCity = 'KOLKATA';
   String arrivalCode = 'DEL';
-  String arrivalCity = '';
+  String arrivalCity = 'DELHI';
+  String arrivalAirport = 'INDRA GANDHI INTL';
   //mock data
   String _selectedSeatType = 'Economy';
   String _selectedFareType = 'Regular';
@@ -50,6 +53,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   int _adultCount = 1;
   int _childCount = 0;
   int _infantCount = 0;
+  double _swapTurns = 0;
   final DateTime _today = DateTime.now();
   final Duration _fiveDay = const Duration(days: 5);
   final Duration _oneDay = const Duration(days: 1);
@@ -78,18 +82,18 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
       value: 'Regular',
       child: Text('Regular'),
     ),
-    const DropdownMenuItem<String>(
-      value: 'Student',
-      child: Text('Student'),
-    ),
-    const DropdownMenuItem<String>(
-      value: 'Senior Citizen',
-      child: Text('Senior Citizen'),
-    ),
-    const DropdownMenuItem<String>(
-      value: 'Armed Forces',
-      child: Text('Armed Forces'),
-    ),
+    // const DropdownMenuItem<String>(
+    //   value: 'Student',
+    //   child: Text('Student'),
+    // ),
+    // const DropdownMenuItem<String>(
+    //   value: 'Senior Citizen',
+    //   child: Text('Senior Citizen'),
+    // ),
+    // const DropdownMenuItem<String>(
+    //   value: 'Armed Forces',
+    //   child: Text('Armed Forces'),
+    // ),
   ];
 
   final List<DropdownMenuItem<String>> _trendingSearches =
@@ -105,35 +109,16 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   ];
 
   bool isRoundTrip = false;
-  final TextStyle _defaultTextStyple = const TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w500,
-    color: AppColors.black,
-  );
 
   Future<DateTime?> _pickDate({
     required BuildContext context,
     required DateTime initialDate,
     required DateTime firstDate,
   }) async =>
-      await showDatePicker(
-        builder: (context, child) => Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.dark(
-              primary: AppColors.primary,
-              onPrimary: AppColors.white,
-              surface: AppColors.white,
-              onSurface: AppColors.black,
-            ),
-            dialogBackgroundColor: AppColors.white,
-          ),
-          child: child!,
-        ),
+      await showAppDatePicker(
         context: context,
         firstDate: firstDate,
-        lastDate: DateTime.now().add(
-          const Duration(days: 365),
-        ),
+        lastDate: DateTime.now().add(const Duration(days: 365)),
         initialDate: initialDate,
       );
 
@@ -149,6 +134,31 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     final String temp = _depurtureController.text;
     _depurtureController.text = _arrivalController.text;
     _arrivalController.text = temp;
+
+    final String tempDepartureCode = departureCode;
+    departureCode = arrivalCode;
+    arrivalCode = tempDepartureCode;
+
+    final String tempDepartureAirport = departureAirport;
+    departureAirport = arrivalAirport;
+    arrivalAirport = tempDepartureAirport;
+
+    final String tempDepartureCity = departureCity;
+    departureCity = arrivalCity;
+    arrivalCity = tempDepartureCity;
+
+    if (_swapTurns == 0) {
+      _swapTurns += 0.50;
+    } else {
+      _swapTurns -= 0.50;
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    departureDate = _today;
+    super.initState();
   }
 
   @override
@@ -171,8 +181,15 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                         horizontal: 16, vertical: 12),
                     width: AppHelpers.getScreenWidth(context),
                     decoration: BoxDecoration(
-                      color: AppColors.white,
+                      color: AppHelpers.isDarkMode(context)
+                          ? AppColors.secondaryDark
+                          : AppColors.white,
                       borderRadius: BorderRadius.circular(24),
+                      border: AppHelpers.isDarkMode(context)
+                          ? Border.all(
+                              color: AppColors.white.withValues(alpha: 0.05),
+                              width: 1)
+                          : null,
                     ),
                     child: SizedBox(
                       width: AppHelpers.getScreenWidth(context),
@@ -194,12 +211,19 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   prefixIcon: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: AppHelpers.svgAsset(
-                                        assetName: 'from', isIcon: true),
+                                      assetName: 'from',
+                                      isIcon: true,
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : null,
+                                    ),
                                   ),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.black),
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : AppColors.black),
                                   onTap: () async {
                                     context.pushNamed(
                                         FlightBookingModule.airportSearchName,
@@ -213,6 +237,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                                 airport.address?.cityName ?? '';
                                             departureCode =
                                                 airport.iataCode ?? '';
+                                            departureAirport =
+                                                airport.name ?? '';
                                             _depurtureController.text =
                                                 '${airport.iataCode}(${airport.address!.cityName})\n${airport.name}';
                                             //unfocus
@@ -231,12 +257,19 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   prefixIcon: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: AppHelpers.svgAsset(
-                                        assetName: 'to', isIcon: true),
+                                      assetName: 'to',
+                                      isIcon: true,
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : null,
+                                    ),
                                   ),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.black),
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : AppColors.black),
                                   onTap: () async {
                                     context.pushNamed(
                                         FlightBookingModule.airportSearchName,
@@ -245,6 +278,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           'selectedAirport': arrivalCity.trim(),
                                           'onAirportSelected':
                                               (AirportModel airport) {
+                                            arrivalAirport = airport.name ?? '';
                                             arrivalCity =
                                                 airport.address?.cityName ?? '';
                                             arrivalCode =
@@ -270,6 +304,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     padding: const EdgeInsets.all(12.0),
                                     child: SvgPicture.asset(
                                       '${AppConstants.assetIcontUrl}calender.svg',
+                                      colorFilter:
+                                          AppHelpers.isDarkMode(context)
+                                              ? const ColorFilter.mode(
+                                                  AppColors.white,
+                                                  BlendMode.srcIn)
+                                              : null,
                                     ),
                                   ),
                                   suffixIcon: SizedBox(
@@ -282,30 +322,43 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           'Roundtrip?',
                                           style: TextStyle(
                                               fontSize: 10,
-                                              fontWeight: FontWeight.w300,
-                                              color: AppColors.grey),
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.primary),
                                         ),
                                         Transform.scale(
                                           scale: 0.6,
                                           child: CupertinoSwitch(
-                                              activeColor: AppColors.primary,
+                                              activeTrackColor:
+                                                  AppColors.primary,
                                               value: isRoundTrip,
                                               onChanged: (bool value) {
                                                 setState(() {
                                                   isRoundTrip = value;
                                                 });
+                                                roundTripDate = null;
+                                                if (isRoundTrip) {
+                                                  roundTripDate = departureDate
+                                                      ?.add(_fiveDay);
+                                                }
                                               }),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  style: _defaultTextStyple,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppHelpers.isDarkMode(context)
+                                        ? AppColors.white
+                                        : AppColors.black,
+                                  ),
                                   onTap: () async {
                                     departureDate = await _pickDate(
                                       context: context,
                                       firstDate: _today,
-                                      initialDate: _today,
+                                      initialDate: departureDate ?? _today,
                                     );
+                                    departureDate ??= _today;
                                     setState(() {});
 
                                     //hide keyboard
@@ -315,10 +368,14 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 isRoundTrip
                                     ? AppPrimaryInput(
                                         controller: TextEditingController(
-                                          text: AppHelpers.formatDate(
-                                              roundTripDate ??
-                                                  _today.add(_fiveDay),
-                                              pattern: 'E, dd MMM yyyy'),
+                                          text: roundTripDate == null
+                                              ? AppHelpers.formatDate(
+                                                  departureDate!.add(_fiveDay),
+                                                  pattern: 'E, dd MMM yyyy')
+                                              : AppHelpers.formatDate(
+                                                  roundTripDate ??
+                                                      _today.add(_fiveDay),
+                                                  pattern: 'E, dd MMM yyyy'),
                                         ),
                                         enable: true,
                                         maxCharacters: 10,
@@ -328,22 +385,34 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           padding: const EdgeInsets.all(12.0),
                                           child: SvgPicture.asset(
                                             '${AppConstants.assetIcontUrl}calender.svg',
+                                            colorFilter:
+                                                AppHelpers.isDarkMode(context)
+                                                    ? const ColorFilter.mode(
+                                                        AppColors.white,
+                                                        BlendMode.srcIn)
+                                                    : null,
                                           ),
                                         ),
-                                        style: _defaultTextStyple,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppHelpers.isDarkMode(context)
+                                              ? AppColors.white
+                                              : AppColors.black,
+                                        ),
                                         onTap: () async {
                                           if (context.mounted) {
                                             FocusScope.of(context).unfocus();
                                           }
                                           roundTripDate = await _pickDate(
-                                              context: context,
-                                              firstDate: departureDate?.add(
-                                                      const Duration(
-                                                          hours: 2)) ??
-                                                  _today.add(_oneDay),
-                                              initialDate: departureDate
-                                                      ?.add(_fiveDay) ??
-                                                  _today.add(_fiveDay));
+                                            context: context,
+                                            firstDate: departureDate?.add(
+                                                    const Duration(hours: 2)) ??
+                                                _today.add(_oneDay),
+                                            initialDate: roundTripDate ??
+                                                departureDate?.add(_fiveDay) ??
+                                                _today.add(_fiveDay),
+                                          );
                                           setState(() {});
                                           //hide keyboard
                                         },
@@ -371,6 +440,12 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             padding: const EdgeInsets.all(12.0),
                                             child: SvgPicture.asset(
                                               '${AppConstants.assetIcontUrl}users.svg',
+                                              colorFilter:
+                                                  AppHelpers.isDarkMode(context)
+                                                      ? const ColorFilter.mode(
+                                                          AppColors.white,
+                                                          BlendMode.srcIn)
+                                                      : null,
                                             ),
                                           ),
                                           onTap: () {
@@ -395,16 +470,26 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             width: AppHelpers.getScreenWidth(
                                                     context) *
                                                 0.19,
-                                            child: const Text(
+                                            child: Text(
                                               'Travellers',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
-                                                color: AppColors.black,
+                                                color: AppHelpers.isDarkMode(
+                                                        context)
+                                                    ? AppColors.white
+                                                    : AppColors.black,
                                               ),
                                             ),
                                           ),
-                                          style: _defaultTextStyple,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                AppHelpers.isDarkMode(context)
+                                                    ? AppColors.white
+                                                    : AppColors.black,
+                                          ),
                                           onChange: (String p0) {},
                                         ),
                                       ),
@@ -483,8 +568,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         return;
                                       }
 
-                                      if (_arrivalController.text ==
-                                          _depurtureController.text) {
+                                      if (arrivalCode == departureCode) {
                                         showToast(
                                             message:
                                                 'Please enter different arrival and depurture');
@@ -497,6 +581,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                             <String, dynamic>{
                                           'depurture': departureCode,
                                           'arrival': arrivalCode,
+                                          'departureAirport': departureAirport,
+                                          'arrivalAirport': arrivalAirport,
+                                          'departureCity': departureCity,
+                                          'arrivalCity': arrivalCity,
                                           'isRoundTrip': isRoundTrip,
                                           'depurtureDate':
                                               AppHelpers.formatDate(
@@ -561,11 +649,15 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               onTap: () {
                                 _swapAirports();
                               },
-                              child: CircleAvatar(
-                                radius: 24,
-                                backgroundColor: AppColors.primary,
-                                child: AppHelpers.svgAsset(
-                                    assetName: 'swap', isIcon: true),
+                              child: AnimatedRotation(
+                                duration: const Duration(milliseconds: 300),
+                                turns: _swapTurns,
+                                child: CircleAvatar(
+                                  radius: 24,
+                                  backgroundColor: AppColors.primary,
+                                  child: AppHelpers.svgAsset(
+                                      assetName: 'swap', isIcon: true),
+                                ),
                               ),
                             ),
                           ),

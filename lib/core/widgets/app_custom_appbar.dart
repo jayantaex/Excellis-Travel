@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../utils/app_helpers.dart';
 
 class AppCustomAppbar extends StatelessWidget {
   const AppCustomAppbar(
@@ -29,7 +29,7 @@ class AppCustomAppbar extends StatelessWidget {
           children: <Widget>[
             isBackButtonRequired ?? true
                 ? CircleAvatar(
-                    backgroundColor: AppColors.white.withOpacity(0.2),
+                    backgroundColor: AppColors.white.withValues(alpha: 0.2),
                     child: IconButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -74,7 +74,11 @@ class AppCustomAppbar extends StatelessWidget {
                                   color: AppColors.white)),
                         ],
                 )),
-            trailing ?? const SizedBox()
+            InkWell(
+              onTap: () => onMoreClicked?.call(),
+              borderRadius: BorderRadius.circular(25),
+              child: trailing ?? const SizedBox(),
+            )
           ],
         ),
       );

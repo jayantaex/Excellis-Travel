@@ -49,7 +49,7 @@
 //                               decoration: BoxDecoration(
 //                                 borderRadius: BorderRadius.circular(50),
 //                                 color: getColorByStatus('best value')
-//                                     .withOpacity(0.3),
+//                                     .withValues(alpha:0.3),
 //                               ),
 //                               child: Text(
 //                                 'best value'.toUpperCase(),
@@ -66,7 +66,7 @@
 //                       //         onTap: onWishListTap,
 //                       //         child: CircleAvatar(
 //                       //           backgroundColor:
-//                       //               AppColors.grey.withOpacity(0.1),
+//                       //               AppColors.grey.withValues(alpha:0.1),
 //                       //           radius: 18,
 //                       //           child: Padding(
 //                       //             padding: const EdgeInsets.all(8.0),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:barcode/barcode.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +7,17 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/services/file_downloader.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
+import '../../../../utils/airline_info_provider.dart' show AirlineInfoProvider;
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../../utils/get_duration.dart';
+import '../../../../utils/title_case.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
 import '../../data/models/payment_verify_res_model.dart';
-import '../widgets/launge_access_widget.dart';
 
 class PassDownloadScreen extends StatefulWidget {
   const PassDownloadScreen({super.key, required this.data});
@@ -28,10 +29,10 @@ class PassDownloadScreen extends StatefulWidget {
 
 class _PassDownloadScreenState extends State<PassDownloadScreen> {
   String barCodeSvg = '';
-
+  String airlineName = '';
+  AirlineInfoProvider airlineInfoProvider = AirlineInfoProvider();
   @override
   void initState() {
-    log('${widget.data}');
     Future.delayed(Duration.zero, () async {
       barCodeSvg = BarcodeService.buildBarcode(
         Barcode.code39(),
@@ -39,6 +40,10 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
         width: 250,
         height: 60,
       );
+      airlineName = await airlineInfoProvider.getAirlineName(
+          airlineCode: widget.data.flightData?.itineraries?.first.segments
+                  ?.first.carrierCode ??
+              '');
       setState(() {});
     });
     super.initState();
@@ -66,298 +71,489 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 16),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: const BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(24),
-                            topRight: Radius.circular(24),
-                          )),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 20),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 20,
-                            width: AppHelpers.getScreenWidth(context),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  height: 16,
-                                  width: 40,
-                                  color: AppColors.grey,
+                    Expanded(
+                        child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(32),
+                        topRight: Radius.circular(32),
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 16),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              decoration: const BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(24),
+                                  topRight: Radius.circular(24),
                                 ),
-                                Text(
-                                  '${widget.data.bookingReference}'
-                                      .toUpperCase(),
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          ...?widget.data.flightData?.itineraries!.map(
-                            (e) => Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  height: 90,
-                                  width: width * 0.25,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        e.segments?.first.departure?.iataCode ??
-                                            '',
-                                        style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                          AppHelpers.formatDateTime(
-                                              DateTime.parse(e.segments!.first
-                                                      .departure!.at ??
-                                                  ''),
-                                              pattern: 'hh:mm'),
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600)),
-                                      Text(
-                                        AppHelpers.formatDateTime(
-                                          DateTime.parse(
-                                              e.segments!.first.departure!.at ??
-                                                  ''
-                                                      ''),
-                                          pattern: 'dd MMM, yyyy',
-                                        ),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.black,
-                                        ),
-                                      ),
-                                      Text(
-                                        'T${e.segments!.first.departure!.terminal ?? 1}',
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            color: AppColors.black),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                    width: width * 0.25,
-                                    child: Column(
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width: AppHelpers.getScreenWidth(context),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        AppHelpers.svgAsset(
-                                            assetName: 'flight', width: 100),
-                                        Column(
+                                        SizedBox(
+                                          width: width * 0.5,
+                                          child: ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            // minVerticalPadding: 2,
+                                            // horizontalTitleGap: 4,
+                                            leading: SizedBox(
+                                              height: 45,
+                                              width: 45,
+                                              child: getAirlineLogo(
+                                                  airlineCode:
+                                                      '${widget.data.flightData?.itineraries?.first.segments?.first.carrierCode}'),
+                                            ),
+                                            title: (widget
+                                                        .data
+                                                        .flightData
+                                                        ?.itineraries
+                                                        ?.first
+                                                        .segments
+                                                        ?.first
+                                                        .aircraft
+                                                        ?.code
+                                                        ?.isNotEmpty ??
+                                                    false)
+                                                ? Text(
+                                                    airlineName.isNotEmpty
+                                                        ? toTitleCase(
+                                                            airlineName)
+                                                        : '',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )
+                                                : null,
+                                            subtitle: Text(
+                                              '${widget.data.flightData?.itineraries?.first.segments?.first.number ?? ''} | ${widget.data.flightData?.itineraries?.first.segments?.first.aircraft?.code ?? ''}',
+                                              style: const TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors.black),
+                                            ),
+                                          ),
+                                        ),
+                                        Row(
                                           children: [
-                                            const Text(
-                                              '2H',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400),
+                                            const Icon(
+                                              Icons
+                                                  .check_circle_outline_rounded,
+                                              color: AppColors.success,
+                                              size: 14,
                                             ),
-                                            Divider(
-                                              thickness: 0.5,
-                                              color: AppColors.primary
-                                                  .withOpacity(0.3),
-                                            ),
+                                            const SizedBox(width: 4),
                                             Text(
-                                              e.segments?.length == 1
-                                                  ? 'Non-Stop'
-                                                  : '${(e.segments!.length - 1)} Stop(s)',
+                                              '₹${widget.data.totalAmount}',
                                               style: const TextStyle(
                                                   fontSize: 12,
-                                                  fontWeight: FontWeight.w400),
+                                                  fontWeight: FontWeight.w500,
+                                                  color: AppColors.success),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  ...?widget.data.flightData?.itineraries!.map(
+                                    (e) => Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              height: 90,
+                                              width: width * 0.25,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    e.segments?.first.departure
+                                                            ?.iataCode ??
+                                                        '',
+                                                    style: const TextStyle(
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                      AppHelpers.formatDateTime(
+                                                          DateTime.parse(e
+                                                                  .segments!
+                                                                  .first
+                                                                  .departure!
+                                                                  .at ??
+                                                              ''),
+                                                          pattern: 'hh:mm'),
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                  Text(
+                                                    AppHelpers.formatDateTime(
+                                                      DateTime.parse(e
+                                                              .segments!
+                                                              .first
+                                                              .departure!
+                                                              .at ??
+                                                          ''),
+                                                      pattern: 'dd MMM, yyyy',
+                                                    ),
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: AppColors.black,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'T${e.segments!.first.departure!.terminal ?? 1}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: AppColors.black),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                                width: width * 0.25,
+                                                child: Column(
+                                                  children: [
+                                                    AppHelpers.svgAsset(
+                                                        assetName: 'flight',
+                                                        width: 100),
+                                                    Column(
+                                                      children: [
+                                                        Text(
+                                                          formatIsoDuration(e
+                                                                  .segments!
+                                                                  .first
+                                                                  .duration ??
+                                                              ''),
+                                                          style: const TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        ),
+                                                        Divider(
+                                                          thickness: 0.5,
+                                                          color: AppColors
+                                                              .primary
+                                                              .withValues(
+                                                                  alpha: 0.3),
+                                                        ),
+                                                        Text(
+                                                          e.segments?.length ==
+                                                                  1
+                                                              ? 'Non-Stop'
+                                                              : '${(e.segments!.length - 1)} Stop(s)',
+                                                          style: const TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                )),
+                                            SizedBox(
+                                              height: 90,
+                                              width: width * 0.25,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    e.segments?.last.arrival
+                                                            ?.iataCode ??
+                                                        '',
+                                                    style: const TextStyle(
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    AppHelpers.formatDateTime(
+                                                        DateTime.parse(e
+                                                                .segments
+                                                                ?.last
+                                                                .arrival
+                                                                ?.at
+                                                                .toString() ??
+                                                            ''),
+                                                        pattern: 'hh:mm'),
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    AppHelpers.formatDateTime(
+                                                        DateTime.parse(e
+                                                                .segments
+                                                                ?.last
+                                                                .arrival
+                                                                ?.at
+                                                                .toString() ??
+                                                            ''),
+                                                        pattern:
+                                                            'dd MMM, yyyy'),
+                                                    style: const TextStyle(
+                                                        fontSize: 11,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: AppColors.black),
+                                                  ),
+                                                  Text(
+                                                    'T${e.segments!.first.arrival!.terminal ?? 1}',
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: AppColors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
+                                        const SizedBox(height: 8),
+                                        Divider(
+                                          color: AppColors.grey
+                                              .withValues(alpha: 0.5),
+                                          thickness: 0.5,
+                                        ),
+                                        ...?e.segments?.map(
+                                          (e) => ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            leading: const Icon(
+                                                Icons.radio_button_checked,
+                                                size: 15,
+                                                color: AppColors.black),
+                                            title: Text(
+                                              '${e.departure?.iataCode ?? ''} - ${e.arrival?.iataCode ?? ''}',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: AppColors.black,
+                                              ),
+                                            ),
+                                            trailing: Text(
+                                              formatIsoDuration(
+                                                  e.duration ?? ''),
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: AppColors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
-                                    )),
-                                SizedBox(
-                                  height: 90,
-                                  width: width * 0.25,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        e.segments?.last.arrival?.iataCode ??
-                                            '',
-                                        style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 18),
+                                  DottedBorder(
+                                    options: CustomPathDottedBorderOptions(
+                                      customPath: (Size size) => Path()
+                                        ..moveTo(0, size.height)
+                                        ..relativeLineTo(size.width, 0),
+                                      dashPattern: <double>[5, 5],
+                                      color:
+                                          AppColors.grey.withValues(alpha: 0.5),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Travelers',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.black),
                                         ),
-                                      ),
-                                      Text(
-                                        AppHelpers.formatDateTime(
-                                            DateTime.parse(e
-                                                    .segments?.last.arrival?.at
-                                                    .toString() ??
-                                                ''),
-                                            pattern: 'hh:mm'),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
+                                        ...?widget
+                                            .data.travellerDetails?.adults!
+                                            .map(
+                                          (e) => ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            leading: CircleAvatar(
+                                              backgroundColor: AppColors.grey
+                                                  .withValues(alpha: 0.2),
+                                              child: const Icon(
+                                                Icons.person,
+                                                size: 18,
+                                              ),
+                                            ),
+                                            title: Text(
+                                              '${e.firstName} ${e.lastName}',
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            subtitle: e.dateOfBirth != null
+                                                ? Text(
+                                                    'ADULT | DOB:  ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                : const Text(
+                                                    'ADULT',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        AppHelpers.formatDateTime(
-                                            DateTime.now(),
-                                            pattern: 'dd MMM, yyyy'),
-                                        style: const TextStyle(
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w500,
-                                            color: AppColors.black),
-                                      ),
-                                      Text(
-                                        'T${e.segments!.first.arrival!.terminal ?? 1}',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.black,
+                                        ...?widget
+                                            .data.travellerDetails?.children!
+                                            .map(
+                                          (e) => ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            leading: CircleAvatar(
+                                              backgroundColor: AppColors.grey
+                                                  .withValues(alpha: 0.2),
+                                              child: const Icon(
+                                                Icons.person,
+                                                size: 18,
+                                              ),
+                                            ),
+                                            title: Text(
+                                              '${e.firstName} ${e.lastName}',
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            subtitle: e.dateOfBirth != null
+                                                ? Text(
+                                                    'CHILD | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                : const Text(
+                                                    'CHILD',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 18),
-                          DottedBorder(
-                            dashPattern: const [8, 4],
-                            customPath: (size) => Path()
-                              ..moveTo(0, size.height)
-                              ..relativeLineTo(size.width, 0),
-                            color: AppColors.grey,
-                            strokeWidth: 0.5,
-                            child: Column(
-                              children: [
-                                ...?widget.data.travellerDetails?.adults!.map(
-                                  (e) => ListTile(
-                                    contentPadding: const EdgeInsets.all(0),
-                                    leading: CircleAvatar(
-                                      backgroundColor:
-                                          AppColors.grey.withOpacity(0.2),
-                                      child: const Icon(
-                                        Icons.person,
-                                        size: 18,
-                                      ),
-                                    ),
-                                    title: Text(
-                                      '${e.firstName} ${e.lastName}',
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    subtitle: Text(
-                                      'DOB: ${AppHelpers.formatDate(e.dateOfBirth ?? DateTime.now(), pattern: 'dd MMM yyy')} | Nationality: ${e.nationality}',
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                ),
-                                ...?widget.data.travellerDetails?.children!.map(
-                                  (e) => ListTile(
-                                    contentPadding: const EdgeInsets.all(0),
-                                    leading: CircleAvatar(
-                                      backgroundColor:
-                                          AppColors.grey.withOpacity(0.2),
-                                      child: const Icon(
-                                        Icons.person,
-                                        size: 18,
-                                      ),
-                                    ),
-                                    title: Text(
-                                      '${e.firstName} ${e.lastName}',
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    subtitle: Text(
-                                      'DOB: ${AppHelpers.formatDate(e.dateOfBirth ?? DateTime.now(), pattern: 'dd MMM yyy')} | Nationality: ${e.nationality}',
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400),
+                                        ...?widget
+                                            .data.travellerDetails?.infants!
+                                            .map(
+                                          (e) => ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            leading: CircleAvatar(
+                                              backgroundColor: AppColors.grey
+                                                  .withValues(alpha: 0.2),
+                                              child: const Icon(
+                                                Icons.person,
+                                                size: 18,
+                                              ),
+                                            ),
+                                            title: Text(
+                                              '${e.firstName} ${e.lastName}',
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            subtitle: e.dateOfBirth != null
+                                                ? Text(
+                                                    'INFANT | DOB: ${e.dateOfBirth != null ? AppHelpers.formatDate(e.dateOfBirth!, pattern: 'dd MMM yyy') : ''} | Nationality: ${e.nationality}',
+                                                    style: const TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  )
+                                                : const Text(
+                                                    'INFANT',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                                ...?widget.data.travellerDetails?.infants!.map(
-                                  (e) => ListTile(
-                                    contentPadding: const EdgeInsets.all(0),
-                                    leading: CircleAvatar(
-                                      backgroundColor:
-                                          AppColors.grey.withOpacity(0.2),
-                                      child: const Icon(
-                                        Icons.person,
-                                        size: 18,
-                                      ),
-                                    ),
-                                    title: Text(
-                                      '${e.firstName} ${e.lastName}',
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    subtitle: Text(
-                                      'DOB: ${AppHelpers.formatDate(e.dateOfBirth ?? DateTime.now(), pattern: 'dd MMM yyy')} | Nationality: ${e.nationality}',
-                                      style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ClipPath(
-                        clipper: TicketClipper(),
-                        child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 500),
-                            decoration: const BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(24),
-                                bottomRight: Radius.circular(24),
+                                  const SizedBox(height: 12),
+                                ],
                               ),
                             ),
-                            padding: const EdgeInsets.all(20),
-                            width: width,
-                            height: 120,
-                            child: Padding(
+                            Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: SizedBox(
-                                height: 73,
-                                child: SvgPicture.string(
-                                  barCodeSvg,
-                                  width: 200,
-                                  height: 80,
-                                ),
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: ClipPath(
+                                clipper: TicketClipper(),
+                                child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 500),
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.white,
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(24),
+                                        bottomRight: Radius.circular(24),
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(20),
+                                    width: width,
+                                    height: 120,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      child: SizedBox(
+                                        height: 73,
+                                        child: SvgPicture.string(
+                                          barCodeSvg,
+                                          width: 200,
+                                          height: 80,
+                                        ),
+                                      ),
+                                    )),
                               ),
-                            )),
+                            )
+                          ],
+                        ),
                       ),
-                    )
+                    ))
                   ],
                 ),
               ),
@@ -365,13 +561,13 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
           ),
         ),
         bottomNavigationBar: Container(
-          height: AppHelpers.getScreenHeight(context) * 0.24,
+          height: AppHelpers.getScreenHeight(context) * 0.165,
           padding:
               const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 16),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: AppColors.grey.withOpacity(0.2),
+                color: AppColors.grey.withValues(alpha: 0.2),
                 blurRadius: 4,
                 offset: const Offset(0, -4),
               ),
@@ -385,10 +581,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const LaungeAccessWidget(),
-              const SizedBox(
-                height: 8,
-              ),
+              // const LaungeAccessWidget(),
+              const SizedBox(height: 8),
               AppPrimaryButton(
                 title: 'Download Pass',
                 style:
@@ -415,6 +609,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                   }
                 },
               ),
+
               const SizedBox(height: 8),
               TextButton(
                   onPressed: () {
@@ -435,14 +630,14 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
   }
 }
 
-String getDuration({required String duration}) {
-  //input PT6H35M
-  duration = duration.replaceAll('PT', '');
-  final String hr = duration.split('H')[0].trim();
-  final String mn = duration.split('H')[1].split('M')[0].trim();
+// String getDuration({required String duration}) {
+//   //input PT6H35M
+//   duration = duration.replaceAll('PT', '');
+//   final String hr = duration.split('H')[0].trim();
+//   final String mn = duration.split('H')[1].split('M')[0].trim();
 
-  return '${hr}H ${mn}M';
-}
+//   return '${hr}H ${mn}M';
+// }
 
 class TicketClipper extends CustomClipper<Path> {
   @override

@@ -7,7 +7,8 @@ class MainUrl {
     if (env == 'production') {
       return AppConstants.baseUrl;
     } else {
-      return 'https://api.excellistravel.com';
+      // return 'https://api.excellistravel.com';
+      return AppConstants.baseUrl;
     }
   }
 
@@ -15,7 +16,15 @@ class MainUrl {
     if (env == 'production') {
       return AppConstants.amaduesUrl;
     } else {
-      return 'https://test.api.amadeus.com';
+      return AppConstants.amaduesUrl;
+    }
+  }
+
+  String getAirlineLogoUrl() {
+    if (env == 'production') {
+      return '${AppConstants.imageKitUrl}/kp6vc3sud/ExTravel/logos/airlines-logos/';
+    } else {
+      return '${AppConstants.imageKitUrl}/kp6vc3sud/ExTravel/logos/airlines-logos/';
     }
   }
 }
@@ -23,6 +32,16 @@ class MainUrl {
 class EndPoints {
   static String baseUrl = MainUrl().getUrl();
   static String amaduesBaseUrl = MainUrl().getAmaduesUrl();
+  static String airlineLogoUrl = MainUrl().getAirlineLogoUrl();
+
+  //amadues
+  static const String amaduesAccessToken = '/v1/security/oauth2/token';
+  static const String airportSearchByKeyword = '/v1/reference-data/locations';
+  static const String flightSearch = '/v2/shopping/flight-offers';
+  static const String seatMap = '/v1/shopping/seatmaps';
+  static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
+  static const String airlineName = '/v1/reference-data/airlines';
+
   // Authentication
   static const String login = '/auth/login';
   static const String registration = '/auth/register';
@@ -48,14 +67,31 @@ class EndPoints {
   //ticket
   static const String ticket = '/bookings/filtered-auto';
   static const String downloadFile = '/bookings';
+  static const String updateMarkup = '/bookings/update-instant-markup';
 
-  //amadues
-  static const String amaduesAccessToken = '/v1/security/oauth2/token';
-  static const String airportSearchByKeyword = '/v1/reference-data/locations';
-  static const String flightSearch = '/v2/shopping/flight-offers';
-  static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
-
+  //sales
   static const String sales = '/commissions/transactions-auto';
+  static const String salesByUsers = '/commissions/transactions/user';
+  static const String subSalesExecutives =
+      '/dynamic-user-hierarchy/my-direct-children';
+  static const String agents = '/dynamic-user-hierarchy/children';
   //markup
   static const String markup = '/markups';
+
+  //wallet
+  static const String wallet = '/wallet/summary';
+  static const String walletTransactions = '/wallet/transactions';
+  static const String createWalletOrder = '/wallet/create-order';
+  static const String verifyWalletOrder = '/wallet/verify-payment';
+  static const String walletCharge = '/wallet/debit';
+  static const String walletRecharge = '/wallet/credit';
+  static const String requestWithdrawal = '/withdrawals/request';
+  static const String withdrawalRequests = '/withdrawals';
+  static const String cancelWithdrawalRequest = '/withdrawals/';
+
+  static String getCreditBalance = '/credit-wallet/balance';
+
+  static String getCreditBalanceTransactions = '/credit-wallet/transactions';
+  static String getBokkingViaCreditBalance = '/credit-wallet/bookings';
+  static String chargeCreditWallet = '/credit-wallet/debit';
 }

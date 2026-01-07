@@ -1,12 +1,13 @@
-import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
-import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
-import 'package:excellistravel/core/widgets/app_sheet.dart';
-import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
+import '../../../../core/widgets/app_custom_appbar.dart' show AppCustomAppbar;
+import '../../../../core/widgets/app_gradient_bg.dart' show AppGradientBg;
+import '../../../../core/widgets/app_sheet.dart' show showAppSheet;
+import '../../../../core/widgets/trans_white_bg_widget.dart'
+    show TransWhiteBgWidget;
 import '../../bloc/sales_bloc.dart';
 import '../../data/models/markup_data_model.dart';
 import '../widgets/delete_confirmation_dialog.dart';
@@ -44,12 +45,12 @@ class _MyMarkupScreenState extends State<MyMarkupScreen> {
                     AppCustomAppbar(
                       centerTitle: 'My Markup',
                       trailing: CircleAvatar(
-                        backgroundColor: AppColors.black.withOpacity(0.1),
+                        backgroundColor: AppColors.white.withValues(alpha: 0.3),
                         child: IconButton(
-                          onPressed: () {
+                          onPressed: () async {
                             final sheetKey =
                                 GlobalKey<AddEditMarkUpSheetState>();
-                            showAppSheet(
+                            await showAppSheet(
                                 submitButtonRequired: true,
                                 onSubmitPressed: () {
                                   final body = sheetKey.currentState?.getBody();

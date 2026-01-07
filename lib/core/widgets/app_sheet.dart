@@ -1,8 +1,8 @@
-import 'package:excellistravel/core/utils/app_helpers.dart';
-import 'package:excellistravel/core/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/app_styles.dart';
+import '../../utils/app_helpers.dart';
+import 'primary_button.dart';
 
 Future<void> showAppSheet({
   required BuildContext context,
@@ -11,10 +11,14 @@ Future<void> showAppSheet({
   bool? submitButtonRequired = false,
   String submitButtonTitle = 'Submit',
   VoidCallback? onSubmitPressed,
+  VoidCallback? onClosePressed,
 }) =>
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true,
-      backgroundColor: AppColors.white,
+      backgroundColor: AppHelpers.isDarkMode(context)
+          ? AppColors.secondaryDark
+          : AppColors.white,
       context: context,
       builder: (context) => SingleChildScrollView(
         child: Padding(
@@ -24,6 +28,8 @@ Future<void> showAppSheet({
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               SizedBox(
                 height: 45,
@@ -36,22 +42,32 @@ Future<void> showAppSheet({
                     ),
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.black,
+                        color: AppHelpers.isDarkMode(context)
+                            ? AppColors.white
+                            : AppColors.black,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 16),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                          size: 20,
-                          color: AppColors.grey,
+                      child: CircleAvatar(
+                        backgroundColor: AppHelpers.isDarkMode(context)
+                            ? AppColors.divider.withValues(alpha: 0.1)
+                            : AppColors.white,
+                        child: IconButton(
+                          onPressed: () {
+                            onClosePressed?.call();
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            size: 20,
+                            color: AppHelpers.isDarkMode(context)
+                                ? AppColors.white
+                                : AppColors.grey,
+                          ),
                         ),
                       ),
                     ),
@@ -61,7 +77,7 @@ Future<void> showAppSheet({
               const SizedBox(height: 8),
               Divider(
                 thickness: 1,
-                color: AppColors.grey.withOpacity(0.2),
+                color: AppColors.grey.withValues(alpha: 0.2),
               ),
               Padding(
                 padding:
@@ -71,11 +87,14 @@ Future<void> showAppSheet({
               if (submitButtonRequired == true)
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: SizedBox(
                     height: 50,
                     width: AppHelpers.getScreenWidth(context),
                     child: AppPrimaryButton(
+                      bgColor: AppHelpers.isDarkMode(context)
+                          ? AppColors.primary
+                          : AppColors.black,
                       onPressed: onSubmitPressed,
                       title: submitButtonTitle,
                       isLoading: false,

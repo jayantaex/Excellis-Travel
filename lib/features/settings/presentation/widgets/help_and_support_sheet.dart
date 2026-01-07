@@ -4,6 +4,7 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/app_drop_down.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
+import '../../../../utils/app_helpers.dart';
 
 Future<void> showHelpAndSupportSheet({required BuildContext context}) async {
   await showModalBottomSheet(
@@ -112,12 +113,16 @@ class HelpAndSupportSheet extends StatelessWidget {
                 hint: 'Enter your query',
               ),
               const SizedBox(height: 45),
-              AppPrimaryButton(
-                title: 'Submit',
-                isLoading: false,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+              SizedBox(
+                height: 45,
+                width: AppHelpers.getScreenWidth(context),
+                child: AppPrimaryButton(
+                  title: 'Submit',
+                  isLoading: false,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               )
             ],
           )

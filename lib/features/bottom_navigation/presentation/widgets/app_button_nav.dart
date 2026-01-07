@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../utils/app_helpers.dart';
 
 class AppButtonNav extends StatelessWidget {
   AppButtonNav({super.key, required this.currentIndex, required this.onTap});
@@ -18,7 +19,7 @@ class AppButtonNav extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-                AppColors.black.withOpacity(0.05),
+                AppColors.black.withValues(alpha: 0.05),
                 AppColors.transparent
               ]),
           border: const Border(top: BorderSide(width: 2)),
@@ -52,7 +53,7 @@ class AppButtonNav extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-                AppColors.black.withOpacity(0.05),
+                AppColors.black.withValues(alpha: 0.05),
                 AppColors.transparent
               ]),
           border: const Border(top: BorderSide(width: 2)),
@@ -75,7 +76,7 @@ class AppButtonNav extends StatelessWidget {
           colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
         ),
       ),
-      label: 'Ticket',
+      label: 'Booking',
     ),
     BottomNavigationBarItem(
       activeIcon: Container(
@@ -86,7 +87,7 @@ class AppButtonNav extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-                AppColors.black.withOpacity(0.05),
+                AppColors.black.withValues(alpha: 0.05),
                 AppColors.transparent
               ]),
           border: const Border(top: BorderSide(width: 2)),
@@ -124,7 +125,7 @@ class AppButtonNav extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: <Color>[
-                AppColors.black.withOpacity(0.05),
+                AppColors.black.withValues(alpha: 0.05),
                 AppColors.transparent
               ]),
           border: const Border(top: BorderSide(width: 2)),
@@ -157,7 +158,9 @@ class AppButtonNav extends StatelessWidget {
         useLegacyColorScheme: false,
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: AppColors.grey,
-        selectedItemColor: AppColors.black,
+        selectedItemColor: AppHelpers.isDarkMode(context)
+            ? AppColors.primary
+            : AppColors.black,
         selectedFontSize: 12,
         elevation: 0,
         currentIndex: currentIndex,

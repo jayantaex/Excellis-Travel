@@ -1,17 +1,17 @@
 import '../../../../core/network/api_response.dart';
-import '../../apis/auth_api.dart';
 import '../models/auth_resp_model.dart';
+import '../data_source/auth_remote_data_src.dart';
 
 class AuthRepository {
-  AuthRepository({required this.authApi});
-  final AuthApi authApi;
+  AuthRepository({required this.authRemoteDataSrc});
+  final AuthRemoteDataSrc authRemoteDataSrc;
 
   Future<ApiResponse<AuthResponseModel>> login(
           {required String username,
           required String password,
           required String fcmToken,
           required String userType}) async =>
-      await authApi.login(
+      await authRemoteDataSrc.login(
           username: username,
           password: password,
           fcmToken: fcmToken,
@@ -36,7 +36,7 @@ class AuthRepository {
     required int commissionRate,
     required bool isDirectBooking,
   }) async =>
-      await authApi.register(
+      await authRemoteDataSrc.register(
           companyName: companyName,
           firstName: firstName,
           lastName: lastName,
@@ -59,11 +59,11 @@ class AuthRepository {
     required String currentPassword,
     required String newPassword,
   }) async =>
-      await authApi.resetPassword(
+      await authRemoteDataSrc.resetPassword(
         currentPassword: currentPassword,
         newPassword: newPassword,
       );
 
   Future<ApiResponse<bool>> sendRecoverLink({required String email}) async =>
-      await authApi.sendRecoverLink(email: email);
+      await authRemoteDataSrc.sendRecoverLink(email: email);
 }

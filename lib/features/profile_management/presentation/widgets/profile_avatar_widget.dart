@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/image_picker.dart';
+import '../../../../utils/app_helpers.dart';
+import '../../../../utils/image_picker.dart';
 import '../../bloc/profile_bloc.dart';
 import 'profile_photo_preview.dart';
 
@@ -24,7 +25,9 @@ class ProfileAvatarWidget extends StatelessWidget {
             return Badge(
               isLabelVisible: isEditable! && state is! ProfileImageUpdating,
               offset: const Offset(-10, -30),
-              backgroundColor: AppColors.white,
+              backgroundColor: AppHelpers.isDarkMode(context)
+                  ? AppColors.secondaryDark
+                  : AppColors.white,
               padding: const EdgeInsets.all(0),
               alignment: Alignment.bottomRight,
               label: InkWell(
@@ -42,16 +45,22 @@ class ProfileAvatarWidget extends StatelessWidget {
                     );
                   }
                 },
-                child: const Padding(
-                  padding: EdgeInsets.all(6.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
                   child: Icon(
                     Icons.camera_alt_rounded,
                     size: 20,
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.white
+                        : AppColors.primary,
                   ),
                 ),
               ),
               child: CircleAvatar(
                 radius: 60,
+                backgroundColor: AppHelpers.isDarkMode(context)
+                    ? AppColors.white.withValues(alpha: 0.1)
+                    : AppColors.white.withValues(alpha: 0.2),
                 backgroundImage: state is ProfileImageUpdating ||
                         state.profileData.profileImage == null ||
                         state.profileData.profileImage == ''
@@ -66,8 +75,11 @@ class ProfileAvatarWidget extends StatelessWidget {
                             state.profileData.firstName?.isNotEmpty == true
                                 ? state.profileData.firstName![0].toUpperCase()
                                 : 'G',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 45,
+                              color: AppHelpers.isDarkMode(context)
+                                  ? AppColors.white
+                                  : AppColors.white,
                             ),
                           )
                         : const SizedBox(),

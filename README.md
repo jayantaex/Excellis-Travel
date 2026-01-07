@@ -1,37 +1,117 @@
+
 # Excellis Travel
 
-A new Flutter project.
+A flight booking app for Agents
 
-## Getting Started
+## Project Requirement
 
-This project is a starting point for a Flutter application.
+The app is working with below configuration
 
-A few resources to get you started if this is your first Flutter project:
+`Flutter: 3.38.5`
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+`Dart: 3.10.4`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+`Android SDK version: 36.1.0`
 
-Generate SHA Key - DEBUG :
+`Emulator version: 36.3.10.0`
 
-
-``` keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android ```
-
-
-Generate SHA Key - Release : 
-
-
-``` keytool -list -v -keystore android/app/release-key.jks -alias ALIAS_NAME ```
+`Java version: 21.0.8`
 
 
 
- "SQ": "SINGAPORE AIRLINES",
-  "LH": "LUFTHANSA",
-  "BA": "BRITISH AIRWAYS",
-  "CX": "CATHAY PACIFIC",
-  "DL": "DELTA AIR LINES",
-  "UA": "UNITED AIRLINES",
-  "AF": "AIR FRANCE"
+
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/jayantaex/reiselab.git
+```
+
+Go to the project directory
+
+```bash
+  cd reiselab
+```
+
+Install dependencies
+
+```bash
+  flutter pub get
+```
+
+Start the app
+
+```bash
+  flutter run --debug
+```
+
+
+## Release
+
+Generate SHA Key [DEBUG]
+
+```bash
+  keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+```
+
+Generate Keystore file from project root directory
+
+```bash
+  keytool -genkey -v -keystore android/app/release.jks -storetype RSA -alias upload -keyalg RSA -keysize 2048 -validity 10000
+```
+
+
+
+Setup key-properties
+ 
+ create a key.properties file under /android with the below variables
+
+```bash
+storeFile=release.jks
+storePassword=YOUR_STORE_PASSWORD
+keyAlias=YOUR_RELEASE_ALIAS
+keyPassword=YOUR_KEY_PASSWORD
+```
+
+
+Generate SHA Key [RELEASE]
+
+```bash
+  keytool -list -v -keystore android/app/release.jks -alias YOUR_RELEASE_ALIAS
+```
+
+
+## Firebase setup
+
+Setup firebase for push notification. After successfully setup firebase make the variable inside the `main.dart` file `true` 
+
+Release Apk
+
+```bash
+  flutter build apk --release
+```
+
+OR
+
+| Flag  | Result              |
+| ----- | --------------------|
+| patch | 1.2.3+45 → 1.2.4+46 |
+| minor | 1.2.3+45 → 1.3.0+46 |
+| major | 1.2.3+45 → 2.0.0+46 |
+
+```bash
+  ./build_flutter.sh patch
+```
+
+```bash
+  ./build_flutter.sh minor
+```
+
+```bash
+  ./build_flutter.sh major
+```
+
+

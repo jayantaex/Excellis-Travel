@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_styles.dart';
+import '../../../../utils/app_helpers.dart';
 
 class AuthDropdownWidget extends StatefulWidget {
   const AuthDropdownWidget({super.key, this.onChanged, this.items});
@@ -18,7 +16,6 @@ class _AuthDropdownWidgetState extends State<AuthDropdownWidget> {
   @override
   void initState() {
     _defaultValue = widget.items?.first.value ?? '';
-    log(_defaultValue.toString());
     super.initState();
   }
 
@@ -26,19 +23,23 @@ class _AuthDropdownWidgetState extends State<AuthDropdownWidget> {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
         decoration: BoxDecoration(
-          color: AppColors.textHint.withOpacity(0.15),
+          color: AppColors.textHint.withValues(alpha: 0.15),
           border: Border.all(color: AppColors.grey),
           borderRadius: BorderRadius.circular(90),
         ),
         child: DropdownButton<String>(
           value: _defaultValue,
           borderRadius: BorderRadius.circular(8),
-          dropdownColor: AppColors.white,
+          dropdownColor: AppHelpers.isDarkMode(context)
+              ? AppColors.secondaryDark
+              : AppColors.white,
           underline: const SizedBox(),
           icon: const Icon(Icons.keyboard_arrow_down_rounded),
-          style: const TextStyle(
+          style: TextStyle(
               fontSize: 16,
-              color: AppColors.black,
+              color: AppHelpers.isDarkMode(context)
+                  ? AppColors.white
+                  : AppColors.black,
               fontWeight: FontWeight.w400),
           isExpanded: true,
           items: widget.items,

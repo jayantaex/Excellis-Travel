@@ -1,58 +1,43 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../core/errors/error_screen.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../data/seat_data_tmp.dart';
+import '../../../../utils/app_helpers.dart';
+import '../../bloc/flight_bloc.dart';
+import '../../data/models/flights_data_model.dart';
 import '../../data/models/seat_map_data_model.dart';
 import '../widgets/seat_map/facility_box.dart';
 import '../widgets/seat_map/seat_box.dart';
 
 class SeatMapScreen extends StatefulWidget {
-  const SeatMapScreen({super.key});
+  const SeatMapScreen(
+      {super.key,
+      required this.flightOffer,
+      required this.departureAirport,
+      required this.arivalAirport});
+  final FlightOfferDatam flightOffer;
+  final String departureAirport;
+  final String arivalAirport;
 
   @override
   State<SeatMapScreen> createState() => _SeatMapScreenState();
 }
 
 class _SeatMapScreenState extends State<SeatMapScreen> {
-  SeatMapDataModel? _seatData;
-  List<DateTime> dates = <DateTime>[
-    DateTime.now(),
-  ];
-  List<String> filters = <String>[
-    'Economy',
-    'Premium Economy',
-    'Business',
-    'First Class',
-  ];
-  int dateDuration = 20; //days
-  String selectedFilter = 'All';
-  int selectedIndex = 0;
-
   //seat management
 
-  int row = 30;
-  late final Map<String, dynamic> _coordinateMap;
   @override
   void initState() {
-    _coordinateMap = <String, dynamic>{};
-
-    for (int i = 0; i < dateDuration; i++) {
-      dates.add(DateTime.now().add(Duration(days: i)));
-    }
     try {
-      _seatData = SeatMapDataModel.fromJson(seatData);
-      _seatData?.data[0].decks[0].seats.forEach((SeatElement element) {
-        _coordinateMap['${element.coordinates.x}-${element.coordinates.y}'] =
-            element;
-      });
-      _seatData?.data[0].decks[0].facilities.forEach((Facility element) {
-        _coordinateMap['${element.coordinates.x}-${element.coordinates.y}'] =
-            element;
-      });
+      context
+          .read<FlightBloc>()
+          .add(GetSeatMapDataEvent(flightOfferData: widget.flightOffer));
     } catch (e) {
       log('Error while parsing seat data $e');
     }
@@ -61,111 +46,124 @@ class _SeatMapScreenState extends State<SeatMapScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    log('Flight Search Screen:::: ${_seatData?.data[0].decks[0].seats.length}');
+  Widget build(BuildContext context) => Scaffold(
+        body: AppGradientBg(
+          child: TransWhiteBgWidget(
+            child: Center(
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    //nav Controller
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: AppCustomAppbar(
+                          start: widget.departureAirport,
+                          end: widget.arivalAirport,
+                        )),
+                    const SizedBox(height: 16),
 
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              colors: <Color>[AppColors.primary, AppColors.secondary]),
-          borderRadius: BorderRadiusDirectional.only(
-            topStart: Radius.circular(18),
-            topEnd: Radius.circular(18),
+                    const SizedBox(height: 16),
+
+                    Expanded(
+                      child: BlocConsumer<FlightBloc, FlightState>(
+                        listener: (context, state) {
+                          // TODO: implement listener
+                        },
+                        builder: (context, state) {
+                          if (state is SeatMapLoading) {
+                            return const Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            );
+                          }
+                          if (state is SeatMapLoaded) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              margin: const EdgeInsets.only(top: 16),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              height: AppHelpers.getScreenHeight(context) * 0.6,
+                              child: ListView.builder(
+                                itemCount: state.data.seatData?.first.decks
+                                        ?.first.deckConfiguration?.length ??
+                                    0,
+                                itemBuilder:
+                                    (BuildContext context, int index) =>
+                                        SeatArrangemnt(
+                                  isWingsRow: index + 1 ==
+                                      state.data.seatData?.first.decks?.first
+                                          .deckConfiguration?.startWingsRow,
+                                  isExitRow: state.data.seatData?.first.decks
+                                          ?.first.deckConfiguration?.exitRowsX
+                                          ?.contains(index + 1) ??
+                                      false,
+                                  x: index,
+                                  cordinateMap: state.coordinateMap,
+                                ),
+                              ),
+                            );
+                          }
+                          return const ErrorScreen(
+                            errorMessage: 'Something went wrong',
+                            errorDesc: 'Error while loading seat map',
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
-        child: TransWhiteBgWidget(
-          child: Center(
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  //nav Controller
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: AppCustomAppbar(
-                        start: '${_seatData?.data.first.departure.iataCode}',
-                        end: '${_seatData?.data.first.arrival.iataCode}',
-                      )),
-                  const SizedBox(height: 16),
-
-                  const SizedBox(height: 16),
-
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      margin: const EdgeInsets.only(top: 16),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      height: AppHelpers.getScreenHeight(context) * 0.6,
-                      child: ListView.builder(
-                        itemCount: _seatData?.data.first.decks[0]
-                                .deckConfiguration.length ??
-                            0,
-                        itemBuilder: (BuildContext context, int index) =>
-                            SeatArrangemnt(
-                          isWingsRow: index + 1 ==
-                              _seatData?.data.first.decks[0].deckConfiguration
-                                  .startWingsRow,
-                          isExitRow: _seatData?.data.first.decks[0]
-                                  .deckConfiguration.exitRowsX
-                                  .contains(index + 1) ??
-                              false,
-                          x: index,
-                          cordinateMap: _coordinateMap,
+        bottomNavigationBar: BlocBuilder<FlightBloc, FlightState>(
+          builder: (context, state) => state is SeatMapLoaded
+              ? Container(
+                  color: AppColors.white,
+                  height: AppHelpers.getScreenHeight(context) * 0.16,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            SeatSelectionInformation(
+                              title: 'Availabe',
+                              bg: AppColors.grey.withValues(alpha: 0.4),
+                            ),
+                            const SeatSelectionInformation(
+                              title: 'Reserved',
+                              bg: Color(0XFF9F4018),
+                            ),
+                            const SeatSelectionInformation(
+                              title: 'Selected',
+                              bg: AppColors.black,
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+                      SizedBox(
+                        height: 50,
+                        child: AppPrimaryButton(
+                          onPressed: () {
+                            // context.pushNamed(FlightBookingModule.passengerDetailsName);
+                          },
+                          title: 'Done',
+                          isLoading: false,
+                          bgColor: AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox(),
         ),
-      ),
-      bottomNavigationBar: Container(
-        color: AppColors.white,
-        height: AppHelpers.getScreenHeight(context) * 0.16,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SeatSelectionInformation(
-                    title: 'Availabe',
-                    bg: AppColors.grey.withOpacity(0.4),
-                  ),
-                  const SeatSelectionInformation(
-                    title: 'Reserved',
-                    bg: Color(0XFF9F4018),
-                  ),
-                  const SeatSelectionInformation(
-                    title: 'Selected',
-                    bg: AppColors.black,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 50,
-              child: AppPrimaryButton(
-                onPressed: () {
-                  // context.pushNamed(FlightBookingModule.passengerDetailsName);
-                },
-                title: 'Done',
-                isLoading: false,
-                bgColor: AppColors.primary,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+      );
 }
 
 class SeatSelectionInformation extends StatelessWidget {
@@ -246,9 +244,9 @@ class _SeatArrangemntState extends State<SeatArrangemnt> {
         padding: const EdgeInsets.symmetric(vertical: 4),
         decoration: BoxDecoration(
           color: widget.isExitRow
-              ? AppColors.primary.withOpacity(0.1)
+              ? AppColors.primary.withValues(alpha: 0.1)
               : widget.isWingsRow
-                  ? AppColors.primary.withOpacity(0.1)
+                  ? AppColors.primary.withValues(alpha: 0.1)
                   : null,
           borderRadius: BorderRadius.circular(12),
         ),
@@ -272,7 +270,7 @@ class _SeatArrangemntState extends State<SeatArrangemnt> {
 
               if (item is Facility) {
                 return FacilityBox(
-                  facilityCode: widget.cordinateMap[key].code,
+                  facilityCode: widget.cordinateMap[key],
                 );
               }
               return SizedBox(

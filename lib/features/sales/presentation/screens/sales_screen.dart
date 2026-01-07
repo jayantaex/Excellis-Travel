@@ -1,18 +1,18 @@
-import 'dart:developer';
-
-import 'package:excellistravel/core/utils/app_helpers.dart';
-import 'package:excellistravel/core/utils/storage_service.dart';
-import 'package:excellistravel/core/widgets/app_sheet.dart';
-import 'package:excellistravel/core/widgets/no_login_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
+import '../../../../utils/app_helpers.dart';
+import '../../../../utils/storage_service.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
+import '../../../../core/widgets/app_sheet.dart';
+import '../../../../core/widgets/no_login_widget.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/sales_bloc.dart';
-import '../widgets/filter_sheet.dart';
+import '../../data/models/sates_data_model.dart';
+import '../widgets/sales_filter_sheet.dart';
 import '../widgets/no_sales.dart';
 import '../widgets/sale_tile.dart';
 
@@ -33,6 +33,10 @@ class _SalesScreenState extends State<SalesScreen> {
   final TextEditingController _bookingIdController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
+  final List<int> _selectedUserIds = [];
+  String? _selectedUserType;
+  DateTime? startingDate;
+  DateTime? endingDate;
 
   @override
   void initState() {
@@ -68,221 +72,504 @@ class _SalesScreenState extends State<SalesScreen> {
   Future<void> callApi({required int page, required int limit}) async {
     context.read<SalesBloc>().add(
           SalesFetchEvent(
-              page: page,
-              limit: limit,
-              startDate: _startDateController.text,
-              endDate: _endDateController.text,
-              keyword: _bookingIdController.text),
+            page: page,
+            limit: limit,
+            startDate: startingDate != null
+                ? AppHelpers.formatDate(startingDate!, pattern: 'yyyy-MM-dd')
+                : '',
+            endDate: endingDate != null
+                ? AppHelpers.formatDate(endingDate!, pattern: 'yyyy-MM-dd')
+                : '',
+            keyword: _bookingIdController.text,
+            agentIds: _selectedUserIds,
+            userType: _selectedUserType,
+          ),
         );
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.transparent,
-        body: TransWhiteBgWidget(
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AppCustomAppbar(
-                  isBackButtonRequired: false,
-                  centerTitle: 'My Sales',
-                  trailing: SizedBox(
-                    width: 45,
-                    child: IconButton(
-                        onPressed: () async {
-                          await showAppSheet(
-                              context: context,
-                              title: 'Filter Options',
-                              child: FilterSheet(
-                                bookingIdController: _bookingIdController,
-                                startDateController: _startDateController,
-                                endDateController: _endDateController,
-                                onStartDatePicked: (date) {
-                                  _startDateController.text =
-                                      AppHelpers.formatDate(date,
-                                          pattern: 'yyyy-MM-dd');
-                                },
-                                onEndDatePicked: (date) {
-                                  _endDateController.text =
-                                      AppHelpers.formatDate(date,
-                                          pattern: 'yyyy-MM-dd');
-                                },
-                              ),
-                              onSubmitPressed: () {
-                                Navigator.pop(context);
-                                page = 1; // Reset page when applying filters
-                                callApi(page: page, limit: limit);
-                              },
-                              submitButtonRequired: true,
-                              submitButtonTitle: 'Apply');
-                        },
-                        icon: const Icon(Icons.filter_alt,
-                            color: AppColors.white)),
-                  ),
-                ),
-                token == null || token!.isEmpty
-                    ? const Expanded(child: Center(child: NotLoginWidget()))
-                    : BlocConsumer<SalesBloc, SalesState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          if (state is SalesError) {
-                            return Expanded(
-                                child: ErrorScreen(
-                              errorMessage: 'Oops!',
-                              errorDesc: state.message,
-                            ));
-                          }
-                          if (state is SalesLoading || state is SalesInitial) {
-                            return const Expanded(
-                              child: Center(
-                                  child: CircularProgressIndicator.adaptive()),
-                            );
-                          }
-                          if (state is SalesLoaded) {
-                            log('${state.sales.pagination?.toJson()}');
-                            totalItems =
-                                state.sales.pagination?.totalItems ?? 0;
-                            return Expanded(
-                              child: totalItems == 0
-                                  ? const NoSales()
-                                  : Column(
-                                      children: [
-                                        const SizedBox(height: 35),
-                                        Text('₹${state.sales.totalMarkup}',
-                                            style: const TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.bold,
-                                                color: AppColors.white)),
-                                        const SizedBox(height: 2),
-                                        const Text(
-                                          'My Earning',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.white,
-                                          ),
+  Widget build(BuildContext context) => TransWhiteBgWidget(
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  if (state is ProfileLoaded) {
+                    return AppCustomAppbar(
+                      isBackButtonRequired: false,
+                      centerTitle: 'My Sales',
+                      //only show filter button if there is no filter applied
+                      trailing: _startDateController.text.isNotEmpty ||
+                              _endDateController.text.isNotEmpty ||
+                              _bookingIdController.text.isNotEmpty ||
+                              _selectedUserIds.isNotEmpty ||
+                              _selectedUserType != null
+                          ? const SizedBox()
+                          : SizedBox(
+                              width: 45,
+                              child: IconButton(
+                                  onPressed: () async {
+                                    final salesBloc = context.read<SalesBloc>();
+                                    await showAppSheet(
+                                      context: context,
+                                      title: 'Filter Options',
+                                      child: BlocProvider.value(
+                                        value: salesBloc,
+                                        child: SalesFilterSheet(
+                                          role:
+                                              state.profileData.role ?? 'agent',
+                                          bookingIdController:
+                                              _bookingIdController,
+                                          startDateController:
+                                              _startDateController,
+                                          endDateController: _endDateController,
+                                          onStartDatePicked: (date) {
+                                            _startDateController.text =
+                                                AppHelpers.formatDate(date,
+                                                    pattern: 'dd-MM-yyyy');
+                                            startingDate = date;
+                                          },
+                                          onEndDatePicked: (date) {
+                                            _endDateController.text =
+                                                AppHelpers.formatDate(date,
+                                                    pattern: 'dd-MM-yyyy');
+                                            endingDate = date;
+                                          },
+                                          onSubmitPressed:
+                                              (agentIds, userType) async {
+                                            page = 1;
+                                            _selectedUserIds.clear();
+                                            _selectedUserIds
+                                                .addAll(agentIds ?? []);
+                                            _selectedUserType =
+                                                userType ?? 'agent';
+                                            await callApi(
+                                                page: page, limit: limit);
+                                          },
                                         ),
-                                        const SizedBox(height: 18),
-                                        Expanded(
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 18, horizontal: 16),
-                                            width: AppHelpers.getScreenWidth(
-                                                context),
+                                      ),
+                                      onClosePressed: () {
+                                        _resetFilters();
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.filter_alt,
+                                    color: AppColors.white,
+                                  )),
+                            ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+              token == null || token!.isEmpty
+                  ? const Expanded(child: Center(child: NotLoginWidget()))
+                  : BlocConsumer<SalesBloc, SalesState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        if (state is SalesError) {
+                          return Expanded(
+                              child: ErrorScreen(
+                            errorMessage: 'Oops!',
+                            errorDesc: state.message,
+                          ));
+                        }
+                        // Show loading for initial load, page 1 refresh, or initial state
+                        if (state is SalesLoading || state is SalesInitial) {
+                          return const Expanded(
+                            child: Center(
+                                child: CircularProgressIndicator.adaptive()),
+                          );
+                        }
+                        // Handle states that preserve sales data
+                        final SalesDataModel? salesData = state is SalesLoaded
+                            ? state.sales
+                            : state is LoadingSubSalesExecutives
+                                ? state.sales
+                                : state is SubSalesExecutivesLoaded
+                                    ? state.sales
+                                    : state is SubSalesExecutivesError
+                                        ? state.sales
+                                        : state is SalesAgentsLoaded
+                                            ? state.sales
+                                            : state is SalesAgentsError
+                                                ? state.sales
+                                                : state is LoadingSalesAgents
+                                                    ? state.sales
+                                                    : null;
+
+                        if (salesData != null) {
+                          totalItems = salesData.pagination?.totalItems ?? 0;
+                          return Expanded(
+                            child: totalItems == 0
+                                ? (_bookingIdController.text.isNotEmpty ||
+                                        _startDateController.text.isNotEmpty ||
+                                        _endDateController.text.isNotEmpty ||
+                                        _selectedUserIds.isNotEmpty)
+                                    ? NoSales(
+                                        onFilter: () async {
+                                          _bookingIdController.clear();
+                                          _startDateController.clear();
+                                          _endDateController.clear();
+                                          _selectedUserIds.clear();
+                                          _selectedUserType = null;
+                                          startingDate = null;
+                                          endingDate = null;
+                                          limit = 10;
+                                          page = 1;
+                                          await callApi(
+                                              limit: limit, page: page);
+                                        },
+                                        isForFilter: true,
+                                      )
+                                    : NoSales(
+                                        onFilter: () {},
+                                        isForFilter: false,
+                                      )
+                                : CustomScrollView(
+                                    controller: _scrollController,
+                                    slivers: [
+                                      // Collapsible Earnings Card
+                                      SliverAppBar(
+                                        expandedHeight: AppHelpers.percenHeight(
+                                                context: context) *
+                                            0.34,
+                                        pinned: true,
+                                        backgroundColor: Colors.transparent,
+                                        elevation: 0.5,
+                                        automaticallyImplyLeading: false,
+                                        flexibleSpace: FlexibleSpaceBar(
+                                          background: Container(
+                                            margin: const EdgeInsets.only(
+                                              left: 16,
+                                              right: 16,
+                                              top: 24,
+                                              bottom: 20,
+                                            ),
+                                            padding: const EdgeInsets.all(24),
                                             decoration: BoxDecoration(
-                                              color: AppColors.white,
+                                              gradient: const LinearGradient(
+                                                colors: [
+                                                  AppColors.primary,
+                                                  AppColors.secondary
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              ),
                                               borderRadius:
-                                                  BorderRadius.circular(32),
+                                                  BorderRadius.circular(24),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: AppColors.primary
+                                                      .withValues(alpha: 0.3),
+                                                  blurRadius: 20,
+                                                  offset: const Offset(0, 8),
+                                                ),
+                                              ],
                                             ),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
-                                                SizedBox(
-                                                  height: 25,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        'Bookings(${state.sales.pagination?.totalItems ?? 0})',
-                                                        style: const TextStyle(
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          'Total Markup',
+                                                          style: TextStyle(
                                                             fontSize: 14,
                                                             fontWeight:
                                                                 FontWeight.w500,
                                                             color: AppColors
-                                                                .black),
+                                                                .white
+                                                                .withValues(
+                                                                    alpha: 0.9),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 8),
+                                                        Text(
+                                                          AppHelpers.formatCurrency(
+                                                              salesData
+                                                                      .totalMarkup ??
+                                                                  0),
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 36,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                AppColors.white,
+                                                            letterSpacing: -0.5,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16),
+                                                      decoration: BoxDecoration(
+                                                        color: AppColors.white
+                                                            .withValues(
+                                                                alpha: 0.2),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(16),
                                                       ),
-                                                      _startDateController.text
-                                                                  .isNotEmpty ||
-                                                              _endDateController
-                                                                  .text
-                                                                  .isNotEmpty ||
-                                                              _bookingIdController
-                                                                  .text
-                                                                  .isNotEmpty
-                                                          ? SizedBox(
-                                                              child: InkWell(
-                                                              onTap: () {
-                                                                _startDateController
-                                                                    .clear();
-                                                                _endDateController
-                                                                    .clear();
-                                                                _bookingIdController
-                                                                    .clear();
-                                                                page =
-                                                                    1; // Reset page when clearing filters
-                                                                callApi(
-                                                                    page: page,
-                                                                    limit:
-                                                                        limit);
-                                                              },
-                                                              child: const Text(
-                                                                  'Clear',
-                                                                  style: TextStyle(
-                                                                      color: AppColors
-                                                                          .primary)),
-                                                            ))
-                                                          : const SizedBox()
-                                                    ],
-                                                  ),
+                                                      child: const Icon(
+                                                        Icons
+                                                            .account_balance_wallet_rounded,
+                                                        color: AppColors.white,
+                                                        size: 32,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Expanded(
-                                                  child: ListView.builder(
-                                                    controller:
-                                                        _scrollController,
-                                                    itemCount: (state
-                                                                .sales
-                                                                .commissions
-                                                                ?.length ??
-                                                            0) +
-                                                        (state.isLoadingMore
-                                                            ? 1
-                                                            : 0),
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      if (index <
-                                                          (state
-                                                                  .sales
-                                                                  .commissions
-                                                                  ?.length ??
-                                                              0)) {
-                                                        return SaleTile(
-                                                            commission: state
-                                                                    .sales
-                                                                    .commissions![
-                                                                index]);
-                                                      } else {
-                                                        return const Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  8.0),
-                                                          child: Center(
-                                                              child: CircularProgressIndicator
-                                                                  .adaptive()),
-                                                        );
-                                                      }
-                                                    },
-                                                  ),
+                                                const SizedBox(height: 20),
+                                                // Stats Row
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: AppColors.white
+                                                              .withValues(
+                                                                  alpha: 0.15),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                        child: Column(
+                                                          children: [
+                                                            Text(
+                                                              '${salesData.pagination?.totalItems ?? 0}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: AppColors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 4),
+                                                            Text(
+                                                              'Total Ticket Booked',
+                                                              style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.8),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 12),
+                                                    Expanded(
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(12),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: AppColors.white
+                                                              .withValues(
+                                                                  alpha: 0.15),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                        child: Column(
+                                                          children: [
+                                                            Text(
+                                                              AppHelpers
+                                                                  .formatCurrency(
+                                                                      salesData
+                                                                              .totalSales ??
+                                                                          0),
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: AppColors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 4),
+                                                            Text(
+                                                              'Total Amount',
+                                                              style: TextStyle(
+                                                                fontSize: 12,
+                                                                color: AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.8),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                            );
-                          }
-                          return const Expanded(
-                              child: Center(child: NoSales()));
-                        },
-                      )
-              ],
-            ),
+                                        ),
+                                      ),
+                                      // Transactions List Header
+
+                                      //total booking with count and reset button,
+                                      SliverToBoxAdapter(
+                                        child: SizedBox(
+                                          height: 40,
+                                          width: AppHelpers.getScreenWidth(
+                                              context),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'Total Booking (${salesData.pagination?.totalItems ?? 0})',
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: AppColors.white),
+                                                ),
+                                                _startDateController
+                                                            .text.isNotEmpty ||
+                                                        _endDateController
+                                                            .text.isNotEmpty ||
+                                                        _bookingIdController
+                                                            .text.isNotEmpty ||
+                                                        _selectedUserIds
+                                                            .isNotEmpty ||
+                                                        _selectedUserType !=
+                                                            null
+                                                    ? SizedBox(
+                                                        height: 45,
+                                                        width: 80,
+                                                        child: TextButton(
+                                                            onPressed: () {
+                                                              _resetFilters();
+                                                            },
+                                                            child: Text(
+                                                              'Clear',
+                                                              style: TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: AppHelpers
+                                                                        .isDarkMode(
+                                                                            context)
+                                                                    ? AppColors
+                                                                        .primary
+                                                                    : AppColors
+                                                                        .white,
+                                                              ),
+                                                            )),
+                                                      )
+                                                    : const SizedBox(),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+
+                                      // Sales List
+                                      SliverPadding(
+                                        padding: const EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          top: 16,
+                                          bottom: 16,
+                                        ),
+                                        sliver: SliverList(
+                                          delegate: SliverChildBuilderDelegate(
+                                            (BuildContext context, int index) {
+                                              if (index <
+                                                  (salesData.commissions
+                                                          ?.length ??
+                                                      0)) {
+                                                return SaleTile(
+                                                    commission: salesData
+                                                        .commissions![index]);
+                                              } else {
+                                                return const Padding(
+                                                  padding: EdgeInsets.all(16.0),
+                                                  child: Center(
+                                                      child:
+                                                          CircularProgressIndicator
+                                                              .adaptive()),
+                                                );
+                                              }
+                                            },
+                                            childCount: (salesData
+                                                        .commissions?.length ??
+                                                    0) +
+                                                ((state is SalesLoaded &&
+                                                        state.isLoadingMore)
+                                                    ? 1
+                                                    : 0),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                          );
+                        }
+                        return const Expanded(
+                          child: Center(
+                            child: NoSales(),
+                          ),
+                        );
+                      },
+                    )
+            ],
           ),
         ),
       );
+
+  void _resetFilters() {
+    setState(() {
+      page = 1;
+      _startDateController.clear();
+      _endDateController.clear();
+      _bookingIdController.clear();
+      _selectedUserIds.clear();
+      _selectedUserType = null;
+      startingDate = null;
+      endingDate = null;
+      limit = 10;
+    });
+    callApi(limit: limit, page: page);
+  }
 }

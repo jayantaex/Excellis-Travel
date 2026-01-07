@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:flutter/foundation.dart';
 import '../constants/app_constants.dart';
-import '../utils/storage_service.dart';
+import '../../utils/storage_service.dart';
 import 'api_response.dart';
 import 'api_urls.dart';
 
@@ -30,8 +30,6 @@ class AmadeusClient {
             } on DioException catch (e) {
               return handler.reject(e);
             }
-            // final res = await _retry(e.requestOptions);
-            // return handler.resolve(res);
           }
           return handler.next(e);
         },
@@ -53,36 +51,18 @@ class AmadeusClient {
   // API request method GET
   Future<ApiResponse<T>> getRequest<T>(
       {required String endPoint,
+      Options? options,
       required T Function(Map<String, dynamic>) fromJson,
       Map<String, dynamic>? queryParameters}) async {
     try {
-      final Response response =
-          await _dio.get(endPoint, queryParameters: queryParameters);
+      final Response response = await _dio.get(endPoint,
+          queryParameters: queryParameters, options: options);
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
-    }
-  }
-
-  // API request method GET for List
-  Future<ApiResponse<List<T>>> getRequestList<T>(
-      {required String endPoint,
-      required List<T> Function(List<dynamic>) fromJosnList,
-      Map<String, dynamic>? queryParameters}) async {
-    try {
-      final Response response =
-          await _dio.get(endPoint, queryParameters: queryParameters);
-      final List<T> data = fromJosnList(response.data);
-      return ApiResponse<List<T>>(
-          data: data, statusCode: response.statusCode ?? 0);
-    } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<List<T>>(
-          statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<T>(
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -97,27 +77,9 @@ class AmadeusClient {
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final errorMessage = e.response?.data['errors'][0]['detail'];
-      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
-    }
-  }
-
-  // API request method POST for List
-  Future<ApiResponse<List<T>>> postRequestList<T>(
-      {required String endPoint,
-      Map<String, dynamic>? reqModel,
-      required List<T> Function(List<dynamic>) fromJsonList}) async {
-    try {
-      final Response response = await _dio.post(endPoint, data: reqModel);
-      final List<T> data = fromJsonList(response.data);
-      return ApiResponse<List<T>>(
-          data: data, statusCode: response.statusCode ?? 0);
-    } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<List<T>>(
-          statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<T>(
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -131,9 +93,9 @@ class AmadeusClient {
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
+      return ApiResponse<T>(
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -148,62 +110,9 @@ class AmadeusClient {
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {
-      final int statusCode = e.response?.statusCode ?? 0;
-      final String errorMessage = _handleDioError(e, statusCode);
-      return ApiResponse<T>(statusCode: statusCode, errorMessage: errorMessage);
-    }
-  }
-
-  // Handle Dio errors and return a user-friendly message
-  String _handleDioError(DioException error, int statusCode) {
-    String errorMessage;
-    switch (error.type) {
-      case DioExceptionType.cancel:
-        errorMessage = 'Request to API server was cancelled';
-        break;
-      case DioExceptionType.connectionTimeout:
-        errorMessage = 'Connection timeout with API server';
-        break;
-      case DioExceptionType.receiveTimeout:
-        errorMessage = 'Receive timeout in connection with API server';
-        break;
-      case DioExceptionType.sendTimeout:
-        errorMessage = 'Send timeout in connection with API server';
-        break;
-      case DioExceptionType.badResponse:
-        errorMessage = _handleStatusCode(statusCode);
-        break;
-      case DioExceptionType.connectionError:
-        errorMessage = 'please check your connection';
-        break;
-      case DioExceptionType.unknown:
-        errorMessage =
-            'Connection to API server failed due to internet connection';
-        break;
-      default:
-        errorMessage = 'Unexpected error occurred';
-        break;
-    }
-    return errorMessage;
-  }
-
-  // Handle different status codes and return appropriate messages
-  String _handleStatusCode(int statusCode) {
-    switch (statusCode) {
-      case 400:
-        return 'Bad Request 22';
-      case 401:
-        return 'Unauthorized';
-      case 403:
-        return 'Forbidden';
-      case 404:
-        return 'Not Found';
-      case 500:
-        return 'Internal Server Error';
-      case 503:
-        return 'Service Unavailable';
-      default:
-        return 'Recive invalid status code $statusCode';
+      return ApiResponse<T>(
+          statusCode: e.response?.statusCode ?? 0,
+          errorMessage: _handleDioError(error: e));
     }
   }
 
@@ -255,5 +164,45 @@ class AmadeusClient {
       queryParameters: requestOptions.queryParameters,
       options: options,
     );
+  }
+
+  String _handleDioError({required DioException error}) {
+    String errorMessage;
+    switch (error.type) {
+      case DioExceptionType.cancel:
+        errorMessage = 'Request to API server was cancelled';
+        break;
+      case DioExceptionType.connectionTimeout:
+        errorMessage = 'Connection timeout with API server';
+        break;
+      case DioExceptionType.receiveTimeout:
+        errorMessage = 'Receive timeout in connection with API server';
+        break;
+      case DioExceptionType.sendTimeout:
+        errorMessage = 'Send timeout in connection with API server';
+        break;
+      case DioExceptionType.badResponse:
+        errorMessage = _getErrorMessage(error);
+        break;
+      case DioExceptionType.connectionError:
+        errorMessage = 'please check your connection';
+        break;
+      case DioExceptionType.unknown:
+        errorMessage =
+            'Connection to API server failed due to internet connection';
+        break;
+      default:
+        errorMessage = 'Unexpected error occurred';
+        break;
+    }
+    return errorMessage;
+  }
+
+  String _getErrorMessage(DioException error) {
+    if (error.response?.statusCode == 502) {
+      return 'App under maintenance';
+    }
+    return error.response?.data['errors']?.first['detail'] ??
+        'Something went wrong';
   }
 }

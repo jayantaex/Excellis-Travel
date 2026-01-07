@@ -2,24 +2,24 @@ import 'dart:io';
 
 import '../../../../core/common/models/profile_data_model.dart';
 import '../../../../core/network/api_response.dart';
-import '../../apis/profile_management_api.dart';
+import '../data_source/profile_management_remote_src.dart';
 
 class ProfileManagementRepository {
-  ProfileManagementRepository({required this.profileManagementApi});
-  final ProfileManagementApi profileManagementApi;
+  ProfileManagementRepository({required this.profileManagementRemoteSrc});
+  final ProfileManagementRemoteSrc profileManagementRemoteSrc;
 
   Future<ApiResponse<ProfileModel>> getUserProfile() async =>
-      await profileManagementApi.fetchUserProfile();
+      await profileManagementRemoteSrc.fetchUserProfile();
 
   Future<ApiResponse<ProfileModel>> updateProfile(
       {required Map<String, dynamic> body}) async {
-    final res = await profileManagementApi.updateProfile(body: body);
+    final res = await profileManagementRemoteSrc.updateProfile(body: body);
     return res;
   }
 
   Future<ApiResponse<bool>> updateProfileImage({File? imageFile}) async {
     final res =
-        await profileManagementApi.updateProfileImage(imageFile: imageFile);
+        await profileManagementRemoteSrc.updateProfileImage(imageFile: imageFile);
     return res;
   }
 }

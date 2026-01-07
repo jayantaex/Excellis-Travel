@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/data/country_code.dart';
 import '../../../../core/errors/error_screen.dart';
-import '../../../../core/utils/app_helpers.dart';
+import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
 import '../../../../core/widgets/app_drop_down.dart';
 import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../../utils/title_case.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../data/models/air_port_model.dart';
 import '../widgets/airport_search/airport_card.dart';
@@ -46,6 +47,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
         _searchController.text = widget.selectedAirport!;
         await _handleAirportSearch(keyword: widget.selectedAirport);
       }
+      setState(() {});
     });
     super.initState();
   }
@@ -71,8 +73,16 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 20),
                         decoration: BoxDecoration(
-                          color: AppColors.white,
+                          color: AppHelpers.isDarkMode(context)
+                              ? AppColors.surfaceDark
+                              : AppColors.white,
                           borderRadius: BorderRadius.circular(24),
+                          border: AppHelpers.isDarkMode(context)
+                              ? Border.all(
+                                  color:
+                                      AppColors.white.withValues(alpha: 0.05),
+                                  width: 1)
+                              : null,
                         ),
                         child: Column(
                           children: <Widget>[
@@ -83,6 +93,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                   width:
                                       AppHelpers.getScreenWidth(context) * 0.6,
                                   child: AppPrimaryInput(
+                                    focus: true,
                                     onChange: (String query) {
                                       AppHelpers.debounce(
                                         () async {
@@ -96,6 +107,17 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                         'Enter city name here or airport code',
                                     maxCharacters: 20,
                                     controller: _searchController,
+                                    suffixIcon:
+                                        _searchController.text.isNotEmpty
+                                            ? IconButton(
+                                                onPressed: () {
+                                                  _searchController.clear();
+                                                },
+                                                icon: const Icon(
+                                                  Icons.close,
+                                                  size: 14,
+                                                ))
+                                            : null,
                                   ),
                                 ),
                                 SizedBox(
@@ -136,23 +158,31 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
 
                                     return ListView.builder(
                                       itemCount: state.airports.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) =>
-                                              AirportCard(
-                                        airportCode:
-                                            state.airports[index].iataCode ??
-                                                '',
-                                        city: state.airports[index].address
-                                                ?.cityName ??
-                                            '',
-                                        airportName:
-                                            state.airports[index].name ?? '',
-                                        onAirportSelected: () {
-                                          widget.onAirportSelected!(
-                                              state.airports[index]);
-                                          Navigator.pop(context);
-                                        },
-                                      ),
+                                      itemBuilder: (BuildContext context,
+                                              int index) =>
+                                          state.airports[index].subType ==
+                                                  'CITY'
+                                              ? const SizedBox()
+                                              : AirportCard(
+                                                  airportCode: state
+                                                          .airports[index]
+                                                          .iataCode ??
+                                                      '',
+                                                  city: toTitleCase(state
+                                                          .airports[index]
+                                                          .address
+                                                          ?.cityName ??
+                                                      ''),
+                                                  airportName: toTitleCase(state
+                                                          .airports[index]
+                                                          .name ??
+                                                      ''),
+                                                  onAirportSelected: () {
+                                                    widget.onAirportSelected!(
+                                                        state.airports[index]);
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
                                     );
                                   }
                                   if (state is AirportSearchingError) {
@@ -195,12 +225,17 @@ class NoAirPortFound extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => const Center(
-        child: Text('No Airport Found',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: AppColors.grey,
-            )),
-      );
+  Widget build(BuildContext context) {
+    final bool isDarkMode = AppHelpers.isDarkMode(context);
+    return Center(
+      child: Text('No Airport Found',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+            color: isDarkMode
+                ? AppColors.white.withValues(alpha: 0.5)
+                : AppColors.textSecondary,
+          )),
+    );
+  }
 }

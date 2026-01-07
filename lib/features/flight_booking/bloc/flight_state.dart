@@ -31,8 +31,24 @@ final class FlightSearching extends FlightState {}
 final class FlightLoaded extends FlightState {
   const FlightLoaded({
     required this.data,
+    required this.airlines,
+    required this.isFiltered,
+    this.filteredData,
+    this.currentFilter,
+    required this.minOfferFare,
+    required this.maxOfferFare,
+    required this.minPublishedFare,
+    required this.maxPublishedFare,
   });
   final FlightsDataModel data;
+  final FlightsDataModel? filteredData;
+  final bool isFiltered;
+  final FilterDataModel? currentFilter;
+  final double minOfferFare;
+  final double maxOfferFare;
+  final double minPublishedFare;
+  final double maxPublishedFare;
+  final List<AirlineModel> airlines;
 }
 
 final class FlightSearchingError extends FlightState {
@@ -56,8 +72,10 @@ final class FlightOfferPriceError extends FlightState {
 final class FlightOrderCreated extends FlightState {
   const FlightOrderCreated({
     required this.data,
+    required this.paymentVia,
   });
   final OrderModel data;
+  final String paymentVia;
 }
 
 final class FlightOrderLoading extends FlightState {
@@ -75,7 +93,7 @@ final class FlightPaymentVerifing extends FlightState {
 
 final class FlightPaymentVerified extends FlightState {
   const FlightPaymentVerified({required this.data});
-  final PaymentVarifiedDataModel data;
+  final payment.PaymentVarifiedDataModel data;
 }
 
 final class FlightPaymentVerificationFailed extends FlightState {
@@ -86,3 +104,17 @@ final class FlightPaymentVerificationFailed extends FlightState {
 final class OfferPriceEnabledState extends FlightState {}
 
 final class OfferPriceDisabledState extends FlightState {}
+
+//seat map
+final class SeatMapLoading extends FlightState {}
+
+final class SeatMapLoaded extends FlightState {
+  const SeatMapLoaded({required this.data, required this.coordinateMap});
+  final SeatMapDataModel data;
+  final Map<String, dynamic> coordinateMap;
+}
+
+final class SeatMapError extends FlightState {
+  const SeatMapError({required this.message});
+  final String message;
+}
