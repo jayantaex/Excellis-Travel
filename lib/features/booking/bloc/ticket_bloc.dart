@@ -51,8 +51,6 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
       if (res.data != null) {
         BookingListModel tickets;
 
-        log('📄 Page: ${event.page}, Received: ${res.data!.bookings?.length ?? 0} bookings');
-
         // Check if this is a filter reset (page 1 with filters)
         if (event.page == 1 &&
             (event.startDate.isNotEmpty ||
@@ -60,15 +58,11 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
                 event.bookingId.isNotEmpty ||
                 event.status.isNotEmpty)) {
           // Start fresh with filtered data
-          log('🔍 Filter applied - starting fresh');
           tickets = res.data!;
         } else if (currentState is TicketLoaded && event.page > 1) {
           // Append new bookings to existing ones for pagination
           final existingBookings = currentState.tickets.bookings ?? [];
           final newBookings = res.data!.bookings ?? [];
-
-          log('➕ Pagination - Existing: ${existingBookings.length}, New: ${newBookings.length}, Total: ${existingBookings.length + newBookings.length}');
-
           // Create a new BookingListModel with merged bookings
           tickets = BookingListModel(
             bookings: [...existingBookings, ...newBookings],
@@ -76,10 +70,8 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
           );
         } else {
           // Initial load or page 1 without filters
-          log('🆕 Initial load');
           tickets = res.data!;
         }
-
         emit(
           TicketLoaded(
             tickets: tickets,

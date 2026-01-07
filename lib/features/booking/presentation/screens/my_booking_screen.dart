@@ -12,6 +12,7 @@ import '../../../profile_management/bloc/profile_bloc.dart';
 import '../../bloc/ticket_bloc.dart';
 import '../../data/models/ticket_model.dart' show Booking;
 import '../widgets/booking_filter_sheet.dart';
+import '../widgets/loading_ticket_card.dart';
 import '../widgets/ticket_widget.dart';
 
 class MyBookingScreen extends StatefulWidget {
@@ -26,7 +27,6 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
   final int limit = 10;
   int totalItems = 10;
   final ScrollController _scrollController = ScrollController();
-
   final TextEditingController _bookingIdController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
@@ -83,59 +83,77 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
               AppCustomAppbar(
                 isBackButtonRequired: false,
                 centerTitle: 'My Bookings',
-                trailing: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.white.withValues(alpha: 0.1),
-                    child: IconButton(
-                      onPressed: () async {
-                        await showAppSheet(
-                          context: context,
-                          title: 'Filter',
-                          child: TicketFilterSheet(
-                            bookingIdController: _bookingIdController,
-                            startDateController: _startDateController,
-                            endDateController: _endDateController,
-                            selectedStatus: _selectedStatus,
-                            selectedDateType: _selectedDateType,
-                            onStatusChanged: (String? status) {
-                              _selectedStatus = status ?? '';
+                trailing: BlocBuilder<TicketBloc, TicketState>(
+                  bloc: context.read<TicketBloc>(),
+                  builder: (context, state) {
+                    if (state is TicketLoading) {
+                      return const SizedBox();
+                    }
+                    if (state is TicketError) {
+                      return const SizedBox();
+                    }
+                    if (state is TicketLoaded) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: CircleAvatar(
+                          backgroundColor:
+                              AppColors.white.withValues(alpha: 0.1),
+                          child: IconButton(
+                            onPressed: () async {
+                              await showAppSheet(
+                                context: context,
+                                title: 'Filter',
+                                child: TicketFilterSheet(
+                                  bookingIdController: _bookingIdController,
+                                  startDateController: _startDateController,
+                                  endDateController: _endDateController,
+                                  selectedStatus: _selectedStatus,
+                                  selectedDateType: _selectedDateType,
+                                  onStatusChanged: (String? status) {
+                                    _selectedStatus = status ?? '';
+                                  },
+                                  onDateTypeChanged: (String? dateType) {
+                                    _selectedDateType =
+                                        dateType ?? 'bookingdate';
+                                  },
+                                  onStartDatePicked: (DateTime picked) {
+                                    _pickedStartDate = AppHelpers.formatDate(
+                                        picked,
+                                        pattern: 'yyyy-MM-dd');
+                                  },
+                                  onEndDatePicked: (DateTime picked) {
+                                    _pickedEndDate = AppHelpers.formatDate(
+                                        picked,
+                                        pattern: 'yyyy-MM-dd');
+                                  },
+                                  onSubmitPressed: () {
+                                    page = 1;
+                                    tickets = null;
+                                    fetchTickets();
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                onClosePressed: () {
+                                  _bookingIdController.clear();
+                                  _startDateController.clear();
+                                  _endDateController.clear();
+                                  _selectedStatus = '';
+                                  _selectedDateType = 'bookingdate';
+                                  _pickedStartDate = '';
+                                  _pickedEndDate = '';
+                                },
+                              );
                             },
-                            onDateTypeChanged: (String? dateType) {
-                              _selectedDateType = dateType ?? 'bookingdate';
-                            },
-                            onStartDatePicked: (DateTime picked) {
-                              _pickedStartDate = AppHelpers.formatDate(picked,
-                                  pattern: 'yyyy-MM-dd');
-                            },
-                            onEndDatePicked: (DateTime picked) {
-                              _pickedEndDate = AppHelpers.formatDate(picked,
-                                  pattern: 'yyyy-MM-dd');
-                            },
-                            onSubmitPressed: () {
-                              page = 1;
-                              tickets = null;
-                              fetchTickets();
-                              Navigator.pop(context);
-                            },
+                            icon: const Icon(
+                              Icons.filter_alt_rounded,
+                              color: AppColors.white,
+                            ),
                           ),
-                          onClosePressed: () {
-                            _bookingIdController.clear();
-                            _startDateController.clear();
-                            _endDateController.clear();
-                            _selectedStatus = '';
-                            _selectedDateType = 'bookingdate';
-                            _pickedStartDate = '';
-                            _pickedEndDate = '';
-                          },
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.filter_alt_rounded,
-                        color: AppColors.white,
-                      ),
-                    ),
-                  ),
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  },
                 ),
               ),
 
@@ -165,9 +183,12 @@ class _MyBookingScreenState extends State<MyBookingScreen> {
                           builder: (BuildContext context, TicketState state) {
                             if (state is TicketLoading ||
                                 state is TicketInitial) {
-                              return const Center(
-                                child: CircularProgressIndicator.adaptive(
-                                  backgroundColor: AppColors.white,
+                              return Expanded(
+                                child: ListView.builder(
+                                  itemCount: 5,
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          const LoadingTicketCard(),
                                 ),
                               );
                             }
