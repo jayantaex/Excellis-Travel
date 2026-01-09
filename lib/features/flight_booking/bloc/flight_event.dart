@@ -113,3 +113,8 @@ class ClearFilterEvent extends FlightEvent {
   final List<String> selectedAircraftCode;
   final List<AirlineModel> airlines;
 }
+
+class GetSeatMapDataEvent extends FlightEvent {
+  const GetSeatMapDataEvent({required this.flightOfferData});
+  final FlightOfferDatam flightOfferData;
+}

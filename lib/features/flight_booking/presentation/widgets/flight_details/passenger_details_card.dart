@@ -278,7 +278,9 @@ class PassengerTypeCard extends StatelessWidget {
                   : 'Between age 1 days to 2 years',
           style: TextStyle(
             fontSize: 10,
-            color: isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+            color: isDark
+                ? AppColors.white.withValues(alpha: 0.7)
+                : AppColors.grey,
             fontWeight: FontWeight.w400,
           )),
       trailing: allowedPassenger > currentPassenger
@@ -341,8 +343,9 @@ class PassengerCard extends StatelessWidget {
               'Gender: ${passenger.gender} | DOB: ${passenger.dateOfBirth != null ? AppHelpers.formatDate(passenger.dateOfBirth ?? DateTime.now()) : ''}',
               style: TextStyle(
                 fontSize: 12,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.7)
+                    : AppColors.grey,
                 fontWeight: FontWeight.w400,
               ),
             )
@@ -350,8 +353,9 @@ class PassengerCard extends StatelessWidget {
               'Gender: ${passenger.gender} ',
               style: TextStyle(
                 fontSize: 12,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.7)
+                    : AppColors.grey,
                 fontWeight: FontWeight.w400,
               ),
             ),

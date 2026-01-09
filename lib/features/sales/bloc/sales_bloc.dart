@@ -8,7 +8,7 @@ import '../../../core/network/api_response.dart';
 import '../data/models/markup_data_model.dart';
 import '../data/models/sates_data_model.dart';
 import '../data/repository/sales_repository.dart';
-import '../presentation/screens/child_data_model.dart';
+import '../data/models/child_data_model.dart';
 
 part 'sales_event.dart';
 part 'sales_state.dart';

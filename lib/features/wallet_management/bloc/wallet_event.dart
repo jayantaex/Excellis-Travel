@@ -18,9 +18,6 @@ class FetchWalletEvent extends WalletEvent {
   final int page;
   final int limit;
   final String? filterType;
-
-  @override
-  List<Object?> get props => [page, limit, filterType];
 }
 
 class FetchWalletTransactionsEvent extends WalletEvent {
@@ -28,13 +25,14 @@ class FetchWalletTransactionsEvent extends WalletEvent {
     required this.page,
     this.limit = 20,
     this.filterType,
+    this.isLoadingMore = false,
+    this.previousTransactions,
   });
   final int page;
   final int limit;
   final String? filterType;
-
-  @override
-  List<Object?> get props => [page, limit, filterType];
+  final bool isLoadingMore;
+  final List<Datam>? previousTransactions;
 }
 
 class FilterTransactionsEvent extends WalletEvent {
@@ -43,15 +41,6 @@ class FilterTransactionsEvent extends WalletEvent {
 
   @override
   List<Object?> get props => [filterType];
-}
-
-/// Event to submit withdrawal request
-class SubmitWithdrawalEvent extends WalletEvent {
-  const SubmitWithdrawalEvent({required this.request});
-  final WithdrawalRequestModel request;
-
-  @override
-  List<Object?> get props => [request];
 }
 
 class ChargeMoneyEvent extends WalletEvent {
@@ -79,5 +68,44 @@ class VerifyWalletOrderEvent extends WalletEvent {
 
 class RechargeWalletEvent extends WalletEvent {
   const RechargeWalletEvent({required this.body});
+  final Map<String, dynamic> body;
+}
+
+/// Event to submit withdrawal request
+class SubmitWithdrawalEvent extends WalletEvent {
+  const SubmitWithdrawalEvent({required this.body});
+  final Map<String, dynamic> body;
+
+  @override
+  List<Object?> get props => [body];
+}
+
+//fetch withdrawal requests
+class FetchWithdrawalRequestsEvent extends WalletEvent {
+  const FetchWithdrawalRequestsEvent(
+      {required this.page, required this.limit, this.status});
+  final int page;
+  final int limit;
+  final String? status;
+}
+
+class CancelWithdrawalRequestEvent extends WalletEvent {
+  const CancelWithdrawalRequestEvent({required this.requestId});
+  final int requestId;
+}
+
+class FetchCreditBalanceEvent extends WalletEvent {
+  const FetchCreditBalanceEvent();
+}
+
+class FetchCreditBalanceTransactionsEvent extends WalletEvent {
+  const FetchCreditBalanceTransactionsEvent(
+      {required this.page, required this.limit});
+  final int page;
+  final int limit;
+}
+
+class ChargeCreditWalletMoneyEvent extends WalletEvent {
+  const ChargeCreditWalletMoneyEvent({required this.body});
   final Map<String, dynamic> body;
 }

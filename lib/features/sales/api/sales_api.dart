@@ -3,7 +3,7 @@ import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
 import '../data/models/markup_data_model.dart';
 import '../data/models/sates_data_model.dart';
-import '../presentation/screens/child_data_model.dart';
+import '../data/models/child_data_model.dart';
 
 class SalesApi {
   SalesApi(this.apiClient);

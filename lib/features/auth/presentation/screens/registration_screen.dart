@@ -10,7 +10,6 @@ class RegistrationScreen extends StatelessWidget {
   const RegistrationScreen({super.key});
 
   @override
-  @override
   Widget build(BuildContext context) => PopScope(
         canPop: false,
         onPopInvokedWithResult: (bool didPop, Object? result) async {
@@ -28,15 +27,18 @@ class RegistrationScreen extends StatelessWidget {
         },
         child: Scaffold(
           backgroundColor: AppColors.black,
-          body: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Center(
-                  child: Image.asset('assets/images/app_logo.png'),
+          body: CustomScrollView(
+            slivers: <Widget>[
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 40, bottom: 20),
+                  child: Center(
+                    child: Image.asset('assets/images/app_logo.png'),
+                  ),
                 ),
               ),
-              Expanded(
+              SliverFillRemaining(
+                hasScrollBody: false,
                 child: Container(
                   alignment: Alignment.bottomCenter,
                   decoration: BoxDecoration(

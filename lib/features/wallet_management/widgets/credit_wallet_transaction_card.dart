@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+
+import '../../../core/constants/app_styles.dart';
+import '../../../core/widgets/app_sheet.dart';
+import '../data/models/custom_cr_transaction_model.dart';
+import 'credit_transaction_details.dart';
+
+class CreditWalletTransactionCard extends StatelessWidget {
+  const CreditWalletTransactionCard({
+    super.key,
+    required this.data,
+  });
+
+  final CreditTransactionData data;
+
+  @override
+  Widget build(BuildContext context) => Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(0),
+        leading: CircleAvatar(
+          backgroundColor: data.type == 'credit-transaction'
+              ? AppColors.success
+              : AppColors.error,
+          radius: 16,
+          child: Icon(
+              data.type == 'credit-transaction'
+                  ? Icons.trending_up_outlined
+                  : Icons.trending_down_outlined,
+              size: 16,
+              color: AppColors.white),
+        ),
+        title: Text(data.title ?? '',
+            style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary)),
+        subtitle: Text(data.desc ?? '',
+            style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textSecondary)),
+        trailing: const Icon(Icons.arrow_forward_ios_rounded,
+            size: 16, color: AppColors.primary),
+        onTap: () {
+          showAppSheet(
+            context: context,
+            title: 'Transaction Details',
+            child: CreditTransactionDetails(data: data),
+          );
+        },
+      ));
+}

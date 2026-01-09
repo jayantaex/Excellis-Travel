@@ -5,6 +5,7 @@ import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
 import '../../../../utils/airline_info_provider.dart' show AirlineInfoProvider;
 import '../../../../utils/app_helpers.dart' show AppHelpers;
 import '../../../../utils/get_duration.dart';
+import '../../../../utils/title_case.dart';
 import '../../data/models/ticket_model.dart';
 
 class SegmentCard extends StatelessWidget {
@@ -27,12 +28,13 @@ class SegmentCard extends StatelessWidget {
           airlineCode: data.carrierCode!, duration: data.duration!),
       subtitle: data.aircraft?.code != null
           ? Text(
-              '${data.number}| ${data.aircraft?.code}',
+              '${data.number} | ${data.aircraft?.code}',
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.7)
+                    : AppColors.grey,
               ),
             )
           : Text(
@@ -40,8 +42,9 @@ class SegmentCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.7) : AppColors.grey,
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.7)
+                    : AppColors.grey,
               ),
             ),
       children: <Widget>[
@@ -63,8 +66,9 @@ class SegmentCard extends StatelessWidget {
             style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w500,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.9) : AppColors.black
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.9)
+                    : AppColors.black
                 // color: AppColors.grey
                 ),
           ),
@@ -92,8 +96,9 @@ class SegmentCard extends StatelessWidget {
             style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w500,
-                color:
-                    isDark ? AppColors.white.withOpacity(0.9) : AppColors.black
+                color: isDark
+                    ? AppColors.white.withValues(alpha: 0.9)
+                    : AppColors.black
                 // color: AppColors.grey
                 ),
           ),
@@ -139,7 +144,7 @@ class _AirlineNameCardState extends State<AirlineNameCard> {
   Widget build(BuildContext context) {
     final bool isDark = AppHelpers.isDarkMode(context);
     return Text(
-      '$_airlineName -  ${formatIsoDuration(widget.duration)}',
+      '${toTitleCase(_airlineName)} -  ${formatIsoDuration(widget.duration)}',
       style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,

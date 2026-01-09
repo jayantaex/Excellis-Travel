@@ -19,7 +19,8 @@ import '../../../wallet_management/bloc/wallet_bloc.dart';
 import '../../bloc/flight_bloc.dart';
 import '../../data/dto/billing_address_model.dart';
 import '../../flight_booking_module.dart';
-import '../../data/models/flights_data_model.dart' show FlightDictionary, Datam;
+import '../../data/models/flights_data_model.dart'
+    show FlightDictionary, FlightOfferDatam;
 import '../../data/models/passenger_model.dart';
 import '../widgets/flight_details/baggae_card_widget.dart';
 import '../widgets/flight_details/billing_profile_management_widget.dart';
@@ -39,7 +40,7 @@ class FlightDetailsScreen extends StatefulWidget {
     required this.departureCity,
     required this.departureAirport,
   });
-  final Datam data;
+  final FlightOfferDatam data;
   final FlightDictionary flightDictionary;
   final String arivalCity;
   final String arivalAirport;
@@ -207,8 +208,9 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               final String orderId = state.data.id ?? '';
                               const String mobile = '';
                               const String email = '';
+                              log('state.paymentVia: ${state.data.amount}');
 
-                              if (state.paymentVia == 'razorpay') {
+                              if (state.paymentVia == 'Razorpay') {
                                 final int amount = state.data.amount ?? 0;
 
                                 await _razorpayService.initatePayment(
@@ -222,17 +224,29 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                 return;
                               }
                               final String amountStr =
-                                  (state.data.amount ?? 0 / 100)
+                                  ((state.data.amount ?? 0) / 100)
                                       .toStringAsFixed(2);
-                              _chargeWallet(
-                                amount: double.parse(amountStr),
-                                paymentId: state.data.paymentId ?? 0,
-                              );
+                              if (state.paymentVia == 'wallet') {
+                                await _chargeWallet(
+                                  amount: double.parse(amountStr),
+                                  paymentId: state.data.paymentId ?? 0,
+                                );
+                                return;
+                              }
+
+                              if (state.paymentVia == 'credit_wallet') {
+                                await _chargeCreditWallet(
+                                  amount: double.parse(amountStr),
+                                  bookingId: state.data.bookingId ?? 0,
+                                  paymentId: state.data.paymentId ?? 0,
+                                );
+                                return;
+                              }
                             }
 
                             if (state is FlightPaymentVerified) {
                               if (context.mounted) {
-                                context.goNamed(
+                                context.pushReplacementNamed(
                                     FlightBookingModule.passDownloadName,
                                     extra: {'data': state.data});
                               }
@@ -341,6 +355,75 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       ),
                                     ),
                                   ),
+                                  // widget.data.itineraries?.length == 1
+                                  //     ? SliverToBoxAdapter(
+                                  //         child: Padding(
+                                  //           padding: const EdgeInsets.symmetric(
+                                  //               horizontal: 8),
+                                  //           child: ListTile(
+                                  //             contentPadding:
+                                  //                 const EdgeInsets.symmetric(
+                                  //                     horizontal: 8),
+                                  //             leading: AppHelpers.svgAsset(
+                                  //                 assetName: 'seat',
+                                  //                 isIcon: true),
+                                  //             title: const Text('Choose Seat',
+                                  //                 style: TextStyle(
+                                  //                   fontSize: 14,
+                                  //                   fontWeight: FontWeight.w600,
+                                  //                 )),
+                                  //             subtitle: const Text(
+                                  //               'Choose your seat for this flight',
+                                  //               style: TextStyle(
+                                  //                 fontSize: 12,
+                                  //                 fontWeight: FontWeight.w400,
+                                  //               ),
+                                  //             ),
+                                  //             trailing: InkWell(
+                                  //               onTap: () {
+                                  //                 context.pushNamed(
+                                  //                     FlightBookingModule
+                                  //                         .seatSelectionName,
+                                  //                     extra: {
+                                  //                       'flightOffer':
+                                  //                           widget.data,
+                                  //                       'departureAirport':
+                                  //                           widget
+                                  //                                   .data
+                                  //                                   .itineraries
+                                  //                                   ?.first
+                                  //                                   .segments
+                                  //                                   ?.first
+                                  //                                   .departure
+                                  //                                   ?.iataCode ??
+                                  //                               '',
+                                  //                       'arivalAirport': widget
+                                  //                               .data
+                                  //                               .itineraries
+                                  //                               ?.first
+                                  //                               .segments
+                                  //                               ?.first
+                                  //                               .arrival
+                                  //                               ?.iataCode ??
+                                  //                           '',
+                                  //                     });
+                                  //               },
+                                  //               child: CircleAvatar(
+                                  //                 radius: 16,
+                                  //                 backgroundColor: AppColors
+                                  //                     .success
+                                  //                     .withValues(alpha: 0.2),
+                                  //                 child: const Icon(
+                                  //                   Icons.add,
+                                  //                   size: 16,
+                                  //                   color: AppColors.success,
+                                  //                 ),
+                                  //               ),
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       )
+                                  //     : const SizedBox(),
                                   SliverToBoxAdapter(
                                     child:
                                         BlocConsumer<ProfileBloc, ProfileState>(
@@ -348,12 +431,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                           curr is ProfileLoaded ||
                                           curr is ProfileError,
                                       listener: (context, state) {
-                                        log(":::::PROFILE DATA FROM STATE:::::");
-                                        log('${state}');
-                                        if (state is ProfileLoaded) {
-                                          log(":::::PROFILE DATA FROM STATE:::::");
-                                          log('${state.profileData}');
-                                        }
+                                        if (state is ProfileLoaded) {}
                                       },
                                       builder: (context, state) {
                                         if (state is ProfileLoaded) {
@@ -385,14 +463,17 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                               BlocBuilder<WalletBloc,
                                                   WalletState>(
                                                 builder: (context, state) {
-                                                  if (state is WalletLoaded) {
+                                                  if (state
+                                                      is FetchCreditBalanceSuccess) {
                                                     return OfferFareTogglerWidget(
                                                       walletBalance: state
-                                                              .wallet
-                                                              ?.balance ??
+                                                              .availableWalletBalance ??
                                                           0,
                                                       onToggle: (bool value) {
-                                                        isOfferEnabled = value;
+                                                        setState(() {
+                                                          isOfferEnabled =
+                                                              value;
+                                                        });
                                                       },
                                                       flightOffer: flightState
                                                           .data
@@ -430,7 +511,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                 ],
                               );
                             }
-                            if (flightState is FlightOrderLoading) {
+                            if (flightState is FlightOrderLoading ||
+                                flightState is FlightOrderCreated) {
                               return Center(
                                 child: SizedBox(
                                   height: 900,
@@ -453,7 +535,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                           color: isDark
-                                              ? AppColors.white.withOpacity(0.7)
+                                              ? AppColors.white
+                                                  .withValues(alpha: 0.7)
                                               : AppColors.grey,
                                         ),
                                       ),
@@ -475,6 +558,9 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
           ),
           bottomNavigationBar: BlocConsumer<WalletBloc, WalletState>(
             listener: (context, state) {
+              if (state is WalletLoaded) {
+                context.read<WalletBloc>().add(const FetchCreditBalanceEvent());
+              }
               if (state is ChargeMoneySubmitted) {
                 final Map<String, dynamic> body = {
                   'payment_id': state.paymentId,
@@ -488,11 +574,27 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                 _handlePaymentError(
                     PaymentFailureResponse(400, state.message, null));
               }
+
+              if (state is ChargeCreditWalletMoneySuccess) {
+                final Map<String, dynamic> body = {
+                  'payment_id': state.paymentId,
+                  'razorpay_order_id': null,
+                  'razorpay_payment_id': null,
+                  'razorpay_signature': null
+                };
+                _verifyPayment(body);
+              }
+
+              if (state is ChargeCreditWalletMoneyError) {
+                _handlePaymentError(
+                    PaymentFailureResponse(400, state.message, null));
+              }
             },
             builder: (context, state) {
-              if (state is WalletLoaded) {
+              if (state is FetchCreditBalanceSuccess) {
                 return ProceedToPayWidget(
-                  walletBalance: state.wallet?.balance ?? 0.0,
+                  walletBalance: state.availableWalletBalance ?? 0.0,
+                  creditWalletBalance: state.data?.data?.balance ?? 0.0,
                   passengers: passengers,
                   offerFareEnabled: isOfferEnabled,
                   billingAddress: _billingAddress,
@@ -522,7 +624,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
   Future<void> _handlePaymentError(PaymentFailureResponse response) async {
     final String failureMessage = _extractPaymentFailureMessage(response);
     if (!mounted) return;
-    context.pushNamed(
+    context.pushReplacementNamed(
       PaymentModule.paymentFailedName,
       queryParameters: {'message': failureMessage},
     );
@@ -578,6 +680,23 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
             amount: amount,
             description: 'Flight Booking',
             paymentId: paymentId,
+          ),
+        );
+  }
+
+  Future<void> _chargeCreditWallet(
+      {required double amount,
+      required int bookingId,
+      required int paymentId}) async {
+    final Map<String, dynamic> body = {
+      'amount': amount,
+      'description': 'Flight Booking via Credit Wallet',
+      'relatedBookingId': bookingId,
+      'paymentId': paymentId,
+    };
+    context.read<WalletBloc>().add(
+          ChargeCreditWalletMoneyEvent(
+            body: body,
           ),
         );
   }

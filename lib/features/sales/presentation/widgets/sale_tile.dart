@@ -83,7 +83,8 @@ class SaleTile extends StatelessWidget {
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
-                              '₹${commission.booking?.totalAmount ?? '0'}',
+                              AppHelpers.formatCurrency(double.parse(
+                                  commission.booking?.totalAmount ?? '0.0')),
                               style: const TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w700,
@@ -111,7 +112,7 @@ class SaleTile extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 11,
                               color: isDark
-                                  ? AppColors.white.withOpacity(0.7)
+                                  ? AppColors.white.withValues(alpha: 0.7)
                                   : AppColors.grey.withValues(alpha: 0.8),
                               fontWeight: FontWeight.w500,
                             ),
@@ -127,7 +128,7 @@ class SaleTile extends StatelessWidget {
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
-                              'Earned: ₹${commission.commissionAmount ?? '0'}',
+                              'Earned: ${AppHelpers.formatCurrency(double.parse(commission.commissionAmount ?? '0.0'))}',
                               style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w400,

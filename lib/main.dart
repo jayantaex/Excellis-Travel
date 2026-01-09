@@ -10,14 +10,17 @@ import 'utils/storage_service.dart';
 import 'app_router.dart';
 
 void main() async {
+  final bool firebaseSetup = true;
   WidgetsFlutterBinding.ensureInitialized();
   await StorageService.init();
-  Platform.isIOS ? null : await Firebase.initializeApp();
-  Platform.isIOS
-      ? null
-      : await FirebaseNotificationService.instance.initialize();
   await LocalDB().initLocalDB();
+
   await EasyLocalization.ensureInitialized();
+  if (firebaseSetup) {
+    await Firebase.initializeApp();
+    await FirebaseNotificationService.instance.initialize();
+  }
+
   runApp(
     EasyLocalization(
       supportedLocales: supportedLocales(),

@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 
 class AppConstants {
   static const String env = 'development';
-  // API
+  // static const String baseUrl = 'http://192.168.0.169:5000/api/v1';
   static const String baseUrl = 'https://api.excellistravel.com';
-  static const String amaduesUrl = 'https://api.amadeus.com';
+  static const String amaduesUrl = 'https://test.api.amadeus.com';
   static String imageKitUrl = 'https://ik.imagekit.io';
   static const String privacyPolicy = 'https://github.com/';
   static const String termsAndConditions = 'https://github.com/';
@@ -18,7 +18,7 @@ class AppConstants {
   static const String userDataKey = 'user_data';
   static const String isFirstTimeKey = 'is_first_time';
   static const String amadeusKey = 'amadeus_key';
-  //hive
+  //hive keys
   static const String flightBox = 'flight_data';
   static String airPortBox = 'air_port_data';
 
@@ -41,10 +41,12 @@ class AppConstants {
   static const String amadeusClientId = 'an0lZ3ODCbziRyhA4D3x2KnPbJ301mHp';
   static const String amadeusSecret = 'u6WaWZ0rR0Gt8tFx';
 
-  //assetUrl
+  // Local asset Url
   static const String assetImageUrl = 'assets/images/';
   static const String assetIcontUrl = 'assets/icons/';
   static const String imageNotFound = 'assets/images/image_not_found.png';
+
+  static const String airCraftBox = 'air_craft_data';
 
   //Legality
 }

@@ -25,6 +25,19 @@ final class TicketLoaded extends TicketState {
   List<Object> get props => [timestamp, isLoadingMore];
 }
 
+final class MarkupUpdated extends TicketState {
+  const MarkupUpdated();
+}
+
+final class MarkupDeleted extends TicketState {
+  const MarkupDeleted();
+}
+
+final class MarkupRetrieved extends TicketState {
+  const MarkupRetrieved({this.markup});
+  final double? markup;
+}
+
 final class TicketError extends TicketState {
   const TicketError({required this.err});
   final String err;

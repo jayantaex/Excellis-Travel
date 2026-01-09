@@ -11,6 +11,9 @@ part 'ticket_state.dart';
 class TicketBloc extends Bloc<TicketEvent, TicketState> {
   TicketBloc({required this.repository}) : super(TicketInitial()) {
     on<FetchTickets>(_handleFetchTickets);
+    on<UpdateMarkup>(_handleUpdateMarkup);
+    on<DeleteAllMarkup>(_handleDeleteAllMarkup);
+    on<GetMarkup>(_handleGetMarkup);
   }
   final TicketsRepository repository;
 
@@ -48,8 +51,6 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
       if (res.data != null) {
         BookingListModel tickets;
 
-        log('📄 Page: ${event.page}, Received: ${res.data!.bookings?.length ?? 0} bookings');
-
         // Check if this is a filter reset (page 1 with filters)
         if (event.page == 1 &&
             (event.startDate.isNotEmpty ||
@@ -57,15 +58,11 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
                 event.bookingId.isNotEmpty ||
                 event.status.isNotEmpty)) {
           // Start fresh with filtered data
-          log('🔍 Filter applied - starting fresh');
           tickets = res.data!;
         } else if (currentState is TicketLoaded && event.page > 1) {
           // Append new bookings to existing ones for pagination
           final existingBookings = currentState.tickets.bookings ?? [];
           final newBookings = res.data!.bookings ?? [];
-
-          log('➕ Pagination - Existing: ${existingBookings.length}, New: ${newBookings.length}, Total: ${existingBookings.length + newBookings.length}');
-
           // Create a new BookingListModel with merged bookings
           tickets = BookingListModel(
             bookings: [...existingBookings, ...newBookings],
@@ -73,10 +70,8 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
           );
         } else {
           // Initial load or page 1 without filters
-          log('🆕 Initial load');
           tickets = res.data!;
         }
-
         emit(
           TicketLoaded(
             tickets: tickets,
@@ -97,6 +92,51 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
         } else {
           emit(TicketError(err: res.errorMessage ?? 'Something went wrong'));
         }
+      }
+    } catch (e) {
+      emit(TicketError(err: e.toString()));
+    }
+  }
+
+  Future<void> _handleUpdateMarkup(
+      UpdateMarkup event, Emitter<TicketState> emit) async {
+    try {
+      emit(TicketLoading());
+      final ApiResponse<bool> res = await repository.updateMarkup(
+        bookingId: event.bookingId,
+        markup: event.markup,
+      );
+      if (res.data != null) {
+        await repository.saveMarkup(event.bookingId, event.markup);
+        emit(const MarkupUpdated());
+      } else {
+        emit(TicketError(err: res.errorMessage ?? 'Something went wrong'));
+      }
+    } catch (e) {
+      emit(TicketError(err: e.toString()));
+    }
+  }
+
+  Future<void> _handleDeleteAllMarkup(
+      DeleteAllMarkup event, Emitter<TicketState> emit) async {
+    try {
+      emit(TicketLoading());
+      await repository.deleteAll();
+      emit(const MarkupDeleted());
+    } catch (e) {
+      emit(TicketError(err: e.toString()));
+    }
+  }
+
+  Future<void> _handleGetMarkup(
+      GetMarkup event, Emitter<TicketState> emit) async {
+    try {
+      emit(TicketLoading());
+      final double? markup = await repository.getMarkup(event.bookingId);
+      if (markup != null) {
+        emit(MarkupRetrieved(markup: markup));
+      } else {
+        emit(const MarkupRetrieved(markup: null));
       }
     } catch (e) {
       emit(TicketError(err: e.toString()));

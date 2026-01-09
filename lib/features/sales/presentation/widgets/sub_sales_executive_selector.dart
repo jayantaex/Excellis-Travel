@@ -3,7 +3,7 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/text_widget.dart';
 import '../../../../utils/app_helpers.dart';
-import '../screens/child_data_model.dart';
+import '../../data/models/child_data_model.dart';
 
 class SubSalesExecutiveSelector extends StatefulWidget {
   const SubSalesExecutiveSelector(

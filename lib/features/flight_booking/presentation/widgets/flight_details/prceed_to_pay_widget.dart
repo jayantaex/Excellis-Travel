@@ -18,12 +18,14 @@ class ProceedToPayWidget extends StatefulWidget {
     required this.passengers,
     required this.offerFareEnabled,
     required this.walletBalance,
+    required this.creditWalletBalance,
     this.billingAddress,
   });
 
   final List<PassengerModel> passengers;
   final bool offerFareEnabled;
   final double walletBalance;
+  final double creditWalletBalance;
   final BillingAddressModel? billingAddress;
 
   @override
@@ -42,6 +44,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
   String paymentMode = 'wallet';
   final List<Map<String, dynamic>> paymentModes = [
     {'name': 'Excellis Wallet', 'value': 'wallet', 'icon': 'wallet'},
+    {'name': 'Credit Wallet', 'value': 'credit_wallet', 'icon': 'creditWallet'},
     {'name': 'Razorpay', 'value': 'Razorpay', 'icon': 'razorpay'}
   ];
 
@@ -118,7 +121,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                                               double.parse(grandTotal) >
                                                       widget.walletBalance
                                                   ? 'Insufficient Balance'
-                                                  : 'Available Balance: ₹${widget.walletBalance}',
+                                                  : 'Available Balance: ${AppHelpers.formatCurrency(widget.walletBalance)}',
                                               style: TextStyle(
                                                 color:
                                                     double.parse(grandTotal) >
@@ -128,7 +131,30 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                                                 fontSize: 12,
                                               ),
                                             )
-                                          : null,
+                                          : paymentModes[i]['value'] ==
+                                                  'credit_wallet'
+                                              ? Text(
+                                                  double.parse(grandTotal) >
+                                                          widget
+                                                              .creditWalletBalance
+                                                      ? 'Insufficient Balance'
+                                                      : 'Available Balance: ${AppHelpers.formatCurrency(widget.creditWalletBalance)}',
+                                                  style: TextStyle(
+                                                    color: double.parse(
+                                                                grandTotal) >
+                                                            widget.walletBalance
+                                                        ? AppColors.error
+                                                        : AppColors.success,
+                                                    fontSize: 12,
+                                                  ),
+                                                )
+                                              : const Text(
+                                                  'Pay with UPI/Cards/Banking Options',
+                                                  style: TextStyle(
+                                                    color: AppColors.grey,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
                                       trailing: paymentMode ==
                                               paymentModes[i]['value']
                                           ? const Icon(
@@ -144,8 +170,11 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                         contentPadding: const EdgeInsets.all(0),
                         horizontalTitleGap: 8,
                         leading: AppHelpers.assetImage(
-                          assetName:
-                              paymentMode == 'wallet' ? 'wallet' : 'razorpay',
+                          assetName: paymentMode == 'wallet'
+                              ? 'wallet'
+                              : paymentMode == 'credit_wallet'
+                                  ? 'creditWallet'
+                                  : 'razorpay',
                           width: 20,
                           height: 20,
                         ),
@@ -191,6 +220,15 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                                   context, 'Insufficient balance in wallet');
                               return;
                             }
+
+                            if (paymentMode == 'credit_wallet' &&
+                                widget.creditWalletBalance <
+                                    double.parse(grandTotal)) {
+                              AppHelpers.showSnackBar(context,
+                                  'Insufficient balance in credit wallet');
+                              return;
+                            }
+
                             if (travellersCount != widget.passengers.length) {
                               AppHelpers.showSnackBar(context,
                                   'Add all the travellers to proceed with flight booking');
@@ -244,6 +282,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                               myMarkupType: myMarkup?.fareType ?? 'Fixed',
                             );
                             createPaymentBody = getCreatePaymentBody(
+                              paymentMethod: paymentMode,
                               markupPrice: markup,
                               myMarkupPrice: myMarkup?.value ?? '0',
                               myMarkupType: myMarkup?.type ?? 'Fixed',
@@ -254,7 +293,7 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                               fareDetails: fareDetails,
                               isOfferEnabled: widget.offerFareEnabled,
                             );
-                            log(billingAddress.toString());
+
                             if (context.mounted) {
                               context.read<WalletBloc>().add(
                                     const FetchWalletEvent(),
@@ -299,6 +338,7 @@ Map<String, dynamic> getCreatePaymentBody(
         required String markupPrice,
         required String myMarkupPrice,
         required String myMarkupType,
+        required String paymentMethod,
         required Map<String, dynamic> billingAddress}) =>
     <String, dynamic>{
       'flightOffer': flightOfferData,
@@ -312,7 +352,8 @@ Map<String, dynamic> getCreatePaymentBody(
               basePrice: markupPrice,
               type: myMarkupType,
               value: myMarkupPrice))),
-      'currency': 'INR'
+      'currency': 'INR',
+      'paymentMethod': paymentMethod.toLowerCase(),
     };
 
 Map<String, dynamic> getBillingAddress(

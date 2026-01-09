@@ -9,6 +9,7 @@ class OrderModel {
       this.entity,
       this.id,
       this.paymentId,
+      this.bookingId,
       this.notes,
       this.offerId,
       this.receipt,
@@ -27,6 +28,7 @@ class OrderModel {
     offerId = json['offer_id'];
     receipt = json['receipt'];
     status = json['status'];
+    bookingId = json['booking_id'];
     paymentId = int.parse(json['receipt'].split('_')[1]);
   }
   int? amount;
@@ -38,6 +40,7 @@ class OrderModel {
   String? entity;
   String? id;
   int? paymentId;
+  int? bookingId;
   Notes? notes;
   String? offerId;
   String? receipt;

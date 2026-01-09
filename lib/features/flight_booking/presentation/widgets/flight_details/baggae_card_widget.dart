@@ -44,7 +44,7 @@ class BaggaeCardWidget extends StatelessWidget {
           fontSize: 10,
           fontWeight: FontWeight.w400,
           color: isDark
-              ? AppColors.white.withOpacity(0.7)
+              ? AppColors.white.withValues(alpha: 0.7)
               : AppColors.textSecondary,
         ),
       ),

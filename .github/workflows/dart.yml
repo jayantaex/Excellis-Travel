@@ -6,9 +6,9 @@ on:
       - dev
     tags:
       - 'v*'
-  pull_request:
-    branches:
-      - dev
+  # pull_request:
+  #   branches:
+  #     - dev
 
 jobs:
   build-and-distribute:
@@ -41,4 +41,3 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           groups: excellis-testers
           file: build/app/outputs/flutter-apk/app-release.apk
-

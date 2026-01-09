@@ -51,11 +51,12 @@ class AmadeusClient {
   // API request method GET
   Future<ApiResponse<T>> getRequest<T>(
       {required String endPoint,
+      Options? options,
       required T Function(Map<String, dynamic>) fromJson,
       Map<String, dynamic>? queryParameters}) async {
     try {
-      final Response response =
-          await _dio.get(endPoint, queryParameters: queryParameters);
+      final Response response = await _dio.get(endPoint,
+          queryParameters: queryParameters, options: options);
       final data = fromJson(response.data);
       return ApiResponse<T>(data: data, statusCode: response.statusCode ?? 0);
     } on DioException catch (e) {

@@ -4,9 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-
 import '../core/constants/app_constants.dart';
-import '../core/constants/app_styles.dart';
 
 class AppHelpers {
   // Date formatting
@@ -40,8 +38,11 @@ class AppHelpers {
   }
 
   // Number formatting
-  static String formatCurrency(double amount, {String symbol = '\$'}) =>
-      '$symbol${amount.toStringAsFixed(2)}';
+  static String formatCurrency(double amount, {String symbol = '\$'}) {
+    final formatter =
+        NumberFormat.currency(locale: 'en_IN', symbol: '₹', decimalDigits: 2);
+    return formatter.format(amount);
+  }
 
   static String formatNumber(num number) =>
       NumberFormat('#,###').format(number);

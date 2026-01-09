@@ -3,11 +3,14 @@ import 'dart:developer';
 import '../../../core/network/api_client.dart';
 import '../../../core/network/api_response.dart';
 import '../../../core/network/api_urls.dart';
+import '../data/models/credit_balance_model.dart';
+import '../data/models/credit_balance_transaction_model.dart';
+import '../data/models/custom_cr_transaction_model.dart';
 import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart';
 import '../data/models/wallet_model.dart';
 import '../data/models/wallet_order_model.dart';
-import '../data/models/withdrawal_request_model.dart';
+import '../data/models/withdrawl_request_data_model.dart';
 
 class WalletApi {
   WalletApi(this.apiClient);
@@ -41,21 +44,6 @@ class WalletApi {
       );
     } catch (e) {
       log(e.toString());
-      return ApiResponse(statusCode: 400, errorMessage: e.toString());
-    }
-  }
-
-  /// Submit withdrawal request
-  Future<ApiResponse<void>> submitWithdrawalRequest({
-    required WithdrawalRequestModel request,
-  }) async {
-    try {
-      return await apiClient.postRequest(
-        endPoint: EndPoints.refreshToken,
-        reqModel: request.toJson(),
-        fromJson: (json) {},
-      );
-    } catch (e) {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());
     }
   }
@@ -99,6 +87,165 @@ class WalletApi {
       return await apiClient.postRequest(
         reqModel: body,
         endPoint: EndPoints.walletRecharge,
+        fromJson: (json) => json['success'],
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+//submit withdrawal request
+  Future<ApiResponse<bool>> submitWithdrawalRequest(
+      {required Map<String, dynamic> body}) async {
+    try {
+      return await apiClient.postRequest(
+        reqModel: body,
+        endPoint: EndPoints.requestWithdrawal,
+        fromJson: (json) => json['success'],
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+//fetch withdrawal requests
+  Future<ApiResponse<WithdrawlRequestDataModel>> fetchWithdrawalRequests({
+    required int page,
+    required int limit,
+    required String? status,
+  }) async {
+    try {
+      final Map<String, dynamic> queryParameters = <String, dynamic>{
+        'page': page,
+        'limit': limit,
+      };
+      if (status != null) {
+        queryParameters['status'] = status;
+      }
+      return await apiClient.getRequest(
+        endPoint: EndPoints.withdrawalRequests,
+        queryParameters: queryParameters,
+        fromJson: (json) => WithdrawlRequestDataModel.fromJson(json),
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  Future<ApiResponse<bool>> cancelWithdrawalRequest({
+    required int requestId,
+  }) async {
+    try {
+      return await apiClient.postRequest(
+        endPoint: '${EndPoints.cancelWithdrawalRequest}$requestId/cancel',
+        fromJson: (json) => json['success'],
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+//fetch credit balance
+  Future<ApiResponse<CreditBalanceModel>> fetchCreditBalance() async {
+    try {
+      return await apiClient.getRequest(
+        endPoint: EndPoints.getCreditBalance,
+        fromJson: (json) => CreditBalanceModel.fromJson(json),
+      );
+    } catch (e) {
+      log(e.toString());
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  Future<ApiResponse<CurstomCrTransactionModel>>
+      fetchCreditBalanceTransactions({
+    required int page,
+    required int limit,
+  }) async {
+    try {
+      Map<String, dynamic> bookinData = <String, dynamic>{};
+      Map<String, dynamic> transactionData = <String, dynamic>{};
+      final Map<String, dynamic> allData = <String, dynamic>{
+        'summary': <String, dynamic>{
+          'totalCredits': 0,
+          'totalPending': 0,
+          'totalRepaid': 0,
+        },
+        'data': [],
+      };
+      await apiClient.getRequest(
+        endPoint: EndPoints.getCreditBalanceTransactions,
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+        },
+        fromJson: (json) {
+          transactionData = json;
+        },
+      );
+      await apiClient.getRequest(
+        endPoint: EndPoints.getBokkingViaCreditBalance,
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+        },
+        fromJson: (json) {
+          bookinData = json;
+        },
+      );
+      allData['summary'] = transactionData['data']['summary'];
+      transactionData['data']['data'].forEach((element) {
+        final Map<String, dynamic> data = {
+          'title': 'Credit Balance ',
+          'desc': element['description'],
+          'type': 'credit-transaction',
+          'amount': element['amount'],
+          'txnId': 'CT${element['id']}',
+          'dateTime': element['created_at'],
+          'repaymentDate': element['repayment_date'],
+          'recipient': element['recipient'],
+          'rePaymentStatus': element['repayment_status'],
+          'autoDeductionAttempted': element['auto_deduction_attempted'],
+          'autoDeductionDate': element['auto_deduction_date'],
+          'reminderSent': element['repayment_reminder_sent'],
+        };
+
+        allData['data'].add(data);
+      });
+      bookinData['data']['bookings'].forEach((element) {
+        final Map<String, dynamic> data = {
+          'title': 'Flight Booking',
+          'desc':
+              'Flight booking from ${element['flight_data']['itineraries'][0]['segments'].first['departure']['iataCode']} to ${element['flight_data']['itineraries'][0]['segments'].last['arrival']['iataCode']}',
+          'type': 'flight-booking',
+          'amount': element['total_amount'],
+          'txnId': 'BK${element['id']}',
+          'dateTime': element['created_at'],
+          'paymentReference': element['payment']['payment_reference'],
+          'bookingStatus': element['booking_status'],
+        };
+
+        allData['data'].add(data);
+      });
+      //filter it according to createdAt
+      allData['data'].sort((a, b) => DateTime.parse(a['dateTime'])
+          .compareTo(DateTime.parse(b['dateTime'])));
+      return ApiResponse(
+          statusCode: 200, data: CurstomCrTransactionModel.fromJson(allData));
+    } catch (e) {
+      log(e.toString());
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+// credit wallet charge money
+  Future<ApiResponse<bool>> chargeCreditWalletMoney(
+      {required Map<String, dynamic> body}) async {
+    try {
+      return await apiClient.postRequest(
+        reqModel: body,
+        endPoint: EndPoints.chargeCreditWallet,
         fromJson: (json) => json['success'],
       );
     } catch (e) {

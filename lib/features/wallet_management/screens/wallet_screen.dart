@@ -1,14 +1,16 @@
-import 'package:excellistravel/core/constants/app_styles.dart';
-import 'package:excellistravel/core/widgets/app_sheet.dart';
-import 'package:excellistravel/features/payment/payment_module.dart';
-import 'package:excellistravel/utils/app_helpers.dart';
-import 'package:excellistravel/core/widgets/app_custom_appbar.dart';
-import 'package:excellistravel/core/widgets/app_gradient_bg.dart';
-import 'package:excellistravel/core/widgets/trans_white_bg_widget.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/constants/app_styles.dart';
 import '../../../core/errors/error_screen.dart';
+import '../../../core/widgets/app_custom_appbar.dart';
+import '../../../core/widgets/app_gradient_bg.dart';
+import '../../../core/widgets/app_sheet.dart';
+import '../../../core/widgets/trans_white_bg_widget.dart';
+import '../../../utils/app_helpers.dart';
+import '../../payment/payment_module.dart';
 import '../bloc/wallet_bloc.dart';
 import '../data/models/transaction_model.dart';
 import '../widgets/deposit_sheet.dart';
@@ -26,17 +28,17 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int page = 1;
-  int limit = 10;
+  int limit = 2000000;
   String selectedFilter = 'all';
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _amountController =
       TextEditingController(text: '10000');
+  bool _isFetching = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
+    // _scrollController.addListener(_onScroll);
     _fetchWalletBalance();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() {
@@ -59,23 +61,6 @@ class _WalletScreenState extends State<WalletScreen>
     });
   }
 
-  void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 200) {
-      // Load more when 200px from bottom
-      final state = context.read<WalletBloc>().state;
-      if (state is WalletLoaded && !state.isLoadingMore) {
-        final pagination = state.pagination;
-        if (pagination != null && pagination.hasNext == true) {
-          setState(() {
-            page++;
-          });
-          _fetchWalletTransactions(page: page, limit: limit);
-        }
-      }
-    }
-  }
-
   @override
   void dispose() {
     _tabController.dispose();
@@ -84,16 +69,16 @@ class _WalletScreenState extends State<WalletScreen>
     super.dispose();
   }
 
-  List<Datam> _getFilteredTransactions(List<Datam> allTransactions) {
+  List<Datam>? _getFilteredTransactions(TransactionDataModel? transactions) {
     if (selectedFilter == 'all') {
-      return allTransactions;
+      return transactions?.datam ?? [];
     } else if (selectedFilter == 'credit') {
-      return allTransactions
-          .where((txn) => txn.transactionType?.toLowerCase() == 'credit')
+      return transactions?.datam
+          ?.where((txn) => txn.transactionType?.toLowerCase() == 'credit')
           .toList();
     } else {
-      return allTransactions
-          .where((txn) => txn.transactionType?.toLowerCase() == 'debit')
+      return transactions?.datam
+          ?.where((txn) => txn.transactionType?.toLowerCase() == 'debit')
           .toList();
     }
   }
@@ -105,7 +90,24 @@ class _WalletScreenState extends State<WalletScreen>
             child: SafeArea(
               child: BlocConsumer<WalletBloc, WalletState>(
                 listener: (context, state) {
-                  // Listener can be used for side effects if needed
+                  if (state is WalletLoaded && !state.isLoadingMore) {
+                    _isFetching = false;
+                  }
+                  if (state is WalletError) {
+                    _isFetching = false;
+                  }
+
+                  if (state is SubmitWithdrawalSuccess) {
+                    AppHelpers.showSnackBar(
+                        context, 'Withdrawal request submitted successfully',
+                        backgroundColor: AppColors.success);
+                    _fetchWalletBalance();
+                  }
+                  if (state is SubmitWithdrawalError) {
+                    AppHelpers.showSnackBar(context, state.message,
+                        backgroundColor: AppColors.error);
+                    _fetchWalletBalance();
+                  }
                 },
                 builder: (context, state) {
                   if (state is WalletLoading) {
@@ -144,12 +146,17 @@ class _WalletScreenState extends State<WalletScreen>
                                       value: 'Withdraw Money',
                                       child: const Text('Withdraw Money'),
                                       onTap: () {
+                                        final walletBloc =
+                                            context.read<WalletBloc>();
                                         showAppSheet(
                                           context: context,
                                           title: 'Withdraw Money',
-                                          child: WithdrawalSheet(
-                                            availableBalance:
-                                                state.wallet?.balance ?? 0.0,
+                                          child: BlocProvider.value(
+                                            value: walletBloc,
+                                            child: WithdrawalSheet(
+                                              availableBalance:
+                                                  state.wallet?.balance ?? 0.0,
+                                            ),
                                           ),
                                         );
                                       },
@@ -169,8 +176,7 @@ class _WalletScreenState extends State<WalletScreen>
                                             final double doubleAmount =
                                                 double.parse(
                                                     _amountController.text);
-                                            final int amount =
-                                                (doubleAmount * 100).toInt();
+
                                             context.pushNamed(
                                                 PaymentModule
                                                     .paymentProcessingName,
@@ -208,7 +214,8 @@ class _WalletScreenState extends State<WalletScreen>
                             const SizedBox(height: 4),
                             // Total Balance
                             Text(
-                              '₹${state.wallet?.balance?.toStringAsFixed(2) ?? '0.00'}',
+                              AppHelpers.formatCurrency(
+                                  state.wallet?.balance ?? 0.0),
                               style: const TextStyle(
                                 fontSize: 36,
                                 color: AppColors.white,
@@ -253,6 +260,7 @@ class _WalletScreenState extends State<WalletScreen>
                                 ],
                               ),
                             ),
+
                             const SizedBox(height: 10),
                           ],
                         ),
@@ -333,11 +341,10 @@ class _WalletScreenState extends State<WalletScreen>
                                 child: () {
                                   final filteredTransactions =
                                       _getFilteredTransactions(
-                                    state.allTransactions,
-                                  );
+                                          state.transactions);
 
-                                  if (filteredTransactions.isEmpty &&
-                                      !state.isLoadingMore) {
+                                  if (filteredTransactions?.isEmpty ??
+                                      true && !state.isLoadingMore) {
                                     return Center(
                                       child: Column(
                                         mainAxisAlignment:
@@ -381,12 +388,13 @@ class _WalletScreenState extends State<WalletScreen>
                                       controller: _scrollController,
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20),
-                                      itemCount: filteredTransactions.length +
-                                          (state.isLoadingMore ? 1 : 0),
+                                      itemCount:
+                                          (filteredTransactions?.length ?? 0) +
+                                              (state.isLoadingMore ? 1 : 0),
                                       itemBuilder: (context, index) {
                                         // Show loading indicator at the end
                                         if (index ==
-                                            filteredTransactions.length) {
+                                            filteredTransactions?.length) {
                                           return const Padding(
                                             padding: EdgeInsets.all(16.0),
                                             child: Center(
@@ -398,22 +406,25 @@ class _WalletScreenState extends State<WalletScreen>
                                         }
 
                                         final transaction =
-                                            filteredTransactions[index];
+                                            filteredTransactions?[index];
                                         return TransactionCardWidget(
+                                          status: transaction?.status ?? '',
                                           title: transaction
-                                                  .transactionReference ??
+                                                  ?.transactionReference ??
                                               '',
                                           date: AppHelpers.formatDate(
                                               DateTime.parse(
-                                                  transaction.createdAt ??
-                                                      '2025-01-01')),
-                                          amount: transaction.amount ?? '0.00',
-                                          type: transaction.transactionType ??
+                                                transaction?.createdAt ??
+                                                    '2025-01-01',
+                                              ),
+                                              pattern: 'dd MMM yyyy'),
+                                          amount: transaction?.amount ?? '0.00',
+                                          type: transaction?.transactionType ??
                                               'debit',
                                           description:
-                                              transaction.description ?? '',
+                                              transaction?.description ?? '',
                                           transactionId: transaction
-                                                  .transactionReference ??
+                                                  ?.transactionReference ??
                                               '',
                                         );
                                       },
@@ -436,13 +447,16 @@ class _WalletScreenState extends State<WalletScreen>
       );
 
   void _fetchWalletBalance() {
-    context.read<WalletBloc>().add(const FetchWalletEvent());
+    context
+        .read<WalletBloc>()
+        .add(const FetchWalletEvent(limit: 99999999999999999, page: 1));
   }
 
   void _fetchWalletTransactions({
     required int page,
     required int limit,
   }) {
+    log('Fetching wallet transactions $page $limit');
     context.read<WalletBloc>().add(FetchWalletTransactionsEvent(
           page: page,
           limit: limit,

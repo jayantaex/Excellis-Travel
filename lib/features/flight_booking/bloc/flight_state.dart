@@ -104,3 +104,17 @@ final class FlightPaymentVerificationFailed extends FlightState {
 final class OfferPriceEnabledState extends FlightState {}
 
 final class OfferPriceDisabledState extends FlightState {}
+
+//seat map
+final class SeatMapLoading extends FlightState {}
+
+final class SeatMapLoaded extends FlightState {
+  const SeatMapLoaded({required this.data, required this.coordinateMap});
+  final SeatMapDataModel data;
+  final Map<String, dynamic> coordinateMap;
+}
+
+final class SeatMapError extends FlightState {
+  const SeatMapError({required this.message});
+  final String message;
+}

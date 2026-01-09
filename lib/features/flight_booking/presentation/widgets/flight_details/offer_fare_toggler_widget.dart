@@ -1,10 +1,10 @@
-import 'package:excellistravel/features/wallet_management/wallet_module.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
+import '../../../../wallet_management/wallet_module.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import 'pricing_details.dart';
 
@@ -51,7 +51,7 @@ class _OfferFareTogglerWidgetState extends State<OfferFareTogglerWidget> {
                 style: TextStyle(
                   fontSize: 12,
                   color: isDark
-                      ? AppColors.white.withOpacity(0.7)
+                      ? AppColors.white.withValues(alpha: 0.7)
                       : AppColors.grey,
                 )),
             trailing: ScaleTransition(
@@ -84,7 +84,7 @@ class _OfferFareTogglerWidgetState extends State<OfferFareTogglerWidget> {
             ),
           ),
           subtitle: Text(
-            'Available Balance ₹${widget.walletBalance} ',
+            'Available Balance ${AppHelpers.formatCurrency(widget.walletBalance)} ',
             style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w400,

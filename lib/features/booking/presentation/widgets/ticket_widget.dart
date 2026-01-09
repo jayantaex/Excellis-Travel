@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_styles.dart';
@@ -182,12 +183,19 @@ class _TicketWidgetState extends State<TicketWidget> {
                                         color: AppColors.primary
                                             .withValues(alpha: 0.3),
                                       ),
-                                      Text(
-                                        '${widget.ticketData?.flightData?.itineraries?.first.segments?.length ?? 0} stops',
-                                        style: const TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400),
-                                      ),
+                                      widget.ticketData?.flightData?.itineraries
+                                                  ?.first.segments?.length ==
+                                              1
+                                          ? const Text('Non Stop',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400))
+                                          : Text(
+                                              '${(widget.ticketData?.flightData?.itineraries?.first.segments?.length ?? 0) - 1} stops',
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
                                     ],
                                   ),
                                 ],
@@ -232,7 +240,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     DottedBorder(
                         options: CustomPathDottedBorderOptions(
                           customPath: (Size size) => Path()
@@ -296,13 +304,40 @@ class _TicketWidgetState extends State<TicketWidget> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            widget.ticketData?.bookingReference ?? '',
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
+                          SizedBox(
+                            height: 30,
+                            width: AppHelpers.getScreenWidth(context) * 0.6,
+                            child: Row(
+                              children: [
+                                Text(
+                                  widget.ticketData?.bookingReference ?? '',
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                SizedBox(
+                                  width: 45,
+                                  height: 40,
+                                  child: IconButton(
+                                      onPressed: () {
+                                        Clipboard.setData(ClipboardData(
+                                          text: widget.ticketData
+                                                  ?.bookingReference ??
+                                              '',
+                                        ));
+                                      },
+                                      icon: const Icon(
+                                        Icons.copy,
+                                        color: AppColors.grey,
+                                        size: 12,
+                                      )),
+                                )
+                              ],
+                            ),
                           ),
                           Text(
-                            '₹${widget.ticketData?.totalAmount ?? 0.00}',
+                            AppHelpers.formatCurrency(double.parse(
+                                widget.ticketData?.totalAmount ?? '0.0')),
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w500),
                           ),

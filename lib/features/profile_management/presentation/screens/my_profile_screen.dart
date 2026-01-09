@@ -39,12 +39,22 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     <String, String>{
       'title': 'My Markup',
       'iconPath': '${AppConstants.assetIcontUrl}markup.svg',
-      'routeName': ''
+      'routeName': SalesModule.myMarkupScreen
     },
     <String, String>{
       'title': 'My Wallet',
       'iconPath': '${AppConstants.assetIcontUrl}wallet.svg',
       'routeName': WalletModule.wallet
+    },
+    <String, String>{
+      'title': 'Credit Wallet',
+      'iconPath': '${AppConstants.assetIcontUrl}credit_wallet.svg',
+      'routeName': WalletModule.creditWallet
+    },
+    <String, String>{
+      'title': 'Withdrawl Request',
+      'iconPath': '${AppConstants.assetIcontUrl}withdrawl_request.svg',
+      'routeName': WalletModule.withdrawlRequest
     },
     <String, String>{
       'title': 'Terms & Conditions',
@@ -68,13 +78,18 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     }
   ];
   bool isLogedIn = false;
+
+  void _loadProfile() {
+    context.read<ProfileBloc>().add(const LoadProfileEvent());
+  }
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
       isLogedIn = await isLogedInFun();
       if (context.mounted) {
-        context.read<ProfileBloc>().add(const LoadProfileEvent());
+        _loadProfile();
       }
     });
   }
@@ -99,7 +114,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   UserContentWidget(
                     userImage: '',
                     userName: state is ProfileLoaded
-                        ? state.profileData.firstName ?? 'Guest'
+                        ? '${state.profileData.firstName ?? ''} ${state.profileData.lastName ?? ''}'
                         : 'Guest',
                   ),
                 ],
@@ -117,109 +132,144 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 20),
-                    ...options.map(
-                      (Map<String, String> option) => ListTile(
-                        trailing: Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: isDark ? AppColors.white : AppColors.primary,
-                          size: 12,
-                        ),
-                        leading: SvgPicture.asset(
-                          option['iconPath'] ?? '',
-                          height: 20,
-                          width: 20,
-                          colorFilter: ColorFilter.mode(
-                              isDark ? AppColors.white : AppColors.primary,
-                              BlendMode.srcIn),
-                        ),
-                        title: Text(
-                          option['title'] == 'Sign Out'
-                              ? isLogedIn
-                                  ? 'Logout'
-                                  : 'Login'
-                              : option['title'] ?? '',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color:
-                                  isDark ? AppColors.white : AppColors.black),
-                        ),
-                        onTap: () async {
-                          if (option['routeName'] == 'edit_profile') {
-                            if (isLogedIn) {
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 20),
+                      ...options.map(
+                        (Map<String, String> option) => ListTile(
+                          trailing: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: isDark ? AppColors.white : AppColors.primary,
+                            size: 12,
+                          ),
+                          leading: SvgPicture.asset(
+                            option['iconPath'] ?? '',
+                            height: 20,
+                            width: 20,
+                            colorFilter: ColorFilter.mode(
+                                isDark ? AppColors.white : AppColors.primary,
+                                BlendMode.srcIn),
+                          ),
+                          title: Text(
+                            option['title'] == 'Sign Out'
+                                ? isLogedIn
+                                    ? 'Logout'
+                                    : 'Login'
+                                : option['title'] ?? '',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color:
+                                    isDark ? AppColors.white : AppColors.black),
+                          ),
+                          onTap: () async {
+                            if (option['routeName'] == 'edit_profile') {
+                              if (isLogedIn) {
+                                if (context.mounted) {
+                                  context.pushNamed(
+                                    option['routeName'] ?? '',
+                                    extra: context.read<ProfileBloc>(),
+                                  );
+                                }
+                                return;
+                              }
+                              showToast(
+                                  message: 'Please login to edit your profile');
+                              return;
+                            }
+
+                            if (option['routeName'] ==
+                                SettingsModule.routeName) {
+                              if (!isLogedIn) {
+                                showToast(
+                                    message: 'Please login to access settings');
+                                return;
+                              }
+
                               if (context.mounted) {
                                 context.pushNamed(
                                   option['routeName'] ?? '',
-                                  extra: context.read<ProfileBloc>(),
                                 );
+                                return;
                               }
-                              return;
                             }
-                            showToast(
-                                message: 'Please login to edit your profile');
-                            return;
-                          }
+                            if (option['routeName'] == WalletModule.wallet) {
+                              if (!isLogedIn) {
+                                showToast(
+                                    message: 'Please login to access wallet');
+                                return;
+                              }
 
-                          if (option['routeName'] == 'settings') {
-                            if (!isLogedIn) {
+                              if (context.mounted) {
+                                context.pushNamed(
+                                  option['routeName'] ?? '',
+                                );
+                                return;
+                              }
+                            }
+                            if (option['routeName'] ==
+                                WalletModule.creditWallet) {
+                              if (!isLogedIn) {
+                                showToast(
+                                    message: 'Please login to access wallet');
+                                return;
+                              }
+
+                              if (context.mounted) {
+                                context.pushNamed(
+                                  option['routeName'] ?? '',
+                                );
+                                return;
+                              }
+                            }
+
+                            if (option['routeName'] ==
+                                SalesModule.myMarkupScreen) {
+                              if (isLogedIn) {
+                                if (context.mounted) {
+                                  context.pushNamed(SalesModule.myMarkupScreen);
+                                }
+                                return;
+                              }
                               showToast(
-                                  message: 'Please login to access settings');
+                                  message: 'Please login to access markup');
                               return;
                             }
 
-                            if (context.mounted) {
-                              context.pushNamed(
-                                option['routeName'] ?? '',
-                              );
-                              return;
-                            }
-                          }
-
-                          if (option['title'] == 'My Markup') {
-                            if (isLogedIn) {
-                              if (context.mounted) {
-                                context.pushNamed(SalesModule.myMarkupScreen);
+                            if (option['title'] == 'Sign Out') {
+                              if (isLogedIn) {
+                                if (context.mounted) {
+                                  await showAppSheet(
+                                    context: context,
+                                    title: 'Logout',
+                                    child: const LogOutSheet(),
+                                    submitButtonRequired: true,
+                                    submitButtonTitle: 'Logout',
+                                    onSubmitPressed: () async {
+                                      await StorageService.clearTokens();
+                                      await _localDB.clearAllLocalDB();
+                                      context.mounted
+                                          ? context
+                                              .goNamed(AuthModule.loginName)
+                                          : null;
+                                    },
+                                  );
+                                }
+                                return;
                               }
-                              return;
-                            }
-                            showToast(message: 'Please login to access markup');
-                            return;
-                          }
-
-                          if (option['title'] == 'Sign Out') {
-                            if (isLogedIn) {
                               if (context.mounted) {
-                                await showAppSheet(
-                                  context: context,
-                                  title: 'Logout',
-                                  child: const LogOutSheet(),
-                                  submitButtonRequired: true,
-                                  submitButtonTitle: 'Logout',
-                                  onSubmitPressed: () async {
-                                    await StorageService.clearTokens();
-                                    await _localDB.clearAllLocalDB();
-                                    context.mounted
-                                        ? context.goNamed(AuthModule.loginName)
-                                        : null;
-                                  },
-                                );
+                                context.goNamed(AuthModule.loginName);
+                                return;
                               }
-                              return;
                             }
-                            if (context.mounted) {
-                              context.goNamed(AuthModule.loginName);
-                              return;
-                            }
-                          }
 
-                          context.pushNamed(option['routeName'] ?? '');
-                        },
-                      ),
-                    )
-                  ],
+                            context.pushNamed(option['routeName'] ?? '');
+                          },
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             )

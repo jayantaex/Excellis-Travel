@@ -2,15 +2,17 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
+import '../../wallet_management/bloc/wallet_bloc.dart';
 import '../data/models/airline_model.dart';
 import '../data/models/filter_data_model.dart';
+import '../data/models/seat_map_data_model.dart';
 import '../data/repository/flight_booking_repository.dart';
 import '../data/models/air_port_model.dart';
 import '../data/models/create_order_res.dart';
 import '../data/models/flight_offer_price_model.dart'
     show FlightOfferPriceDataModel, MyMarkup;
 import '../data/models/flights_data_model.dart'
-    show Datam, FlightsDataModel, Itinerary, Segment;
+    show FlightsDataModel, Itinerary, Segment, FlightOfferDatam;
 import '../data/models/payment_verify_res_model.dart' as payment;
 part 'flight_event.dart';
 part 'flight_state.dart';
@@ -29,6 +31,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
     on<SortFlightEvent>(_handleSortFlight);
     on<FilterFlightEvent>(_handleFilterFlight);
     on<ClearFilterEvent>(_handleClearFilter);
+    on<GetSeatMapDataEvent>(_handleGetSeatMapData);
   }
   final FlightBookingRepository repository;
 
@@ -69,7 +72,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
       final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
 
-      for (Datam element in res.data!.datam!) {
+      for (FlightOfferDatam element in res.data!.datam!) {
         final ApiResponse<double> res = await repository.getMarkUpPrice(
             basePrice: double.parse(element.price!.grandTotal!));
         element.price?.offerPrice = res.data!.toStringAsFixed(2);
@@ -85,7 +88,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           double.parse(res.data!.datam!.first.price!.publishedPrice!);
       maxPublishedFare =
           double.parse(res.data!.datam!.last.price!.publishedPrice!);
-      for (Datam flight in res.data!.datam!) {
+      for (FlightOfferDatam flight in res.data!.datam!) {
         minOfferFare = minOfferFare < double.parse(flight.price!.offerPrice!)
             ? minOfferFare
             : double.parse(flight.price!.offerPrice!);
@@ -103,7 +106,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       }
 
       final List<AirlineModel> airlines = [];
-      for (Datam flight in res.data!.datam!) {
+      for (FlightOfferDatam flight in res.data!.datam!) {
         if (flight.itineraries == null) {
           continue;
         }
@@ -140,7 +143,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       for (AirlineModel airline in airlines) {
         final String carrierCode = airline.code;
         int totalFlights = 0;
-        for (Datam flight in res.data!.datam!) {
+        for (FlightOfferDatam flight in res.data!.datam!) {
           if (flight.itineraries == null) {
             continue;
           }
@@ -207,8 +210,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       }
       emit(FlightOfferPriceLoaded(data: res.data!));
     } catch (e) {
-      log("*************************");
-      log("${e.toString()}");
       emit(FlightOfferPriceError(
         message: '$e',
       ));
@@ -559,6 +560,34 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       ));
     } catch (e) {
       emit(FlightSearchingError(message: '$e'));
+    }
+  }
+
+  Future<void> _handleGetSeatMapData(
+      GetSeatMapDataEvent event, Emitter<FlightState> emit) async {
+    try {
+      emit(SeatMapLoading());
+      final ApiResponse<SeatMapDataModel> res = await repository.getSeatMapData(
+          flightOfferData: event.flightOfferData);
+      if (res.errorMessage != null) {
+        emit(SeatMapError(message: res.errorMessage!));
+        return;
+      } else {
+        final Map<String, dynamic> coordinateMap = <String, dynamic>{};
+        if (res.data != null) {
+          res.data?.seatData?.first.decks?.first.seats?.forEach((seat) {
+            coordinateMap['${seat.coordinates?.x}-${seat.coordinates?.y}'] =
+                seat;
+          });
+          res.data?.seatData?.first.decks?.first.facilities?.forEach((seat) {
+            coordinateMap['${seat.coordinates?.x}-${seat.coordinates?.y}'] =
+                seat;
+          });
+        }
+        emit(SeatMapLoaded(data: res.data!, coordinateMap: coordinateMap));
+      }
+    } catch (e) {
+      emit(SeatMapError(message: '$e'));
     }
   }
 }

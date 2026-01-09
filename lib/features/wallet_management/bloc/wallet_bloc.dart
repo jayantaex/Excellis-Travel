@@ -2,14 +2,14 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-
 import '../../../core/network/api_response.dart';
+import '../data/models/credit_balance_model.dart';
+import '../data/models/custom_cr_transaction_model.dart';
 import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart' hide Datam;
 import '../data/models/wallet_model.dart';
 import '../data/models/wallet_order_model.dart';
-import '../data/models/withdrawal_request_model.dart';
+import '../data/models/withdrawl_request_data_model.dart';
 import '../data/repository/wallet_repository.dart';
 
 part 'wallet_event.dart';
@@ -25,6 +25,13 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<ChargeMoneyEvent>(_handleChargeMoney);
     on<VerifyWalletOrderEvent>(_handleVerifyWalletOrder);
     on<RechargeWalletEvent>(_handleRechargeWallet);
+    on<SubmitWithdrawalEvent>(_handleSubmitWithdrawal);
+    on<FetchWithdrawalRequestsEvent>(_handleFetchWithdrawalRequests);
+    on<CancelWithdrawalRequestEvent>(_handleCancelWithdrawalRequest);
+    on<FetchCreditBalanceEvent>(_handleFetchCreditBalance);
+    on<FetchCreditBalanceTransactionsEvent>(
+        _handleFetchCreditBalanceTransactions);
+    on<ChargeCreditWalletMoneyEvent>(_handleChargeCreditWalletMoney);
   }
 
   final WalletRepository walletRepository;
@@ -35,7 +42,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     if (state is! WalletLoaded) {
-      emit(WalletLoading());
+      emit(const WalletLoading());
     }
 
     final ApiResponse<WalletBalanceModel> response =
@@ -47,13 +54,10 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     );
 
     if (response.data != null) {
-      final transactions = transactionsResponse.data?.datam ?? [];
       emit(WalletLoaded(
         wallet: response.data!,
         currentFilter: event.filterType ?? 'all',
         transactions: transactionsResponse.data,
-        allTransactions: transactions,
-        pagination: transactionsResponse.data?.pagination,
       ));
     } else {
       emit(WalletError(
@@ -67,24 +71,24 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     FetchWalletTransactionsEvent event,
     Emitter<WalletState> emit,
   ) async {
+    // Capture current state and transactions before emitting loading
     final currentState = state;
+    List<Datam> previousTransactions = [];
 
-    // If loading first page, show loading state
-    if (event.page == 1) {
-      if (currentState is WalletLoaded) {
-        emit(currentState.copyWith(
-          isLoadingMore: true,
-          clearTransactions: true,
-        ));
-      } else {
-        emit(WalletLoading());
-      }
-    } else {
-      // If loading more pages, show loading more indicator
-      if (currentState is WalletLoaded) {
-        emit(currentState.copyWith(isLoadingMore: true));
-      }
+    if (currentState is WalletLoaded &&
+        currentState.transactions?.datam != null) {
+      previousTransactions = List.from(currentState.transactions!.datam!);
     }
+
+    // Emit WalletLoaded with isLoadingMore=true to show bottom loader
+    emit(WalletLoaded(
+      wallet: currentState is WalletLoaded ? currentState.wallet : null,
+      currentFilter:
+          currentState is WalletLoaded ? currentState.currentFilter : 'all',
+      transactions:
+          currentState is WalletLoaded ? currentState.transactions : null,
+      isLoadingMore: true,
+    ));
 
     final ApiResponse<TransactionDataModel> transactionsResponse =
         await walletRepository.fetchTransactions(
@@ -93,50 +97,27 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     );
 
     if (transactionsResponse.data != null) {
-      final newTransactions = transactionsResponse.data!.datam ?? [];
-      final updatedState = state;
+      final TransactionDataModel newTransactions = transactionsResponse.data!;
 
-      if (updatedState is WalletLoaded) {
-        // If page 1, replace transactions; otherwise append
-        final allTransactions = event.page == 1
-            ? newTransactions
-            : [...updatedState.allTransactions, ...newTransactions];
-
-        emit(updatedState.copyWith(
-          transactions: transactionsResponse.data,
-          allTransactions: allTransactions,
-          pagination: transactionsResponse.data?.pagination,
-          isLoadingMore: false,
-        ));
-      } else {
-        // If state is not WalletLoaded, fetch wallet first
-        final ApiResponse<WalletBalanceModel> walletResponse =
-            await walletRepository.fetchWallet();
-
-        if (walletResponse.data != null) {
-          emit(WalletLoaded(
-            wallet: walletResponse.data!,
-            currentFilter: event.filterType ?? 'all',
-            transactions: transactionsResponse.data,
-            allTransactions: newTransactions,
-            pagination: transactionsResponse.data?.pagination,
-          ));
-        } else {
-          emit(WalletError(
-            message:
-                walletResponse.errorMessage ?? 'Failed to load wallet data',
-          ));
-        }
+      // Append data if page > 1 and we have previous data
+      if (event.page > 1 && previousTransactions.isNotEmpty) {
+        final newData = newTransactions.datam ?? [];
+        // Create a new list combining previous and new data
+        newTransactions.datam = [...previousTransactions, ...newData];
       }
+
+      emit(WalletLoaded(
+        wallet: currentState is WalletLoaded ? currentState.wallet : null,
+        currentFilter:
+            currentState is WalletLoaded ? currentState.currentFilter : 'all',
+        transactions: newTransactions,
+        isLoadingMore: false,
+      ));
     } else {
-      if (currentState is WalletLoaded) {
-        emit(currentState.copyWith(isLoadingMore: false));
-      } else {
-        emit(WalletError(
-          message: transactionsResponse.errorMessage ??
-              'Failed to load transactions',
-        ));
-      }
+      emit(WalletError(
+        message:
+            transactionsResponse.errorMessage ?? 'Failed to load transactions',
+      ));
     }
   }
 
@@ -146,19 +127,21 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Emitter<WalletState> emit,
   ) async {
     final currentState = state;
-    if (currentState is WalletLoaded) {
-      // Just update the filter - filtering is done client-side
-      emit(currentState.copyWith(
-        currentFilter: event.filterType.toLowerCase(),
-      ));
-    }
+    // Removed intermediate WalletLoading emission to prevent flicker
+
+    emit(WalletLoaded(
+      wallet: currentState is WalletLoaded ? currentState.wallet : null,
+      currentFilter: event.filterType,
+      transactions:
+          currentState is WalletLoaded ? currentState.transactions : null,
+    ));
   }
 
   Future<void> _handleCreateRechargeOrder(
     CreateRechargeOrderEvent event,
     Emitter<WalletState> emit,
   ) async {
-    emit(WalletLoading());
+    emit(const WalletLoading());
     final ApiResponse<WalletOrderModel> response =
         await walletRepository.createRechargeOrder(body: event.body);
     if (response.data != null) {
@@ -176,9 +159,9 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     ChargeMoneyEvent event,
     Emitter<WalletState> emit,
   ) async {
-    emit(WalletLoading());
+    emit(const WalletLoading());
     final Map<String, dynamic> body = {
-      'amount': (event.amount / 100).toDouble(),
+      'amount': event.amount,
       'description': event.description,
     };
     emit(ChargeMoneySubmitting());
@@ -199,7 +182,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     VerifyWalletOrderEvent event,
     Emitter<WalletState> emit,
   ) async {
-    emit(WalletLoading());
+    emit(const WalletLoading());
     final ApiResponse<bool> response =
         await walletRepository.verifyWalletOrder(body: event.body);
     if (response.data != null) {
@@ -223,7 +206,7 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     RechargeWalletEvent event,
     Emitter<WalletState> emit,
   ) async {
-    emit(WalletLoading());
+    emit(const WalletLoading());
     final ApiResponse<bool> response =
         await walletRepository.rechargeWallet(body: event.body);
     if (response.data ?? false) {
@@ -234,6 +217,122 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
           message: response.errorMessage ?? 'Failed to recharge wallet',
         ),
       );
+    }
+  }
+
+  Future<void> _handleSubmitWithdrawal(
+      SubmitWithdrawalEvent event, Emitter<WalletState> emit) async {
+    emit(const WalletLoading());
+    final ApiResponse<bool> response =
+        await walletRepository.submitWithdrawalRequest(body: event.body);
+    if (response.data ?? false) {
+      emit(const SubmitWithdrawalSuccess());
+    } else {
+      emit(
+        SubmitWithdrawalError(
+          message: response.errorMessage ?? 'Failed to submit withdrawal',
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleFetchWithdrawalRequests(
+      FetchWithdrawalRequestsEvent event, Emitter<WalletState> emit) async {
+    final currentState = state;
+    if (currentState is FetchWithdrawalRequestsSuccess) {
+      emit(FetchWithdrawalRequestsLoading(
+          isLoadingMore: true, data: currentState.data));
+    } else {
+      emit(const FetchWithdrawalRequestsLoading());
+    }
+
+    final ApiResponse<WithdrawlRequestDataModel> response =
+        await walletRepository.fetchWithdrawalRequests(
+      page: event.page,
+      limit: event.limit,
+      status: event.status,
+    );
+    if (response.data != null) {
+      emit(FetchWithdrawalRequestsSuccess(data: response.data!));
+    } else {
+      emit(FetchWithdrawalRequestsError(
+          message:
+              response.errorMessage ?? 'Failed to fetch withdrawal requests'));
+    }
+  }
+
+  Future<void> _handleCancelWithdrawalRequest(
+      CancelWithdrawalRequestEvent event, Emitter<WalletState> emit) async {
+    emit(const WalletLoading());
+    final ApiResponse<bool> response = await walletRepository
+        .cancelWithdrawalRequest(requestId: event.requestId);
+    if (response.data ?? false) {
+      emit(const CancelWithdrawalRequestSuccess());
+    } else {
+      emit(CancelWithdrawalRequestError(
+          message: response.errorMessage ??
+              'Withdrawal request cancellation failed'));
+    }
+  }
+
+  Future<void> _handleFetchCreditBalance(
+      FetchCreditBalanceEvent event, Emitter<WalletState> emit) async {
+    double? availableBalance = 0;
+    final currentState = state;
+    if (currentState is WalletLoaded) {
+      availableBalance =
+          double.parse(currentState.wallet?.balance?.toString() ?? '0');
+    }
+    emit(const FetchCreditBalanceLoading());
+
+    final ApiResponse<CreditBalanceModel> response =
+        await walletRepository.fetchCreditBalance();
+    if (response.data != null) {
+      emit(FetchCreditBalanceSuccess(
+          data: response.data!, availableWalletBalance: availableBalance));
+    } else {
+      emit(FetchCreditBalanceError(
+          message: response.errorMessage ?? 'Failed to fetch credit balance'));
+    }
+  }
+
+  Future<void> _handleFetchCreditBalanceTransactions(
+      FetchCreditBalanceTransactionsEvent event,
+      Emitter<WalletState> emit) async {
+    double? availableBalance = 0;
+    final currentState = state;
+    if (currentState is FetchCreditBalanceSuccess) {
+      availableBalance =
+          double.parse(currentState.data?.data?.balance?.toString() ?? '0');
+    }
+
+    emit(const FetchCreditBalanceLoading());
+
+    final ApiResponse<CurstomCrTransactionModel> response =
+        await walletRepository.fetchCreditBalanceTransactions(
+            page: event.page, limit: event.limit);
+    if (response.data != null) {
+      emit(FetchCreditBalanceTransactionsSuccess(
+          data: response.data!, availableBalance: availableBalance));
+    } else {
+      emit(FetchCreditBalanceTransactionsError(
+          message: response.errorMessage ??
+              'Failed to fetch credit balance transactions'));
+    }
+  }
+
+  Future<void> _handleChargeCreditWalletMoney(
+      ChargeCreditWalletMoneyEvent event, Emitter<WalletState> emit) async {
+    emit(const WalletLoading());
+    final ApiResponse<bool> response =
+        await walletRepository.chargeCreditWalletMoney(body: event.body);
+    log('Response: ${response.data}');
+    if (response.data ?? false) {
+      emit(ChargeCreditWalletMoneySuccess(paymentId: event.body['paymentId']));
+    } else {
+      emit(ChargeCreditWalletMoneyError(
+          message:
+              response.errorMessage ?? 'Failed to charge credit wallet money'));
     }
   }
 }

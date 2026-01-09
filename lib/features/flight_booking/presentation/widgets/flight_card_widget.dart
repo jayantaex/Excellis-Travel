@@ -1,9 +1,9 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
 import '../../../../utils/app_helpers.dart';
+import '../../../../utils/title_case.dart';
 import '../../data/models/flights_data_model.dart';
 
 class FlightCardWidget extends StatelessWidget {
@@ -24,7 +24,7 @@ class FlightCardWidget extends StatelessWidget {
       this.departureAirport,
       this.arrivalCity,
       this.arrivalAirport});
-  final Datam data;
+  final FlightOfferDatam data;
   final FlightDictionary? dictionaries;
   final String? markUpType;
   final String? markUpValue;
@@ -440,12 +440,12 @@ class FlightCardWidget extends StatelessWidget {
                           ),
                           hasFinalPrice ?? true
                               ? Text(
-                                  '₹${data.price?.offerPrice ?? 0.00} | ₹${getCalculatedPrice(
+                                  '${AppHelpers.formatCurrency(double.parse(data.price?.offerPrice ?? '0.00'))} | ${AppHelpers.formatCurrency(double.parse(getCalculatedPrice(
                                     basePrice:
                                         data.price?.publishedPrice ?? '0.00',
                                     type: markUpType ?? 'Fixed',
                                     value: markUpValue ?? '0',
-                                  )}',
+                                  )))}',
                                   style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
@@ -744,7 +744,8 @@ class FlightCardWidget extends StatelessWidget {
                       ),
                       hasFinalPrice ?? true
                           ? Text(
-                              '₹${data.price?.offerPrice ?? 0.00}',
+                              AppHelpers.formatCurrency(double.parse(
+                                  data.price?.offerPrice ?? '0.0')),
                               style: const TextStyle(
                                   fontSize: 10, fontWeight: FontWeight.w500),
                             )

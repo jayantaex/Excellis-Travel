@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/network/api_client.dart';
-import '../profile_management/apis/profile_management_api.dart';
+import '../profile_management/data/data_source/profile_management_remote_src.dart';
 import '../profile_management/bloc/profile_bloc.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
 import 'screens/splash_screen.dart';
@@ -11,10 +11,10 @@ class SplashModule {
   static String spashName = 'Splash';
   static Widget builder() {
     final ApiClient apiClient = ApiClient();
-    final ProfileManagementApi profileApi =
-        ProfileManagementApi(apiClient: apiClient);
+    final ProfileManagementRemoteSrc profileApi =
+        ProfileManagementRemoteSrc(apiClient: apiClient);
     final ProfileManagementRepository repository =
-        ProfileManagementRepository(profileManagementApi: profileApi);
+        ProfileManagementRepository(profileManagementRemoteSrc: profileApi);
 
     return MultiBlocProvider(
       providers: [

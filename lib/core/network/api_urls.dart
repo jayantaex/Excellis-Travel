@@ -7,8 +7,8 @@ class MainUrl {
     if (env == 'production') {
       return AppConstants.baseUrl;
     } else {
-      return 'https://api.excellistravel.com';
-      // return 'http://192.168.0.215:5000/api/v1';
+      // return 'https://api.excellistravel.com';
+      return AppConstants.baseUrl;
     }
   }
 
@@ -16,7 +16,7 @@ class MainUrl {
     if (env == 'production') {
       return AppConstants.amaduesUrl;
     } else {
-      return 'https://test.api.amadeus.com';
+      return AppConstants.amaduesUrl;
     }
   }
 
@@ -38,6 +38,7 @@ class EndPoints {
   static const String amaduesAccessToken = '/v1/security/oauth2/token';
   static const String airportSearchByKeyword = '/v1/reference-data/locations';
   static const String flightSearch = '/v2/shopping/flight-offers';
+  static const String seatMap = '/v1/shopping/seatmaps';
   static const String flightOfferPrice = '/v1/shopping/flight-offers/pricing';
   static const String airlineName = '/v1/reference-data/airlines';
 
@@ -66,6 +67,7 @@ class EndPoints {
   //ticket
   static const String ticket = '/bookings/filtered-auto';
   static const String downloadFile = '/bookings';
+  static const String updateMarkup = '/bookings/update-instant-markup';
 
   //sales
   static const String sales = '/commissions/transactions-auto';
@@ -79,9 +81,17 @@ class EndPoints {
   //wallet
   static const String wallet = '/wallet/summary';
   static const String walletTransactions = '/wallet/transactions';
-
   static const String createWalletOrder = '/wallet/create-order';
   static const String verifyWalletOrder = '/wallet/verify-payment';
   static const String walletCharge = '/wallet/debit';
   static const String walletRecharge = '/wallet/credit';
+  static const String requestWithdrawal = '/withdrawals/request';
+  static const String withdrawalRequests = '/withdrawals';
+  static const String cancelWithdrawalRequest = '/withdrawals/';
+
+  static String getCreditBalance = '/credit-wallet/balance';
+
+  static String getCreditBalanceTransactions = '/credit-wallet/transactions';
+  static String getBokkingViaCreditBalance = '/credit-wallet/bookings';
+  static String chargeCreditWallet = '/credit-wallet/debit';
 }

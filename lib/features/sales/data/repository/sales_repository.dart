@@ -1,6 +1,6 @@
 import '../../../../core/network/api_response.dart';
 import '../../api/sales_api.dart';
-import '../../presentation/screens/child_data_model.dart';
+import '../models/child_data_model.dart';
 import '../models/markup_data_model.dart';
 import '../models/sates_data_model.dart';
 

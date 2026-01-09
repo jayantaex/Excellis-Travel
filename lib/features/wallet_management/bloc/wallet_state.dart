@@ -11,7 +11,18 @@ abstract class WalletState extends Equatable {
 class WalletInitial extends WalletState {}
 
 /// Loading state
-class WalletLoading extends WalletState {}
+class WalletLoading extends WalletState {
+  const WalletLoading({
+    this.wallet,
+    this.currentFilter = 'all',
+    this.transactions,
+    this.isLoadingMore = false,
+  });
+  final WalletBalanceModel? wallet;
+  final String currentFilter;
+  final TransactionDataModel? transactions;
+  final bool isLoadingMore;
+}
 
 /// Loaded state with wallet data
 class WalletLoaded extends WalletState {
@@ -19,47 +30,14 @@ class WalletLoaded extends WalletState {
 
   const WalletLoaded({
     required this.wallet,
-    this.isLoadingMore = false,
     this.currentFilter = 'all',
     this.transactions,
-    this.allTransactions = const [],
-    this.pagination,
+    this.isLoadingMore = false,
   });
   final WalletBalanceModel? wallet;
-  final bool isLoadingMore;
   final String currentFilter;
   final TransactionDataModel? transactions;
-  final List<Datam> allTransactions;
-  final Pagination? pagination;
-
-  WalletLoaded copyWith({
-    WalletBalanceModel? wallet,
-    bool? isLoadingMore,
-    String? currentFilter,
-    TransactionDataModel? transactions,
-    List<Datam>? allTransactions,
-    Pagination? pagination,
-    bool clearTransactions = false,
-  }) =>
-      WalletLoaded(
-        wallet: wallet ?? this.wallet,
-        isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-        currentFilter: currentFilter ?? this.currentFilter,
-        transactions: transactions ?? this.transactions,
-        allTransactions: clearTransactions
-            ? (allTransactions ?? [])
-            : (allTransactions ?? this.allTransactions),
-        pagination: pagination ?? this.pagination,
-      );
-
-  @override
-  List<Object?> get props => [
-        wallet,
-        isLoadingMore,
-        currentFilter,
-        allTransactions,
-        pagination,
-      ];
+  final bool isLoadingMore;
 }
 
 /// Error state
@@ -133,4 +111,82 @@ class ChargeMoneyError extends WalletState {
 
   @override
   List<Object?> get props => [message];
+}
+
+class SubmitWithdrawalSuccess extends WalletState {
+  const SubmitWithdrawalSuccess();
+}
+
+class SubmitWithdrawalError extends WalletState {
+  const SubmitWithdrawalError({required this.message});
+  final String message;
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class FetchWithdrawalRequestsSuccess extends WalletState {
+  const FetchWithdrawalRequestsSuccess({required this.data});
+  final WithdrawlRequestDataModel? data;
+}
+
+class FetchWithdrawalRequestsError extends WalletState {
+  const FetchWithdrawalRequestsError({required this.message});
+  final String message;
+}
+
+class FetchWithdrawalRequestsLoading extends WalletState {
+  const FetchWithdrawalRequestsLoading({this.isLoadingMore = false, this.data});
+  final bool isLoadingMore;
+  final WithdrawlRequestDataModel? data;
+}
+
+class CancelWithdrawalRequestSuccess extends WalletState {
+  const CancelWithdrawalRequestSuccess();
+}
+
+class CancelWithdrawalRequestError extends WalletState {
+  const CancelWithdrawalRequestError({required this.message, this.data});
+  final String message;
+  final WithdrawlRequestDataModel? data;
+}
+
+class FetchCreditBalanceLoading extends WalletState {
+  const FetchCreditBalanceLoading({this.isLoadingMore = false, this.data});
+  final bool isLoadingMore;
+  final CreditBalanceModel? data;
+}
+
+class FetchCreditBalanceSuccess extends WalletState {
+  const FetchCreditBalanceSuccess(
+      {required this.data, this.availableWalletBalance});
+  final CreditBalanceModel? data;
+  final double? availableWalletBalance;
+}
+
+class FetchCreditBalanceError extends WalletState {
+  const FetchCreditBalanceError({required this.message});
+  final String message;
+}
+
+class FetchCreditBalanceTransactionsSuccess extends WalletState {
+  const FetchCreditBalanceTransactionsSuccess(
+      {this.availableBalance, required this.data});
+  final CurstomCrTransactionModel? data;
+  final double? availableBalance;
+}
+
+class FetchCreditBalanceTransactionsError extends WalletState {
+  const FetchCreditBalanceTransactionsError({required this.message});
+  final String message;
+}
+
+class ChargeCreditWalletMoneySuccess extends WalletState {
+  const ChargeCreditWalletMoneySuccess({required this.paymentId});
+  final int paymentId;
+}
+
+class ChargeCreditWalletMoneyError extends WalletState {
+  const ChargeCreditWalletMoneyError({required this.message});
+  final String message;
 }
