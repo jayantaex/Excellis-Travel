@@ -59,7 +59,7 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: AppCustomAppbar(
-                      centerTitle: 'Withdrawl Request',
+                      centerTitle: 'Withdrawal Request',
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -67,9 +67,11 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                     child: Container(
                       width: AppHelpers.getScreenWidth(context),
                       padding: const EdgeInsets.all(16),
-                      decoration: const BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                          color: AppHelpers.isDarkMode(context)
+                              ? AppColors.cardDark
+                              : AppColors.white,
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(32),
                             topRight: Radius.circular(32),
                           )),
@@ -114,12 +116,15 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text(
-                                        'Withdrawl Requests',
+                                      Text(
+                                        'Withdrawal Requests',
                                         style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
-                                            color: AppColors.textPrimary),
+                                            color:
+                                                AppHelpers.isDarkMode(context)
+                                                    ? AppColors.white
+                                                    : AppColors.textPrimary),
                                       ),
                                       InkWell(
                                         onTap: () async {

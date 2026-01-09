@@ -477,6 +477,9 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                           height: 45,
                           width: AppHelpers.getScreenWidth(context),
                           child: AppPrimaryButton(
+                            bgColor: AppHelpers.isDarkMode(context)
+                                ? AppColors.primary
+                                : AppColors.black,
                             title: 'REGISTER',
                             isLoading: state is RegistrationInProgress,
                             onPressed: () {

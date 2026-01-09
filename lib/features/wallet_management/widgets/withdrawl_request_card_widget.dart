@@ -19,7 +19,7 @@ class WithdrawlRequestCardWidget extends StatelessWidget {
           onTap: () async {
             await showAppSheet(
                 context: context,
-                title: 'Withdrawl Request Details',
+                title: 'Withdrawal Request Details',
                 child: WithdrawlRequestDetails(request: request),
                 submitButtonTitle: 'Cancel Request',
                 submitButtonRequired:

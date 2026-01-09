@@ -302,10 +302,15 @@ class _WalletScreenState extends State<WalletScreen>
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 20),
                                 decoration: BoxDecoration(
-                                  color: AppColors.white.withValues(alpha: 0.1),
+                                  color: AppHelpers.isDarkMode(context)
+                                      ? AppColors.cardDark
+                                      : AppColors.white.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                    color: AppColors.border,
+                                    color: AppHelpers.isDarkMode(context)
+                                        ? AppColors.border
+                                            .withValues(alpha: 0.1)
+                                        : AppColors.border,
                                   ),
                                 ),
                                 child: TabBar(

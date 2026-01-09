@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/app_sheet.dart';
+import '../../../utils/app_helpers.dart';
 import '../data/models/custom_cr_transaction_model.dart';
 import 'credit_transaction_details.dart';
 
@@ -18,8 +19,15 @@ class CreditWalletTransactionCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: AppHelpers.isDarkMode(context)
+            ? AppColors.cardDark
+            : AppColors.white,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: AppHelpers.isDarkMode(context)
+              ? AppColors.border.withValues(alpha: 0.1)
+              : AppColors.border,
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.black.withValues(alpha: 0.04),
@@ -43,10 +51,12 @@ class CreditWalletTransactionCard extends StatelessWidget {
               color: AppColors.white),
         ),
         title: Text(data.title ?? '',
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary)),
+                color: AppHelpers.isDarkMode(context)
+                    ? AppColors.white
+                    : AppColors.textPrimary)),
         subtitle: Text(data.desc ?? '',
             style: const TextStyle(
                 fontSize: 12,
