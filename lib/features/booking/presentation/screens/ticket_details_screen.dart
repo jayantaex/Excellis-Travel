@@ -606,12 +606,15 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                         if (widget.ticketData?.bookingStatus ==
                                             'confirmed')
                                           ListTile(
-                                            title: const Text(
+                                            title: Text(
                                               'Invoice',
                                               style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: AppColors.black),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: isDark
+                                                    ? AppColors.white
+                                                    : AppColors.black,
+                                              ),
                                             ),
                                             subtitle: const Text(
                                               'Download the invoice for this booking',

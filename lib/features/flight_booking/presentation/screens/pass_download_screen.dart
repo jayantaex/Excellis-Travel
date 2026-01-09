@@ -55,6 +55,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
     return PopScope(
       canPop: false,
       child: Scaffold(
+        backgroundColor:
+            AppHelpers.isDarkMode(context) ? AppColors.black : AppColors.white,
         body: AppGradientBg(
           child: TransWhiteBgWidget(
             child: Center(
@@ -84,9 +86,11 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                             Container(
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 16),
-                              decoration: const BoxDecoration(
-                                color: AppColors.white,
-                                borderRadius: BorderRadius.only(
+                              decoration: BoxDecoration(
+                                color: AppHelpers.isDarkMode(context)
+                                    ? AppColors.cardDark
+                                    : AppColors.white,
+                                borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(24),
                                   topRight: Radius.circular(24),
                                 ),
@@ -140,9 +144,9 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                             subtitle: Text(
                                               '${widget.data.flightData?.itineraries?.first.segments?.first.number ?? ''} | ${widget.data.flightData?.itineraries?.first.segments?.first.aircraft?.code ?? ''}',
                                               style: const TextStyle(
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: AppColors.black),
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -221,16 +225,15 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                       fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      color: AppColors.black,
                                                     ),
                                                   ),
                                                   Text(
                                                     'T${e.segments!.first.departure!.terminal ?? 1}',
                                                     style: const TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: AppColors.black),
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
                                                   )
                                                 ],
                                               ),
@@ -325,10 +328,10 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                         pattern:
                                                             'dd MMM, yyyy'),
                                                     style: const TextStyle(
-                                                        fontSize: 11,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: AppColors.black),
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
                                                   ),
                                                   Text(
                                                     'T${e.segments!.first.arrival!.terminal ?? 1}',
@@ -336,7 +339,6 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                                       fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w500,
-                                                      color: AppColors.black,
                                                     ),
                                                   ),
                                                 ],
@@ -354,16 +356,18 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                           (e) => ListTile(
                                             contentPadding:
                                                 const EdgeInsets.all(0),
-                                            leading: const Icon(
+                                            leading: Icon(
                                                 Icons.radio_button_checked,
                                                 size: 15,
-                                                color: AppColors.black),
+                                                color: AppHelpers.isDarkMode(
+                                                        context)
+                                                    ? AppColors.white
+                                                    : AppColors.black),
                                             title: Text(
                                               '${e.departure?.iataCode ?? ''} - ${e.arrival?.iataCode ?? ''}',
                                               style: const TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
-                                                color: AppColors.black,
                                               ),
                                             ),
                                             trailing: Text(
@@ -372,7 +376,6 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                               style: const TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w500,
-                                                color: AppColors.black,
                                               ),
                                             ),
                                           ),
@@ -397,9 +400,9 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                         const Text(
                                           'Travelers',
                                           style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.black),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                         ...?widget
                                             .data.travellerDetails?.adults!
@@ -526,8 +529,10 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                 clipper: TicketClipper(),
                                 child: AnimatedContainer(
                                     duration: const Duration(milliseconds: 500),
-                                    decoration: const BoxDecoration(
-                                      color: AppColors.white,
+                                    decoration: BoxDecoration(
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.cardDark
+                                          : AppColors.white,
                                       borderRadius: BorderRadius.only(
                                         bottomLeft: Radius.circular(24),
                                         bottomRight: Radius.circular(24),
@@ -565,14 +570,9 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
           padding:
               const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 16),
           decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.grey.withValues(alpha: 0.2),
-                blurRadius: 4,
-                offset: const Offset(0, -4),
-              ),
-            ],
-            color: AppColors.white,
+            color: AppHelpers.isDarkMode(context)
+                ? AppColors.cardDark
+                : AppColors.white,
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(18),
               topRight: Radius.circular(18),

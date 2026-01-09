@@ -117,9 +117,11 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                           child: Container(
                             width: AppHelpers.getScreenWidth(context),
                             padding: const EdgeInsets.symmetric(horizontal: 16),
-                            decoration: const BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.only(
+                            decoration: BoxDecoration(
+                              color: AppHelpers.isDarkMode(context)
+                                  ? AppColors.cardDark
+                                  : AppColors.white,
+                              borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(32),
                                 topRight: Radius.circular(32),
                               ),
@@ -130,12 +132,14 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                                 const SizedBox(height: 12),
 
                                 // TAB BAR
-                                const Text(
+                                Text(
                                   'Credit Transaction History ',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
-                                      color: AppColors.textPrimary),
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : AppColors.textPrimary),
                                 ),
                                 const Text(
                                   'Showing all credit transactions (received and used) and repayment history',

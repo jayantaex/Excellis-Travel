@@ -40,6 +40,7 @@ class DepositSheet extends StatelessWidget {
               children: [
                 ..._amountList.map(
                   (amount) => InkWell(
+                    borderRadius: BorderRadius.circular(30),
                     onTap: () {
                       amountController.text = amount.toString();
                     },

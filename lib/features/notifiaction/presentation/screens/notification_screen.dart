@@ -1,5 +1,5 @@
+import 'package:excellistravel/core/widgets/app_sheet.dart';
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_styles.dart';
 import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
@@ -102,9 +102,11 @@ class NotificationScreen extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.only(top: 20),
                   width: AppHelpers.getScreenWidth(context),
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.secondaryDark
+                        : AppColors.white,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(32),
                       topRight: Radius.circular(32),
                     ),
@@ -139,12 +141,15 @@ class NotificationScreen extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        showNotificationDetailsSheet(
-          body: notification['details'],
+        showAppSheet(
           context: context,
-          title: notification['title'],
-          icon: notificationIcon,
-          color: notificationColor,
+          title: 'Notification Details',
+          child: NotificationDetailsSheet(
+            title: notification['title'],
+            body: notification['details'],
+            icon: notificationIcon,
+            color: notificationColor,
+          ),
         );
       },
       borderRadius: BorderRadius.circular(16),
@@ -153,7 +158,7 @@ class NotificationScreen extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: isRead
-              ? AppColors.white
+              ? AppColors.transparent
               : notificationColor.withValues(alpha: 0.05),
           border: Border.all(
             color: isRead
@@ -202,7 +207,9 @@ class NotificationScreen extends StatelessWidget {
                             fontSize: 15,
                             fontWeight:
                                 isRead ? FontWeight.w500 : FontWeight.w600,
-                            color: AppColors.black,
+                            color: AppHelpers.isDarkMode(context)
+                                ? AppColors.white
+                                : AppColors.black,
                           ),
                         ),
                       ),
