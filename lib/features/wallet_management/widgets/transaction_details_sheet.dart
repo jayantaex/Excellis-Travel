@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
+import '../../../utils/app_helpers.dart';
 
 class TransactionDetailsSheet extends StatelessWidget {
   const TransactionDetailsSheet({
@@ -24,27 +25,37 @@ class TransactionDetailsSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
-          _buildRow(title: 'ID : ', value: transactionId ?? 'N/A'),
-          _buildRow(title: 'Date : ', value: date),
-          _buildRow(title: 'Type : ', value: type),
-          _buildRow(title: 'Amount : ', value: amount),
-          _buildRow(title: 'Status : ', value: status),
+          _buildRow(
+              title: 'ID : ', value: transactionId ?? 'N/A', context: context),
+          _buildRow(title: 'Date : ', value: date, context: context),
+          _buildRow(title: 'Type : ', value: type, context: context),
+          _buildRow(title: 'Amount : ', value: amount, context: context),
+          _buildRow(title: 'Status : ', value: status, context: context),
         ],
       );
 }
 
-Widget _buildRow({required String title, required String value}) => Row(
-      children: [
-        Text(title,
-            style: const TextStyle(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w500,
-                fontSize: 12)),
-        const Spacer(),
-        Text(value,
-            style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w600,
-                fontSize: 10)),
-      ],
+Widget _buildRow(
+        {required String title,
+        required String value,
+        required BuildContext context}) =>
+    Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Text(title,
+              style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 12)),
+          const Spacer(),
+          Text(value,
+              style: TextStyle(
+                  color: AppHelpers.isDarkMode(context)
+                      ? AppColors.white
+                      : AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 10)),
+        ],
+      ),
     );

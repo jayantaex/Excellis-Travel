@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/primary_input.dart';
+import '../../../utils/app_helpers.dart';
 import '../bloc/wallet_bloc.dart';
 
 class WithdrawalSheet extends StatefulWidget {
@@ -41,7 +42,6 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
   @override
   Widget build(BuildContext context) => Container(
         decoration: const BoxDecoration(
-          color: AppColors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(24),
             topRight: Radius.circular(24),
@@ -87,7 +87,7 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
                         ),
                         const Spacer(),
                         Text(
-                          '₹${widget.availableBalance.toStringAsFixed(2)}',
+                          AppHelpers.formatCurrency(widget.availableBalance),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -100,10 +100,12 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
 
                   const SizedBox(height: 32),
                   AppPrimaryInput(
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.currency_rupee,
                       size: 18,
-                      color: AppColors.black,
+                      color: AppHelpers.isDarkMode(context)
+                          ? AppColors.white
+                          : AppColors.black,
                     ),
                     maxCharacters: 9,
                     keyboardType: TextInputType.number,
@@ -131,10 +133,12 @@ class _WithdrawalSheetState extends State<WithdrawalSheet> {
 
                   const SizedBox(height: 8),
                   AppPrimaryInput(
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.description,
                       size: 18,
-                      color: AppColors.black,
+                      color: AppHelpers.isDarkMode(context)
+                          ? AppColors.white
+                          : AppColors.black,
                     ),
                     maxCharacters: 500,
                     keyboardType: TextInputType.multiline,

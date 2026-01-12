@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/app_sheet.dart';
+import '../../../utils/app_helpers.dart';
 import '../../../utils/title_case.dart';
 import 'transaction_details_sheet.dart';
 
@@ -47,9 +48,15 @@ class TransactionCardWidget extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: AppHelpers.isDarkMode(context)
+              ? AppColors.cardDark
+              : AppColors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(
+            color: AppHelpers.isDarkMode(context)
+                ? AppColors.border.withValues(alpha: 0.1)
+                : AppColors.border,
+          ),
           boxShadow: [
             BoxShadow(
               color: AppColors.black.withValues(alpha: 0.04),
@@ -90,10 +97,12 @@ class TransactionCardWidget extends StatelessWidget {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
+                          color: AppHelpers.isDarkMode(context)
+                              ? AppColors.white
+                              : AppColors.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -121,7 +130,7 @@ class TransactionCardWidget extends StatelessWidget {
                     Text(
                       '${isCredit ? '+' : '-'} ₹$amount',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.w700,
                         color: isCredit ? AppColors.success : AppColors.error,
                       ),
@@ -131,7 +140,7 @@ class TransactionCardWidget extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.circle,
-                          size: 8,
+                          size: 5,
                           color: getColorByStatus(status),
                         ),
                         const SizedBox(width: 4),
@@ -139,7 +148,7 @@ class TransactionCardWidget extends StatelessWidget {
                           toTitleCase(status),
                           style: TextStyle(
                             fontSize: 10,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w400,
                             color: getColorByStatus(status),
                           ),
                         ),

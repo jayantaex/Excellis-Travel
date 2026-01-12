@@ -4,6 +4,7 @@ import '../constants/app_styles.dart';
 class AppTheme {
   static ThemeData get lightTheme => ThemeData(
         useMaterial3: true,
+        scaffoldBackgroundColor: AppColors.white,
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppColors.primary,
         ),
@@ -161,7 +162,7 @@ class AppTheme {
             color: AppColors.white,
           ),
         ),
-        scaffoldBackgroundColor: const Color(0xFF474747),
+        scaffoldBackgroundColor: AppColors.secondaryDark,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../utils/app_helpers.dart';
 
 class MyMarkUpCard extends StatelessWidget {
   const MyMarkUpCard({
@@ -31,7 +32,9 @@ class MyMarkUpCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: AppSizes.md),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: AppHelpers.isDarkMode(context)
+            ? AppColors.secondaryDark
+            : AppColors.white,
         borderRadius: BorderRadius.circular(AppSizes.radiusMd),
       ),
       child: Column(
@@ -77,8 +80,10 @@ class MyMarkUpCard extends StatelessWidget {
                     children: [
                       Text(
                         product,
-                        style: const TextStyle(
-                          color: AppColors.textPrimary,
+                        style: TextStyle(
+                          color: AppHelpers.isDarkMode(context)
+                              ? AppColors.white
+                              : AppColors.textPrimary,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -240,8 +245,8 @@ class MyMarkUpCard extends StatelessWidget {
 
                 // Divider
                 Container(
-                  height: 1,
-                  color: AppColors.divider,
+                  height: 0.2,
+                  color: AppColors.grey,
                 ),
 
                 const SizedBox(height: AppSizes.md),
@@ -251,6 +256,7 @@ class MyMarkUpCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _buildMetadataItem(
+                        context: context,
                         icon: Icons.person_outline_rounded,
                         label: 'Created By',
                         value: createdBy,
@@ -258,6 +264,7 @@ class MyMarkUpCard extends StatelessWidget {
                     ),
                     Expanded(
                       child: _buildMetadataItem(
+                        context: context,
                         icon: Icons.tag_rounded,
                         label: 'ID',
                         value: '#$id',
@@ -275,7 +282,8 @@ class MyMarkUpCard extends StatelessWidget {
               decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: AppColors.divider,
+                    width: 0.2,
+                    color: AppColors.grey,
                   ),
                 ),
               ),
@@ -315,9 +323,9 @@ class MyMarkUpCard extends StatelessWidget {
                     ),
                   if (onEdit != null && onDelete != null)
                     Container(
-                      width: 1,
+                      width: 0.2,
                       height: 48,
-                      color: AppColors.divider,
+                      color: AppColors.grey,
                     ),
                   if (onDelete != null)
                     Expanded(
@@ -366,6 +374,7 @@ class MyMarkUpCard extends StatelessWidget {
     required IconData icon,
     required String label,
     required String value,
+    required BuildContext context,
   }) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.sm),
@@ -398,10 +407,10 @@ class MyMarkUpCard extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     value,
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
+                    style: TextStyle(
+                      color: AppHelpers.isDarkMode(context)
+                          ? AppColors.white
+                          : AppColors.textPrimary,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),

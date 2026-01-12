@@ -14,25 +14,32 @@ class WithdrawlRequestDetails extends StatelessWidget {
       ? Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildRow(title: 'Amount: ', value: '₹${request?.amount ?? ''}'),
+            _buildRow(
+                context: context,
+                title: 'Amount: ',
+                value: '₹${request?.amount ?? ''}'),
             const SizedBox(height: 8),
             _buildRow(
+                context: context,
                 title: 'Requested by: ',
                 value: toTitleCase(
                     '${request?.requester?.firstName ?? ''} ${request?.requester?.lastName ?? ''}')),
             const SizedBox(height: 8),
             _buildRow(
+                context: context,
                 title: 'Requested at: ',
                 value: AppHelpers.formatDate(
                     DateTime.parse(request?.requestedAt ?? ''),
                     pattern: 'dd MMM, yyyy')),
             const SizedBox(height: 8),
             _buildRow(
+              context: context,
               title: 'Status: ',
               value: toTitleCase(request?.status ?? ''),
             ),
             const SizedBox(height: 8),
             _buildRow(
+                context: context,
                 title: 'Remark: ',
                 value: toTitleCase(request?.metadata?.remark ?? 'N/A')),
           ],
@@ -40,15 +47,21 @@ class WithdrawlRequestDetails extends StatelessWidget {
       : const SizedBox.shrink();
 }
 
-Widget _buildRow({required String title, required String value}) => Row(
+Widget _buildRow(
+        {required String title,
+        required String value,
+        required BuildContext context}) =>
+    Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary),
+              color: AppHelpers.isDarkMode(context)
+                  ? AppColors.white
+                  : AppColors.textPrimary),
         ),
         Text(
           value,
