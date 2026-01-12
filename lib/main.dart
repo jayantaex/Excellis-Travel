@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +42,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         routerConfig: AppRouter.router,
         localizationsDelegates: context.localizationDelegates,
         locale: supportedLocales().first,
