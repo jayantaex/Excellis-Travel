@@ -1,0 +1,18 @@
+{
+  "welcomeBack": "Welcome back!",
+  "reachUsAnytime": "You can reach us anytime",
+  "email": "Email",
+  "enterEmailAddress": "Enter your email address",
+  "password": "Password",
+  "enterPassword": "Enter your password",
+  "forgotPassword": "Forgot Password",
+  "recoverNow": "Recover Now",
+  "login": "LOGIN",
+  "dontHaveAccount": "Don't have an account?",
+  "signUp": "Sign up",
+  "skip": "Skip >>",
+  "agreeTermsText": "By logging in, you agree to our",
+  "termsOfUse": "Terms of Use",
+  "and": "and",
+  "privacyPolicy": "Privacy Policy"
+}

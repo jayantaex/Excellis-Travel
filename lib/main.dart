@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'core/localization/supported_local.dart';
 import 'core/services/firebase_notification_service.dart';
 import 'core/services/local_db.dart';
 import 'core/theme/app_theme.dart';
+import 'l10n/generated/app_localizations.dart';
 import 'utils/storage_service.dart';
 import 'app_router.dart';
 
@@ -45,9 +45,9 @@ class MyApp extends StatelessWidget {
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
         routerConfig: AppRouter.router,
-        localizationsDelegates: context.localizationDelegates,
-        locale: supportedLocales().first,
-        supportedLocales: supportedLocales(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('bn'),
         scaffoldMessengerKey: _scaffoldMessengerKey,
       );
 }

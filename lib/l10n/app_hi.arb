@@ -1,0 +1,18 @@
+{
+  "welcomeBack": "आपका स्वागत है!",
+  "reachUsAnytime": "आप हमसे कभी भी संपर्क कर सकते हैं",
+  "email": "ईमेल",
+  "enterEmailAddress": "अपना ईमेल पता दर्ज करें",
+  "password": "पासवर्ड",
+  "enterPassword": "अपना पासवर्ड दर्ज करें",
+  "forgotPassword": "पासवर्ड भूल गए?",
+  "recoverNow": "अभी रिकवर करें",
+  "login": "लॉगिन",
+  "dontHaveAccount": "अकाउंट नहीं है?",
+  "signUp": "साइन अप करें",
+  "skip": "छोड़ें >>",
+  "agreeTermsText": "लॉगिन करके, आप हमारी इन शर्तों से सहमत होते हैं",
+  "termsOfUse": "उपयोग की शर्तें",
+  "and": "और",
+  "privacyPolicy": "गोपनीयता नीति"
+}

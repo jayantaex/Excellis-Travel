@@ -7,6 +7,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/firebase_notification_service.dart';
 import '../../../../core/widgets/text_widget.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../bottom_navigation/bottom_nav_module.dart';
@@ -97,8 +98,10 @@ class _LoginSheetState extends State<LoginSheet> {
                 ),
 
                 const SizedBox(height: 8),
-                const AppText(
-                    text: 'Welcome back!', size: 28, weight: FontWeight.bold),
+                AppText(
+                    text: '${AppLocalizations.of(context)?.welcomeBack}',
+                    size: 28,
+                    weight: FontWeight.bold),
                 const AppText(
                   text: 'You can reach us anytime',
                   size: 20,
