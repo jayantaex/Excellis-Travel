@@ -3,7 +3,7 @@ description: "A Flight Booking App"
 publish_to: 'none' 
 
 #production version
-version: 1.0.0+1
+version: 1.0.0+8
 
 #development version
 # version: 1.0.6+7
@@ -87,9 +87,6 @@ dependencies:
 
   #country code
   country_code_picker: ^3.4.1
-
-  #local  app update
-  open_filex: ^4.7.0
 
   #url_launcher
   url_launcher: ^6.3.1
