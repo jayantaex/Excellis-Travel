@@ -6,8 +6,9 @@ class AppConstants {
   static const String baseUrl = 'https://api.excellistravel.com';
   static const String amaduesUrl = 'https://test.api.amadeus.com';
   static String imageKitUrl = 'https://ik.imagekit.io';
-  static const String privacyPolicy = 'https://github.com/';
-  static const String termsAndConditions = 'https://github.com/';
+  static const String privacyPolicy =
+      'https://excellistravel.com/privacypolicy';
+  static const String termsAndConditions = 'https://excellistravel.com/terms';
 
   static const int connectTimeout = 30000;
   static const int receiveTimeout = 30000;
