@@ -247,7 +247,8 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       return;
     }
 
-    emit(FlightPaymentVerified(data: res.data!));
+    emit(
+        FlightPaymentVerified(data: res.data!, paymentMode: event.paymentMode));
   }
 
   Future<void> _handleMarkupPrice(

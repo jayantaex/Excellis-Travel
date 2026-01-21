@@ -1,11 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/widgets/primary_button.dart';
+import '../../../flight_booking/data/models/payment_verify_res_model.dart';
 
 class PaymentSuccessfulScreen extends StatelessWidget {
-  const PaymentSuccessfulScreen({super.key});
+  PaymentSuccessfulScreen({super.key, this.btnText, this.nextRoute, this.data});
+  String? btnText;
+  String? nextRoute;
+  PaymentVarifiedDataModel? data;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -32,9 +38,18 @@ class PaymentSuccessfulScreen extends StatelessWidget {
                   description:
                       'Your payment was successful. Thank you for your purchase! A confirmation email has been sent to you.',
                   // button: you can pass your custom button,
-                  btnText: 'Continue',
+                  btnText: btnText ?? 'Continue',
                   press: () {
-                    context.pop();
+                    log('nextRoute: $nextRoute');
+                    log('data: $data');
+                    if (nextRoute != null &&
+                        nextRoute!.isNotEmpty &&
+                        data != null) {
+                      context.pushReplacementNamed(nextRoute!,
+                          extra: {'data': data});
+                    } else {
+                      context.pop();
+                    }
                   },
                 ),
               ],
@@ -83,13 +98,14 @@ class ErrorInfo extends StatelessWidget {
               const SizedBox(height: 16 * 2.5),
               button ??
                   AppPrimaryButton(
-                    title: 'Continue',
+                    title: btnText ?? 'Continue',
                     isLoading: false,
-                    onPressed: () {
-                      context.pop();
-                      context.pop();
-                      context.pop();
-                    },
+                    onPressed: press != null
+                        ? press
+                        : () {
+                            context.pop();
+                            context.pop();
+                          },
                   ),
               const SizedBox(height: 16),
             ],

@@ -30,6 +30,7 @@ Future<void> showAddAndEditPassengerSheet(
   );
   DateTime? dob;
   String selectedGender = passenger?.gender ?? 'Male';
+  dob = passenger?.dateOfBirth;
   final List<String> genderList = <String>['Male', 'Female'];
   DateTime firstDate = DateTime(2000);
   DateTime lastDate = DateTime.now();
@@ -200,7 +201,7 @@ Future<void> showAddAndEditPassengerSheet(
                         },
                         label: 'Gender *',
                         title: 'Select Gender',
-                        value: 'Male',
+                        value: selectedGender ?? 'Male',
                         items: genderList
                             .map(
                               (String e) => DropdownMenuItem<String>(
