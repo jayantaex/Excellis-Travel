@@ -44,7 +44,7 @@ class AppConstants {
 
   // Local asset Url
   static const String assetImageUrl = 'assets/images/';
-  static const String assetIcontUrl = 'assets/icons/';
+  static const String assetIconUrl = 'assets/icons/';
   static const String imageNotFound = 'assets/images/image_not_found.png';
 
   static const String airCraftBox = 'air_craft_data';

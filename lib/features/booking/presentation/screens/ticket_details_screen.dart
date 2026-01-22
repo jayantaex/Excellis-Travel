@@ -1,10 +1,13 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:excellistravel/core/services/download_manager.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
+import '../../../../core/network/api_urls.dart';
 import '../../../../core/services/file_downloader.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../utils/app_helpers.dart';
@@ -628,16 +631,26 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                   try {
                                                     Fluttertoast.showToast(
                                                         msg: 'Downloading...');
-                                                    final bool res =
-                                                        await FileDownloaderService
-                                                            .invoiceDownload(
-                                                      bokkingRefId:
-                                                          '${widget.ticketData?.bookingReference}',
-                                                      showDownloadProgress:
-                                                          (count, total) {},
-                                                    );
+                                                    // final bool res =
+                                                    //     await FileDownloaderService
+                                                    //         .invoiceDownload(
+                                                    //   bokkingRefId:
+                                                    //       '${widget.ticketData?.bookingReference}',
+                                                    //   showDownloadProgress:
+                                                    //       (count, total) {},
+                                                    // );
+                                                    final String bookingRefId =
+                                                        '${widget.ticketData?.bookingReference}';
+                                                    final String url =
+                                                        '${EndPoints.baseUrl}/bookings/$bookingRefId/invoice?format=pdf';
+                                                    final String fileName =
+                                                        '${widget.ticketData?.bookingReference}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+                                                    final String? taskId =
+                                                        await DownloadManager
+                                                            .downloadFile(
+                                                                url, fileName);
 
-                                                    if (res) {
+                                                    if (taskId != null) {
                                                       Fluttertoast.showToast(
                                                           msg:
                                                               'Downloaded successfully');
@@ -716,23 +729,32 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                       ? () async {
                           try {
                             Fluttertoast.showToast(msg: 'Downloading...');
-                            final bool res =
-                                await FileDownloaderService.saveFile(
-                              baseFare:
-                                  '${(widget.ticketData?.fareDetails?.totalFare ?? 0.0) - (_savedMarkup)}',
-                              totalFare:
-                                  '${widget.ticketData?.fareDetails?.totalFare}',
-                              markupPrice: widget.ticketData?.fareDetails
-                                          ?.showTotalFare ==
-                                      true
-                                  ? _markupController.text
-                                  : '${(widget.ticketData?.fareDetails?.markup ?? 0.00)}',
-                              bokkingRefId:
-                                  '${widget.ticketData?.bookingReference}',
-                              showDownloadProgress: (count, total) {},
-                            );
+                            // final bool res =
+                            //     await FileDownloaderService.saveFile(
+                            //   baseFare:
+                            //       '${(widget.ticketData?.fareDetails?.totalFare ?? 0.0) - (_savedMarkup)}',
+                            //   totalFare:
+                            //       '${widget.ticketData?.fareDetails?.totalFare}',
+                            //   markupPrice: widget.ticketData?.fareDetails
+                            //               ?.showTotalFare ==
+                            //           true
+                            //       ? _markupController.text
+                            //       : '${(widget.ticketData?.fareDetails?.markup ?? 0.00)}',
+                            //   bokkingRefId:
+                            //       '${widget.ticketData?.bookingReference}',
+                            //   showDownloadProgress: (count, total) {},
+                            // );
+                            final String bookingRefId =
+                                '${widget.ticketData?.bookingReference}';
+                            final String url =
+                                '${EndPoints.baseUrl}${EndPoints.downloadFile}/$bookingRefId/download?format=pdf';
+                            final String fileName =
+                                '${widget.ticketData?.bookingReference}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+                            final String? taskId =
+                                await DownloadManager.downloadFile(
+                                    url, fileName);
 
-                            if (res) {
+                            if (taskId != null) {
                               Fluttertoast.showToast(
                                   msg: 'Downloaded successfully');
                             }

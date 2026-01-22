@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'core/localization/supported_local.dart';
+import 'core/services/download_manager.dart';
 import 'core/services/firebase_notification_service.dart';
 import 'core/services/local_db.dart';
 import 'core/theme/app_theme.dart';
@@ -18,6 +19,7 @@ void main() async {
   if (firebaseSetup) {
     await Firebase.initializeApp();
     await FirebaseNotificationService.instance.initialize();
+    await DownloadManager.init();
   }
 
   runApp(

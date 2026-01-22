@@ -303,7 +303,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   prefixIcon: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: SvgPicture.asset(
-                                      '${AppConstants.assetIcontUrl}calender.svg',
+                                      '${AppConstants.assetIconUrl}calender.svg',
                                       colorFilter:
                                           AppHelpers.isDarkMode(context)
                                               ? const ColorFilter.mode(
@@ -384,7 +384,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                         prefixIcon: Padding(
                                           padding: const EdgeInsets.all(12.0),
                                           child: SvgPicture.asset(
-                                            '${AppConstants.assetIcontUrl}calender.svg',
+                                            '${AppConstants.assetIconUrl}calender.svg',
                                             colorFilter:
                                                 AppHelpers.isDarkMode(context)
                                                     ? const ColorFilter.mode(
@@ -439,7 +439,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                           prefixIcon: Padding(
                                             padding: const EdgeInsets.all(12.0),
                                             child: SvgPicture.asset(
-                                              '${AppConstants.assetIcontUrl}users.svg',
+                                              '${AppConstants.assetIconUrl}users.svg',
                                               colorFilter:
                                                   AppHelpers.isDarkMode(context)
                                                       ? const ColorFilter.mode(
@@ -516,45 +516,17 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 const SizedBox(height: 16),
                                 SizedBox(
                                   width: AppHelpers.getScreenWidth(context),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width:
-                                            AppHelpers.getScreenWidth(context) *
-                                                0.4,
-                                        child: AppDropDown(
-                                          label: 'Fare Type',
-                                          prefixIconName: 'users',
-                                          title: 'Select A Fare Type',
-                                          items: _fareTipes,
-                                          value: _selectedFareType,
-                                          onChanged: (String? value) {
-                                            setState(() {
-                                              _selectedFareType = value ?? '';
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            AppHelpers.getScreenWidth(context) *
-                                                0.4,
-                                        child: AppDropDown(
-                                          label: 'Trending Search',
-                                          prefixIconName: 'seat',
-                                          title: 'Trending Search',
-                                          items: _trendingSearches,
-                                          value: _trendingSearch,
-                                          onChanged: (String? value) {
-                                            setState(() {
-                                              _trendingSearch = value ?? '';
-                                            });
-                                          },
-                                        ),
-                                      )
-                                    ],
+                                  child: AppDropDown(
+                                    label: 'Fare Type',
+                                    prefixIconName: 'users',
+                                    title: 'Select A Fare Type',
+                                    items: _fareTipes,
+                                    value: _selectedFareType,
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        _selectedFareType = value ?? '';
+                                      });
+                                    },
                                   ),
                                 ),
                                 const SizedBox(height: 16),

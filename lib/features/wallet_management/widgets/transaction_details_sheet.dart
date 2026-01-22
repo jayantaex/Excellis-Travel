@@ -1,3 +1,4 @@
+import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
@@ -26,11 +27,15 @@ class TransactionDetailsSheet extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: [
           _buildRow(
-              title: 'ID : ', value: transactionId ?? 'N/A', context: context),
+              title: 'Transaction ID : ',
+              value: transactionId ?? 'N/A',
+              context: context),
           _buildRow(title: 'Date : ', value: date, context: context),
-          _buildRow(title: 'Type : ', value: type, context: context),
+          _buildRow(
+              title: 'Type : ', value: toTitleCase(type), context: context),
           _buildRow(title: 'Amount : ', value: amount, context: context),
-          _buildRow(title: 'Status : ', value: status, context: context),
+          _buildRow(
+              title: 'Status : ', value: toTitleCase(status), context: context),
         ],
       );
 }

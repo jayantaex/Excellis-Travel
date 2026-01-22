@@ -21,7 +21,7 @@ class WithdrawlRequestScreen extends StatefulWidget {
 
 class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
   int page = 1;
-  int limit = 10;
+  int limit = 99999999999999;
   int total = 0;
   void _fetchWithdrawalRequests() {
     context.read<WalletBloc>().add(FetchWithdrawalRequestsEvent(
@@ -147,13 +147,23 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 16),
-                                          child: Text(
-                                            toTitleCase(selectedStatus),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.primary,
-                                            ),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                toTitleCase(selectedStatus),
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppColors.primary,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              const Icon(
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
+                                                color: AppColors.primary,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),

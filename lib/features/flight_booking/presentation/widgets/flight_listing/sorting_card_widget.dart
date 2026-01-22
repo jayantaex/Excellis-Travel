@@ -5,8 +5,8 @@ import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
 import '../../../bloc/flight_bloc.dart';
 
-class ClassFilterWidget extends StatefulWidget {
-  const ClassFilterWidget(
+class SortingCardWidget extends StatefulWidget {
+  const SortingCardWidget(
       {super.key,
       required this.filters,
       required this.selectedFilter,
@@ -15,10 +15,10 @@ class ClassFilterWidget extends StatefulWidget {
   final String selectedFilter;
   final Function(String filter) onFilterSelected;
   @override
-  State<ClassFilterWidget> createState() => _ClassFilterWidgetState();
+  State<SortingCardWidget> createState() => _ClassFilterWidgetState();
 }
 
-class _ClassFilterWidgetState extends State<ClassFilterWidget> {
+class _ClassFilterWidgetState extends State<SortingCardWidget> {
   @override
   Widget build(BuildContext context) => SizedBox(
         height: 40,
@@ -27,7 +27,7 @@ class _ClassFilterWidgetState extends State<ClassFilterWidget> {
           itemBuilder: (context, index) =>
               BlocConsumer<FlightBloc, FlightState>(
             listener: (context, state) {},
-            builder: (context, state) => SearchFilterWidget(
+            builder: (context, state) => SortingCardItemWidget(
               onTap: () {
                 widget.onFilterSelected(widget.filters[index]);
                 if (state is FlightLoaded) {
@@ -58,8 +58,8 @@ class _ClassFilterWidgetState extends State<ClassFilterWidget> {
       );
 }
 
-class SearchFilterWidget extends StatelessWidget {
-  const SearchFilterWidget(
+class SortingCardItemWidget extends StatelessWidget {
+  const SortingCardItemWidget(
       {super.key,
       required this.title,
       required this.isSelected,
@@ -74,7 +74,7 @@ class SearchFilterWidget extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.only(right: 8),
           alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(168),
             color: isSelected

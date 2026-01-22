@@ -18,11 +18,11 @@ import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart';
 import '../../data/models/hive/flight_hive_data_model.dart'
     show FlightHiveDataModel;
-import '../widgets/flight_listing/class_filter_widget.dart';
 import '../widgets/flight_card_widget.dart';
 import '../widgets/flight_listing/date_filter_widget.dart';
 import '../widgets/flight_listing/filter_drawer.dart';
 import '../widgets/flight_listing/no_flight_widget.dart';
+import '../widgets/flight_listing/sorting_card_widget.dart';
 import '../widgets/loading/flight_list_loadding_widget.dart';
 
 class FlightListScreen extends StatefulWidget {
@@ -41,8 +41,8 @@ class _FlightListScreenState extends State<FlightListScreen> {
     'All',
     'Lowest Price',
     'Highest Price',
-    'Non Stop First',
-    'Non Stop Last',
+    // 'Non Stop First',
+    // 'Non Stop Last',
   ];
   int dateDuration = 20; //days
   String selectedFilter = 'All';
@@ -202,7 +202,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 16),
-                              child: ClassFilterWidget(
+                              child: SortingCardWidget(
                                   onFilterSelected: (filter) {
                                     setState(() {
                                       selectedFilter = filter;
@@ -391,7 +391,7 @@ Map<String, dynamic> getBody({
       'travelers': getTravellers(travellersArr: travellersArr),
       'sources': ['GDS'],
       'searchCriteria': {
-        'maxFlightOffers': kDebugMode ? 4 : null,
+        'maxFlightOffers': null,
         'flightFilters': {
           'cabinRestrictions': [
             {

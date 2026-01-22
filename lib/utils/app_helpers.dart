@@ -296,7 +296,7 @@ class AppHelpers {
   }) =>
       SvgPicture.asset(
         isIcon == true
-            ? '${AppConstants.assetIcontUrl}$assetName.svg'
+            ? '${AppConstants.assetIconUrl}$assetName.svg'
             : '${AppConstants.assetImageUrl}$assetName.svg',
         width: width,
         height: height,

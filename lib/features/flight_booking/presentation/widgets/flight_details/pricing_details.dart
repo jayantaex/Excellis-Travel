@@ -95,6 +95,7 @@ class PricingDetails extends StatelessWidget {
                           value: '${infant.length} Person(s)'),
                   const SizedBox(height: 8),
                   PriceCol(
+                      isIconRequired: false,
                       titile: 'Total',
                       value: AppHelpers.formatCurrency(
                           double.parse(flightOffer.price!.markup!))),

@@ -515,12 +515,33 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           (event.filterData.minPublishedFare != null &&
               event.filterData.maxPublishedFare != null);
 
+      //filter airlines
+      List<AirlineModel> airlines = [];
+      airlines = event.airlines;
+
+      for (AirlineModel airline in airlines) {
+        final String carrierCode = airline.code;
+        int totalFlights = 0;
+        for (var flight in filteredFlightData.datam ?? []) {
+          for (var itinerary in flight.itineraries ?? []) {
+            for (var segment in itinerary.segments ?? []) {
+              final aircraftCode = segment.carrierCode;
+              if (aircraftCode != null && aircraftCode == carrierCode) {
+                totalFlights++;
+              }
+            }
+          }
+        }
+        airline.totalFlights = totalFlights;
+      }
+
       emit(
         FlightLoaded(
           isFiltered: hasActiveFilters,
           filteredData: hasActiveFilters ? filteredFlightData : null,
           data: flightData,
-          airlines: event.airlines,
+          // airlines: event.airlines,
+          airlines: airlines,
           currentFilter: hasActiveFilters ? event.filterData : null,
           minOfferFare: event.minOfferFare,
           maxOfferFare: event.maxOfferFare,
@@ -549,10 +570,28 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           }
         }
       }
+      List<AirlineModel> airlines = [];
+      airlines = event.airlines;
+
+      for (AirlineModel airline in airlines) {
+        final String carrierCode = airline.code;
+        int totalFlights = 0;
+        for (var flight in event.flightData.datam ?? []) {
+          for (var itinerary in flight.itineraries ?? []) {
+            for (var segment in itinerary.segments ?? []) {
+              final aircraftCode = segment.carrierCode;
+              if (aircraftCode != null && aircraftCode == carrierCode) {
+                totalFlights++;
+              }
+            }
+          }
+        }
+        airline.totalFlights = totalFlights;
+      }
 
       emit(FlightLoaded(
         data: event.flightData,
-        airlines: event.airlines,
+        airlines: airlines,
         isFiltered: false,
         minOfferFare: event.minOfferFare,
         maxOfferFare: event.maxOfferFare,

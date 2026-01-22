@@ -198,6 +198,11 @@ class AppRouter {
           name: WalletModule.withdrawlRequest,
           builder: (BuildContext context, GoRouterState state) =>
               WalletModule.withdrawlRequestBuilder()),
+      GoRoute(
+          path: WalletModule.rePaymentDashboardPath,
+          name: WalletModule.rePaymentDashboard,
+          builder: (BuildContext context, GoRouterState state) =>
+              WalletModule.rePaymentDashboardBuilder()),
     ],
     errorBuilder: (BuildContext context, GoRouterState state) => const Scaffold(
       body: Center(

@@ -6,6 +6,7 @@ import 'api/wallet_api.dart';
 import 'bloc/wallet_bloc.dart';
 import 'data/repository/wallet_repository.dart';
 import 'screens/credit_wallet_screen.dart';
+import 'screens/re_payment_dashboard_screen.dart';
 import 'screens/wallet_screen.dart';
 import 'screens/withdrawl_request_screen.dart';
 
@@ -31,5 +32,13 @@ class WalletModule {
         create: (context) =>
             WalletBloc(WalletRepository(WalletApi(ApiClient()))),
         child: const WithdrawlRequestScreen(),
+      );
+
+  static const rePaymentDashboardPath = '/re-payment-dashboard';
+  static const rePaymentDashboard = 're-payment-dashboard';
+  static Widget rePaymentDashboardBuilder() => BlocProvider(
+        create: (context) =>
+            WalletBloc(WalletRepository(WalletApi(ApiClient()))),
+        child: const RePaymentDashboardScreen(),
       );
 }

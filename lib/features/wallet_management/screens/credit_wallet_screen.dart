@@ -1,5 +1,7 @@
+import 'package:excellistravel/features/wallet_management/wallet_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_styles.dart';
 import '../../../core/errors/error_screen.dart';
 import '../../../core/widgets/app_custom_appbar.dart';
@@ -63,9 +65,24 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                   }
                   return Column(
                     children: [
-                      const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: AppCustomAppbar(centerTitle: 'Credit Wallet')),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: AppCustomAppbar(
+                            centerTitle: 'Credit Wallet',
+                            trailing: InkWell(
+                              onTap: () {
+                                context
+                                    .pushNamed(WalletModule.rePaymentDashboard);
+                              },
+                              child: const Text(
+                                'Re Payment',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.white),
+                              ),
+                            ),
+                          )),
                       const SizedBox(height: 16),
                       if (state is FetchCreditBalanceTransactionsSuccess)
                         Text(
