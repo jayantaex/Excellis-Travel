@@ -20,6 +20,7 @@ import '../widgets/flight_search/greeting_widget.dart';
 import '../widgets/flight_search/passenger_selection_sheet.dart';
 import '../widgets/flight_search/app_drop_down.dart';
 import '../widgets/flight_search/recent_search_widget.dart';
+import '../widgets/flight_search/trending_searches.dart';
 
 class FlightSearchScreen extends StatefulWidget {
   const FlightSearchScreen({super.key});
@@ -637,12 +638,24 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                       ),
                     ),
                   ),
-
                   const RecentSearchWidget(),
+                  TrendingSearches(onTrendingSearchTap: _onTrendingSearchTap),
                 ],
               ),
             ),
           ),
         ),
       );
+  void _onTrendingSearchTap(AirportModel departure, AirportModel arrival) {
+    _depurtureController.text =
+        '${departure.iataCode}(${departure.address?.cityName})\n${departure.name}';
+    _arrivalController.text =
+        '${arrival.iataCode}(${arrival.address?.cityName})\n${arrival.name}';
+    departureCode = departure.iataCode ?? '';
+    arrivalCode = arrival.iataCode ?? '';
+    departureCity = departure.address?.cityName ?? '';
+    arrivalCity = arrival.address?.cityName ?? '';
+    departureAirport = departure.name ?? '';
+    arrivalAirport = arrival.name ?? '';
+  }
 }

@@ -28,7 +28,7 @@ class TransactionDetailsSheet extends StatelessWidget {
         children: [
           _buildRow(
               title: 'Transaction ID : ',
-              value: transactionId ?? 'N/A',
+              value: '$transactionId',
               context: context),
           _buildRow(title: 'Date : ', value: date, context: context),
           _buildRow(
@@ -54,13 +54,17 @@ Widget _buildRow(
                   fontWeight: FontWeight.w500,
                   fontSize: 12)),
           const Spacer(),
-          Text(value,
-              style: TextStyle(
-                  color: AppHelpers.isDarkMode(context)
-                      ? AppColors.white
-                      : AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 10)),
+          Container(
+            alignment: Alignment.centerRight,
+            width: AppHelpers.getScreenWidth(context) * 0.55,
+            child: Text(value,
+                style: TextStyle(
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.white
+                        : AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10)),
+          ),
         ],
       ),
     );
