@@ -144,32 +144,55 @@ class _SettingScreenState extends State<SettingScreen> {
                               size: 16,
                             ),
                           ),
-                          ListTile(
-                            onTap: () {
-                              showAppSheet(
-                                  context: context,
-                                  title: 'Reset Password',
-                                  child: const ResetPassSheet());
+                          BlocConsumer<AuthBloc, AuthState>(
+                            listener: (context, state) {
+                              if (state is PasswordResetFailure) {
+                                AppHelpers.showSnackBar(context, state.message);
+                              } else if (state is PasswordResetSuccess) {
+                                AppHelpers.showSnackBar(
+                                    backgroundColor: AppColors.success,
+                                    context,
+                                    'Password reset successful');
+                              }
                             },
-                            contentPadding: const EdgeInsets.all(0),
-                            title: Text('Reset Password',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppHelpers.isDarkMode(context)
-                                      ? AppColors.white
-                                      : AppColors.black,
-                                )),
-                            subtitle: const Text('Reset your account password',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.grey,
-                                )),
-                            trailing: const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: AppColors.primary,
-                              size: 16,
+                            builder: (context, state) => ListTile(
+                              onTap: () {
+                                showAppSheet(
+                                    context: context,
+                                    title: 'Reset Password',
+                                    child: ResetPassSheet(
+                                      onDone: (oldPass, newPass) {
+                                        context
+                                            .read<AuthBloc>()
+                                            .add(ResetPasswordEvent(
+                                              currentPassword: oldPass,
+                                              newPassword: newPass,
+                                            ));
+                                        Navigator.pop(context);
+                                      },
+                                    ));
+                              },
+                              contentPadding: const EdgeInsets.all(0),
+                              title: Text('Reset Password',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppHelpers.isDarkMode(context)
+                                        ? AppColors.white
+                                        : AppColors.black,
+                                  )),
+                              subtitle:
+                                  const Text('Reset your account password',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.grey,
+                                      )),
+                              trailing: const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: AppColors.primary,
+                                size: 16,
+                              ),
                             ),
                           ),
                           ListTile(

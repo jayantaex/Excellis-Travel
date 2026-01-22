@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
-import '../../wallet_management/bloc/wallet_bloc.dart';
 import '../data/models/airline_model.dart';
 import '../data/models/filter_data_model.dart';
 import '../data/models/seat_map_data_model.dart';
@@ -66,10 +65,16 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         return;
       }
 
-      //filering the array by departure time
-      res.data!.datam?.sort((a, b) => a
-          .itineraries!.first.segments!.first.departure!.at!
-          .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
+      //filtering the array by departure time
+
+      // res.data!.datam?.sort((a, b) => a
+      //     .itineraries!.first.segments!.first.departure!.at!
+      //     .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
+
+      //filtering the array by price
+      res.data!.datam?.sort((a, b) => double.parse(a.price!.offerPrice!)
+          .compareTo(double.parse(b.price!.offerPrice!)));
+
       final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
 
       for (FlightOfferDatam element in res.data!.datam!) {
@@ -138,7 +143,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         }
       }
 
-      //calculate the availabe flights for each carrier
+      //calculate the available flights for each carrier
 
       for (AirlineModel airline in airlines) {
         final String carrierCode = airline.code;
@@ -294,30 +299,28 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
 
       // Apply sorting based on filter name
       switch (event.filterName) {
-        case 'All':
+        case 'Earliest First':
           sortedData.datam!.sort((a, b) => a
               .itineraries!.first.segments!.first.arrival!.at!
               .compareTo(b.itineraries!.first.segments!.first.arrival!.at!));
           break;
 
-        case 'Lowest Price':
+        case 'Low to High':
           sortedData.datam!.sort((a, b) => double.parse(a.price!.offerPrice!)
               .compareTo(double.parse(b.price!.offerPrice!)));
           break;
 
-        case 'Highest Price':
+        case 'High to Low':
           sortedData.datam!.sort((a, b) => double.parse(b.price!.offerPrice!)
               .compareTo(double.parse(a.price!.offerPrice!)));
           break;
 
-        case 'Non Stop First':
-          sortedData.datam!.sort((a, b) => a.itineraries!.first.segments!.length
-              .compareTo(b.itineraries!.first.segments!.length));
-          break;
-
-        case 'Non Stop Last':
-          sortedData.datam!.sort((a, b) => b.itineraries!.first.segments!.length
-              .compareTo(a.itineraries!.first.segments!.length));
+        case 'Shortest Duration':
+          sortedData.datam!.sort((a, b) =>
+              (double.parse(a.itineraries!.first.duration!) -
+                      double.parse(b.itineraries!.first.duration!))
+                  .abs()
+                  .compareTo(0));
           break;
 
         default:

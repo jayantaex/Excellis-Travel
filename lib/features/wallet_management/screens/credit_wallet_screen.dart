@@ -74,12 +74,9 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                                 context
                                     .pushNamed(WalletModule.rePaymentDashboard);
                               },
-                              child: const Text(
-                                'Re Payment',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.white),
+                              child: const Icon(
+                                Icons.replay_rounded,
+                                color: AppColors.white,
                               ),
                             ),
                           )),

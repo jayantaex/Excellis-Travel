@@ -7,6 +7,8 @@ import '../data/models/credit_balance_model.dart';
 import '../data/models/credit_balance_transaction_model.dart';
 import '../data/models/custom_cr_transaction_model.dart';
 import '../data/models/overdue_data_model.dart';
+import '../data/models/repay_resp_model.dart';
+import '../data/models/repayment_data_model.dart';
 import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart';
 import '../data/models/wallet_model.dart';
@@ -265,6 +267,38 @@ class WalletApi {
           });
           return overdueRepayments;
         },
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  Future<ApiResponse<List<PendingRepaymentDataModel>>>
+      fetchPendingRepayments() async {
+    try {
+      final List<PendingRepaymentDataModel> pendingRepayments = [];
+      return await apiClient.getRequest(
+        endPoint: EndPoints.getPendingRepayments,
+        fromJson: (json) {
+          json['data'].forEach((element) {
+            pendingRepayments.add(PendingRepaymentDataModel.fromJson(element));
+          });
+          return pendingRepayments;
+        },
+      );
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  Future<ApiResponse<RePayRespModel>> confirmPayment({
+    required Map<String, dynamic> body,
+  }) async {
+    try {
+      return await apiClient.postRequest(
+        endPoint: EndPoints.confirmPayment,
+        reqModel: body,
+        fromJson: (json) => RePayRespModel.fromJson(json),
       );
     } catch (e) {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());

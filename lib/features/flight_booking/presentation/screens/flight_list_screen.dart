@@ -38,14 +38,16 @@ class _FlightListScreenState extends State<FlightListScreen> {
     DateTime.now(),
   ];
   List<String> filters = [
-    'All',
-    'Lowest Price',
-    'Highest Price',
+    // 'All',
+    'Low to High',
+    'High to Low',
+    'Earliest First',
+    'Shortest Duration',
     // 'Non Stop First',
     // 'Non Stop Last',
   ];
   int dateDuration = 20; //days
-  String selectedFilter = 'All';
+  String selectedFilter = 'Low to High';
   Map<String, dynamic>? body;
   String depurtureDate = '';
   String cabinClass = '';

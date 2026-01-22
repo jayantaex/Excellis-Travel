@@ -4,6 +4,8 @@ import '../models/credit_balance_model.dart';
 import '../models/credit_balance_transaction_model.dart';
 import '../models/custom_cr_transaction_model.dart';
 import '../models/overdue_data_model.dart';
+import '../models/repay_resp_model.dart';
+import '../models/repayment_data_model.dart';
 import '../models/transaction_model.dart';
 import '../models/wallet_charge_model.dart';
 import '../models/wallet_model.dart';
@@ -93,6 +95,25 @@ class WalletRepository {
   Future<ApiResponse<List<OverDueDataModel>>> fetchOverdueRepayments() async {
     try {
       return await walletApi.fetchOverdueRepayments();
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  Future<ApiResponse<List<PendingRepaymentDataModel>>>
+      fetchPendingRepayments() async {
+    try {
+      return await walletApi.fetchPendingRepayments();
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
+
+  Future<ApiResponse<RePayRespModel>> confirmPayment({
+    required Map<String, dynamic> body,
+  }) async {
+    try {
+      return await walletApi.confirmPayment(body: body);
     } catch (e) {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());
     }
