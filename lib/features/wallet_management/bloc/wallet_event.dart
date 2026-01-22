@@ -109,3 +109,9 @@ class ChargeCreditWalletMoneyEvent extends WalletEvent {
   const ChargeCreditWalletMoneyEvent({required this.body});
   final Map<String, dynamic> body;
 }
+
+class FetchOverdueRepaymentsEvent extends WalletEvent {
+  const FetchOverdueRepaymentsEvent({required this.page, required this.limit});
+  final int page;
+  final int limit;
+}

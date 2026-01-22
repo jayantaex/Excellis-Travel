@@ -127,34 +127,14 @@ class _RePaymentDashboardScreenState extends State<RePaymentDashboardScreen>
   Widget _buildOverdueRepaymentsTab() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.warning_amber_rounded,
-                size: 64,
-                color: AppColors.warning.withValues(alpha: 0.7),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'No Overdue Repayments',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: AppHelpers.isDarkMode(context)
-                      ? AppColors.white
-                      : AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Your overdue repayments will appear here',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: AppColors.textHint,
-                ),
-              ),
-            ],
+          child: ListView.builder(
+            itemBuilder: (context, index) => ListTile(
+                title: Text('Overdue Repayment $index'),
+                subtitle: Text('Overdue Date $index'),
+                trailing: Text('Overdue Repayment $index'),
+                leading: Icon(Icons.payment_rounded),
+                onTap: () {}),
+            itemCount: 10,
           ),
         ),
       );

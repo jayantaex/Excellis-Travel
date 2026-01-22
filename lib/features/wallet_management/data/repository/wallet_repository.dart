@@ -3,6 +3,7 @@ import '../../api/wallet_api.dart';
 import '../models/credit_balance_model.dart';
 import '../models/credit_balance_transaction_model.dart';
 import '../models/custom_cr_transaction_model.dart';
+import '../models/overdue_data_model.dart';
 import '../models/transaction_model.dart';
 import '../models/wallet_charge_model.dart';
 import '../models/wallet_model.dart';
@@ -88,4 +89,12 @@ class WalletRepository {
     required Map<String, dynamic> body,
   }) async =>
       await walletApi.chargeCreditWalletMoney(body: body);
+
+  Future<ApiResponse<List<OverDueDataModel>>> fetchOverdueRepayments() async {
+    try {
+      return await walletApi.fetchOverdueRepayments();
+    } catch (e) {
+      return ApiResponse(statusCode: 400, errorMessage: e.toString());
+    }
+  }
 }
