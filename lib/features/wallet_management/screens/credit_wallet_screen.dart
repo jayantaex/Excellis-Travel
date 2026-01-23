@@ -1,4 +1,3 @@
-import 'package:excellistravel/features/wallet_management/wallet_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +9,7 @@ import '../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../utils/app_helpers.dart';
 import '../bloc/wallet_bloc.dart';
 import '../data/models/custom_cr_transaction_model.dart';
+import '../wallet_module.dart';
 import '../widgets/credit_wallet_transaction_card.dart';
 import '../widgets/credit_wallet_type_card.dart';
 

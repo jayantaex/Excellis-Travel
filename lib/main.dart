@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'core/localization/supported_local.dart';
 import 'core/services/download_manager.dart';
 import 'core/services/firebase_notification_service.dart';
@@ -39,16 +40,21 @@ class MyApp extends StatelessWidget {
       GlobalKey<ScaffoldMessengerState>();
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-        title: 'Excellis Travel',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.light,
-        routerConfig: AppRouter.router,
-        localizationsDelegates: context.localizationDelegates,
-        locale: supportedLocales().first,
-        supportedLocales: supportedLocales(),
-        scaffoldMessengerKey: _scaffoldMessengerKey,
-      );
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    return MaterialApp.router(
+      title: 'Excellis Travel',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.light,
+      routerConfig: AppRouter.router,
+      localizationsDelegates: context.localizationDelegates,
+      locale: supportedLocales().first,
+      supportedLocales: supportedLocales(),
+      scaffoldMessengerKey: _scaffoldMessengerKey,
+    );
+  }
 }

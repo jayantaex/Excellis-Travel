@@ -1,8 +1,8 @@
-import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
 import '../../../utils/app_helpers.dart';
+import '../../../utils/title_case.dart';
 
 class TransactionDetailsSheet extends StatelessWidget {
   const TransactionDetailsSheet({

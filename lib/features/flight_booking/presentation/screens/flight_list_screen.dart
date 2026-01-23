@@ -165,6 +165,9 @@ class _FlightListScreenState extends State<FlightListScreen> {
                               padding: const EdgeInsets.only(left: 16),
                               child: DateFilterWidget(
                                 selectedDate: DateTime.parse(depurtureDate),
+                                endDate: widget.data['returnDate'] != null
+                                    ? DateTime.parse(widget.data['returnDate'])
+                                    : null,
                                 onDateSelected: (date) async {
                                   if (widget.data['isRoundTrip']) {
                                     final bool? res =

@@ -4,8 +4,12 @@ import '../../../../../utils/app_helpers.dart';
 
 class DateFilterWidget extends StatefulWidget {
   const DateFilterWidget(
-      {super.key, this.onDateSelected, required this.selectedDate});
+      {super.key,
+      this.onDateSelected,
+      required this.selectedDate,
+      this.endDate});
   final DateTime selectedDate;
+  final DateTime? endDate;
   final Function(DateTime date)? onDateSelected;
 
   @override
@@ -177,6 +181,9 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
       widget.selectedDate,
       pattern: 'yyyy-MM-dd',
     );
+    final String endDate = widget.endDate != null
+        ? AppHelpers.formatDate(widget.endDate!, pattern: 'yyyy-MM-dd')
+        : '';
     return SizedBox(
       height: 70,
       width: AppHelpers.percenWidth(context: context),
@@ -196,7 +203,7 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
-                  color: selectedDate == thisDate
+                  color: selectedDate == thisDate || endDate == thisDate
                       ? AppHelpers.isDarkMode(context)
                           ? AppColors.primaryDark
                           : AppColors.black
@@ -219,7 +226,7 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: selectedDate == thisDate
+                        color: selectedDate == thisDate || endDate == thisDate
                             ? AppColors.white
                             : AppColors.grey,
                       ),
@@ -232,7 +239,7 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: selectedDate == thisDate
+                        color: selectedDate == thisDate || endDate == thisDate
                             ? AppColors.white
                             : AppColors.grey,
                       ),

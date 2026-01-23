@@ -1,8 +1,8 @@
-import 'package:excellistravel/features/flight_booking/data/models/air_port_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
+import '../../../data/models/air_port_model.dart';
 
 class TrendingSearches extends StatelessWidget {
   TrendingSearches({super.key, required this.onTrendingSearchTap});
