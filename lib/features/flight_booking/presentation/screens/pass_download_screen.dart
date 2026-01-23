@@ -8,7 +8,6 @@ import '../../../../core/constants/app_styles.dart';
 import '../../../../core/network/api_urls.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/services/download_manager.dart';
-import '../../../../core/services/file_downloader.dart';
 import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
 import '../../../../utils/airline_info_provider.dart' show AirlineInfoProvider;
 import '../../../../utils/app_helpers.dart';

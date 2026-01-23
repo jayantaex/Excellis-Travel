@@ -168,21 +168,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       controller: _firstNameController,
                                       label: 'First Name',
                                       maxCharacters: 50,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _lastNameController,
                                       label: 'Last Name',
                                       maxCharacters: 50,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _emailController,
                                       label: 'Email',
                                       maxCharacters: 50,
-                                      isMultiline: false,
                                       enable: false,
                                     ),
                                     const SizedBox(height: 16),
@@ -190,28 +187,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       controller: _phoneController,
                                       label: 'Phone Number',
                                       maxCharacters: 10,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _aadhaarNoController,
                                       label: 'Aadhar Number',
                                       maxCharacters: 12,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _panNoController,
                                       label: 'Pan Number',
                                       maxCharacters: 10,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _nearbyAirportController,
                                       label: 'Nearby Airport',
                                       maxCharacters: 50,
-                                      isMultiline: false,
                                       onTap: () {
                                         context.pushNamed(FlightBookingModule
                                             .airportSearchName);
@@ -223,7 +216,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       label: 'Address',
                                       hint: 'Enter your address',
                                       maxCharacters: 20,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     const SizedBox(height: 16),
@@ -308,14 +300,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             });
                                       },
                                       maxCharacters: 6,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _pinController,
                                       label: 'Pincode',
                                       maxCharacters: 6,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     BlocConsumer<ProfileBloc, ProfileState>(

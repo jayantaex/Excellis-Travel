@@ -6,7 +6,7 @@ import '../../utils/storage_service.dart';
 
 class DownloadManager {
   static Future<void> init() async {
-    await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
+    await FlutterDownloader.initialize(debug: true);
   }
 
   static Future<String?> downloadFile(String url, String fileName) async {
@@ -28,8 +28,6 @@ class DownloadManager {
         url: url,
         savedDir: savedDir,
         fileName: fileName,
-        showNotification: true,
-        openFileFromNotification: true,
         saveInPublicStorage: true,
         headers: {
           'Authorization': 'Bearer $accessToken',

@@ -202,7 +202,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                               children: <Widget>[
                                 AppPrimaryInput(
                                   showCursor: false,
-                                  isMultiline: true,
+                                  maxLines: 2,
                                   controller: _depurtureController,
                                   enable: true,
                                   keyboardType: TextInputType.none,
@@ -249,7 +249,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                 ),
                                 const SizedBox(height: 16),
                                 AppPrimaryInput(
-                                  isMultiline: true,
+                                  maxLines: 2,
                                   controller: _arrivalController,
                                   enable: true,
                                   maxCharacters: 10,
@@ -648,9 +648,11 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
       );
   void _onTrendingSearchTap(AirportModel departure, AirportModel arrival) {
     _depurtureController.text =
-        '${departure.iataCode}(${departure.address?.cityName})\n${departure.name}';
+        '${departure.iataCode}(${departure.address?.cityName})\n${departure.name}'
+            .toUpperCase();
     _arrivalController.text =
-        '${arrival.iataCode}(${arrival.address?.cityName})\n${arrival.name}';
+        '${arrival.iataCode}(${arrival.address?.cityName})\n${arrival.name}'
+            .toUpperCase();
     departureCode = departure.iataCode ?? '';
     arrivalCode = arrival.iataCode ?? '';
     departureCity = departure.address?.cityName ?? '';

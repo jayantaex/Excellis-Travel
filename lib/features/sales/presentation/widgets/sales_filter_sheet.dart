@@ -127,7 +127,6 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                                   ? AppColors.white
                                   : AppColors.textPrimary,
                             ),
-                            isMultiline: true,
                             hint: 'Select sub sales executive',
                             onTap: () async {
                               await showSubSalesExecutiveSelector(

@@ -119,7 +119,7 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                       Text(
                                         'Withdrawal Requests',
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w500,
                                             color:
                                                 AppHelpers.isDarkMode(context)

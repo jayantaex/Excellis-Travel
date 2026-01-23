@@ -4,11 +4,9 @@ import 'package:excellistravel/core/services/download_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/errors/error_screen.dart';
 import '../../../../core/network/api_urls.dart';
-import '../../../../core/services/file_downloader.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../utils/app_helpers.dart';
 import '../../../../core/widgets/app_custom_appbar.dart';
@@ -397,7 +395,6 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                         _markupController,
                                                     keyboardType:
                                                         TextInputType.number,
-                                                    isMultiline: false,
                                                     hint:
                                                         'Enter Markup (e.g. 100)',
                                                     label: 'Markup',

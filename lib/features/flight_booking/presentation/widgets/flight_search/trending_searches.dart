@@ -140,6 +140,13 @@ class TrendingSearchCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.grey.withValues(alpha: 0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,11 +182,11 @@ class TrendingSearchCard extends StatelessWidget {
               Container(
                   width: 25,
                   height: 25,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColors.primary,
                   ),
-                  child: Icon(Icons.arrow_forward_ios_rounded,
+                  child: const Icon(Icons.flight_takeoff_rounded,
                       size: 18, color: AppColors.white)),
               SizedBox(
                 width: AppHelpers.getScreenWidth(context) * 0.3,
