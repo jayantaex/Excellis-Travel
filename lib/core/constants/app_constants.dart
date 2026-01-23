@@ -50,5 +50,7 @@ class AppConstants {
 
   static const String airCraftBox = 'air_craft_data';
 
+  static const String passengerBox = 'passenger_data';
+
   //Legality
 }

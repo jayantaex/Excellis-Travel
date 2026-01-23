@@ -2,6 +2,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../features/flight_booking/data/models/hive/air_craft_hive_data_model.dart';
 import '../../features/flight_booking/data/models/hive/air_port_hive_data_model.dart';
 import '../../features/flight_booking/data/models/hive/flight_hive_data_model.dart';
+import '../../features/flight_booking/data/models/hive/passenger_hive_data_model.dart';
 import '../constants/app_constants.dart';
 
 class LocalDB {
@@ -10,6 +11,7 @@ class LocalDB {
     Hive.registerAdapter(FlightHiveDataModelAdapter());
     Hive.registerAdapter(AirPortHiveDataModelAdapter());
     Hive.registerAdapter(AirCraftHiveDataModelAdapter());
+    Hive.registerAdapter(PassengerHiveDataModelAdapter());
   }
 
   Future<Box<FlightHiveDataModel>> getFlightBox<T>() async {
@@ -25,6 +27,11 @@ class LocalDB {
   Future<Box<AirCraftHiveDataModel>> getAirCraftBox<T>() async {
     await Hive.openBox<AirCraftHiveDataModel>(AppConstants.airCraftBox);
     return Hive.box<AirCraftHiveDataModel>(AppConstants.airCraftBox);
+  }
+
+  Future<Box<PassengerHiveDataModel>> getPassengerBox<T>() async {
+    await Hive.openBox<PassengerHiveDataModel>(AppConstants.passengerBox);
+    return Hive.box<PassengerHiveDataModel>(AppConstants.passengerBox);
   }
 
   void closeLocalDB() {

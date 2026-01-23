@@ -6,6 +6,8 @@ import '../../../../core/services/local_db.dart';
 import '../models/air_port_model.dart';
 import '../models/hive/air_craft_hive_data_model.dart';
 import '../models/hive/air_port_hive_data_model.dart';
+import '../models/hive/passenger_hive_data_model.dart';
+import '../models/passenger_model.dart';
 
 class FlightBookingLocalSrc {
   FlightBookingLocalSrc({required LocalDB localDB}) : _localDB = localDB;
@@ -96,6 +98,96 @@ class FlightBookingLocalSrc {
         final AirCraftHiveDataModel airCraftHiveDataModel =
             AirCraftHiveDataModel(aircraft: remoteElement);
         airCraftBox.add(airCraftHiveDataModel);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<PassengerModel>> getSavedPassenger() async {
+    try {
+      final Box<PassengerHiveDataModel> passengerBox =
+          await _localDB.getPassengerBox();
+      final List<PassengerHiveDataModel> localData =
+          passengerBox.values.toList();
+      final List<PassengerModel> savedPassengerList = <PassengerModel>[];
+      for (var element in localData) {
+        savedPassengerList.add(PassengerModel.fromJson(element.toJson()));
+      }
+      return savedPassengerList;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<void> savePassenger(PassengerModel passenger) async {
+    try {
+      if (passenger.dateOfBirth == null) {
+        throw Exception('Date of birth is required to save passenger');
+      }
+
+      final Box<PassengerHiveDataModel> passengerBox =
+          await _localDB.getPassengerBox();
+
+      // Generate ID if not present
+      String passengerId =
+          passenger.id ?? DateTime.now().millisecondsSinceEpoch.toString();
+
+      // Get all existing passengers
+      final List<PassengerHiveDataModel> localData =
+          passengerBox.values.toList();
+
+      // Check if passenger with same ID already exists
+      PassengerHiveDataModel? existingPassenger;
+      int? existingIndex;
+
+      for (int i = 0; i < localData.length; i++) {
+        if (localData[i].id == passengerId) {
+          existingPassenger = localData[i];
+          existingIndex = i;
+          break;
+        }
+      }
+
+      // If passenger exists, update it; otherwise check for duplicates
+      if (existingPassenger != null && existingIndex != null) {
+        final PassengerHiveDataModel updatedPassenger = PassengerHiveDataModel(
+          id: passengerId,
+          firstName: passenger.firstName ?? '',
+          lastName: passenger.lastName ?? '',
+          emailAddress: passenger.emailAddress ?? '',
+          dateOfBirth: passenger.dateOfBirth!,
+          gender: passenger.gender ?? '',
+          number: passenger.number ?? '',
+          type: passenger.type ?? '',
+        );
+        await passengerBox.putAt(existingIndex, updatedPassenger);
+      } else {
+        // Check if passenger with same name and DOB already exists
+        bool duplicateExists = localData.any(
+          (element) =>
+              element.firstName.toLowerCase() ==
+                  (passenger.firstName ?? '').toLowerCase() &&
+              element.lastName.toLowerCase() ==
+                  (passenger.lastName ?? '').toLowerCase() &&
+              element.dateOfBirth.year == passenger.dateOfBirth!.year &&
+              element.dateOfBirth.month == passenger.dateOfBirth!.month &&
+              element.dateOfBirth.day == passenger.dateOfBirth!.day,
+        );
+
+        if (!duplicateExists) {
+          final PassengerHiveDataModel newPassenger = PassengerHiveDataModel(
+            id: passengerId,
+            firstName: passenger.firstName ?? '',
+            lastName: passenger.lastName ?? '',
+            emailAddress: passenger.emailAddress ?? '',
+            dateOfBirth: passenger.dateOfBirth!,
+            gender: passenger.gender ?? '',
+            number: passenger.number ?? '',
+            type: passenger.type ?? '',
+          );
+          await passengerBox.add(newPassenger);
+        }
       }
     } catch (e) {
       rethrow;

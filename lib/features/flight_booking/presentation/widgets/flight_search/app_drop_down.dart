@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
 
-class AppDropDown extends StatelessWidget {
+class AppDropDown<T extends Object> extends StatelessWidget {
   const AppDropDown(
       {super.key,
       required this.title,
