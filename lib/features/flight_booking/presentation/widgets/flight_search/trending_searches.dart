@@ -84,7 +84,7 @@ class TrendingSearches extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: 200,
+        height: 170,
         width: AppHelpers.getScreenWidth(context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +94,7 @@ class TrendingSearches extends StatelessWidget {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.black),
+                  color: AppColors.white),
             ),
             const SizedBox(height: 12),
             SizedBox(

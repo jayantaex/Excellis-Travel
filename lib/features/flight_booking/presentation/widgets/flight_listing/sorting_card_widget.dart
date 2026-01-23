@@ -74,7 +74,7 @@ class SortingCardItemWidget extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.only(right: 8),
           alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(168),
             color: isSelected

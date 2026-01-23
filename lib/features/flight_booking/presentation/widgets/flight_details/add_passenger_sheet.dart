@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:excellistravel/core/widgets/app_search_dropdown.dart';
 import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_styles.dart';
@@ -76,10 +77,12 @@ Future<void> showAddAndEditPassengerSheet(
       return p;
     }).toList();
     savedPassengerItems.clear();
-    savedPassengerItems.add(const DropdownMenuItem<String>(
-      value: '',
-      child: Text('None - Add New Passenger'),
-    ));
+    savedPassengerItems.add(
+      const DropdownMenuItem<String>(
+        value: '',
+        child: Text('None - Add New Passenger'),
+      ),
+    );
     // Only add passengers with valid IDs to avoid duplicates
     for (var element in savedPassengerList) {
       if (element.id != null && element.id!.isNotEmpty) {
@@ -101,10 +104,15 @@ Future<void> showAddAndEditPassengerSheet(
       child: Text('None - Add New Passenger'),
     ));
   }
-  selectedSavedPassenger = savedPassengerList.firstWhere(
-    (PassengerModel e) => e.id == passenger?.id,
-    orElse: () => savedPassengerList.first,
-  );
+
+  if (passenger != null) {
+    selectedSavedPassenger = savedPassengerList.firstWhere(
+      (PassengerModel e) => e.id == passenger.id,
+      orElse: () => savedPassengerList.first,
+    );
+  } else {
+    selectedSavedPassenger = null;
+  }
 
   switch (travellerType) {
     case 'ADULT':
@@ -213,7 +221,8 @@ Future<void> showAddAndEditPassengerSheet(
               if (savedPassengerList.isNotEmpty &&
                   savedPassengerItems.length > 1)
                 SizedBox(
-                  height: 50,
+                  height: 55,
+                  width: AppHelpers.getScreenWidth(context),
                   child: Builder(
                     builder: (context) {
                       // Ensure the value is valid - must match one of the items
@@ -225,82 +234,30 @@ Future<void> showAddAndEditPassengerSheet(
                           );
                       final String safeValue = isValidValue ? currentValue : '';
 
-                      return AppDropDown<PassengerModel>(
-                        onChanged: (String? p0) {
-                          if (p0 != null && p0.isNotEmpty) {
-                            try {
-                              selectedSavedPassenger =
-                                  savedPassengerList.firstWhere(
-                                (PassengerModel e) =>
-                                    e.id != null && e.id == p0,
-                                orElse: () => savedPassengerList.first,
-                              );
-                              // Validate selected passenger has required data
-                              if (selectedSavedPassenger != null &&
-                                  (selectedSavedPassenger!.firstName == null ||
-                                      selectedSavedPassenger!.firstName!
-                                          .trim()
-                                          .isEmpty ||
-                                      selectedSavedPassenger!.lastName ==
-                                          null ||
-                                      selectedSavedPassenger!.lastName!
-                                          .trim()
-                                          .isEmpty ||
-                                      selectedSavedPassenger!.dateOfBirth ==
-                                          null)) {
-                                showToast(
-                                    message:
-                                        'Selected passenger has incomplete data. Please fill manually.');
-                                selectedSavedPassenger = null;
-                                setState(() {});
-                                return;
-                              }
-                              // Populate form fields with selected passenger data
-                              firstNameController.text =
-                                  selectedSavedPassenger?.firstName?.trim() ??
-                                      '';
-                              lastNameController.text =
-                                  selectedSavedPassenger?.lastName?.trim() ??
-                                      '';
-                              emailController.text = selectedSavedPassenger
-                                      ?.emailAddress
-                                      ?.trim() ??
-                                  '';
-                              mobileNumberController.text =
-                                  selectedSavedPassenger?.number?.trim() ?? '';
-                              dob = selectedSavedPassenger?.dateOfBirth;
-                              dobController.text = dob != null
-                                  ? AppHelpers.formatDate(dob!)
-                                  : '';
-                              selectedGender =
-                                  selectedSavedPassenger?.gender ?? 'Male';
-                              setState(() {});
-                            } catch (e) {
-                              log('Error selecting passenger: $e');
-                              showToast(
-                                  message:
-                                      'Error loading passenger data. Please try again.');
-                              selectedSavedPassenger = null;
+                      return AppSearchDropdown<PassengerModel>(
+                          items: savedPassengerList
+                              .map((e) => DropdownMenuItem<PassengerModel>(
+                                  value: e,
+                                  child: Text(
+                                      '${toTitleCase(e.firstName ?? '')} ${toTitleCase(e.lastName ?? '')}')))
+                              .toList(),
+                          hintText: 'Select saved passenger',
+                          labelText: 'View all saved travelers',
+                          value: selectedSavedPassenger,
+                          onChanged: (PassengerModel? value) {
+                            if (value != null) {
+                              selectedSavedPassenger = value;
+                              firstNameController.text = value.firstName ?? '';
+                              lastNameController.text = value.lastName ?? '';
+                              emailController.text = value.emailAddress ?? '';
+                              mobileNumberController.text = value.number ?? '';
+                              selectedGender = value.gender ?? '';
+                              dob = value.dateOfBirth;
+                              dobController.text = AppHelpers.formatDate(dob!);
+                              selectedSegmentIndex = null;
                               setState(() {});
                             }
-                          } else {
-                            selectedSavedPassenger = null;
-                            // Clear form fields
-                            firstNameController.clear();
-                            lastNameController.clear();
-                            emailController.clear();
-                            mobileNumberController.clear();
-                            dobController.clear();
-                            dob = null;
-                            selectedGender = 'Male';
-                            setState(() {});
-                          }
-                        },
-                        label: 'Saved Passenger',
-                        title: 'Select Saved Passenger (Optional)',
-                        value: safeValue,
-                        items: savedPassengerItems,
-                      );
+                          });
                     },
                   ),
                 ),

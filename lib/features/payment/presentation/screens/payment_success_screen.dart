@@ -36,7 +36,7 @@ class PaymentSuccessfulScreen extends StatelessWidget {
                 ErrorInfo(
                   title: 'Payment Successful',
                   description:
-                      'Your payment was successful. Thank you for your purchase! A confirmation email has been sent to you.',
+                      'Your payment was successful. Thank you for your purchase!',
                   // button: you can pass your custom button,
                   btnText: btnText ?? 'Continue',
                   press: () {

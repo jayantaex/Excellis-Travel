@@ -137,7 +137,7 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                               selectedStatus: selectedStatus,
                                               onSelect: (status) {
                                                 page = 1;
-                                                limit = 10;
+                                                limit = limit;
                                                 selectedStatus = status;
 
                                                 _fetchWithdrawalRequests();

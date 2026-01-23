@@ -93,7 +93,7 @@ class _RecentSearchWidgetState extends State<RecentSearchWidget> {
                       },
                     ),
                   ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 16),
           ],
         );
 }

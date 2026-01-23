@@ -35,7 +35,9 @@ class PaymentFailedScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  errMsg,
+                  errMsg == 'payment_error'
+                      ? 'Payment failed. Please try again. If the problem persists, please contact support.'
+                      : errMsg,
                   style: const TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.normal,

@@ -39,14 +39,14 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     text: 'CCU(KOLKATA)\nSUBHASH CHANDRA BOSE INTL',
   );
   final TextEditingController _arrivalController = TextEditingController(
-    text: 'DEL(DELHI)\nINDRA GANDHI INTL',
+    text: 'DEL(DELHI)\nINDIRA GANDHI INTL',
   );
   String departureAirport = 'SUBHASH CHANDRA BOSE INTL';
   String departureCode = 'CCU';
   String departureCity = 'KOLKATA';
   String arrivalCode = 'DEL';
   String arrivalCity = 'DELHI';
-  String arrivalAirport = 'INDRA GANDHI INTL';
+  String arrivalAirport = 'INDIRA GANDHI INTL';
   //mock data
   String _selectedSeatType = 'Economy';
   String _selectedFareType = 'Regular';
@@ -71,10 +71,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
       value: 'Business',
       child: Text('Business'),
     ),
-    const DropdownMenuItem<String>(
-      value: 'First Class',
-      child: Text('First Class'),
-    ),
+    // const DropdownMenuItem<String>(
+    //   value: 'First Class',
+    //   child: Text('First Class'),
+    // ),
   ];
 
   final List<DropdownMenuItem<String>> _fareTipes = <DropdownMenuItem<String>>[

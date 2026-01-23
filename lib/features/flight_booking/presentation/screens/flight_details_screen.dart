@@ -248,7 +248,7 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                               if (state.paymentMode == 'credit_wallet' ||
                                   state.paymentMode == 'wallet') {
                                 final Map<String, dynamic> data = {
-                                  'btnText': 'Download Pass',
+                                  'btnText': 'Proceed to next',
                                   'nextRoute':
                                       FlightBookingModule.passDownloadName,
                                   'paymentData': state.data,

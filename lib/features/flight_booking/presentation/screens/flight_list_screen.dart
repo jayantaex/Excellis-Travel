@@ -158,7 +158,9 @@ class _FlightListScreenState extends State<FlightListScreen> {
                               ),
                             ),
                           ),
-                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 16),
+                          ),
                           // Date Filter
                           SliverToBoxAdapter(
                             child: Padding(
