@@ -186,7 +186,7 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
         : '';
     return SizedBox(
       height: 70,
-      width: AppHelpers.percenWidth(context: context),
+      width: AppHelpers.percentWidth(context: context),
       child: ListView.builder(
           controller: scrollController,
           itemCount: dates.length,

@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/services/firebase_notification_service.dart';
 import '../../../../core/widgets/text_widget.dart';

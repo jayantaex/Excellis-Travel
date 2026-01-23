@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/widgets/app_drop_down.dart';
 import '../../../../core/widgets/primary_button.dart';
@@ -278,7 +277,7 @@ class _AddPassengerScreenState extends State<AddPassengerScreen> {
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: widget.filteredSegments!.length,
-                          itemBuilder: (context, index) => SegmenCard(
+                          itemBuilder: (context, index) => SegmentCard(
                             data: widget.filteredSegments![index],
                             isSelected: selectedSegmentIndex == index,
                             onTap: () {
@@ -374,8 +373,8 @@ class _AddPassengerScreenState extends State<AddPassengerScreen> {
       );
 }
 
-class SegmenCard extends StatefulWidget {
-  const SegmenCard({
+class SegmentCard extends StatefulWidget {
+  const SegmentCard({
     super.key,
     required this.data,
     this.isSelected = false,
@@ -387,10 +386,10 @@ class SegmenCard extends StatefulWidget {
   final VoidCallback? onTap;
 
   @override
-  State<SegmenCard> createState() => _SegmenCardState();
+  State<SegmentCard> createState() => _SegmentCardState();
 }
 
-class _SegmenCardState extends State<SegmenCard> {
+class _SegmentCardState extends State<SegmentCard> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: widget.onTap,

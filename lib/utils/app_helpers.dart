@@ -254,7 +254,7 @@ class AppHelpers {
   }
 
   //UI helper
-  static double percenWidth({int? percent, required BuildContext context}) {
+  static double percentWidth({int? percent, required BuildContext context}) {
     if (percent == null) {
       return MediaQuery.sizeOf(context).width;
     }

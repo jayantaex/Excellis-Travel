@@ -50,7 +50,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
   //mock data
   String _selectedSeatType = 'Economy';
   String _selectedFareType = 'Regular';
-  String _trendingSearch = 'CCU-DEL';
   int _adultCount = 1;
   int _childCount = 0;
   int _infantCount = 0;
@@ -95,18 +94,6 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
     //   value: 'Armed Forces',
     //   child: Text('Armed Forces'),
     // ),
-  ];
-
-  final List<DropdownMenuItem<String>> _trendingSearches =
-      <DropdownMenuItem<String>>[
-    const DropdownMenuItem<String>(
-      value: 'CCU-DEL',
-      child: Text('CCU-DEL'),
-    ),
-    const DropdownMenuItem<String>(
-      value: 'DBX-DEL',
-      child: Text('DBX-DEL'),
-    ),
   ];
 
   bool isRoundTrip = false;

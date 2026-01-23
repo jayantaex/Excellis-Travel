@@ -170,14 +170,12 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: SizedBox(
                           width: AppHelpers.getScreenWidth(context),
-                          height: 60,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
                                 width:
                                     AppHelpers.getScreenWidth(context) * 0.42,
-                                height: 60,
                                 child: AuthInputWidget(
                                     validator: (String? value) {
                                       if (value == null || value.isEmpty) {
@@ -194,7 +192,6 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                               SizedBox(
                                 width:
                                     AppHelpers.getScreenWidth(context) * 0.42,
-                                height: 60,
                                 child: AuthInputWidget(
                                     validator: (String? value) {
                                       if (value == null || value.isEmpty) {
@@ -348,7 +345,6 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
 
                       SizedBox(
                         width: AppHelpers.getScreenWidth(context),
-                        height: 60,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
@@ -394,13 +390,12 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                               SizedBox(
                                 width:
                                     AppHelpers.getScreenWidth(context) * 0.32,
-                                height: 60,
                                 child: AuthInputWidget(
                                     validator: (String? value) {
                                       if (value != null && value.isNotEmpty) {
                                         if (!RegExp(r'^[0-9]{6}$')
                                             .hasMatch(value)) {
-                                          return 'Please enter a valid 6-digit PIN code';
+                                          return 'Invalid PIN';
                                         }
                                       }
                                       return null;
@@ -475,8 +470,8 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                               if (value == null || value.isEmpty) {
                                 return 'Password is required';
                               }
-                              if (value.length < 6) {
-                                return 'Password must be at least 6 characters';
+                              if (value.length < 8) {
+                                return 'Password must be at least 8 characters';
                               }
                               if (value.length > 20) {
                                 return 'Password must not exceed 20 characters';

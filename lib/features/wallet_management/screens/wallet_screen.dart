@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +31,6 @@ class _WalletScreenState extends State<WalletScreen>
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _amountController =
       TextEditingController(text: '10000');
-  bool _isFetching = false;
 
   @override
   void initState() {
@@ -90,12 +87,8 @@ class _WalletScreenState extends State<WalletScreen>
             child: SafeArea(
               child: BlocConsumer<WalletBloc, WalletState>(
                 listener: (context, state) {
-                  if (state is WalletLoaded && !state.isLoadingMore) {
-                    _isFetching = false;
-                  }
-                  if (state is WalletError) {
-                    _isFetching = false;
-                  }
+                  if (state is WalletLoaded && !state.isLoadingMore) {}
+                  if (state is WalletError) {}
 
                   if (state is SubmitWithdrawalSuccess) {
                     AppHelpers.showSnackBar(
@@ -455,17 +448,6 @@ class _WalletScreenState extends State<WalletScreen>
     context
         .read<WalletBloc>()
         .add(const FetchWalletEvent(limit: 99999999999999999, page: 1));
-  }
-
-  void _fetchWalletTransactions({
-    required int page,
-    required int limit,
-  }) {
-    log('Fetching wallet transactions $page $limit');
-    context.read<WalletBloc>().add(FetchWalletTransactionsEvent(
-          page: page,
-          limit: limit,
-        ));
   }
 }
 

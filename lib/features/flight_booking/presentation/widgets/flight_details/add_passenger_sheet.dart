@@ -201,7 +201,7 @@ Future<void> showAddAndEditPassengerSheet(
                         },
                         label: 'Gender *',
                         title: 'Select Gender',
-                        value: selectedGender ?? 'Male',
+                        value: selectedGender,
                         items: genderList
                             .map(
                               (String e) => DropdownMenuItem<String>(
@@ -259,7 +259,7 @@ Future<void> showAddAndEditPassengerSheet(
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: filteredSegemnts.length,
-                        itemBuilder: (context, index) => SegmenCard(
+                        itemBuilder: (context, index) => SegmentCard(
                           data: filteredSegemnts[index],
                           isSelected: selectedSegmentIndex == index,
                           onTap: () {
@@ -351,8 +351,8 @@ Future<void> showAddAndEditPassengerSheet(
   );
 }
 
-class SegmenCard extends StatefulWidget {
-  const SegmenCard({
+class SegmentCard extends StatefulWidget {
+  const SegmentCard({
     super.key,
     required this.data,
     this.isSelected = false,
@@ -364,10 +364,10 @@ class SegmenCard extends StatefulWidget {
   final VoidCallback? onTap;
 
   @override
-  State<SegmenCard> createState() => _SegmenCardState();
+  State<SegmentCard> createState() => _SegmenCardState();
 }
 
-class _SegmenCardState extends State<SegmenCard> {
+class _SegmenCardState extends State<SegmentCard> {
   @override
   Widget build(BuildContext context) => GestureDetector(
         onTap: widget.onTap,

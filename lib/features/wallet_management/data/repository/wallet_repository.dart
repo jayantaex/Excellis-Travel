@@ -1,7 +1,6 @@
 import '../../../../core/network/api_response.dart';
 import '../../api/wallet_api.dart';
 import '../models/credit_balance_model.dart';
-import '../models/credit_balance_transaction_model.dart';
 import '../models/custom_cr_transaction_model.dart';
 import '../models/overdue_data_model.dart';
 import '../models/repay_resp_model.dart';

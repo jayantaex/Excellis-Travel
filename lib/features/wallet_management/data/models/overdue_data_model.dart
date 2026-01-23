@@ -1,22 +1,4 @@
 class OverDueDataModel {
-  int? id;
-  int? creditWalletId;
-  int? recipientUserId;
-  String? amount;
-  String? repaymentDate;
-  String? repaymentStatus;
-  bool? repaymentReminderSent;
-  String? lastReminderSentAt;
-  bool? autoDeductionAttempted;
-  String? autoDeductionDate;
-  int? relatedWalletTransactionId;
-  String? description;
-  Metadata? metadata;
-  String? createdAt;
-  String? updatedAt;
-  Recipient? recipient;
-  CreditWallet? creditWallet;
-
   OverDueDataModel(
       {this.id,
       this.creditWalletId,
@@ -49,54 +31,65 @@ class OverDueDataModel {
     autoDeductionDate = json['auto_deduction_date'];
     relatedWalletTransactionId = json['related_wallet_transaction_id'];
     description = json['description'];
-    metadata = json['metadata'] != null
-        ? new Metadata.fromJson(json['metadata'])
-        : null;
+    metadata =
+        json['metadata'] != null ? Metadata.fromJson(json['metadata']) : null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     recipient = json['recipient'] != null
-        ? new Recipient.fromJson(json['recipient'])
+        ? Recipient.fromJson(json['recipient'])
         : null;
     creditWallet = json['creditWallet'] != null
-        ? new CreditWallet.fromJson(json['creditWallet'])
+        ? CreditWallet.fromJson(json['creditWallet'])
         : null;
   }
+  int? id;
+  int? creditWalletId;
+  int? recipientUserId;
+  String? amount;
+  String? repaymentDate;
+  String? repaymentStatus;
+  bool? repaymentReminderSent;
+  String? lastReminderSentAt;
+  bool? autoDeductionAttempted;
+  String? autoDeductionDate;
+  int? relatedWalletTransactionId;
+  String? description;
+  Metadata? metadata;
+  String? createdAt;
+  String? updatedAt;
+  Recipient? recipient;
+  CreditWallet? creditWallet;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['credit_wallet_id'] = this.creditWalletId;
-    data['recipient_user_id'] = this.recipientUserId;
-    data['amount'] = this.amount;
-    data['repayment_date'] = this.repaymentDate;
-    data['repayment_status'] = this.repaymentStatus;
-    data['repayment_reminder_sent'] = this.repaymentReminderSent;
-    data['last_reminder_sent_at'] = this.lastReminderSentAt;
-    data['auto_deduction_attempted'] = this.autoDeductionAttempted;
-    data['auto_deduction_date'] = this.autoDeductionDate;
-    data['related_wallet_transaction_id'] = this.relatedWalletTransactionId;
-    data['description'] = this.description;
-    if (this.metadata != null) {
-      data['metadata'] = this.metadata!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['credit_wallet_id'] = creditWalletId;
+    data['recipient_user_id'] = recipientUserId;
+    data['amount'] = amount;
+    data['repayment_date'] = repaymentDate;
+    data['repayment_status'] = repaymentStatus;
+    data['repayment_reminder_sent'] = repaymentReminderSent;
+    data['last_reminder_sent_at'] = lastReminderSentAt;
+    data['auto_deduction_attempted'] = autoDeductionAttempted;
+    data['auto_deduction_date'] = autoDeductionDate;
+    data['related_wallet_transaction_id'] = relatedWalletTransactionId;
+    data['description'] = description;
+    if (metadata != null) {
+      data['metadata'] = metadata!.toJson();
     }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.recipient != null) {
-      data['recipient'] = this.recipient!.toJson();
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (recipient != null) {
+      data['recipient'] = recipient!.toJson();
     }
-    if (this.creditWallet != null) {
-      data['creditWallet'] = this.creditWallet!.toJson();
+    if (creditWallet != null) {
+      data['creditWallet'] = creditWallet!.toJson();
     }
     return data;
   }
 }
 
 class Metadata {
-  String? userCode;
-  int? refundDays;
-  int? giverUserId;
-  bool? unlimitedCredit;
-
   Metadata(
       {this.userCode, this.refundDays, this.giverUserId, this.unlimitedCredit});
 
@@ -106,24 +99,22 @@ class Metadata {
     giverUserId = json['giver_user_id'];
     unlimitedCredit = json['unlimited_credit'];
   }
+  String? userCode;
+  int? refundDays;
+  int? giverUserId;
+  bool? unlimitedCredit;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userCode'] = this.userCode;
-    data['refundDays'] = this.refundDays;
-    data['giver_user_id'] = this.giverUserId;
-    data['unlimited_credit'] = this.unlimitedCredit;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['userCode'] = userCode;
+    data['refundDays'] = refundDays;
+    data['giver_user_id'] = giverUserId;
+    data['unlimited_credit'] = unlimitedCredit;
     return data;
   }
 }
 
 class Recipient {
-  int? id;
-  String? firstName;
-  String? lastName;
-  String? email;
-  String? userCode;
-
   Recipient(
       {this.id, this.firstName, this.lastName, this.email, this.userCode});
 
@@ -134,29 +125,24 @@ class Recipient {
     email = json['email'];
     userCode = json['userCode'];
   }
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? userCode;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['userCode'] = this.userCode;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['userCode'] = userCode;
     return data;
   }
 }
 
 class CreditWallet {
-  int? id;
-  int? userId;
-  String? balance;
-  String? currency;
-  String? status;
-  String? lastTransactionAt;
-  String? createdAt;
-  String? updatedAt;
-  Recipient? user;
-
   CreditWallet(
       {this.id,
       this.userId,
@@ -177,21 +163,30 @@ class CreditWallet {
     lastTransactionAt = json['last_transaction_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    user = json['user'] != null ? new Recipient.fromJson(json['user']) : null;
+    user = json['user'] != null ? Recipient.fromJson(json['user']) : null;
   }
+  int? id;
+  int? userId;
+  String? balance;
+  String? currency;
+  String? status;
+  String? lastTransactionAt;
+  String? createdAt;
+  String? updatedAt;
+  Recipient? user;
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['balance'] = this.balance;
-    data['currency'] = this.currency;
-    data['status'] = this.status;
-    data['last_transaction_at'] = this.lastTransactionAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['balance'] = balance;
+    data['currency'] = currency;
+    data['status'] = status;
+    data['last_transaction_at'] = lastTransactionAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }

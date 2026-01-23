@@ -100,12 +100,7 @@ class ErrorInfo extends StatelessWidget {
                   AppPrimaryButton(
                     title: btnText ?? 'Continue',
                     isLoading: false,
-                    onPressed: press != null
-                        ? press
-                        : () {
-                            context.pop();
-                            context.pop();
-                          },
+                    onPressed: press,
                   ),
               const SizedBox(height: 16),
             ],

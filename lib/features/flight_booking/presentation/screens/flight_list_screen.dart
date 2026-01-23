@@ -122,7 +122,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                 child: BlocBuilder<FlightBloc, FlightState>(
                   builder: (context, state) {
                     if (state is FlightSearching) {
-                      return FlightListLoaddingWidget(
+                      return FlightListLoadingWidget(
                         arrival: widget.data['arrival'],
                         departure: widget.data['depurture'],
                       );

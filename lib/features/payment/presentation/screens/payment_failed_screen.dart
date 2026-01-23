@@ -13,7 +13,7 @@ class PaymentFailedScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
         body: SizedBox(
-          width: AppHelpers.percenWidth(context: context),
+          width: AppHelpers.percentWidth(context: context),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
