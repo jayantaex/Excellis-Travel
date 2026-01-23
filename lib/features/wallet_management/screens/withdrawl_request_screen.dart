@@ -109,6 +109,7 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                             total = state.data?.data?.total ?? 0;
                             page = state.data?.data?.page ?? 1;
                             return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
                                   width: AppHelpers.getScreenWidth(context),
@@ -119,8 +120,8 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                       Text(
                                         'Withdrawal Requests',
                                         style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
                                             color:
                                                 AppHelpers.isDarkMode(context)
                                                     ? AppColors.white
@@ -170,7 +171,14 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                     ],
                                   ),
                                 ),
-                                const SizedBox(height: 16),
+                                const Text(
+                                  'Showing all withdrawal requests',
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.textSecondary),
+                                ),
+                                const SizedBox(height: 12),
                                 Divider(
                                   color: AppColors.grey.withValues(alpha: 0.1),
                                   thickness: 1,

@@ -6,6 +6,7 @@ import '../../core/network/api_client.dart';
 import '../wallet_management/api/wallet_api.dart';
 import '../wallet_management/bloc/wallet_bloc.dart';
 import '../wallet_management/data/repository/wallet_repository.dart';
+import '../wallet_management/data/src/wallet_remote_data_src.dart';
 import 'presentation/screens/payment_failed_screen.dart';
 import 'presentation/screens/payment_processing_screen.dart';
 import 'presentation/screens/payment_success_screen.dart';
@@ -19,8 +20,8 @@ class PaymentModule {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              WalletBloc(WalletRepository(WalletApi(ApiClient()))),
+          create: (context) => WalletBloc(
+              WalletRepository(WalletRemoteDataSrc(apiClient: ApiClient()))),
         ),
       ],
       child: PaymentProcessingScreen(

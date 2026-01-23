@@ -278,14 +278,27 @@ class _WalletScreenState extends State<WalletScreen>
                               const SizedBox(height: 16),
 
                               // Transaction Header
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
                                   'Transaction History',
                                   style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : AppColors.textPrimary),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  'Showing all transactions (received and used) and repayment history',
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.textSecondary),
                                 ),
                               ),
                               const SizedBox(height: 12),

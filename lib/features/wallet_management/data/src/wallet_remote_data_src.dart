@@ -1,20 +1,21 @@
 import 'dart:developer';
-import '../../../core/network/api_client.dart';
-import '../../../core/network/api_response.dart';
-import '../../../core/network/api_urls.dart';
-import '../data/models/credit_balance_model.dart';
-import '../data/models/custom_cr_transaction_model.dart';
-import '../data/models/overdue_data_model.dart';
-import '../data/models/repay_resp_model.dart';
-import '../data/models/repayment_data_model.dart';
-import '../data/models/transaction_model.dart';
-import '../data/models/wallet_charge_model.dart';
-import '../data/models/wallet_model.dart';
-import '../data/models/wallet_order_model.dart';
-import '../data/models/withdrawl_request_data_model.dart';
 
-class WalletApi {
-  WalletApi(this.apiClient);
+import '../../../../core/network/api_client.dart';
+import '../../../../core/network/api_response.dart';
+import '../../../../core/network/api_urls.dart';
+import '../models/credit_balance_model.dart';
+import '../models/custom_cr_transaction_model.dart';
+import '../models/overdue_data_model.dart';
+import '../models/repay_resp_model.dart';
+import '../models/repayment_data_model.dart';
+import '../models/transaction_model.dart';
+import '../models/wallet_charge_model.dart';
+import '../models/wallet_model.dart';
+import '../models/wallet_order_model.dart';
+import '../models/withdrawl_request_data_model.dart';
+
+class WalletRemoteDataSrc {
+  WalletRemoteDataSrc({required this.apiClient});
   final ApiClient apiClient;
 
   /// Fetch wallet details
@@ -302,6 +303,4 @@ class WalletApi {
       return ApiResponse(statusCode: 400, errorMessage: e.toString());
     }
   }
-
-
 }
