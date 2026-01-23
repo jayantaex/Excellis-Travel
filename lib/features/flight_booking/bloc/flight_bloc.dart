@@ -72,8 +72,8 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       //     .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
 
       //filtering the array by price
-      res.data!.datam?.sort((a, b) => double.parse(a.price!.offerPrice!)
-          .compareTo(double.parse(b.price!.offerPrice!)));
+      res.data!.datam?.sort((a, b) => double.parse(a.price!.grandTotal!)
+          .compareTo(double.parse(b.price!.grandTotal!)));
 
       final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
 
@@ -317,8 +317,8 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
 
         case 'Shortest Duration':
           sortedData.datam!.sort((a, b) =>
-              (double.parse(a.itineraries!.first.duration!) -
-                      double.parse(b.itineraries!.first.duration!))
+              (getDurationInMinutes(a.itineraries!.first.duration!) -
+                      getDurationInMinutes(b.itineraries!.first.duration!))
                   .abs()
                   .compareTo(0));
           break;
@@ -646,4 +646,15 @@ String getCalculatedPrice(
   final amount = (price * double.parse(value)) / 100;
   price += amount;
   return price.toStringAsFixed(2);
+}
+
+int getDurationInMinutes(String duration) {
+  // Regex looks for numbers before 'H' and 'M'
+  final hoursMatch = RegExp(r'(\d+)H').firstMatch(duration);
+  final minutesMatch = RegExp(r'(\d+)M').firstMatch(duration);
+
+  final hours = int.parse(hoursMatch?.group(1) ?? '0');
+  final minutes = int.parse(minutesMatch?.group(1) ?? '0');
+
+  return (hours * 60) + minutes;
 }
