@@ -20,7 +20,7 @@ class AppPrimaryInput extends StatelessWidget {
     this.onTap,
     this.onChange,
     this.focusNode,
-    this.isMultiline,
+    this.maxLines,
     this.validator,
     this.focus,
   });
@@ -32,7 +32,7 @@ class AppPrimaryInput extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final bool? enable;
-  final bool? isMultiline;
+  final int? maxLines;
   final bool? isPassword;
   final bool? showCursor;
   final TextStyle? style;
@@ -51,7 +51,7 @@ class AppPrimaryInput extends StatelessWidget {
       cursorColor: AppColors.primary,
       obscureText: isPassword == true ? true : false,
       enabled: enable ?? true,
-      maxLines: isMultiline == true ? null : 1,
+      maxLines: maxLines ?? 1,
       onChanged: onChange,
       onTap: onTap,
       controller: controller,

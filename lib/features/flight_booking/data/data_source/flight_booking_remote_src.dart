@@ -10,6 +10,7 @@ import '../models/flight_offer_price_model.dart';
 import '../models/flights_data_model.dart';
 import '../models/payment_verify_res_model.dart';
 import '../models/seat_map_data_model.dart';
+import '../models/traveller_data_model.dart';
 
 class FlightBookingRemoteSrc {
   FlightBookingRemoteSrc(this.amadeusClient, {this.apiClient});
@@ -44,14 +45,18 @@ class FlightBookingRemoteSrc {
     try {
       final ApiResponse<FlightsDataModel> response =
           await amadeusClient.postRequest(
-        reqModel: body,
-        endPoint: EndPoints.flightSearch,
-        fromJson: (Map<String, dynamic> jsonData) =>
-            FlightsDataModel.fromJson(jsonData),
-      );
+              reqModel: body,
+              endPoint: EndPoints.flightSearch,
+              fromJson: (Map<String, dynamic> jsonData) {
+                if (jsonData['data'] != null && jsonData['data'].isNotEmpty) {
+                  return FlightsDataModel.fromJson(jsonData);
+                }
+                return FlightsDataModel();
+              });
 
       return response;
     } catch (e) {
+      log(e.toString());
       return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
   }
@@ -178,5 +183,27 @@ class FlightBookingRemoteSrc {
     } catch (e) {
       return ApiResponse(errorMessage: e.toString(), statusCode: 400);
     }
+  }
+
+  Future<ApiResponse<bool>> createTraveler(
+          {required Map<String, dynamic> body}) async =>
+      await apiClient!.postRequest(
+          endPoint: EndPoints.travelers,
+          reqModel: body,
+          fromJson: (Map<String, dynamic> jsonData) => jsonData['success']);
+
+  Future<ApiResponse<List<TravelerDataModel>>> getTravelers() async {
+    final List<TravelerDataModel> travelerList = <TravelerDataModel>[];
+    final ApiResponse<List<TravelerDataModel>> resp =
+        await apiClient!.getRequest(
+            endPoint: EndPoints.travelers,
+            fromJson: (Map<String, dynamic> jsonData) {
+              jsonData['data'].forEach((x) {
+                travelerList.add(TravelerDataModel.fromJson(x));
+                return travelerList;
+              });
+              return travelerList;
+            });
+    return resp;
   }
 }

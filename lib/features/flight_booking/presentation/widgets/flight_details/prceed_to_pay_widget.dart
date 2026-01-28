@@ -230,8 +230,11 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                             }
 
                             if (travellersCount != widget.passengers.length) {
-                              AppHelpers.showSnackBar(context,
-                                  'Add all the travellers to proceed with flight booking');
+                              AppHelpers.showSnackBar(
+                                context,
+                                'Passenger information is required to proceed.',
+                                backgroundColor: AppColors.error,
+                              );
                               return;
                             }
                             if (widget.billingAddress == null) {

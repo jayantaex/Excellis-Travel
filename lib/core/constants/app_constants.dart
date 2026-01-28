@@ -36,18 +36,21 @@ class AppConstants {
       kDebugMode ? 'rzp_test_BMpADBZwVaESnu' : 'rzp_test_BMpADBZwVaESnu';
   static const String razorpaySecret =
       kDebugMode ? 'pRy84OpHvEyA7m862Dr7b3F7' : 'pRy84OpHvEyA7m862Dr7b3F7';
+
   static const String razorpayUserName = 'Excellis Travel';
 
   //amadues api credentials
-  static const String amadeusClientId = 'an0lZ3ODCbziRyhA4D3x2KnPbJ301mHp';
-  static const String amadeusSecret = 'u6WaWZ0rR0Gt8tFx';
+  static const String amadeusClientId = 'lGkPjtl8HfERmzZvY2CqVS2StiFCyT7f';
+  static const String amadeusSecret = 'uiLxN0c50A8hmg3z';
 
   // Local asset Url
   static const String assetImageUrl = 'assets/images/';
-  static const String assetIcontUrl = 'assets/icons/';
+  static const String assetIconUrl = 'assets/icons/';
   static const String imageNotFound = 'assets/images/image_not_found.png';
 
   static const String airCraftBox = 'air_craft_data';
+
+  static const String passengerBox = 'passenger_data';
 
   //Legality
 }

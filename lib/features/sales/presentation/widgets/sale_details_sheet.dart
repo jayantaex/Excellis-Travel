@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_styles.dart';
 import '../../../../utils/app_helpers.dart';
+import '../../../../utils/title_case.dart';
 import '../../data/models/sates_data_model.dart';
 
 class SaleDetailsSheet extends StatelessWidget {
@@ -12,14 +13,14 @@ class SaleDetailsSheet extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: [
           ContentRow(
-            title: 'Booking ID:',
+            title: 'PNR Number:',
             value:
                 '${commission.booking?.bookingReference ?? commission.bookingId}',
           ),
           const SizedBox(height: 8),
           ContentRow(
             title: 'Booking Status:',
-            value: commission.booking?.bookingStatus?.toUpperCase() ?? '',
+            value: toTitleCase(commission.booking?.bookingStatus ?? ''),
             valueStyle: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -50,12 +51,13 @@ class SaleDetailsSheet extends StatelessWidget {
           const SizedBox(height: 8),
           ContentRow(
             title: 'Role:',
-            value: commission.user?.role ?? '',
+            value: toTitleCase(commission.user?.role ?? ''),
           ),
           const SizedBox(height: 8),
           ContentRow(
             title: 'Name:',
-            value: '${commission.user?.firstName} ${commission.user?.lastName}',
+            value:
+                '${toTitleCase(commission.user?.firstName ?? '')} ${toTitleCase(commission.user?.lastName ?? '')}',
           ),
           const SizedBox(height: 8),
           ContentRow(

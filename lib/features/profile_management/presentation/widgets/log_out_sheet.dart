@@ -29,7 +29,7 @@
 //         mainAxisSize: MainAxisSize.min,
 //         children: [
 //           SvgPicture.asset(
-//             '${AppConstants.assetIcontUrl}sign_out.svg',
+//             '${AppConstants.assetIconUrl}sign_out.svg',
 //             height: 52,
 //             width: 42,
 //             colorFilter:

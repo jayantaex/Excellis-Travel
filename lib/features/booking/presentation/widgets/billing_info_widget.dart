@@ -6,10 +6,17 @@ import '../../data/models/ticket_model.dart';
 
 class BillingInfo extends StatelessWidget {
   const BillingInfo(
-      {super.key, this.billingAddress, this.contactDetails, this.billingDate});
+      {super.key,
+      this.billingAddress,
+      this.contactDetails,
+      this.billingDate,
+      this.pnr,
+      this.bookingReference});
   final BillingAddress? billingAddress;
   final ContactDetails? contactDetails;
   final String? billingDate;
+  final String? pnr;
+  final String? bookingReference;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +58,14 @@ class BillingInfo extends StatelessWidget {
           const ItemRow(
             title: '',
             value: '',
+          ),
+          ItemRow(
+            title: 'PNR Number',
+            value: '${pnr ?? ''} ',
+          ),
+          ItemRow(
+            title: 'Booking Reference',
+            value: '${bookingReference ?? ''} ',
           ),
           ItemRow(
             title: 'Email',

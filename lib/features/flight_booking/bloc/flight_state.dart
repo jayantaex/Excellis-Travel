@@ -92,8 +92,9 @@ final class FlightPaymentVerifing extends FlightState {
 }
 
 final class FlightPaymentVerified extends FlightState {
-  const FlightPaymentVerified({required this.data});
+  const FlightPaymentVerified({required this.data, required this.paymentMode});
   final payment.PaymentVarifiedDataModel data;
+  final String paymentMode;
 }
 
 final class FlightPaymentVerificationFailed extends FlightState {

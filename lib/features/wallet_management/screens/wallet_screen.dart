@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +31,6 @@ class _WalletScreenState extends State<WalletScreen>
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _amountController =
       TextEditingController(text: '10000');
-  bool _isFetching = false;
 
   @override
   void initState() {
@@ -90,12 +87,8 @@ class _WalletScreenState extends State<WalletScreen>
             child: SafeArea(
               child: BlocConsumer<WalletBloc, WalletState>(
                 listener: (context, state) {
-                  if (state is WalletLoaded && !state.isLoadingMore) {
-                    _isFetching = false;
-                  }
-                  if (state is WalletError) {
-                    _isFetching = false;
-                  }
+                  if (state is WalletLoaded && !state.isLoadingMore) {}
+                  if (state is WalletError) {}
 
                   if (state is SubmitWithdrawalSuccess) {
                     AppHelpers.showSnackBar(
@@ -104,8 +97,18 @@ class _WalletScreenState extends State<WalletScreen>
                     _fetchWalletBalance();
                   }
                   if (state is SubmitWithdrawalError) {
-                    AppHelpers.showSnackBar(context, state.message,
-                        backgroundColor: AppColors.error);
+                    AppHelpers.showSnackBar(
+                      context,
+                      state.message,
+                      duration: const Duration(minutes: 10),
+                      action: SnackBarAction(
+                        label: 'Close',
+                        onPressed: () {
+                          AppHelpers.hideCurrentSnackBar(context);
+                        },
+                      ),
+                      backgroundColor: AppColors.error,
+                    );
                     _fetchWalletBalance();
                   }
                 },
@@ -173,21 +176,23 @@ class _WalletScreenState extends State<WalletScreen>
                                                   _amountController),
                                           submitButtonRequired: true,
                                           onSubmitPressed: () {
+                                            Navigator.pop(context);
                                             final double doubleAmount =
                                                 double.parse(
                                                     _amountController.text);
 
                                             context.pushNamed(
-                                                PaymentModule
-                                                    .paymentProcessingName,
-                                                extra: {
-                                                  'amount': doubleAmount,
-                                                  'description':
-                                                      'Deposit Money in Wallet',
-                                                  'mobile': '',
-                                                  'email': '',
-                                                  'orderFor': 'wallet',
-                                                });
+                                              PaymentModule
+                                                  .paymentProcessingName,
+                                              extra: {
+                                                'amount': doubleAmount,
+                                                'description':
+                                                    'Deposit Money in Wallet',
+                                                'mobile': '',
+                                                'email': '',
+                                                'orderFor': 'wallet',
+                                              },
+                                            );
                                           },
                                         );
                                       },
@@ -285,14 +290,27 @@ class _WalletScreenState extends State<WalletScreen>
                               const SizedBox(height: 16),
 
                               // Transaction Header
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: Text(
                                   'Transaction History',
                                   style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppHelpers.isDarkMode(context)
+                                          ? AppColors.white
+                                          : AppColors.textPrimary),
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  'Showing all transactions (received and used) and repayment history',
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.textSecondary),
                                 ),
                               ),
                               const SizedBox(height: 12),
@@ -455,17 +473,6 @@ class _WalletScreenState extends State<WalletScreen>
     context
         .read<WalletBloc>()
         .add(const FetchWalletEvent(limit: 99999999999999999, page: 1));
-  }
-
-  void _fetchWalletTransactions({
-    required int page,
-    required int limit,
-  }) {
-    log('Fetching wallet transactions $page $limit');
-    context.read<WalletBloc>().add(FetchWalletTransactionsEvent(
-          page: page,
-          limit: limit,
-        ));
   }
 }
 

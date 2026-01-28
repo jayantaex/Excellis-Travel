@@ -190,3 +190,25 @@ class ChargeCreditWalletMoneyError extends WalletState {
   const ChargeCreditWalletMoneyError({required this.message});
   final String message;
 }
+
+class FetchRePaymentSuccess extends WalletState {
+  const FetchRePaymentSuccess(
+      {required this.overDueData, required this.pendingRepaymentData});
+  final List<OverDueDataModel>? overDueData;
+  final List<PendingRepaymentDataModel>? pendingRepaymentData;
+}
+
+class FetchRePaymentError extends WalletState {
+  const FetchRePaymentError({required this.message});
+  final String message;
+}
+
+class RePaySuccess extends WalletState {
+  const RePaySuccess({required this.message});
+  final String message;
+}
+
+class RePayError extends WalletState {
+  const RePayError({required this.message});
+  final String message;
+}

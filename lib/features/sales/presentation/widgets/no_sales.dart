@@ -13,27 +13,24 @@ class NoSales extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          isForFilter ?? false
-              ? Text('₹0.00',
-                  style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: AppHelpers.isDarkMode(context)
-                          ? AppColors.white
-                          : AppColors.black))
-              : const SizedBox(),
-          const SizedBox(height: 8),
+          // isForFilter ?? false
+          //     ? Text('₹0.00',
+          //         style: TextStyle(
+          //             fontSize: 32,
+          //             fontWeight: FontWeight.bold,
+          //             color: AppHelpers.isDarkMode(context)
+          //                 ? AppColors.white
+          //                 : AppColors.black))
+          //     : const SizedBox(),
+          // const SizedBox(height: 8),
           Text(
             isForFilter ?? false
-                ? 'No Sales Found with this filter'
-                : 'You have no sales yet.',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: AppHelpers.isDarkMode(context)
-                  ? AppColors.white
-                  : AppColors.textPrimary,
-            ),
+                ? 'No sales found with this filter.'
+                : 'No sales found.',
+            style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: AppColors.white),
           ),
           const SizedBox(height: 12),
           isForFilter ?? false

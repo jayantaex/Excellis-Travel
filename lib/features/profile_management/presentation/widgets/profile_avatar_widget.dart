@@ -33,10 +33,10 @@ class ProfileAvatarWidget extends StatelessWidget {
               label: InkWell(
                 onTap: () async {
                   final XFile? image = await _appImagePicker.pickFromGallery();
-                  if (context.mounted) {
+                  if (context.mounted && image != null) {
                     await showPhotoPreview(
                       context: context,
-                      url: image!.path,
+                      url: image.path,
                       onUpdate: () {
                         context.read<ProfileBloc>().add(UpdateProfileImageEvent(
                               imageFile: File(image.path),

@@ -33,47 +33,47 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   final List<Map<String, String>> options = <Map<String, String>>[
     <String, String>{
       'title': 'Profile',
-      'iconPath': '${AppConstants.assetIcontUrl}profile.svg',
+      'iconPath': '${AppConstants.assetIconUrl}profile.svg',
       'routeName': ProfileManagementModule.editProfileName
     },
     <String, String>{
       'title': 'My Markup',
-      'iconPath': '${AppConstants.assetIcontUrl}markup.svg',
+      'iconPath': '${AppConstants.assetIconUrl}markup.svg',
       'routeName': SalesModule.myMarkupScreen
     },
     <String, String>{
       'title': 'My Wallet',
-      'iconPath': '${AppConstants.assetIcontUrl}wallet.svg',
+      'iconPath': '${AppConstants.assetIconUrl}wallet.svg',
       'routeName': WalletModule.wallet
     },
     <String, String>{
       'title': 'Credit Wallet',
-      'iconPath': '${AppConstants.assetIcontUrl}credit_wallet.svg',
+      'iconPath': '${AppConstants.assetIconUrl}credit_wallet.svg',
       'routeName': WalletModule.creditWallet
     },
     <String, String>{
       'title': 'Withdrawl Request',
-      'iconPath': '${AppConstants.assetIcontUrl}withdrawl_request.svg',
+      'iconPath': '${AppConstants.assetIconUrl}withdrawl_request.svg',
       'routeName': WalletModule.withdrawlRequest
     },
     <String, String>{
       'title': 'Terms & Conditions',
-      'iconPath': '${AppConstants.assetIcontUrl}terms.svg',
+      'iconPath': '${AppConstants.assetIconUrl}terms.svg',
       'routeName': LegalModule.termsName
     },
     <String, String>{
       'title': 'Privacy Policy',
-      'iconPath': '${AppConstants.assetIcontUrl}policy.svg',
+      'iconPath': '${AppConstants.assetIconUrl}policy.svg',
       'routeName': LegalModule.policyName
     },
     <String, String>{
       'title': 'Settings',
-      'iconPath': '${AppConstants.assetIcontUrl}settings.svg',
+      'iconPath': '${AppConstants.assetIconUrl}settings.svg',
       'routeName': SettingsModule.routeName
     },
     <String, String>{
       'title': 'Sign Out',
-      'iconPath': '${AppConstants.assetIcontUrl}logout.svg',
+      'iconPath': '${AppConstants.assetIconUrl}logout.svg',
       'routeName': ''
     }
   ];

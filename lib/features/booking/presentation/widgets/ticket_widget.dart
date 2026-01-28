@@ -258,7 +258,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           const Text(
-                            'Booking ID',
+                            'Reference Number',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
@@ -310,7 +310,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                             child: Row(
                               children: [
                                 Text(
-                                  widget.ticketData?.bookingReference ?? '',
+                                  widget.ticketData?.referenceNumber ?? '',
                                   style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
@@ -322,7 +322,7 @@ class _TicketWidgetState extends State<TicketWidget> {
                                       onPressed: () {
                                         Clipboard.setData(ClipboardData(
                                           text: widget.ticketData
-                                                  ?.bookingReference ??
+                                                  ?.referenceNumber ??
                                               '',
                                         ));
                                       },
