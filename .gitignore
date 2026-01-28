@@ -52,3 +52,5 @@ android/gradle.properties
 /.json_models/
 models.jsonc
 
+config.bat
+node_modules

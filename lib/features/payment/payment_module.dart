@@ -1,11 +1,11 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../core/network/api_client.dart';
-import '../wallet_management/api/wallet_api.dart';
 import '../wallet_management/bloc/wallet_bloc.dart';
 import '../wallet_management/data/repository/wallet_repository.dart';
+import '../wallet_management/data/src/wallet_remote_data_src.dart';
 import 'presentation/screens/payment_failed_screen.dart';
 import 'presentation/screens/payment_processing_screen.dart';
 import 'presentation/screens/payment_success_screen.dart';
@@ -19,8 +19,8 @@ class PaymentModule {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              WalletBloc(WalletRepository(WalletApi(ApiClient()))),
+          create: (context) => WalletBloc(
+              WalletRepository(WalletRemoteDataSrc(apiClient: ApiClient()))),
         ),
       ],
       child: PaymentProcessingScreen(
@@ -36,8 +36,20 @@ class PaymentModule {
   static String paymentSuccessName = 'payment_success';
   static String paymentSuccessPath = '/payment_success';
   static Widget paymentSuccessBuilder(
-          BuildContext context, GoRouterState state) =>
-      const PaymentSuccessfulScreen();
+      BuildContext context, GoRouterState state) {
+    final Map<String, dynamic> data =
+        state.extra as Map<String, dynamic>? ?? {};
+    log('payment success data: $data');
+    return BlocProvider(
+      create: (context) => WalletBloc(
+          WalletRepository(WalletRemoteDataSrc(apiClient: ApiClient()))),
+      child: PaymentSuccessfulScreen(
+        btnText: data['btnText'] ?? 'Continue',
+        nextRoute: data['nextRoute'],
+        data: data['paymentData'],
+      ),
+    );
+  }
 
   static String paymentFailedName = 'payment_failed';
   static String paymentFailedPath = '/payment_failed';

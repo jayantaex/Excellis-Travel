@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
-import '../../wallet_management/bloc/wallet_bloc.dart';
 import '../data/models/airline_model.dart';
 import '../data/models/filter_data_model.dart';
 import '../data/models/seat_map_data_model.dart';
@@ -59,114 +58,144 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       double maxPublishedFare = 0;
       final ApiResponse<FlightsDataModel> res =
           await repository.searchFlight(body: event.body);
-      if (res.data == null) {
+      //  log('rwowghwgh ${res.toString()}');
+      if (res.statusCode != 200) {
+        log('api error');
         emit(FlightSearchingError(
           message: '${res.errorMessage}',
         ));
-        return;
+      } else {
+        log('api success');
       }
 
-      //filering the array by departure time
-      res.data!.datam?.sort((a, b) => a
-          .itineraries!.first.segments!.first.departure!.at!
-          .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
-      final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
+      //filtering the array by departure time
 
-      for (FlightOfferDatam element in res.data!.datam!) {
-        final ApiResponse<double> res = await repository.getMarkUpPrice(
-            basePrice: double.parse(element.price!.grandTotal!));
-        element.price?.offerPrice = res.data!.toStringAsFixed(2);
-        element.price?.publishedPrice = getCalculatedPrice(
-            basePrice: res.data!.toStringAsFixed(2),
-            type: myMarkup.data?.fareType ?? 'Fixed',
-            value: myMarkup.data?.value ?? '0');
-      }
+      // res.data!.datam?.sort((a, b) => a
+      //     .itineraries!.first.segments!.first.departure!.at!
+      //     .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
 
-      minOfferFare = double.parse(res.data!.datam!.first.price!.offerPrice!);
-      maxOfferFare = double.parse(res.data!.datam!.last.price!.offerPrice!);
-      minPublishedFare =
-          double.parse(res.data!.datam!.first.price!.publishedPrice!);
-      maxPublishedFare =
-          double.parse(res.data!.datam!.last.price!.publishedPrice!);
-      for (FlightOfferDatam flight in res.data!.datam!) {
-        minOfferFare = minOfferFare < double.parse(flight.price!.offerPrice!)
-            ? minOfferFare
-            : double.parse(flight.price!.offerPrice!);
-        maxOfferFare = maxOfferFare > double.parse(flight.price!.offerPrice!)
-            ? maxOfferFare
-            : double.parse(flight.price!.offerPrice!);
+      //filtering the array by price
+      log('rgskhgwgw ${res.data?.datam?.isNotEmpty}');
+
+      if (res.data?.datam?.isNotEmpty ?? false) {
+        log('array not empty');
+        res.data!.datam?.sort((a, b) => double.parse(a.price!.grandTotal!)
+            .compareTo(double.parse(b.price!.grandTotal!)));
+
+        final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
+
+        for (FlightOfferDatam element in res.data!.datam!) {
+          final ApiResponse<double> res = await repository.getMarkUpPrice(
+              basePrice: double.parse(element.price!.grandTotal!));
+          element.price?.offerPrice = res.data!.toStringAsFixed(2);
+          element.price?.publishedPrice = getCalculatedPrice(
+              basePrice: res.data!.toStringAsFixed(2),
+              type: myMarkup.data?.fareType ?? 'Fixed',
+              value: myMarkup.data?.value ?? '0');
+        }
+
+        minOfferFare = double.parse(res.data!.datam!.first.price!.offerPrice!);
+        maxOfferFare = double.parse(res.data!.datam!.last.price!.offerPrice!);
         minPublishedFare =
-            minPublishedFare < double.parse(flight.price!.publishedPrice!)
-                ? minPublishedFare
-                : double.parse(flight.price!.publishedPrice!);
+            double.parse(res.data!.datam!.first.price!.publishedPrice!);
         maxPublishedFare =
-            maxPublishedFare > double.parse(flight.price!.publishedPrice!)
-                ? maxPublishedFare
-                : double.parse(flight.price!.publishedPrice!);
-      }
-
-      final List<AirlineModel> airlines = [];
-      for (FlightOfferDatam flight in res.data!.datam!) {
-        if (flight.itineraries == null) {
-          continue;
+            double.parse(res.data!.datam!.last.price!.publishedPrice!);
+        for (FlightOfferDatam flight in res.data!.datam!) {
+          minOfferFare = minOfferFare < double.parse(flight.price!.offerPrice!)
+              ? minOfferFare
+              : double.parse(flight.price!.offerPrice!);
+          maxOfferFare = maxOfferFare > double.parse(flight.price!.offerPrice!)
+              ? maxOfferFare
+              : double.parse(flight.price!.offerPrice!);
+          minPublishedFare =
+              minPublishedFare < double.parse(flight.price!.publishedPrice!)
+                  ? minPublishedFare
+                  : double.parse(flight.price!.publishedPrice!);
+          maxPublishedFare =
+              maxPublishedFare > double.parse(flight.price!.publishedPrice!)
+                  ? maxPublishedFare
+                  : double.parse(flight.price!.publishedPrice!);
         }
-        for (Itinerary itinerary in flight.itineraries!) {
-          if (itinerary.segments == null) {
-            continue;
-          }
-          for (Segment segment in itinerary.segments!) {
-            final String? aircraftCode = segment.carrierCode;
-            if (aircraftCode != null &&
-                !airlines.any((airline) => airline.code == aircraftCode)) {
-              airlines.add(AirlineModel(
-                name: res.data!.dictionaries?.dictionaries
-                                .carriers?[aircraftCode] !=
-                            null &&
-                        (res.data!.dictionaries?.dictionaries.carriers
-                                ?.isNotEmpty ??
-                            false)
-                    ? (res.data!.dictionaries?.dictionaries
-                            .carriers?[aircraftCode] ??
-                        '')
-                    : 'No-Name',
-                code: aircraftCode,
-                totalFlights: 1,
-                totalFare: 0.0,
-              ));
-            }
-          }
-        }
-      }
 
-      //calculate the availabe flights for each carrier
-
-      for (AirlineModel airline in airlines) {
-        final String carrierCode = airline.code;
-        int totalFlights = 0;
+        final List<AirlineModel> airlines = [];
         for (FlightOfferDatam flight in res.data!.datam!) {
           if (flight.itineraries == null) {
             continue;
           }
-          if (flight.itineraries!.first.segments!.first.carrierCode ==
-              carrierCode) {
-            totalFlights++;
+          for (Itinerary itinerary in flight.itineraries!) {
+            if (itinerary.segments == null) {
+              continue;
+            }
+            for (Segment segment in itinerary.segments!) {
+              final String? aircraftCode = segment.carrierCode;
+              if (aircraftCode != null &&
+                  !airlines.any((airline) => airline.code == aircraftCode)) {
+                airlines.add(AirlineModel(
+                  name: res.data!.dictionaries?.dictionaries
+                                  .carriers?[aircraftCode] !=
+                              null &&
+                          (res.data!.dictionaries?.dictionaries.carriers
+                                  ?.isNotEmpty ??
+                              false)
+                      ? (res.data!.dictionaries?.dictionaries
+                              .carriers?[aircraftCode] ??
+                          '')
+                      : 'No-Name',
+                  code: aircraftCode,
+                  totalFlights: 1,
+                  totalFare: 0.0,
+                ));
+              }
+            }
           }
         }
-        airline.totalFlights = totalFlights;
+
+        //calculate the available flights for each carrier
+
+        for (AirlineModel airline in airlines) {
+          final String carrierCode = airline.code;
+          int totalFlights = 0;
+          for (FlightOfferDatam flight in res.data!.datam!) {
+            if (flight.itineraries == null) {
+              continue;
+            }
+            if (flight.itineraries!.first.segments!.first.carrierCode ==
+                carrierCode) {
+              totalFlights++;
+            }
+          }
+          airline.totalFlights = totalFlights;
+        }
+
+        emit(
+          FlightLoaded(
+            data: res.data!,
+            airlines: airlines,
+            isFiltered: false,
+            minOfferFare: minOfferFare,
+            maxOfferFare: maxOfferFare,
+            minPublishedFare: minPublishedFare,
+            maxPublishedFare: maxPublishedFare,
+          ),
+        );
+      } else {
+        log('array empty');
+        emit(
+          FlightLoaded(
+            data: FlightsDataModel(),
+            airlines: const [],
+            isFiltered: false,
+            minOfferFare: minOfferFare,
+            maxOfferFare: maxOfferFare,
+            minPublishedFare: minPublishedFare,
+            maxPublishedFare: maxPublishedFare,
+          ),
+        );
       }
 
-      emit(
-        FlightLoaded(
-          data: res.data!,
-          airlines: airlines,
-          isFiltered: false,
-          minOfferFare: minOfferFare,
-          maxOfferFare: maxOfferFare,
-          minPublishedFare: minPublishedFare,
-          maxPublishedFare: maxPublishedFare,
-        ),
-      );
+      return;
     } catch (e) {
+      log('catch block');
       emit(FlightSearchingError(
         message: '$e',
       ));
@@ -247,7 +276,8 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       return;
     }
 
-    emit(FlightPaymentVerified(data: res.data!));
+    emit(
+        FlightPaymentVerified(data: res.data!, paymentMode: event.paymentMode));
   }
 
   Future<void> _handleMarkupPrice(
@@ -293,30 +323,27 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
 
       // Apply sorting based on filter name
       switch (event.filterName) {
-        case 'All':
-          sortedData.datam!.sort((a, b) => a
-              .itineraries!.first.segments!.first.arrival!.at!
-              .compareTo(b.itineraries!.first.segments!.first.arrival!.at!));
+        case 'Earliest First':
+          sortedData.datam!.sort((a, b) => DateTime.parse(
+                  a.itineraries!.first.segments!.first.departure!.at!)
+              .compareTo(DateTime.parse(
+                  b.itineraries!.first.segments!.first.departure!.at!)));
           break;
 
-        case 'Lowest Price':
+        case 'Low to High':
           sortedData.datam!.sort((a, b) => double.parse(a.price!.offerPrice!)
               .compareTo(double.parse(b.price!.offerPrice!)));
           break;
 
-        case 'Highest Price':
+        case 'High to Low':
           sortedData.datam!.sort((a, b) => double.parse(b.price!.offerPrice!)
               .compareTo(double.parse(a.price!.offerPrice!)));
           break;
 
-        case 'Non Stop First':
-          sortedData.datam!.sort((a, b) => a.itineraries!.first.segments!.length
-              .compareTo(b.itineraries!.first.segments!.length));
-          break;
-
-        case 'Non Stop Last':
-          sortedData.datam!.sort((a, b) => b.itineraries!.first.segments!.length
-              .compareTo(a.itineraries!.first.segments!.length));
+        case 'Shortest Duration':
+          sortedData.datam!.sort((a, b) =>
+              getDurationInMinutes(a.itineraries!.first.duration!).compareTo(
+                  getDurationInMinutes(b.itineraries!.first.duration!)));
           break;
 
         default:
@@ -500,8 +527,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           return publishedPrice < event.filterData.minPublishedFare! ||
               publishedPrice > event.filterData.maxPublishedFare!;
         });
-
-        log('Filtered flights (by price range): ${filteredFlightData.datam!.length}');
       }
 
       // Determine if any filters are actually applied
@@ -514,12 +539,30 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           (event.filterData.minPublishedFare != null &&
               event.filterData.maxPublishedFare != null);
 
+      //filter airlines
+      final List<AirlineModel> airlines = [];
+      for (var element in event.airlines) {
+        airlines.add(element);
+      }
+      for (AirlineModel airline in airlines) {
+        final String carrierCode = airline.code;
+        int totalFlights = 0;
+        for (FlightOfferDatam flight in filteredFlightData.datam ?? []) {
+          final String aircraftCode =
+              flight.itineraries!.first.segments!.first.carrierCode!;
+          if (aircraftCode == carrierCode) {
+            totalFlights++;
+          }
+        }
+        airline.totalFlights = totalFlights;
+      }
       emit(
         FlightLoaded(
           isFiltered: hasActiveFilters,
           filteredData: hasActiveFilters ? filteredFlightData : null,
           data: flightData,
-          airlines: event.airlines,
+          // airlines: event.airlines,
+          airlines: airlines,
           currentFilter: hasActiveFilters ? event.filterData : null,
           minOfferFare: event.minOfferFare,
           maxOfferFare: event.maxOfferFare,
@@ -548,10 +591,25 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           }
         }
       }
+      List<AirlineModel> airlines = [];
+      airlines = event.airlines;
+
+      for (AirlineModel airline in airlines) {
+        final String carrierCode = airline.code;
+        int totalFlights = 0;
+        for (FlightOfferDatam flight in event.flightData.datam ?? []) {
+          final String aircraftCode =
+              flight.itineraries!.first.segments!.first.carrierCode!;
+          if (aircraftCode == carrierCode) {
+            totalFlights++;
+          }
+        }
+        airline.totalFlights = totalFlights;
+      }
 
       emit(FlightLoaded(
         data: event.flightData,
-        airlines: event.airlines,
+        airlines: airlines,
         isFiltered: false,
         minOfferFare: event.minOfferFare,
         maxOfferFare: event.maxOfferFare,
@@ -590,17 +648,30 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       emit(SeatMapError(message: '$e'));
     }
   }
-}
 
-String getCalculatedPrice(
-    {required String basePrice, required String type, required String value}) {
-  double price = double.parse(basePrice);
-  if (type == 'Fixed') {
-    final double amount = double.parse(value);
+  String getCalculatedPrice(
+      {required String basePrice,
+      required String type,
+      required String value}) {
+    double price = double.parse(basePrice);
+    if (type == 'Fixed') {
+      final double amount = double.parse(value);
+      price += amount;
+      return price.toStringAsFixed(2);
+    }
+    final amount = (price * double.parse(value)) / 100;
     price += amount;
     return price.toStringAsFixed(2);
   }
-  final amount = (price * double.parse(value)) / 100;
-  price += amount;
-  return price.toStringAsFixed(2);
+
+  int getDurationInMinutes(String duration) {
+    // Regex looks for numbers before 'H' and 'M'
+    final hoursMatch = RegExp(r'(\d+)H').firstMatch(duration);
+    final minutesMatch = RegExp(r'(\d+)M').firstMatch(duration);
+
+    final hours = int.parse(hoursMatch?.group(1) ?? '0');
+    final minutes = int.parse(minutesMatch?.group(1) ?? '0');
+
+    return (hours * 60) + minutes;
+  }
 }

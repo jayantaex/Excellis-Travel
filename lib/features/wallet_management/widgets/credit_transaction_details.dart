@@ -16,7 +16,9 @@ class CreditTransactionDetails extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: [
           _buildRow(
-              title: 'ID : ', value: data.txnId ?? 'N/A', context: context),
+              title: 'Transaction ID : ',
+              value: data.txnId ?? 'N/A',
+              context: context),
           _buildRow(
               title: 'Amount : ',
               value: AppHelpers.formatCurrency(data.amount ?? 0.0),
@@ -36,7 +38,9 @@ class CreditTransactionDetails extends StatelessWidget {
                   pattern: 'hh:mm a'),
               context: context),
           _buildRow(
-              title: 'Type : ', value: data.type ?? 'N/A', context: context),
+              title: 'Type : ',
+              value: toTitleCase(data.type ?? ''),
+              context: context),
           if (data.recipient != null)
             _buildRow(
                 title: 'Recipient : ',

@@ -3,10 +3,11 @@ description: "A Flight Booking App"
 publish_to: 'none' 
 
 #production version
-# version: 1.0.0+1
+version: 1.0.1+11
+#major.minor.patch+build
 
 #development version
-version: 1.0.6+7
+# version: 1.0.6+7
 
 environment:
   sdk: ^3.5.4
@@ -88,14 +89,17 @@ dependencies:
   #country code
   country_code_picker: ^3.4.1
 
-  #local  app update
-  open_filex: ^4.7.0
-
   #url_launcher
   url_launcher: ^6.3.1
   
   # multi-selectable-dropdown
   multi_dropdown: ^3.0.1
+  search_choices: ^2.3.1
+  in_app_update: ^4.2.5
+
+  # Download Manager
+  flutter_downloader: ^1.12.0
+  
   flutter_localizations:
     sdk: flutter
 

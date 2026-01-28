@@ -11,18 +11,28 @@ Future<void> showHelpAndSupportSheet({required BuildContext context}) async {
     isScrollControlled: true,
     backgroundColor: AppColors.white,
     context: context,
-    builder: (BuildContext context) => HelpAndSupportSheet(),
+    builder: (BuildContext context) => const HelpAndSupportSheet(),
   );
 }
 
-class HelpAndSupportSheet extends StatelessWidget {
-  HelpAndSupportSheet({super.key});
+class HelpAndSupportSheet extends StatefulWidget {
+  const HelpAndSupportSheet({super.key});
 
+  @override
+  State<HelpAndSupportSheet> createState() => _HelpAndSupportSheetState();
+}
+
+class _HelpAndSupportSheetState extends State<HelpAndSupportSheet> {
   final TextEditingController _nameController = TextEditingController();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _phoneController = TextEditingController();
+
   final TextEditingController _remarkController = TextEditingController();
+
   String selectedSubject = 'General Inquiries';
+
   final List<DropdownMenuItem<String>> supportItems =
       const <DropdownMenuItem<String>>[
     DropdownMenuItem<String>(
@@ -82,7 +92,6 @@ class HelpAndSupportSheet extends StatelessWidget {
                 maxCharacters: 50,
                 label: 'Name*',
                 controller: _nameController,
-                isMultiline: false,
                 hint: 'Enter your name',
               ),
               const SizedBox(height: 15),
@@ -90,7 +99,6 @@ class HelpAndSupportSheet extends StatelessWidget {
                 maxCharacters: 10,
                 label: 'Phone*',
                 controller: _phoneController,
-                isMultiline: false,
                 hint: 'Enter your phone number',
                 keyboardType: TextInputType.phone,
               ),
@@ -99,7 +107,6 @@ class HelpAndSupportSheet extends StatelessWidget {
                 maxCharacters: 50,
                 label: 'Email',
                 controller: _emailController,
-                isMultiline: false,
                 hint: 'Enter your email address',
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -109,7 +116,6 @@ class HelpAndSupportSheet extends StatelessWidget {
                 keyboardType: TextInputType.multiline,
                 label: 'Remark*',
                 controller: _remarkController,
-                isMultiline: true,
                 hint: 'Enter your query',
               ),
               const SizedBox(height: 45),

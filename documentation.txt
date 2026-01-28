@@ -1,0 +1,107 @@
+================================================================================
+APP DOCUMENTATION: EXCELLIS TRAVEL - AGENT PORTAL
+================================================================================
+
+1. PROJECT OVERVIEW
+--------------------------------------------------------------------------------
+Excellis Travel is a comprehensive Flight Booking platform specifically 
+designed for Agents. It integrates with the Amadeus API for flight searches 
+and a custom backend for wallet management, user authentication, and sales 
+tracking.
+
+2. TECHNICAL STACK
+--------------------------------------------------------------------------------
+- Framework: Flutter 3.5.4 (SDK ^3.5.4)
+- State Management: BLoC (flutter_bloc & equatable)
+- Routing: go_router
+- HTTP Client: Dio (with custom interceptors & pretty_dio_logger)
+- Local Storage: 
+    * Hive: For structured data (Airports, Aircrafts, Passengers)
+    * Shared Preferences: For simple key-value pairs (StorageService)
+- Dependency Injection: Manual Injection via Static Module Classes
+- Localization: easy_localization
+- Payment Gateway: Razorpay
+- Crash Reporting/Analytics: Firebase Core & Messaging
+
+3. ARCHITECTURE (CLEAN FEATURE-FIRST BLoC)
+--------------------------------------------------------------------------------
+The project follows a modular, feature-first approach. Each feature in 
+`lib/features/` is self-contained and follows these layers:
+
+- Module Class: (e.g., `auth_module.dart`)
+    * Orchestrates Dependency Injection (DI).
+    * Defines route names, paths, and widget builders.
+    * Injects Repositories into BLoCs and BLoCs into Screens.
+- Presentation:
+    * `screens/`: High-level page widgets.
+    * `widgets/`: Feature-specific reusable components.
+- BLoC:
+    * `bloc/`: Contains Events, States, and Business Logic.
+- Data:
+    * `repository/`: Single point of truth for the BLoC; decides between 
+      remote and local data.
+    * `data_source/`: Implementation of API calls (Remote) or DB queries (Local).
+    * `models/`: DTOs (Data Transfer Objects) with JSON serialization.
+
+4. CORE DIRECTORY STRUCTURE
+--------------------------------------------------------------------------------
+- `lib/core/`:
+    * `network/`: 
+        - `ApiClient`: Custom backend client with auth interceptors.
+        - `AmadeusClient`: Specialized client for Amadeus API with built-in OAuth2 token refresh and retry logic.
+        - Endpoints and API response wrappers.
+    * `services/`: Global services like `LocalDB` (Hive) and `FirebaseNotificationService`.
+    * `theme/`: Global AppTheme (Light/Dark mode support).
+    * `common/`: Shared BLoCs (e.g., Location/Cities) and generic models.
+    * `widgets/`: App-wide reusable UI components (Buttons, TextFields, etc.).
+- `lib/features/`: Indivdual app modules (Auth, Flight Booking, Wallet, etc.).
+- `lib/utils/`: Generic helper classes, formatters, and `StorageService`.
+
+5. KEY FUNCTIONAL MODULES
+--------------------------------------------------------------------------------
+A. FLIGHT SEARCH & BOOKING
+   - Airport Search: Leverages Hive (`LocalDB`) for high-speed offline searching.
+   - Pricing Logic: Amadeus prices are dynamically adjusted with Agent Markups.
+   - Passenger Management: Saved passengers stored locally for quick selection.
+
+B. MARKUP SYSTEM
+   - Agents can set Global Markups (Percentage/Flat).
+   - Markup visibility can be toggled on/off during the booking flow.
+   - Final prices on tickets/invoices include these markups.
+
+C. DUAL-WALLET SYSTEM
+   - Standard Wallet: User-funded via Razorpay for direct bookings.
+   - Credit Wallet: Credit line provided by Admin/Parent agent for flexible booking.
+   - Repayment Dashboard: Tracking and clearing credit debts.
+
+D. REPORTING & DOWNLOADS
+   - Sales Dashboard: Real-time sales volume and commission tracking.
+   - Flutter Downloader: Handles PDF ticket and invoice generation/downloads.
+
+6. DEVELOPMENT WORKFLOW
+--------------------------------------------------------------------------------
+- Adding a New Feature:
+    1. Create a new directory in `lib/features/`.
+    2. Implement Data Source -> Repository -> BLoC -> Presentation layers.
+    3. Create a `[Feature]Module` class to define routes and DI.
+    4. Register the routes in `lib/app_router.dart`.
+- Code Generation:
+    * This project uses `build_runner`. Run the following command after 
+      modifying models or Hive adapters:
+      `dart run build_runner build --delete-conflicting-outputs`
+
+7. LOCALIZATION
+--------------------------------------------------------------------------------
+- Supported locales are managed in `lib/core/localization/`.
+- Translation files are stored in `assets/translations/`.
+- Use `tr()` extension method for UI strings.
+
+8. AUTHENTICATION FLOW
+--------------------------------------------------------------------------------
+- Auth tokens are managed by `StorageService` and `AuthenticationInterceptor`.
+- Tokens are automatically attached to Every request by `ApiClient`.
+- Logout clears the `StorageService` and navigates back to the Login screen.
+
+================================================================================
+End of Documentation
+================================================================================

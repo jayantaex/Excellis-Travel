@@ -14,7 +14,6 @@ import '../../../../core/widgets/app_gradient_bg.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/primary_input.dart';
 import '../../../../core/widgets/trans_white_bg_widget.dart';
-import '../../../flight_booking/flight_booking_module.dart';
 import '../../../flight_booking/presentation/widgets/flight_search/app_drop_down.dart';
 import '../../bloc/profile_bloc.dart';
 import '../widgets/profile_avatar_widget.dart';
@@ -95,7 +94,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     }
 
                     if (addressList.isNotEmpty && addressList.length > 3) {
-                      _pinController.text = addressList.last;
+                      _pinController.text = addressList.last.trim();
                       _selectedState =
                           addressList[addressList.length - 2].trim();
                       _cityController.text =
@@ -168,64 +167,57 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       controller: _firstNameController,
                                       label: 'First Name',
                                       maxCharacters: 50,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _lastNameController,
                                       label: 'Last Name',
                                       maxCharacters: 50,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _emailController,
                                       label: 'Email',
                                       maxCharacters: 50,
-                                      isMultiline: false,
                                       enable: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _phoneController,
+                                      keyboardType: TextInputType.phone,
                                       label: 'Phone Number',
                                       maxCharacters: 10,
-                                      isMultiline: false,
                                     ),
-                                    const SizedBox(height: 16),
-                                    AppPrimaryInput(
-                                      controller: _aadhaarNoController,
-                                      label: 'Aadhar Number',
-                                      maxCharacters: 12,
-                                      isMultiline: false,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    AppPrimaryInput(
-                                      controller: _panNoController,
-                                      label: 'Pan Number',
-                                      maxCharacters: 10,
-                                      isMultiline: false,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    AppPrimaryInput(
-                                      controller: _nearbyAirportController,
-                                      label: 'Nearby Airport',
-                                      maxCharacters: 50,
-                                      isMultiline: false,
-                                      onTap: () {
-                                        context.pushNamed(FlightBookingModule
-                                            .airportSearchName);
-                                      },
-                                    ),
+                                    // const SizedBox(height: 16),
+                                    // AppPrimaryInput(
+                                    //   controller: _aadhaarNoController,
+                                    //   label: 'Aadhar Number',
+                                    //   maxCharacters: 12,
+                                    // ),
+                                    // const SizedBox(height: 16),
+                                    // AppPrimaryInput(
+                                    //   controller: _panNoController,
+                                    //   label: 'Pan Number',
+                                    //   maxCharacters: 10,
+                                    // ),
+                                    // const SizedBox(height: 16),
+                                    // AppPrimaryInput(
+                                    //   controller: _nearbyAirportController,
+                                    //   label: 'Nearby Airport',
+                                    //   maxCharacters: 50,
+                                    //   onTap: () {
+                                    //     context.pushNamed(FlightBookingModule
+                                    //         .airportSearchName);
+                                    //   },
+                                    // ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _addressController,
                                       label: 'Address',
                                       hint: 'Enter your address',
                                       maxCharacters: 20,
-                                      isMultiline: false,
                                     ),
-                                    const SizedBox(height: 16),
+                                    // const SizedBox(height: 16),
                                     const SizedBox(height: 16),
                                     BlocConsumer<StatesBloc, StatesState>(
                                       listener: (BuildContext context,
@@ -308,14 +300,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             });
                                       },
                                       maxCharacters: 6,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _pinController,
+                                      keyboardType: TextInputType.number,
                                       label: 'Pincode',
                                       maxCharacters: 6,
-                                      isMultiline: false,
                                     ),
                                     const SizedBox(height: 16),
                                     BlocConsumer<ProfileBloc, ProfileState>(
@@ -343,20 +334,106 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                             AppHelpers.getScreenWidth(context),
                                         child: AppPrimaryButton(
                                           onPressed: () {
+                                            final String firstName =
+                                                _firstNameController.text
+                                                    .trim();
+                                            final String lastName =
+                                                _lastNameController.text.trim();
+                                            final String phone =
+                                                _phoneController.text.trim();
+                                            final String address =
+                                                _addressController.text.trim();
+                                            final String city =
+                                                _cityController.text.trim();
+                                            final String pincode =
+                                                _pinController.text.trim();
+
+                                            // Validate First Name
+                                            if (firstName.isEmpty) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter your first name');
+                                              return;
+                                            }
+                                            if (firstName.length < 3) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'First name must be at least 3 characters');
+                                              return;
+                                            }
+                                            if (firstName.split(' ').length >
+                                                1) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'First name should not contain spaces');
+                                              return;
+                                            }
+
+                                            // Validate Last Name
+                                            if (lastName.isEmpty) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter your last name');
+                                              return;
+                                            }
+                                            if (lastName.length < 3) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Last name must be at least 3 characters');
+                                              return;
+                                            }
+
+                                            // Validate Phone
+                                            if (phone.isEmpty) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter your phone number');
+                                              return;
+                                            }
+                                            if (!AppHelpers
+                                                .validateMobileNumber(phone)) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter a valid 10-digit phone number');
+                                              return;
+                                            }
+
+                                            // Validate Address
+                                            if (address.isEmpty) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter your address');
+                                              return;
+                                            }
+
+                                            // Validate State
+                                            if (_selectedState.isEmpty) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please select a state');
+                                              return;
+                                            }
+
+                                            // Validate City
+                                            if (city.isEmpty) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter/select your city');
+                                              return;
+                                            }
+
+                                            // Validate Pincode
+                                            if (pincode.isEmpty) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter your pincode');
+                                              return;
+                                            }
+                                            if (pincode.length != 6 ||
+                                                int.tryParse(pincode) == null) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter a valid 6-digit pincode');
+                                              return;
+                                            }
+
                                             final Map<String, String> data =
                                                 <String, String>{
-                                              'first_name': _firstNameController
-                                                  .text
-                                                  .trim(),
-                                              'last_name': _lastNameController
-                                                  .text
-                                                  .trim(),
+                                              'first_name': firstName,
+                                              'last_name': lastName,
                                               'email':
                                                   _emailController.text.trim(),
-                                              'phone':
-                                                  _phoneController.text.trim(),
+                                              'phone': phone,
                                               'address':
-                                                  '${_addressController.text.trim().split(',').first}, ${_cityController.text.trim()}, $_selectedState, ${_pinController.text.trim()}',
+                                                  '${address.split(',').first}, $city, $_selectedState, $pincode',
                                             };
                                             context.read<ProfileBloc>().add(
                                                 UpdateProfileEvent(data: data));

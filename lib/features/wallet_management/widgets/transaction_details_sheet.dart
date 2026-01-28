@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_styles.dart';
 import '../../../utils/app_helpers.dart';
+import '../../../utils/title_case.dart';
 
 class TransactionDetailsSheet extends StatelessWidget {
   const TransactionDetailsSheet({
@@ -26,11 +27,15 @@ class TransactionDetailsSheet extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: [
           _buildRow(
-              title: 'ID : ', value: transactionId ?? 'N/A', context: context),
+              title: 'Transaction ID : ',
+              value: '$transactionId',
+              context: context),
           _buildRow(title: 'Date : ', value: date, context: context),
-          _buildRow(title: 'Type : ', value: type, context: context),
+          _buildRow(
+              title: 'Type : ', value: toTitleCase(type), context: context),
           _buildRow(title: 'Amount : ', value: amount, context: context),
-          _buildRow(title: 'Status : ', value: status, context: context),
+          _buildRow(
+              title: 'Status : ', value: toTitleCase(status), context: context),
         ],
       );
 }
@@ -49,13 +54,17 @@ Widget _buildRow(
                   fontWeight: FontWeight.w500,
                   fontSize: 12)),
           const Spacer(),
-          Text(value,
-              style: TextStyle(
-                  color: AppHelpers.isDarkMode(context)
-                      ? AppColors.white
-                      : AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 10)),
+          Container(
+            alignment: Alignment.centerRight,
+            width: AppHelpers.getScreenWidth(context) * 0.55,
+            child: Text(value,
+                style: TextStyle(
+                    color: AppHelpers.isDarkMode(context)
+                        ? AppColors.white
+                        : AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10)),
+          ),
         ],
       ),
     );

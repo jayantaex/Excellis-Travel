@@ -7,8 +7,6 @@ sealed class FlightEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
-//airport searches
-
 class SearchAirportEvent extends FlightEvent {
   const SearchAirportEvent({
     required this.countryCode,
@@ -38,8 +36,9 @@ class CreateFlightOrder extends FlightEvent {
 }
 
 class VerifyPayment extends FlightEvent {
-  const VerifyPayment({required this.body});
+  const VerifyPayment({required this.body, required this.paymentMode});
   final Map<String, dynamic> body;
+  final String paymentMode;
 }
 
 class GetMarkupPrice extends FlightEvent {

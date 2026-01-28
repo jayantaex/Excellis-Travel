@@ -9,6 +9,7 @@ import '../models/create_order_res.dart';
 import '../models/flight_offer_price_model.dart';
 import '../models/flights_data_model.dart';
 import '../models/payment_verify_res_model.dart';
+import '../models/traveller_data_model.dart';
 
 class FlightBookingRepository {
   FlightBookingRepository({required this.remoteSrc, required this.localSrc});
@@ -95,6 +96,13 @@ class FlightBookingRepository {
   Future<ApiResponse<SeatMapDataModel>> getSeatMapData(
           {required FlightOfferDatam flightOfferData}) async =>
       await remoteSrc.getSeatMapData(flightOfferData: flightOfferData);
+
+  Future<ApiResponse<bool>> createTraveler(
+          {required Map<String, dynamic> body}) async =>
+      await remoteSrc.createTraveler(body: body);
+
+  Future<ApiResponse<List<TravelerDataModel>>> getTravelers() async =>
+      await remoteSrc.getTravelers();
 }
 
 String getAirlineNameFromLocal(

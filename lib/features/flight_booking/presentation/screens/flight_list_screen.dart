@@ -18,11 +18,11 @@ import '../../flight_booking_module.dart';
 import '../../data/models/flights_data_model.dart';
 import '../../data/models/hive/flight_hive_data_model.dart'
     show FlightHiveDataModel;
-import '../widgets/flight_listing/class_filter_widget.dart';
 import '../widgets/flight_card_widget.dart';
 import '../widgets/flight_listing/date_filter_widget.dart';
 import '../widgets/flight_listing/filter_drawer.dart';
 import '../widgets/flight_listing/no_flight_widget.dart';
+import '../widgets/flight_listing/sorting_card_widget.dart';
 import '../widgets/loading/flight_list_loadding_widget.dart';
 
 class FlightListScreen extends StatefulWidget {
@@ -38,14 +38,16 @@ class _FlightListScreenState extends State<FlightListScreen> {
     DateTime.now(),
   ];
   List<String> filters = [
-    'All',
-    'Lowest Price',
-    'Highest Price',
-    'Non Stop First',
-    'Non Stop Last',
+    // 'All',
+    'Low to High',
+    'High to Low',
+    'Earliest First',
+    'Shortest Duration',
+    // 'Non Stop First',
+    // 'Non Stop Last',
   ];
   int dateDuration = 20; //days
-  String selectedFilter = 'All';
+  String selectedFilter = 'Low to High';
   Map<String, dynamic>? body;
   String depurtureDate = '';
   String cabinClass = '';
@@ -120,7 +122,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                 child: BlocBuilder<FlightBloc, FlightState>(
                   builder: (context, state) {
                     if (state is FlightSearching) {
-                      return FlightListLoaddingWidget(
+                      return FlightListLoadingWidget(
                         arrival: widget.data['arrival'],
                         departure: widget.data['depurture'],
                       );
@@ -156,13 +158,18 @@ class _FlightListScreenState extends State<FlightListScreen> {
                               ),
                             ),
                           ),
-                          const SliverToBoxAdapter(child: SizedBox(height: 16)),
+                          const SliverToBoxAdapter(
+                            child: SizedBox(height: 16),
+                          ),
                           // Date Filter
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 16),
                               child: DateFilterWidget(
                                 selectedDate: DateTime.parse(depurtureDate),
+                                endDate: widget.data['returnDate'] != null
+                                    ? DateTime.parse(widget.data['returnDate'])
+                                    : null,
                                 onDateSelected: (date) async {
                                   if (widget.data['isRoundTrip']) {
                                     final bool? res =
@@ -202,7 +209,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 16),
-                              child: ClassFilterWidget(
+                              child: SortingCardWidget(
                                   onFilterSelected: (filter) {
                                     setState(() {
                                       selectedFilter = filter;
@@ -391,7 +398,7 @@ Map<String, dynamic> getBody({
       'travelers': getTravellers(travellersArr: travellersArr),
       'sources': ['GDS'],
       'searchCriteria': {
-        'maxFlightOffers': kDebugMode ? 4 : null,
+        'maxFlightOffers': kDebugMode ? 20 : null,
         'flightFilters': {
           'cabinRestrictions': [
             {

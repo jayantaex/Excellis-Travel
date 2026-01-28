@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -136,7 +135,7 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
       if (markup != null) {
         emit(MarkupRetrieved(markup: markup));
       } else {
-        emit(const MarkupRetrieved(markup: null));
+        emit(const MarkupRetrieved());
       }
     } catch (e) {
       emit(TicketError(err: e.toString()));

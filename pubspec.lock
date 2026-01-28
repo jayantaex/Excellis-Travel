@@ -470,6 +470,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  flutter_downloader:
+    dependency: "direct main"
+    description:
+      name: flutter_downloader
+      sha256: "93a9ddbd561f8a3f5483b4189453fba145a0a1014a88143c96a966296b78a118"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.12.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -765,6 +773,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.2"
+  in_app_update:
+    dependency: "direct main"
+    description:
+      name: in_app_update
+      sha256: "9924a3efe592e1c0ec89dda3683b3cfec3d4cd02d908e6de00c24b759038ddb1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.5"
   intl:
     dependency: "direct main"
     description:
@@ -901,14 +917,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-  open_filex:
-    dependency: "direct main"
-    description:
-      name: open_filex
-      sha256: "9976da61b6a72302cf3b1efbce259200cd40232643a467aac7370addf94d6900"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.7.0"
   package_config:
     dependency: transitive
     description:
@@ -1141,6 +1149,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  search_choices:
+    dependency: "direct main"
+    description:
+      name: search_choices
+      sha256: "44b0e00b45b72e69ee4e1350e2794134151d2a34ac668f2a7b6049b142d9b642"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.1"
   shared_preferences:
     dependency: "direct main"
     description:

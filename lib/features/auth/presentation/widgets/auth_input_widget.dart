@@ -36,12 +36,12 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) => TextFormField(
         validator: widget.validator,
         controller: widget.controller,
         keyboardType: widget.keyboardType,
         obscureText: _isPasswordVisible,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         style: TextStyle(
             fontSize: 16,
             color: AppHelpers.isDarkMode(context)
@@ -53,6 +53,12 @@ class _AuthInputWidgetState extends State<AuthInputWidget> {
             LengthLimitingTextInputFormatter(widget.maxCharacters),
         ],
         decoration: InputDecoration(
+          errorStyle: const TextStyle(
+            color: AppColors.error,
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+          ),
+          errorMaxLines: 2,
           filled: true,
           fillColor: AppColors.grey.withValues(alpha: 0.15),
           suffixIcon: widget.isPassword

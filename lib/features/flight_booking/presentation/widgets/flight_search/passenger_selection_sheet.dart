@@ -44,12 +44,15 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
   int adult = 1;
   int child = 0;
   int infant = 0;
+  int totalPassengers = 0;
 
   @override
   void initState() {
     adult = widget.adult;
     child = widget.child;
     infant = widget.infant;
+    totalPassengers = widget.adult + widget.child + widget.infant;
+    setState(() {});
     super.initState();
   }
 
@@ -102,14 +105,16 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
               trailing: InCrementDecrementButton(
                 value: adult,
                 onIncrement: () {
-                  if (adult < 9) {
+                  if (totalPassengers < 9 && adult < 9) {
                     adult++;
+                    totalPassengers++;
                   }
                   setState(() {});
                 },
                 onDecrement: () {
                   if (adult > 1) {
                     adult--;
+                    totalPassengers--;
                   }
                   setState(() {});
                 },
@@ -137,14 +142,16 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
               trailing: InCrementDecrementButton(
                 value: child,
                 onIncrement: () {
-                  if (child < 9) {
+                  if (totalPassengers < 9 && child < 9) {
                     child++;
+                    totalPassengers++;
                   }
                   setState(() {});
                 },
                 onDecrement: () {
-                  if (child > 0) {
+                  if (totalPassengers > 0 && child > 0) {
                     child--;
+                    totalPassengers--;
                   }
                   setState(() {});
                 },
@@ -172,8 +179,9 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
               trailing: InCrementDecrementButton(
                 value: infant,
                 onIncrement: () {
-                  if (infant < 9) {
+                  if (totalPassengers < 9 && infant < 9) {
                     if (infant < adult) {
+                      totalPassengers++;
                       infant++;
                     }
                   }
@@ -181,6 +189,7 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
                 },
                 onDecrement: () {
                   if (infant > 0) {
+                    totalPassengers--;
                     infant--;
                   }
                   setState(() {});

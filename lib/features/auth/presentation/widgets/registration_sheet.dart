@@ -72,6 +72,12 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
         context.read<StatesBloc>().add(GetStatesEvent());
       }
     });
+    // Add listener to re-validate confirm password when password changes
+    _passwordController.addListener(() {
+      if (_formKey.currentState != null) {
+        _formKey.currentState!.validate();
+      }
+    });
     super.initState();
   }
 
@@ -144,10 +150,19 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: AuthInputWidget(
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Company Name is required';
+                              }
+                              if (value.length < 2) {
+                                return 'Company Name must be at least 2 characters';
+                              }
+                              return null;
+                            },
                             isPassword: false,
                             maxCharacters: 50,
                             controller: _companyNameController,
-                            label: 'Company Name',
+                            label: 'Company Name*',
                             hint: 'Enter your Company Name'),
                       ),
                       const SizedBox(height: 12),
@@ -155,14 +170,12 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: SizedBox(
                           width: AppHelpers.getScreenWidth(context),
-                          height: 60,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
                                 width:
                                     AppHelpers.getScreenWidth(context) * 0.42,
-                                height: 60,
                                 child: AuthInputWidget(
                                     validator: (String? value) {
                                       if (value == null || value.isEmpty) {
@@ -179,7 +192,6 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                               SizedBox(
                                 width:
                                     AppHelpers.getScreenWidth(context) * 0.42,
-                                height: 60,
                                 child: AuthInputWidget(
                                     validator: (String? value) {
                                       if (value == null || value.isEmpty) {
@@ -202,6 +214,16 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: AuthInputWidget(
+                            validator: (String? value) {
+                              if (value != null && value.isNotEmpty) {
+                                // PAN format: ABCDE1234F (5 letters, 4 digits, 1 letter)
+                                if (!RegExp(r'^[A-Z]{5}[0-9]{4}[A-Z]{1}$')
+                                    .hasMatch(value.toUpperCase())) {
+                                  return 'Please enter a valid PAN number (e.g., ABCDE1234F)';
+                                }
+                              }
+                              return null;
+                            },
                             isPassword: false,
                             maxCharacters: 10,
                             controller: _panNoController,
@@ -236,8 +258,8 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                               if (value == null || value.isEmpty) {
                                 return 'Phone Number is required';
                               }
-                              if (value.length < 10) {
-                                return 'Enter valid Phone Number';
+                              if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+                                return 'Please enter a valid 10-digit phone number';
                               }
                               return null;
                             },
@@ -323,7 +345,6 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
 
                       SizedBox(
                         width: AppHelpers.getScreenWidth(context),
-                        height: 60,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
@@ -369,8 +390,16 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                               SizedBox(
                                 width:
                                     AppHelpers.getScreenWidth(context) * 0.32,
-                                height: 60,
                                 child: AuthInputWidget(
+                                    validator: (String? value) {
+                                      if (value != null && value.isNotEmpty) {
+                                        if (!RegExp(r'^[0-9]{6}$')
+                                            .hasMatch(value)) {
+                                          return 'Invalid PIN';
+                                        }
+                                      }
+                                      return null;
+                                    },
                                     isPassword: false,
                                     maxCharacters: 6,
                                     controller: _pinController,
@@ -397,6 +426,17 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: AuthInputWidget(
+                            validator: (String? value) {
+                              if (value != null && value.isNotEmpty) {
+                                // GST format: 15 characters, alphanumeric
+                                if (!RegExp(
+                                        r'^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$')
+                                    .hasMatch(value.toUpperCase())) {
+                                  return 'Please enter a valid GST number (15 characters)';
+                                }
+                              }
+                              return null;
+                            },
                             isPassword: false,
                             maxCharacters: 15,
                             controller: _gstNoController,
@@ -407,6 +447,14 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: AuthInputWidget(
+                            validator: (String? value) {
+                              if (value != null && value.isNotEmpty) {
+                                if (!RegExp(r'^[0-9]{12}$').hasMatch(value)) {
+                                  return 'Please enter a valid 12-digit Aadhaar number';
+                                }
+                              }
+                              return null;
+                            },
                             isPassword: false,
                             maxCharacters: 12,
                             controller: _aadhaarNoController,
@@ -422,15 +470,18 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                               if (value == null || value.isEmpty) {
                                 return 'Password is required';
                               }
-                              if (value.length < 6) {
-                                return 'Password must be at least 6 characters';
+                              if (value.length < 8) {
+                                return 'Password must be at least 8 characters';
+                              }
+                              if (value.length > 20) {
+                                return 'Password must not exceed 20 characters';
                               }
                               return null;
                             },
                             isPassword: true,
                             maxCharacters: 20,
                             controller: _passwordController,
-                            label: 'Password',
+                            label: 'Password*',
                             hint: 'Enter your Password'),
                       ),
                       const SizedBox(height: 12),
@@ -449,7 +500,7 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
                           isPassword: true,
                           maxCharacters: 20,
                           controller: _conPasswordController,
-                          label: 'Confirm Password',
+                          label: 'Confirm Password*',
                           hint: 'Re-Enter your Password',
                         ),
                       ),

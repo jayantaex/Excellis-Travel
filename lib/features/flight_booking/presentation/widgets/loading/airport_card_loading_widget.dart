@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/widgets/loading_widget.dart';
+import '../../../../../core/widgets/loading_effect.dart';
 
 class AirportCardLoadingWidget extends StatelessWidget {
   const AirportCardLoadingWidget({super.key});

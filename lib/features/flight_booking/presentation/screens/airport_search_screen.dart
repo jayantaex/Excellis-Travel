@@ -80,8 +80,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                           border: AppHelpers.isDarkMode(context)
                               ? Border.all(
                                   color:
-                                      AppColors.white.withValues(alpha: 0.05),
-                                  width: 1)
+                                      AppColors.white.withValues(alpha: 0.05))
                               : null,
                         ),
                         child: Column(

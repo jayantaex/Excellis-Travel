@@ -230,12 +230,12 @@ class FlightCardWidget extends StatelessWidget {
                                   ),
                                   //time
                                   Text(
-                                    AppHelpers.formatDateTime(
-                                        DateTime.parse(
-                                          firstSegment?.departure?.at ??
-                                              DateTime.now().toString(),
-                                        ),
-                                        pattern: 'hh:mm:aa'),
+                                    AppHelpers.formatTime(
+                                      DateTime.parse(
+                                        firstSegment?.departure?.at ??
+                                            DateTime.now().toString(),
+                                      ),
+                                    ),
                                     style: const TextStyle(
                                         fontSize: 10,
                                         fontWeight: FontWeight.w400,
