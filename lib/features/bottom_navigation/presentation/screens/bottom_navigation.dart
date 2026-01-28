@@ -61,14 +61,15 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             if (!didPop) {
               if (_currentIndex == 0) {
                 await showAppSheet(
-                    onSubmitPressed: () async {
-                      SystemNavigator.pop();
-                    },
-                    submitButtonRequired: true,
-                    submitButtonTitle: 'Yes',
-                    context: context,
-                    title: 'Exit',
-                    child: const AppExitSheet());
+                  onSubmitPressed: () async {
+                    SystemNavigator.pop();
+                  },
+                  submitButtonRequired: true,
+                  submitButtonTitle: 'Yes',
+                  context: context,
+                  title: 'Exit',
+                  child: const AppExitSheet(),
+                );
               }
               setState(() {
                 _currentIndex = 0;

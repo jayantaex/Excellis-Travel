@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -193,10 +194,12 @@ class _LoginSheetState extends State<LoginSheet> {
                       title: 'LOGIN',
                       isLoading: widget.isLoading,
                       onPressed: () async {
-                        final fcmToken = await FirebaseNotificationService
-                            .instance
-                            .getFcmToken();
-                        log('fcmToken: $fcmToken');
+                        if (Platform.isAndroid) {
+                          final fcmToken = await FirebaseNotificationService
+                              .instance
+                              .getFcmToken();
+                          log('fcmToken: $fcmToken');
+                        }
                         context.read<AuthBloc>().add(
                               LoginEvent(
                                 fcmToken: '',

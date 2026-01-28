@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -33,6 +35,7 @@ class DownloadManager {
           'Authorization': 'Bearer $accessToken',
         },
       );
+      log('$savedDir/$fileName');
 
       return taskId;
     } catch (e) {
