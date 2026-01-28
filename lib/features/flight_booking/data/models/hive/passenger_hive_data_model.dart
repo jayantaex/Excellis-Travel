@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import '../passenger_model.dart';
 part 'passenger_hive_data_model.g.dart';
 
 @HiveType(typeId: 3)

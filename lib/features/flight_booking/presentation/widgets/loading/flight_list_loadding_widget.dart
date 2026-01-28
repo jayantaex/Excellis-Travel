@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/app_custom_appbar.dart';
-import '../../../../../core/widgets/loading_widget.dart';
+import '../../../../../core/widgets/loading_effect.dart';
 
 class FlightListLoadingWidget extends StatelessWidget {
   const FlightListLoadingWidget(

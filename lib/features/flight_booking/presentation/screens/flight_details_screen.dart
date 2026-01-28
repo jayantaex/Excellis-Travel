@@ -309,6 +309,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       arrivalAirport: widget.arivalAirport,
                                       departureCity: widget.departureCity,
                                       departureAirport: widget.departureAirport,
+                                      duration: widget
+                                          .data.itineraries?[index].duration,
                                       index: index,
                                     ),
                                     childCount: itineraries.length,

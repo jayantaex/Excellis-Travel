@@ -534,7 +534,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                       color: AppHelpers.isDarkMode(context)
                                           ? AppColors.cardDark
                                           : AppColors.white,
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(24),
                                         bottomRight: Radius.circular(24),
                                       ),

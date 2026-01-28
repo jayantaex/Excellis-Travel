@@ -11,7 +11,6 @@ import '../../../auth/bloc/auth_bloc.dart';
 import '../../../auth/presentation/widgets/delete_account_sheet.dart';
 import '../../../auth/presentation/widgets/reset_pass_sheet.dart';
 import '../widgets/faq_sheet.dart';
-import '../widgets/help_and_support_sheet.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});

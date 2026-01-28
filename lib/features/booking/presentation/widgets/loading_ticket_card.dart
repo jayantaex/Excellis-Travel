@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../core/widgets/loading_widget.dart';
+import '../../../../core/widgets/loading_effect.dart';
 import '../../../../utils/app_helpers.dart';
 
 class LoadingTicketCard extends StatelessWidget {

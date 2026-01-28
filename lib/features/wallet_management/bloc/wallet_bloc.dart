@@ -117,7 +117,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         currentFilter:
             currentState is WalletLoaded ? currentState.currentFilter : 'all',
         transactions: newTransactions,
-        isLoadingMore: false,
       ));
     } else {
       emit(WalletError(

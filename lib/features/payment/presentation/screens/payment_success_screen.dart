@@ -10,10 +10,11 @@ import '../../../flight_booking/data/models/payment_verify_res_model.dart';
 import '../../../wallet_management/bloc/wallet_bloc.dart';
 
 class PaymentSuccessfulScreen extends StatelessWidget {
-  PaymentSuccessfulScreen({super.key, this.btnText, this.nextRoute, this.data});
-  String? btnText;
-  String? nextRoute;
-  PaymentVarifiedDataModel? data;
+  const PaymentSuccessfulScreen(
+      {super.key, this.btnText, this.nextRoute, this.data});
+  final String? btnText;
+  final String? nextRoute;
+  final PaymentVarifiedDataModel? data;
 
   @override
   Widget build(BuildContext context) => Scaffold(

@@ -11,18 +11,28 @@ Future<void> showHelpAndSupportSheet({required BuildContext context}) async {
     isScrollControlled: true,
     backgroundColor: AppColors.white,
     context: context,
-    builder: (BuildContext context) => HelpAndSupportSheet(),
+    builder: (BuildContext context) => const HelpAndSupportSheet(),
   );
 }
 
-class HelpAndSupportSheet extends StatelessWidget {
-  HelpAndSupportSheet({super.key});
+class HelpAndSupportSheet extends StatefulWidget {
+  const HelpAndSupportSheet({super.key});
 
+  @override
+  State<HelpAndSupportSheet> createState() => _HelpAndSupportSheetState();
+}
+
+class _HelpAndSupportSheetState extends State<HelpAndSupportSheet> {
   final TextEditingController _nameController = TextEditingController();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _phoneController = TextEditingController();
+
   final TextEditingController _remarkController = TextEditingController();
+
   String selectedSubject = 'General Inquiries';
+
   final List<DropdownMenuItem<String>> supportItems =
       const <DropdownMenuItem<String>>[
     DropdownMenuItem<String>(

@@ -183,7 +183,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
         emit(
           FlightLoaded(
             data: FlightsDataModel(),
-            airlines: [],
+            airlines: const [],
             isFiltered: false,
             minOfferFare: minOfferFare,
             maxOfferFare: maxOfferFare,

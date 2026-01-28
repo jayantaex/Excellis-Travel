@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -11,11 +9,11 @@ part 'traveller_event.dart';
 part 'traveller_state.dart';
 
 class TravellerBloc extends Bloc<TravellerEvent, TravellerState> {
-  final FlightBookingRepository repository;
   TravellerBloc({required this.repository}) : super(TravellerInitial()) {
     on<GetTravelersEvent>(_handleGetTravelers);
     on<CreateTravelerEvent>(_handleCreateTraveler);
   }
+  final FlightBookingRepository repository;
 
   Future<void> _handleGetTravelers(
       GetTravelersEvent event, Emitter<TravellerState> emit) async {
@@ -33,8 +31,7 @@ class TravellerBloc extends Bloc<TravellerEvent, TravellerState> {
       CreateTravelerEvent event, Emitter<TravellerState> emit) async {
     emit(TravellerLoading());
     try {
-      final ApiResponse<bool> traveler =
-          await repository.createTraveler(body: event.body);
+      await repository.createTraveler(body: event.body);
       emit(const TravellerCreated());
     } catch (e) {
       emit(TravellerError(error: e.toString()));
