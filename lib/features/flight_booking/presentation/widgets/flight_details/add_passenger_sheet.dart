@@ -148,7 +148,7 @@ Future<void> showAddAndEditPassengerSheet(
               return const Center(child: CircularProgressIndicator());
             }
             if (state is TravellerLoaded) {
-              List<TravelerDataModel> travelers = state.data ?? [];
+              final List<TravelerDataModel> travelers = state.data ?? [];
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -254,7 +254,7 @@ Future<void> showAddAndEditPassengerSheet(
                             initialSelection: selectedCountryCode,
                             showCountryOnly: true,
                             showOnlyCountryWhenClosed: true,
-                            favorite: ['IN'],
+                            favorite: const ['IN'],
                             onChanged: (value) {
                               selectedCountryCode = value.code;
                               setState(() {});

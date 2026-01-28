@@ -20,6 +20,7 @@ class ItineraryCard extends StatelessWidget {
       required this.arrivalAirport,
       required this.departureCity,
       required this.departureAirport,
+      this.duration,
       required this.index});
   final Itinerary data;
   final FlightDictionary flightDictionary;
@@ -28,6 +29,7 @@ class ItineraryCard extends StatelessWidget {
   final String arrivalAirport;
   final String departureCity;
   final String departureAirport;
+  final String? duration;
   final int index;
 
   final double width;
@@ -106,13 +108,12 @@ class ItineraryCard extends StatelessWidget {
                       Column(
                         children: <Widget>[
                           Text(
-                            formatIsoDuration(
-                                data.segments?.first.duration ?? ''),
+                            formatIsoDuration(duration ?? ''),
                             style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color:
-                                    isDark ? AppColors.white : AppColors.black),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: isDark ? AppColors.white : AppColors.black,
+                            ),
                           ),
                           Divider(
                             thickness: 0.5,

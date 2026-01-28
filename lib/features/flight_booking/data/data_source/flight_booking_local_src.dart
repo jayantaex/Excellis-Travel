@@ -130,7 +130,7 @@ class FlightBookingLocalSrc {
           await _localDB.getPassengerBox();
 
       // Generate ID if not present
-      String passengerId =
+      final String passengerId =
           passenger.id ?? DateTime.now().millisecondsSinceEpoch.toString();
 
       // Get all existing passengers
@@ -164,7 +164,7 @@ class FlightBookingLocalSrc {
         await passengerBox.putAt(existingIndex, updatedPassenger);
       } else {
         // Check if passenger with same name and DOB already exists
-        bool duplicateExists = localData.any(
+        final bool duplicateExists = localData.any(
           (element) =>
               element.firstName.toLowerCase() ==
                   (passenger.firstName ?? '').toLowerCase() &&

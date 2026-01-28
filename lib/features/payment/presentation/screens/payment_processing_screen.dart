@@ -173,7 +173,6 @@ class ErrorInfo extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 400),
           alignment: Alignment.center,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(

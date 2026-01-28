@@ -98,7 +98,7 @@ class _RePaymentDashboardScreenState extends State<RePaymentDashboardScreen>
                           children: [
                             const SizedBox(height: 16),
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 0),
+                              margin: const EdgeInsets.symmetric(),
                               decoration: BoxDecoration(
                                 color: AppHelpers.isDarkMode(context)
                                     ? AppColors.cardDark

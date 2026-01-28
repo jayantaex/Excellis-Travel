@@ -60,19 +60,3 @@ Future<DateTime?> showAppDatePicker({
       maxDate: lastDate ?? DateTime(2100),
       selectedDate: initialDate ?? DateTime.now(),
     );
-    // await showDatePicker(
-      
-    //   context: context,
-    //   initialDate: initialDate ?? DateTime.now(),
-    //   firstDate: firstDate ?? DateTime(2000),
-    //   lastDate: lastDate ?? DateTime(2100),
-    //   locale: const Locale('en', 'GB'),
-    //   builder: (context, child) => Theme(
-    //     data: Theme.of(context).copyWith(
-    //       colorScheme: const ColorScheme.light(
-    //         primary: AppColors.primary,
-    //       ),
-    //     ),
-    //     child: child!,
-    //   ),
-    // );

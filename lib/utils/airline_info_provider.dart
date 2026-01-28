@@ -10,8 +10,9 @@ import '../features/flight_booking/data/data_source/flight_booking_remote_src.da
 class AirlineInfoProvider {
   AirlineInfoProvider() {
     repository = FlightBookingRepository(
-        remoteSrc: FlightBookingRemoteSrc(AmadeusClient()),
-        localSrc: FlightBookingLocalSrc(localDB: LocalDB()));
+      remoteSrc: FlightBookingRemoteSrc(AmadeusClient()),
+      localSrc: FlightBookingLocalSrc(localDB: LocalDB()),
+    );
   }
   late FlightBookingRepository repository;
   Future<String> getAirlineName({required String airlineCode}) async {

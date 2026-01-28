@@ -66,9 +66,7 @@ class _SeatMapScreenState extends State<SeatMapScreen> {
 
                     Expanded(
                       child: BlocConsumer<FlightBloc, FlightState>(
-                        listener: (context, state) {
-                          // TODO: implement listener
-                        },
+                        listener: (context, state) {},
                         builder: (context, state) {
                           if (state is SeatMapLoading) {
                             return const Center(

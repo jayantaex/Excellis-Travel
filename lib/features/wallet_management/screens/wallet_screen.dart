@@ -472,7 +472,7 @@ class _WalletScreenState extends State<WalletScreen>
   void _fetchWalletBalance() {
     context
         .read<WalletBloc>()
-        .add(const FetchWalletEvent(limit: 99999999999999999, page: 1));
+        .add(const FetchWalletEvent(limit: 99999999999999999));
   }
 }
 
