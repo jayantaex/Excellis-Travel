@@ -136,7 +136,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                   horizontal: 16,
                                                 ),
                                                 child: Text(
-                                                  '${widget.ticketData?.bookingReference}',
+                                                  '${widget.ticketData?.ticketNumbers?.first}',
                                                   style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w700,
@@ -505,7 +505,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                               ),
                                             ),
                                             title: Text(
-                                              '${child.firstName ?? ''} ${child.lastName ?? ''}',
+                                              '${child.firstName} ${child.lastName}',
                                               style: TextStyle(
                                                   color: isDark
                                                       ? AppColors.white
@@ -595,10 +595,14 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 16),
                                           child: BillingInfo(
+                                            bookingReference: widget
+                                                .ticketData?.referenceNumber,
                                             billingAddress: widget
                                                 .ticketData?.billingAddress,
                                             contactDetails: widget
                                                 .ticketData?.contactDetails,
+                                            pnr: widget
+                                                .ticketData?.bookingReference,
                                             billingDate:
                                                 widget.ticketData?.createdAt,
                                           ),

@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/widgets/primary_button.dart';
 import '../../../flight_booking/data/models/payment_verify_res_model.dart';
+import '../../../wallet_management/bloc/wallet_bloc.dart';
 
 class PaymentSuccessfulScreen extends StatelessWidget {
   PaymentSuccessfulScreen({super.key, this.btnText, this.nextRoute, this.data});
@@ -33,24 +35,37 @@ class PaymentSuccessfulScreen extends StatelessWidget {
                   ),
                 ),
                 const Spacer(flex: 2),
-                ErrorInfo(
-                  title: 'Payment Successful',
-                  description:
-                      'Your payment was successful. Thank you for your purchase!',
-                  // button: you can pass your custom button,
-                  btnText: btnText ?? 'Continue',
-                  press: () {
-                    log('nextRoute: $nextRoute');
-                    log('data: $data');
-                    if (nextRoute != null &&
-                        nextRoute!.isNotEmpty &&
-                        data != null) {
-                      context.pushReplacementNamed(nextRoute!,
-                          extra: {'data': data});
-                    } else {
+                BlocListener<WalletBloc, WalletState>(
+                  listener: (context, state) {
+                    if (state is WalletLoaded) {
+                      context.pop();
                       context.pop();
                     }
                   },
+                  child: ErrorInfo(
+                    title: 'Payment Successful',
+                    description:
+                        'Your payment was successful. Thank you for your transaction!',
+                    // button: you can pass your custom button,
+                    btnText: btnText ?? 'Continue',
+                    press: () {
+                      log('nextRoute: $nextRoute');
+                      log('data: $data');
+                      if (nextRoute != null &&
+                          nextRoute!.isNotEmpty &&
+                          data != null) {
+                        context.pushReplacementNamed(nextRoute!,
+                            extra: {'data': data});
+                      } else {
+                        context
+                            .read<WalletBloc>()
+                            .add(const FetchWalletEvent());
+                        context.read<WalletBloc>().add(
+                            const FetchWalletTransactionsEvent(
+                                page: 1, limit: 99999999999999999));
+                      }
+                    },
+                  ),
                 ),
               ],
             ),

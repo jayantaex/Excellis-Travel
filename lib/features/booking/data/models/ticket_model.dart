@@ -59,6 +59,7 @@ class Booking {
     this.confirmationNumber,
     this.ticketNumbers,
     this.pnrNumber,
+    this.referenceNumber,
     this.cancellationPolicy,
     this.refundPolicy,
     this.flightOrderId,
@@ -97,6 +98,7 @@ class Booking {
         bookingType: '${json['booking_type']}',
         expiresAt: '${json['expires_at']}',
         confirmationNumber: '${json['confirmation_number']}',
+        referenceNumber: '${json['reference_number']}',
         ticketNumbers: json['ticket_numbers'] == null
             ? null
             : List<String>.from(json['ticket_numbers']!.map((x) => '$x')),
@@ -135,6 +137,7 @@ class Booking {
   final String? confirmationNumber;
   final List<String>? ticketNumbers;
   final String? pnrNumber;
+  final String? referenceNumber;
   final CancellationPolicy? cancellationPolicy;
   final RefundPolicy? refundPolicy;
   final String? flightOrderId;
@@ -1271,24 +1274,23 @@ class TravellerDetails {
             : List<Adult>.from(json['adults']!.map((x) => Adult.fromJson(x))),
         infants: json['infants'] == null
             ? null
-            : List<dynamic>.from(json['infants']!.map((x) => x)),
+            : List<Adult>.from(json['infants']!.map((x) => Adult.fromJson(x))),
         children: json['children'] == null
             ? null
-            : List<dynamic>.from(json['children']!.map((x) => x)),
+            : List<Adult>.from(json['children']!.map((x) => Adult.fromJson(x))),
       );
   final List<Adult>? adults;
-  final List<dynamic>? infants;
-  final List<dynamic>? children;
+  final List<Adult>? infants;
+  final List<Adult>? children;
 
   Map<String, dynamic> toJson() => {
         'adults': adults == null
             ? null
-            : List<dynamic>.from(adults!.map((x) => x.toJson())),
+            : List<Adult>.from(adults!.map((x) => x.toJson())),
         'infants':
-            infants == null ? null : List<dynamic>.from(infants!.map((x) => x)),
-        'children': children == null
-            ? null
-            : List<dynamic>.from(children!.map((x) => x)),
+            infants == null ? null : List<Adult>.from(infants!.map((x) => x)),
+        'children':
+            children == null ? null : List<Adult>.from(children!.map((x) => x)),
       };
 }
 

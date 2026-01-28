@@ -168,14 +168,13 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                                     is FetchCreditBalanceTransactionsSuccess)
                                   Expanded(
                                     child: ListView.builder(
-                                        reverse: true,
-                                        itemCount:
-                                            state.data?.data?.length ?? 0,
-                                        itemBuilder: (context, index) =>
-                                            CreditWalletTransactionCard(
-                                              data: state.data?.data?[index] ??
-                                                  CreditTransactionData(),
-                                            )),
+                                      itemCount: state.data?.data?.length ?? 0,
+                                      itemBuilder: (context, index) =>
+                                          CreditWalletTransactionCard(
+                                        data: state.data?.data?[index] ??
+                                            CreditTransactionData(),
+                                      ),
+                                    ),
                                   ),
                                 const SizedBox(height: 25),
                               ],

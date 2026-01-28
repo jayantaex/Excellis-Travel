@@ -71,10 +71,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
       value: 'Business',
       child: Text('Business'),
     ),
-    // const DropdownMenuItem<String>(
-    //   value: 'First Class',
-    //   child: Text('First Class'),
-    // ),
+    const DropdownMenuItem<String>(
+      value: 'First Class',
+      child: Text('First Class'),
+    ),
   ];
 
   final List<DropdownMenuItem<String>> _fareTipes = <DropdownMenuItem<String>>[

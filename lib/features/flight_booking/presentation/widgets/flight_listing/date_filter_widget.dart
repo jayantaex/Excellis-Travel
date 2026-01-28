@@ -20,7 +20,7 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
   DateTime startDate = DateTime.now();
   final ScrollController scrollController = ScrollController();
   List<DateTime> dates = [];
-  int limit = 60;
+  int limit = 365; //days
   bool _hasScrolledToInitial = false;
   final Map<int, GlobalKey> _itemKeys = {};
 

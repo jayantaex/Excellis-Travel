@@ -398,7 +398,7 @@ Map<String, dynamic> getBody({
       'travelers': getTravellers(travellersArr: travellersArr),
       'sources': ['GDS'],
       'searchCriteria': {
-        'maxFlightOffers': kDebugMode ? 4 : null,
+        'maxFlightOffers': kDebugMode ? 20 : null,
         'flightFilters': {
           'cabinRestrictions': [
             {

@@ -15,6 +15,7 @@ import '../wallet_management/bloc/wallet_bloc.dart';
 import '../wallet_management/data/repository/wallet_repository.dart';
 import '../wallet_management/data/src/wallet_remote_data_src.dart';
 import 'bloc/flight_bloc.dart';
+import 'bloc/travleler_bloc/traveller_bloc.dart';
 import 'data/data_source/flight_booking_local_src.dart';
 import 'data/data_source/flight_booking_remote_src.dart';
 import 'data/repository/flight_booking_repository.dart';
@@ -121,6 +122,10 @@ class FlightBookingModule {
       providers: [
         BlocProvider(
           create: (context) => FlightBloc(repository: _flightBookingRepository),
+        ),
+        BlocProvider(
+          create: (context) =>
+              TravellerBloc(repository: _flightBookingRepository),
         ),
         BlocProvider(
           create: (context) => ProfileBloc(profileRepository: _profileRepo),

@@ -1,18 +1,20 @@
 import 'dart:developer';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:excellistravel/core/widgets/app_search_dropdown.dart';
 import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/constants/app_styles.dart';
-import '../../../../../core/services/local_db.dart';
 import '../../../../../utils/app_date_picker.dart' show showAppDatePicker;
 import '../../../../../utils/app_helpers.dart';
 import '../../../../../utils/app_toast.dart';
 import '../../../../../core/widgets/primary_button.dart';
 import '../../../../../core/widgets/primary_input.dart';
-import '../../../data/data_source/flight_booking_local_src.dart';
+import '../../../bloc/travleler_bloc/traveller_bloc.dart';
 import '../../../data/models/flight_offer_price_model.dart';
 import '../../../data/models/passenger_model.dart';
+import '../../../data/models/traveller_data_model.dart';
 import '../flight_search/app_drop_down.dart';
 
 Future<void> showAddAndEditPassengerSheet(
@@ -21,14 +23,15 @@ Future<void> showAddAndEditPassengerSheet(
     required Function(PassengerModel passenger) onDone,
     PassengerModel? passenger,
     List<FareDetailsBySegment>? filteredSegemnts}) async {
+  // Capture the existing FlightBloc once to ensure it is available inside the sheet
+  final TravellerBloc travellerBloc = context.read<TravellerBloc>();
+  final List<String> titleItems = ['Mr', 'Mrs', 'Ms'];
+  String? selectedTitle = 'Mr';
+  String? selectedCountryCode = 'IN';
   final TextEditingController firstNameController =
       TextEditingController(text: passenger?.firstName);
   final TextEditingController lastNameController =
       TextEditingController(text: passenger?.lastName);
-  final TextEditingController mobileNumberController =
-      TextEditingController(text: passenger?.number);
-  final TextEditingController emailController =
-      TextEditingController(text: passenger?.emailAddress);
   final TextEditingController dobController = TextEditingController(
     text: passenger?.dateOfBirth != null
         ? AppHelpers.formatDate(passenger!.dateOfBirth!)
@@ -42,40 +45,15 @@ Future<void> showAddAndEditPassengerSheet(
   DateTime lastDate = DateTime.now();
   DateTime initialDate = DateTime.now();
   int? selectedSegmentIndex;
-
-  PassengerModel? selectedSavedPassenger;
-
-  List<PassengerModel> savedPassengerList = <PassengerModel>[];
+  TravelerDataModel? selectedSavedPassenger;
   final List<DropdownMenuItem<String>> savedPassengerItems =
       <DropdownMenuItem<String>>[];
 
-  // Initialize local DB and fetch saved passengers
-  final LocalDB localDB = LocalDB();
-  final FlightBookingLocalSrc localSrc =
-      FlightBookingLocalSrc(localDB: localDB);
-
   // Fetch saved passengers when sheet opens
   try {
-    savedPassengerList = await localSrc.getSavedPassenger();
-    // Ensure all passengers have valid IDs
-    int idCounter = 0;
-    savedPassengerList = savedPassengerList.map((PassengerModel p) {
-      if (p.id == null || p.id!.isEmpty) {
-        // Generate unique ID using timestamp and counter
-        idCounter++;
-        return PassengerModel(
-          id: '${DateTime.now().millisecondsSinceEpoch}_$idCounter',
-          firstName: p.firstName,
-          lastName: p.lastName,
-          dateOfBirth: p.dateOfBirth,
-          emailAddress: p.emailAddress,
-          number: p.number,
-          gender: p.gender,
-          type: p.type,
-        );
-      }
-      return p;
-    }).toList();
+    // Use the captured bloc instead of relying on the bottom sheet context
+    travellerBloc.add(const GetTravelersEvent());
+
     savedPassengerItems.clear();
     savedPassengerItems.add(
       const DropdownMenuItem<String>(
@@ -83,22 +61,8 @@ Future<void> showAddAndEditPassengerSheet(
         child: Text('None - Add New Passenger'),
       ),
     );
-    // Only add passengers with valid IDs to avoid duplicates
-    for (var element in savedPassengerList) {
-      if (element.id != null && element.id!.isNotEmpty) {
-        savedPassengerItems.add(DropdownMenuItem<String>(
-          value: element.id!,
-          child: Text(
-            '${toTitleCase(element.firstName ?? '')} ${toTitleCase(element.lastName ?? '')}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ));
-      }
-    }
   } catch (e) {
     log('Error fetching saved passengers: $e');
-    savedPassengerList = <PassengerModel>[];
     savedPassengerItems.add(const DropdownMenuItem<String>(
       value: '',
       child: Text('None - Add New Passenger'),
@@ -106,9 +70,14 @@ Future<void> showAddAndEditPassengerSheet(
   }
 
   if (passenger != null) {
-    selectedSavedPassenger = savedPassengerList.firstWhere(
-      (PassengerModel e) => e.id == passenger.id,
-      orElse: () => savedPassengerList.first,
+    selectedSavedPassenger = TravelerDataModel(
+      id: int.tryParse(passenger.id!),
+      firstName: passenger.firstName,
+      lastName: passenger.lastName,
+      dateOfBirth: passenger.dateOfBirth.toString(),
+      gender: passenger.gender,
+      type: passenger.type,
+      title: passenger.title ?? 'Mr',
     );
   } else {
     selectedSavedPassenger = null;
@@ -168,379 +137,415 @@ Future<void> showAddAndEditPassengerSheet(
     isScrollControlled: true,
     useSafeArea: true,
     context: context,
-    builder: (BuildContext context) => StatefulBuilder(
-      builder: (context, setState) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const Text(
-                'Passenger Details',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Complete the form by providing necessary information',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.info.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: AppColors.info.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: AppColors.info,
-                      size: 20,
-                    ),
-                    SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Please ensure all details match your government-issued ID (Passport, Driver\'s License, Aadhaar, etc.) as they will be verified during check-in.',
+    builder: (BuildContext context) => BlocProvider.value(
+      value: travellerBloc,
+      child: StatefulBuilder(
+        builder: (context, setState) =>
+            BlocConsumer<TravellerBloc, TravellerState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            if (state is TravellerLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state is TravellerLoaded) {
+              List<TravelerDataModel> travelers = state.data ?? [];
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text(
+                        'Passenger Details',
                         style: TextStyle(
-                          fontSize: 11,
-                          color: AppColors.info,
-                          fontWeight: FontWeight.w400,
+                            fontSize: 28, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Complete the form by providing necessary information',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w400),
+                      ),
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.info.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: AppColors.info.withValues(alpha: 0.3),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              if (savedPassengerList.isNotEmpty &&
-                  savedPassengerItems.length > 1)
-                SizedBox(
-                  height: 55,
-                  width: AppHelpers.getScreenWidth(context),
-                  child: Builder(
-                    builder: (context) {
-                      // Ensure the value is valid - must match one of the items
-                      final String currentValue =
-                          selectedSavedPassenger?.id ?? '';
-                      final bool isValidValue = currentValue.isEmpty ||
-                          savedPassengerItems.any(
-                            (item) => item.value == currentValue,
-                          );
-                      final String safeValue = isValidValue ? currentValue : '';
-
-                      return AppSearchDropdown<PassengerModel>(
-                          items: savedPassengerList
-                              .map((e) => DropdownMenuItem<PassengerModel>(
-                                  value: e,
-                                  child: Text(
-                                      '${toTitleCase(e.firstName ?? '')} ${toTitleCase(e.lastName ?? '')}')))
-                              .toList(),
-                          hintText: 'Select saved passenger',
-                          labelText: 'View all saved travelers',
-                          value: selectedSavedPassenger,
-                          onChanged: (PassengerModel? value) {
-                            if (value != null) {
-                              selectedSavedPassenger = value;
-                              firstNameController.text = value.firstName ?? '';
-                              lastNameController.text = value.lastName ?? '';
-                              emailController.text = value.emailAddress ?? '';
-                              mobileNumberController.text = value.number ?? '';
-                              selectedGender = value.gender ?? '';
-                              dob = value.dateOfBirth;
-                              dobController.text = AppHelpers.formatDate(dob!);
-                              selectedSegmentIndex = null;
-                              setState(() {});
-                            }
-                          });
-                    },
-                  ),
-                ),
-              const SizedBox(height: 12),
-              SizedBox(
-                height: 50,
-                width: AppHelpers.getScreenWidth(context),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 50,
-                      width: AppHelpers.getScreenWidth(context) * 0.45,
-                      child: AppPrimaryInput(
-                        controller: firstNameController,
-                        hint: 'Enter your first name',
-                        label: 'First Name *',
-                        maxCharacters: 30,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                      width: AppHelpers.getScreenWidth(context) * 0.45,
-                      child: AppPrimaryInput(
-                        controller: lastNameController,
-                        hint: 'Enter your last name',
-                        label: 'Last Name *',
-                        maxCharacters: 30,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              AppPrimaryInput(
-                controller: emailController,
-                hint: 'Enter your email address',
-                label: 'Email',
-                maxCharacters: 320,
-              ),
-              const SizedBox(height: 12),
-              AppPrimaryInput(
-                keyboardType: TextInputType.number,
-                controller: mobileNumberController,
-                hint: 'Enter your Mobile number',
-                label: 'Mobile Number',
-                maxCharacters: 10,
-              ),
-              const SizedBox(height: 12),
-              SizedBox(
-                height: 50,
-                width: AppHelpers.getScreenWidth(context),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      height: 50,
-                      width: AppHelpers.getScreenWidth(context) * 0.35,
-                      child: AppDropDown(
-                        onChanged: (String? p0) {
-                          if (p0 != null && p0.isNotEmpty) {
-                            selectedGender = p0;
-                            setState(() {});
-                          }
-                        },
-                        label: 'Gender *',
-                        title: 'Select Gender',
-                        value: selectedGender,
-                        items: genderList
-                            .map(
-                              (String e) => DropdownMenuItem<String>(
-                                value: e,
-                                child: Text(e),
+                        child: const Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.info_outline,
+                              color: AppColors.info,
+                              size: 20,
+                            ),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Please ensure all details match your government-issued ID (Passport, Driver\'s License, Aadhaar, etc.) as they will be verified during check-in.',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: AppColors.info,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            )
-                            .toList(),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                      width: AppHelpers.getScreenWidth(context) * 0.54,
-                      child: AppPrimaryInput(
-                        controller: dobController,
-                        onTap: () async {
-                          final DateTime? selectedDate =
-                              await showAppDatePicker(
-                            context: context,
-                            initialDate: dob ?? initialDate,
-                            firstDate: firstDate,
-                            lastDate: lastDate,
-                          );
-                          if (selectedDate != null) {
-                            dob = selectedDate;
-                            dobController.text = AppHelpers.formatDate(dob!);
+                      const SizedBox(height: 12),
+                      if (state.data?.isNotEmpty ?? false)
+                        SizedBox(
+                          height: 55,
+                          width: AppHelpers.getScreenWidth(context),
+                          child: Builder(
+                            builder: (context) => AppSearchDropdown<
+                                    TravelerDataModel>(
+                                items: travelers
+                                    .map((e) => DropdownMenuItem<
+                                            TravelerDataModel>(
+                                        value: e,
+                                        child: Text(
+                                            '${toTitleCase(e.firstName ?? '')} ${toTitleCase(e.lastName ?? '')}')))
+                                    .toList(),
+                                hintText: 'Select saved passenger',
+                                labelText: 'View all saved travelers',
+                                value: selectedSavedPassenger,
+                                onChanged: (TravelerDataModel? value) {
+                                  if (value != null) {
+                                    selectedSavedPassenger = value;
+                                    firstNameController.text =
+                                        value.firstName ?? '';
+                                    lastNameController.text =
+                                        value.lastName ?? '';
+
+                                    selectedGender = value.gender ?? '';
+                                    dob =
+                                        DateTime.parse(value.dateOfBirth ?? '');
+                                    dobController.text =
+                                        AppHelpers.formatDate(dob!);
+                                    selectedSegmentIndex = null;
+                                    setState(() {});
+                                  }
+                                }),
+                          ),
+                        ),
+                      const SizedBox(height: 12),
+                      Container(
+                        height: 50,
+                        alignment: Alignment.centerLeft,
+                        width: AppHelpers.getScreenWidth(context),
+                        decoration: BoxDecoration(
+                          color: AppColors.grey.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: AppColors.border.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: CountryCodePicker(
+                            backgroundColor: AppColors.white,
+                            initialSelection: selectedCountryCode,
+                            showCountryOnly: true,
+                            showOnlyCountryWhenClosed: true,
+                            favorite: ['IN'],
+                            onChanged: (value) {
+                              selectedCountryCode = value.code;
+                              setState(() {});
+                            }),
+                      ),
+                      const SizedBox(height: 12),
+                      AppDropDown(
+                          title: 'Title',
+                          value: selectedTitle ?? '',
+                          label: 'Title',
+                          items: titleItems
+                              .map((e) =>
+                                  DropdownMenuItem(value: e, child: Text(e)))
+                              .toList(),
+                          onChanged: (value) {
+                            selectedTitle = value;
                             setState(() {});
-                          }
-                        },
-                        hint: 'Enter your date of birth',
-                        label: 'Date of Birth',
-                        maxCharacters: 10,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              if (filteredSegemnts != null && filteredSegemnts.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        'Select Fare Option *',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: AppHelpers.isDarkMode(context)
-                              ? AppColors.white
-                              : AppColors.textPrimary,
+                          }),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        height: 50,
+                        width: AppHelpers.getScreenWidth(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 50,
+                              width: AppHelpers.getScreenWidth(context) * 0.45,
+                              child: AppPrimaryInput(
+                                controller: firstNameController,
+                                hint: 'Enter your first name',
+                                label: 'First Name *',
+                                maxCharacters: 30,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 50,
+                              width: AppHelpers.getScreenWidth(context) * 0.45,
+                              child: AppPrimaryInput(
+                                controller: lastNameController,
+                                hint: 'Enter your last name',
+                                label: 'Last Name *',
+                                maxCharacters: 30,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 150,
-                      width: AppHelpers.getScreenWidth(context),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: filteredSegemnts.length,
-                        itemBuilder: (context, index) => SegmentCard(
-                          data: filteredSegemnts[index],
-                          isSelected: selectedSegmentIndex == index,
-                          onTap: () {
-                            setState(() {
-                              selectedSegmentIndex = index;
-                            });
-                          },
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        height: 50,
+                        width: AppHelpers.getScreenWidth(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              width: AppHelpers.getScreenWidth(context) * 0.35,
+                              child: AppDropDown(
+                                onChanged: (String? p0) {
+                                  if (p0 != null && p0.isNotEmpty) {
+                                    selectedGender = p0;
+                                    setState(() {});
+                                  }
+                                },
+                                label: 'Gender *',
+                                title: 'Select Gender',
+                                value: selectedGender,
+                                items: genderList
+                                    .map(
+                                      (String e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(e),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 50,
+                              width: AppHelpers.getScreenWidth(context) * 0.54,
+                              child: AppPrimaryInput(
+                                controller: dobController,
+                                onTap: () async {
+                                  final DateTime? selectedDate =
+                                      await showAppDatePicker(
+                                    context: context,
+                                    initialDate: dob ?? initialDate,
+                                    firstDate: firstDate,
+                                    lastDate: lastDate,
+                                  );
+                                  if (selectedDate != null) {
+                                    dob = selectedDate;
+                                    dobController.text =
+                                        AppHelpers.formatDate(dob!);
+                                    setState(() {});
+                                  }
+                                },
+                                hint: 'Enter your date of birth',
+                                label: 'Date of Birth',
+                                maxCharacters: 10,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
+                      const SizedBox(height: 12),
+                      if (filteredSegemnts != null &&
+                          filteredSegemnts.isNotEmpty)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Text(
+                                'Select Fare Option *',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppHelpers.isDarkMode(context)
+                                      ? AppColors.white
+                                      : AppColors.textPrimary,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 150,
+                              width: AppHelpers.getScreenWidth(context),
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: filteredSegemnts.length,
+                                itemBuilder: (context, index) => SegmentCard(
+                                  data: filteredSegemnts[index],
+                                  isSelected: selectedSegmentIndex == index,
+                                  onTap: () {
+                                    setState(() {
+                                      selectedSegmentIndex = index;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: 50,
+                            width: AppHelpers.getScreenWidth(context) * 0.4,
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel')),
+                          ),
+                          SizedBox(
+                            height: 50,
+                            width: AppHelpers.getScreenWidth(context) * 0.4,
+                            child: AppPrimaryButton(
+                                onPressed: () async {
+                                  // Validate first name
+                                  final String firstName =
+                                      firstNameController.text.trim();
+                                  if (firstName.length < 3) {
+                                    showToast(
+                                        message:
+                                            'Please enter valid first name');
+                                    return;
+                                  }
+                                  if (firstName.split(' ').length > 1) {
+                                    showToast(
+                                        message:
+                                            'First name should not contain spaces');
+                                    return;
+                                  }
+
+                                  // Validate last name
+                                  final String lastName =
+                                      lastNameController.text.trim();
+                                  if (lastName.length < 3) {
+                                    showToast(
+                                        message:
+                                            'Please enter valid last name');
+                                    return;
+                                  }
+
+                                  // Validate fare option selection
+                                  if (filteredSegemnts != null &&
+                                      selectedSegmentIndex == null) {
+                                    showToast(
+                                        message: 'Please select a fare option');
+                                    return;
+                                  }
+
+                                  // Validate date of birth matches traveller type
+                                  final DateTime now = DateTime.now();
+                                  final int ageInYears = dob != null
+                                      ? (now.difference(dob!).inDays / 365.25)
+                                          .floor()
+                                      : 0;
+
+                                  bool isValidAge = false;
+
+                                  if (dob != null) {
+                                    switch (travellerType) {
+                                      case 'ADULT':
+                                        isValidAge = ageInYears >= 12 &&
+                                            ageInYears <= 120;
+                                        if (!isValidAge) {
+                                          showToast(
+                                              message:
+                                                  'Age must be between 12 and 120 years for adults');
+                                          return;
+                                        }
+                                        break;
+                                      case 'CHILD':
+                                        isValidAge =
+                                            ageInYears >= 2 && ageInYears < 12;
+                                        if (!isValidAge) {
+                                          showToast(
+                                              message:
+                                                  'Age must be between 2 and 11 years for children');
+                                          return;
+                                        }
+                                        break;
+                                      case 'HELD_INFANT':
+                                        isValidAge =
+                                            ageInYears >= 0 && ageInYears < 2;
+                                        if (!isValidAge) {
+                                          showToast(
+                                              message:
+                                                  'Age must be less than 2 years for infants');
+                                          return;
+                                        }
+                                        break;
+                                    }
+                                  }
+
+                                  // Create passenger model - use saved passenger ID if one was selected
+
+                                  final Map<String, dynamic> newPassenger = {
+                                    'title': selectedTitle,
+                                    'firstName': firstName,
+                                    'lastName': lastName,
+                                    'gender': selectedGender,
+                                    'type': travellerType.toLowerCase(),
+                                    'nationality': selectedCountryCode,
+                                  };
+                                  if (dob != null) {
+                                    newPassenger['dateOfBirth'] =
+                                        AppHelpers.formatDate(dob!,
+                                            pattern: 'yyyy-MM-dd');
+                                  }
+
+                                  // Save passenger to local DB (fire and forget)
+                                  if (selectedSavedPassenger == null) {
+                                    travellerBloc.add(CreateTravelerEvent(
+                                        body: newPassenger));
+                                  }
+
+                                  Navigator.pop(context);
+                                  onDone(PassengerModel(
+                                    title: selectedTitle,
+                                    dateOfBirth: dob,
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                    gender: selectedGender,
+                                    type: travellerType,
+                                  ));
+                                },
+                                bgColor: AppHelpers.isDarkMode(context)
+                                    ? AppColors.primary
+                                    : AppColors.black,
+                                title: 'Confirm',
+                                isLoading: false),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  ),
                 ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    height: 50,
-                    width: AppHelpers.getScreenWidth(context) * 0.4,
-                    child: TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Cancel')),
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: AppHelpers.getScreenWidth(context) * 0.4,
-                    child: AppPrimaryButton(
-                        onPressed: () async {
-                          // Validate first name
-                          final String firstName =
-                              firstNameController.text.trim();
-                          if (firstName.length < 3) {
-                            showToast(message: 'Please enter valid first name');
-                            return;
-                          }
-                          if (firstName.split(' ').length > 1) {
-                            showToast(
-                                message:
-                                    'First name should not contain spaces');
-                            return;
-                          }
-
-                          // Validate last name
-                          final String lastName =
-                              lastNameController.text.trim();
-                          if (lastName.length < 3) {
-                            showToast(message: 'Please enter valid last name');
-                            return;
-                          }
-
-                          // Validate email
-                          final String email = emailController.text.trim();
-                          if (email.isNotEmpty &&
-                              !AppHelpers.validateEmail(email)) {
-                            showToast(
-                                message: 'Please enter a valid email address');
-                            return;
-                          }
-
-                          // Validate mobile number
-                          final String mobileNumber =
-                              mobileNumberController.text.trim();
-                          if (mobileNumber.isNotEmpty &&
-                              !AppHelpers.validateMobileNumber(mobileNumber)) {
-                            showToast(
-                                message: 'Please enter a valid mobile number');
-                            return;
-                          }
-
-                          // Validate fare option selection
-                          if (filteredSegemnts != null &&
-                              selectedSegmentIndex == null) {
-                            showToast(message: 'Please select a fare option');
-                            return;
-                          }
-
-                          // Validate date of birth
-                          if (dob == null) {
-                            showToast(message: 'Please select date of birth');
-                            return;
-                          }
-
-                          // Validate date of birth matches traveller type
-                          final DateTime now = DateTime.now();
-                          final int ageInYears =
-                              (now.difference(dob!).inDays / 365.25).floor();
-
-                          bool isValidAge = false;
-                          switch (travellerType) {
-                            case 'ADULT':
-                              isValidAge =
-                                  ageInYears >= 12 && ageInYears <= 120;
-                              if (!isValidAge) {
-                                showToast(
-                                    message:
-                                        'Age must be between 12 and 120 years for adults');
-                                return;
-                              }
-                              break;
-                            case 'CHILD':
-                              isValidAge = ageInYears >= 2 && ageInYears < 12;
-                              if (!isValidAge) {
-                                showToast(
-                                    message:
-                                        'Age must be between 2 and 11 years for children');
-                                return;
-                              }
-                              break;
-                            case 'HELD_INFANT':
-                              isValidAge = ageInYears >= 0 && ageInYears < 2;
-                              if (!isValidAge) {
-                                showToast(
-                                    message:
-                                        'Age must be less than 2 years for infants');
-                                return;
-                              }
-                              break;
-                          }
-
-                          // Create passenger model - use saved passenger ID if one was selected
-                          final PassengerModel newPassenger = PassengerModel(
-                            id: selectedSavedPassenger?.id ?? '',
-                            firstName: firstName,
-                            lastName: lastName,
-                            dateOfBirth: dob,
-                            emailAddress: email.isEmpty ? null : email,
-                            number: mobileNumber.isEmpty ? null : mobileNumber,
-                            gender: selectedGender,
-                            type: travellerType,
-                          );
-
-                          // Save passenger to local DB (fire and forget)
-                          localSrc.savePassenger(newPassenger).catchError((e) {
-                            // Log error but don't block the flow
-                            debugPrint('Error saving passenger: $e');
-                          });
-
-                          Navigator.pop(context);
-                          onDone(newPassenger);
-                        },
-                        bgColor: AppHelpers.isDarkMode(context)
-                            ? AppColors.primary
-                            : AppColors.black,
-                        title: 'Confirm',
-                        isLoading: false),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-            ],
-          ),
+              );
+            }
+            if (state is TravellerError) {
+              return Center(child: Text(state.error));
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
     ),

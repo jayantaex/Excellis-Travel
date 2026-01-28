@@ -166,21 +166,23 @@ class _WalletScreenState extends State<WalletScreen>
                                                   _amountController),
                                           submitButtonRequired: true,
                                           onSubmitPressed: () {
+                                            Navigator.pop(context);
                                             final double doubleAmount =
                                                 double.parse(
                                                     _amountController.text);
 
                                             context.pushNamed(
-                                                PaymentModule
-                                                    .paymentProcessingName,
-                                                extra: {
-                                                  'amount': doubleAmount,
-                                                  'description':
-                                                      'Deposit Money in Wallet',
-                                                  'mobile': '',
-                                                  'email': '',
-                                                  'orderFor': 'wallet',
-                                                });
+                                              PaymentModule
+                                                  .paymentProcessingName,
+                                              extra: {
+                                                'amount': doubleAmount,
+                                                'description':
+                                                    'Deposit Money in Wallet',
+                                                'mobile': '',
+                                                'email': '',
+                                                'orderFor': 'wallet',
+                                              },
+                                            );
                                           },
                                         );
                                       },

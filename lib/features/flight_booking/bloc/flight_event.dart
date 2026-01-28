@@ -7,8 +7,6 @@ sealed class FlightEvent extends Equatable {
   List<Object> get props => <Object>[];
 }
 
-//airport searches
-
 class SearchAirportEvent extends FlightEvent {
   const SearchAirportEvent({
     required this.countryCode,

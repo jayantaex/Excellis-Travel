@@ -91,34 +91,34 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                             ),
                           ),
-                          ListTile(
-                            onTap: () async {
-                              await showAppSheet(
-                                  context: context,
-                                  title: 'Help & Support',
-                                  child: HelpAndSupportSheet());
-                            },
-                            contentPadding: const EdgeInsets.all(0),
-                            title: Text('Help & Support',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppHelpers.isDarkMode(context)
-                                      ? AppColors.white
-                                      : AppColors.black,
-                                )),
-                            subtitle: const Text('we are here for you 24/7',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.grey,
-                                )),
-                            trailing: const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: AppColors.primary,
-                              size: 16,
-                            ),
-                          ),
+                          // ListTile(
+                          //   onTap: () async {
+                          //     await showAppSheet(
+                          //         context: context,
+                          //         title: 'Help & Support',
+                          //         child: HelpAndSupportSheet());
+                          //   },
+                          //   contentPadding: const EdgeInsets.all(0),
+                          //   title: Text('Help & Support',
+                          //       style: TextStyle(
+                          //         fontSize: 15,
+                          //         fontWeight: FontWeight.w600,
+                          //         color: AppHelpers.isDarkMode(context)
+                          //             ? AppColors.white
+                          //             : AppColors.black,
+                          //       )),
+                          //   subtitle: const Text('we are here for you 24/7',
+                          //       style: TextStyle(
+                          //         fontSize: 12,
+                          //         fontWeight: FontWeight.w400,
+                          //         color: AppColors.grey,
+                          //       )),
+                          //   trailing: const Icon(
+                          //     Icons.arrow_forward_ios_rounded,
+                          //     color: AppColors.primary,
+                          //     size: 16,
+                          //   ),
+                          // ),
                           ListTile(
                             onTap: () {
                               showFaqSheet(context: context);

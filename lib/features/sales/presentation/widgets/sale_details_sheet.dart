@@ -13,7 +13,7 @@ class SaleDetailsSheet extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         children: [
           ContentRow(
-            title: 'Booking ID:',
+            title: 'PNR Number:',
             value:
                 '${commission.booking?.bookingReference ?? commission.bookingId}',
           ),

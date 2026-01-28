@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/network/api_client.dart';
-import '../wallet_management/api/wallet_api.dart';
 import '../wallet_management/bloc/wallet_bloc.dart';
 import '../wallet_management/data/repository/wallet_repository.dart';
 import '../wallet_management/data/src/wallet_remote_data_src.dart';
@@ -41,10 +40,14 @@ class PaymentModule {
     final Map<String, dynamic> data =
         state.extra as Map<String, dynamic>? ?? {};
     log('payment success data: $data');
-    return PaymentSuccessfulScreen(
-      btnText: data['btnText'] ?? 'Continue',
-      nextRoute: data['nextRoute'],
-      data: data['paymentData'],
+    return BlocProvider(
+      create: (context) => WalletBloc(
+          WalletRepository(WalletRemoteDataSrc(apiClient: ApiClient()))),
+      child: PaymentSuccessfulScreen(
+        btnText: data['btnText'] ?? 'Continue',
+        nextRoute: data['nextRoute'],
+        data: data['paymentData'],
+      ),
     );
   }
 

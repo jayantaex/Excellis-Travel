@@ -179,8 +179,8 @@ class WalletRemoteDataSrc {
       await apiClient.getRequest(
         endPoint: EndPoints.getCreditBalanceTransactions,
         queryParameters: {
-          'page': page,
-          'limit': limit,
+          'page': 1,
+          'limit': 9999999999,
         },
         fromJson: (json) {
           transactionData = json;
@@ -189,8 +189,8 @@ class WalletRemoteDataSrc {
       await apiClient.getRequest(
         endPoint: EndPoints.getBokkingViaCreditBalance,
         queryParameters: {
-          'page': page,
-          'limit': limit,
+          'page': 1,
+          'limit': 999999999,
         },
         fromJson: (json) {
           bookinData = json;
@@ -231,8 +231,8 @@ class WalletRemoteDataSrc {
         allData['data'].add(data);
       });
       //filter it according to createdAt
-      allData['data'].sort((a, b) => DateTime.parse(a['dateTime'])
-          .compareTo(DateTime.parse(b['dateTime'])));
+      allData['data'].sort((a, b) => DateTime.parse(b['dateTime'])
+          .compareTo(DateTime.parse(a['dateTime'])));
       return ApiResponse(
           statusCode: 200, data: CurstomCrTransactionModel.fromJson(allData));
     } catch (e) {

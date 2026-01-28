@@ -97,4 +97,6 @@ class EndPoints {
   static const String getPendingRepayments =
       '/credit-wallet/pending-repayments';
   static const String confirmPayment = '/credit-wallet/repay';
+
+  static String travelers = '/travellers';
 }
