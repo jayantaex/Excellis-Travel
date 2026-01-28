@@ -1,13 +1,11 @@
 import '../constants/app_constants.dart';
 
 class MainUrl {
-  final String env = 'development';
-
+  final String env = AppConstants.env;
   String getUrl() {
     if (env == 'production') {
       return AppConstants.baseUrl;
     } else {
-      // return 'https://api.excellistravel.com';
       return AppConstants.baseUrl;
     }
   }
@@ -63,6 +61,7 @@ class EndPoints {
   //markup pricing
   static const String markupPricing = '/markups/calculate-markup';
   static const String myMarkup = '/markups/user';
+  static const String markup = '/markups';
 
   //ticket
   static const String ticket = '/bookings/filtered-auto';
@@ -75,8 +74,6 @@ class EndPoints {
   static const String subSalesExecutives =
       '/dynamic-user-hierarchy/my-direct-children';
   static const String agents = '/dynamic-user-hierarchy/children';
-  //markup
-  static const String markup = '/markups';
 
   //wallet
   static const String wallet = '/wallet/summary';
@@ -97,6 +94,7 @@ class EndPoints {
   static const String getPendingRepayments =
       '/credit-wallet/pending-repayments';
   static const String confirmPayment = '/credit-wallet/repay';
+  //travelers
 
   static String travelers = '/travellers';
 }
