@@ -19,8 +19,9 @@ class SplashModule {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ProfileBloc>(
-            create: (BuildContext context) =>
-                ProfileBloc(profileRepository: repository)),
+          create: (BuildContext context) =>
+              ProfileBloc(profileRepository: repository),
+        ),
       ],
       child: const SplashScreen(),
     );

@@ -12,7 +12,7 @@ import 'profile_photo_preview.dart';
 
 class ProfileAvatarWidget extends StatelessWidget {
   ProfileAvatarWidget({super.key, this.isEditable = true});
-  bool? isEditable;
+  final bool? isEditable;
   final AppImagePicker _appImagePicker = AppImagePicker();
   final String imageBaseUrl =
       'https://api.excellistravel.com//auth/profile/image/';

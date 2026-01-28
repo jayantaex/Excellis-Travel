@@ -14,7 +14,12 @@ class WalletModule {
   static const wallet = 'my_wallet';
   static Widget builder() => BlocProvider(
         create: (context) => WalletBloc(
-            WalletRepository(WalletRemoteDataSrc(apiClient: ApiClient()))),
+          WalletRepository(
+            WalletRemoteDataSrc(
+              apiClient: ApiClient(),
+            ),
+          ),
+        ),
         child: const WalletScreen(),
       );
 
@@ -22,14 +27,24 @@ class WalletModule {
   static const creditWallet = 'credit-wallet';
   static Widget creditWalletBuilder() => BlocProvider(
         create: (context) => WalletBloc(
-            WalletRepository(WalletRemoteDataSrc(apiClient: ApiClient()))),
+          WalletRepository(
+            WalletRemoteDataSrc(
+              apiClient: ApiClient(),
+            ),
+          ),
+        ),
         child: const CreditWalletScreen(),
       );
   static const withdrawlRequestPath = '/withdrawl-request';
   static const withdrawlRequest = 'withdrawl_request';
   static Widget withdrawlRequestBuilder() => BlocProvider(
         create: (context) => WalletBloc(
-            WalletRepository(WalletRemoteDataSrc(apiClient: ApiClient()))),
+          WalletRepository(
+            WalletRemoteDataSrc(
+              apiClient: ApiClient(),
+            ),
+          ),
+        ),
         child: const WithdrawlRequestScreen(),
       );
 
@@ -37,7 +52,12 @@ class WalletModule {
   static const rePaymentDashboard = 're-payment-dashboard';
   static Widget rePaymentDashboardBuilder() => BlocProvider(
         create: (context) => WalletBloc(
-            WalletRepository(WalletRemoteDataSrc(apiClient: ApiClient()))),
+          WalletRepository(
+            WalletRemoteDataSrc(
+              apiClient: ApiClient(),
+            ),
+          ),
+        ),
         child: const RePaymentDashboardScreen(),
       );
 }
