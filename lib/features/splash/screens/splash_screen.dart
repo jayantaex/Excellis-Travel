@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
         bottomNavigationBar: const Padding(
           padding: EdgeInsets.all(8.0),
           child: Text(
-            'Checking app version...',
+            'Loading...',
             textAlign: TextAlign.center,
             style:
                 TextStyle(color: AppColors.white, fontWeight: FontWeight.w400),
@@ -56,9 +56,9 @@ class _SplashScreenState extends State<SplashScreen> {
   // landle authentication
   Future<void> _handleAuthentication() async {
     try {
-      final String? asscessToken = await StorageService.getAccessToken();
+      final String? accessToken = await StorageService.getAccessToken();
       final String? refreshToken = await StorageService.getRefreshToken();
-      if ((asscessToken != null && asscessToken.isNotEmpty) &&
+      if ((accessToken != null && accessToken.isNotEmpty) &&
           (refreshToken != null && refreshToken.isNotEmpty)) {
         _fetchProfile();
         return;
@@ -70,22 +70,6 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  // Future<bool> _handleAppUpdate() async {
-  //   try {
-  //     final bool isUpdateAvailable = await AppUpdater().isUpdateAvailable();
-  //     final info = await AppUpdater().getLatestVersion();
-
-  //     if (isUpdateAvailable) {
-  //       _navigateToUpdate(url: info['url'], version: info['version']);
-  //       return true; // Update is available
-  //     }
-  //     return false; // No update available
-  //   } catch (e) {
-  //     showToast(message: 'Failed to check for updates');
-  //     return false; // On error, proceed with normal flow
-  //   }
-  // }
-
   void _navigateToLogin() {
     context.goNamed(AuthModule.loginName);
   }
@@ -95,12 +79,6 @@ class _SplashScreenState extends State<SplashScreen> {
       context.goNamed(BottomNavModule.name);
     }
   }
-
-  // void _navigateToUpdate({required String url, required String version}) {
-  //   if (context.mounted) {
-  //     context.goNamed('update', extra: {'url': url, 'version': version});
-  //   }
-  // }
 
   void _fetchProfile() {
     context.read<ProfileBloc>().add(const LoadProfileEvent());
