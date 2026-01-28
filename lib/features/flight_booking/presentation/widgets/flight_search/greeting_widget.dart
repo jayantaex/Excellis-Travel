@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
-import '../../../../notifiaction/notification_module.dart';
 import '../../../../profile_management/bloc/profile_bloc.dart';
 
 class GreetingWidget extends StatelessWidget {
@@ -52,17 +50,17 @@ class GreetingWidget extends StatelessWidget {
                 ],
               ),
             ),
-            CircleAvatar(
-              backgroundColor: AppColors.white.withValues(alpha: 0.2),
-              child: IconButton(
-                  onPressed: () {
-                    context.pushNamed(NotificationModule.routeName);
-                  },
-                  icon: const Icon(
-                    Icons.notifications_none_rounded,
-                    color: AppColors.white,
-                  )),
-            )
+            // CircleAvatar(
+            //   backgroundColor: AppColors.white.withValues(alpha: 0.2),
+            //   child: IconButton(
+            //       onPressed: () {
+            //         context.pushNamed(NotificationModule.routeName);
+            //       },
+            //       icon: const Icon(
+            //         Icons.notifications_none_rounded,
+            //         color: AppColors.white,
+            //       )),
+            // )
           ],
         ),
       );
