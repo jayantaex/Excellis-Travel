@@ -347,6 +347,10 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                       initialDate: departureDate ?? _today,
                                     );
                                     departureDate ??= _today;
+                                    if (isRoundTrip) {
+                                      roundTripDate =
+                                          departureDate?.add(_fiveDay);
+                                    }
                                     setState(() {});
 
                                     //hide keyboard

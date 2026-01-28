@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_update/in_app_update.dart';
 import '../../../core/constants/app_styles.dart';
+import '../../../core/services/app_update_service.dart';
 import '../../../utils/app_toast.dart';
 import '../../../utils/storage_service.dart';
 import '../../auth/auth_module.dart';
@@ -16,10 +18,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final AppUpdateService _appUpdateService = AppUpdateService();
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _handleAuthentication();
+      await _checkForUpdate();
     });
     super.initState();
   }
@@ -84,5 +88,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _fetchProfile() {
     context.read<ProfileBloc>().add(const LoadProfileEvent());
+  }
+
+  Future<void> _checkForUpdate() async {
+    try {
+      final AppUpdateInfo updateInfo = await _appUpdateService.checkForUpdate();
+      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        await _appUpdateService.immidiateUpdate();
+      }
+    } catch (e) {
+      // showToast(message: 'Failed to check for update');
+    }
   }
 }
