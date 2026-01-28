@@ -15,6 +15,7 @@ class UserContentWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             ProfileAvatarWidget(
+              isGuest: userName == 'Guest' ? true : false,
               isEditable: false,
             ),
             const SizedBox(height: 6),

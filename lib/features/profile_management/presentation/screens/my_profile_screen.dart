@@ -225,6 +225,23 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             }
 
                             if (option['routeName'] ==
+                                WalletModule.withdrawlRequest) {
+                              if (!isLogedIn) {
+                                showToast(
+                                    message:
+                                        'Please login to access withdrawl request');
+                                return;
+                              }
+
+                              if (context.mounted) {
+                                context.pushNamed(
+                                  option['routeName'] ?? '',
+                                );
+                                return;
+                              }
+                            }
+
+                            if (option['routeName'] ==
                                 SalesModule.myMarkupScreen) {
                               if (isLogedIn) {
                                 if (context.mounted) {
