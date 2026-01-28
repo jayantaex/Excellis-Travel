@@ -5,8 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
+import '../../../../core/network/api_urls.dart';
 import '../../../../core/services/barcode_service.dart';
-import '../../../../core/services/file_downloader.dart';
+import '../../../../core/services/download_manager.dart';
 import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
 import '../../../../utils/airline_info_provider.dart' show AirlineInfoProvider;
 import '../../../../utils/app_helpers.dart';
@@ -533,7 +534,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                                       color: AppHelpers.isDarkMode(context)
                                           ? AppColors.cardDark
                                           : AppColors.white,
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(24),
                                         bottomRight: Radius.circular(24),
                                       ),
@@ -592,16 +593,24 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                 onPressed: () async {
                   try {
                     Fluttertoast.showToast(msg: 'Downloading...');
-                    final bool res = await FileDownloaderService.saveFile(
-                      baseFare:
-                          '${(widget.data.fareDetails?.totalFare ?? 0.00) - (widget.data.fareDetails?.markup ?? 0.00)}',
-                      totalFare: '${widget.data.fareDetails?.totalFare}',
-                      markupPrice: '${widget.data.fareDetails?.markup ?? 0.00}',
-                      bokkingRefId: '${widget.data.bookingReference}',
-                      showDownloadProgress: (count, total) {},
-                    );
+                    final String bookingRefId =
+                        '${widget.data.bookingReference}';
+                    final String url =
+                        '${EndPoints.baseUrl}${EndPoints.downloadFile}/$bookingRefId/download?format=pdf';
+                    final String fileName =
+                        '${widget.data.bookingReference}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+                    final String? taskId =
+                        await DownloadManager.downloadFile(url, fileName);
+                    // final bool res = await FileDownloaderService.saveFile(
+                    //   baseFare:
+                    //       '${(widget.data.fareDetails?.totalFare ?? 0.00) - (widget.data.fareDetails?.markup ?? 0.00)}',
+                    //   totalFare: '${widget.data.fareDetails?.totalFare}',
+                    //   markupPrice: '${widget.data.fareDetails?.markup ?? 0.00}',
+                    //   bokkingRefId: '${widget.data.bookingReference}',
+                    //   showDownloadProgress: (count, total) {},
+                    // );
 
-                    if (res) {
+                    if (taskId != null) {
                       Fluttertoast.showToast(msg: 'Downloaded successfully');
                     }
                   } catch (e) {

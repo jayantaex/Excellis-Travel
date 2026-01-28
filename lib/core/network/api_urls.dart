@@ -1,13 +1,11 @@
 import '../constants/app_constants.dart';
 
 class MainUrl {
-  final String env = 'development';
-
+  final String env = AppConstants.env;
   String getUrl() {
     if (env == 'production') {
       return AppConstants.baseUrl;
     } else {
-      // return 'https://api.excellistravel.com';
       return AppConstants.baseUrl;
     }
   }
@@ -63,6 +61,7 @@ class EndPoints {
   //markup pricing
   static const String markupPricing = '/markups/calculate-markup';
   static const String myMarkup = '/markups/user';
+  static const String markup = '/markups';
 
   //ticket
   static const String ticket = '/bookings/filtered-auto';
@@ -75,8 +74,6 @@ class EndPoints {
   static const String subSalesExecutives =
       '/dynamic-user-hierarchy/my-direct-children';
   static const String agents = '/dynamic-user-hierarchy/children';
-  //markup
-  static const String markup = '/markups';
 
   //wallet
   static const String wallet = '/wallet/summary';
@@ -88,10 +85,16 @@ class EndPoints {
   static const String requestWithdrawal = '/withdrawals/request';
   static const String withdrawalRequests = '/withdrawals';
   static const String cancelWithdrawalRequest = '/withdrawals/';
+  static const String getCreditBalance = '/credit-wallet/balance';
+  static const String getCreditBalanceTransactions =
+      '/credit-wallet/transactions';
+  static const String getBokkingViaCreditBalance = '/credit-wallet/bookings';
+  static const String chargeCreditWallet = '/credit-wallet/debit';
+  static const String getOverdueRepayments = '/credit-wallet/overdue';
+  static const String getPendingRepayments =
+      '/credit-wallet/pending-repayments';
+  static const String confirmPayment = '/credit-wallet/repay';
+  //travelers
 
-  static String getCreditBalance = '/credit-wallet/balance';
-
-  static String getCreditBalanceTransactions = '/credit-wallet/transactions';
-  static String getBokkingViaCreditBalance = '/credit-wallet/bookings';
-  static String chargeCreditWallet = '/credit-wallet/debit';
+  static String travelers = '/travellers';
 }

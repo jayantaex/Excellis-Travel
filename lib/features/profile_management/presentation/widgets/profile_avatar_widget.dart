@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,8 +13,10 @@ import '../../bloc/profile_bloc.dart';
 import 'profile_photo_preview.dart';
 
 class ProfileAvatarWidget extends StatelessWidget {
-  ProfileAvatarWidget({super.key, this.isEditable = true});
-  bool? isEditable;
+  ProfileAvatarWidget(
+      {super.key, this.isEditable = true, this.isGuest = false});
+  final bool? isEditable;
+  final bool? isGuest;
   final AppImagePicker _appImagePicker = AppImagePicker();
   final String imageBaseUrl =
       'https://api.excellistravel.com//auth/profile/image/';
@@ -21,6 +25,7 @@ class ProfileAvatarWidget extends StatelessWidget {
   Widget build(BuildContext context) => BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {},
         builder: (context, state) {
+          log("STAT ${state} ${imageBaseUrl}");
           if (state is ProfileLoaded) {
             return Badge(
               isLabelVisible: isEditable! && state is! ProfileImageUpdating,
@@ -33,10 +38,10 @@ class ProfileAvatarWidget extends StatelessWidget {
               label: InkWell(
                 onTap: () async {
                   final XFile? image = await _appImagePicker.pickFromGallery();
-                  if (context.mounted) {
+                  if (context.mounted && image != null) {
                     await showPhotoPreview(
                       context: context,
-                      url: image!.path,
+                      url: image.path,
                       onUpdate: () {
                         context.read<ProfileBloc>().add(UpdateProfileImageEvent(
                               imageFile: File(image.path),
@@ -65,8 +70,9 @@ class ProfileAvatarWidget extends StatelessWidget {
                         state.profileData.profileImage == null ||
                         state.profileData.profileImage == ''
                     ? null
-                    : NetworkImage(
-                        '$imageBaseUrl${state.profileData.profileImage?.split('/').last}'),
+                    : CachedNetworkImageProvider(
+                        '$imageBaseUrl${state.profileData.profileImage?.split('/').last}',
+                      ),
                 child: state is ProfileImageUpdating
                     ? const CircularProgressIndicator.adaptive()
                     : state.profileData.profileImage == null ||
@@ -86,8 +92,16 @@ class ProfileAvatarWidget extends StatelessWidget {
               ),
             );
           } else {
-            return const CircleAvatar(
-                radius: 60, child: CircularProgressIndicator.adaptive());
+            return CircleAvatar(
+              radius: 60,
+              child: isGuest == true
+                  ? const Text('G',
+                      style: TextStyle(
+                        fontSize: 45,
+                        color: AppColors.primary,
+                      ))
+                  : const CircularProgressIndicator.adaptive(),
+            );
           }
         },
       );

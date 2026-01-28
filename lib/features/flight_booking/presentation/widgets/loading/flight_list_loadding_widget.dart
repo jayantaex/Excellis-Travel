@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/app_custom_appbar.dart';
-import '../../../../../core/widgets/loading_widget.dart';
+import '../../../../../core/widgets/loading_effect.dart';
 
-class FlightListLoaddingWidget extends StatelessWidget {
-  const FlightListLoaddingWidget(
+class FlightListLoadingWidget extends StatelessWidget {
+  const FlightListLoadingWidget(
       {super.key, required this.arrival, required this.departure});
   final String arrival;
   final String departure;
@@ -24,7 +24,7 @@ class FlightListLoaddingWidget extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16),
             child: SizedBox(
               height: 70,
-              width: AppHelpers.percenWidth(context: context),
+              width: AppHelpers.percentWidth(context: context),
               child: ListView.builder(
                 itemCount: 8,
                 scrollDirection: Axis.horizontal,
@@ -43,7 +43,7 @@ class FlightListLoaddingWidget extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16),
             child: SizedBox(
               height: 50,
-              width: AppHelpers.percenWidth(context: context),
+              width: AppHelpers.percentWidth(context: context),
               child: ListView.builder(
                 itemCount: 4,
                 scrollDirection: Axis.horizontal,

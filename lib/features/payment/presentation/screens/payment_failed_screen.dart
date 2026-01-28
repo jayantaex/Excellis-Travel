@@ -13,7 +13,7 @@ class PaymentFailedScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
         body: SizedBox(
-          width: AppHelpers.percenWidth(context: context),
+          width: AppHelpers.percentWidth(context: context),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -35,7 +35,9 @@ class PaymentFailedScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  errMsg,
+                  errMsg == 'payment_error'
+                      ? 'Payment failed. Please try again. If the problem persists, please contact support.'
+                      : errMsg,
                   style: const TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.normal,

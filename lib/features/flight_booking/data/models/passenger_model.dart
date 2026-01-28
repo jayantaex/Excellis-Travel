@@ -7,6 +7,7 @@ class PassengerModel {
       this.emailAddress,
       this.type,
       this.gender,
+      this.title,
       this.number});
 
   PassengerModel.fromJson(Map<String, dynamic> json) {
@@ -27,6 +28,7 @@ class PassengerModel {
   String? gender;
   String? number;
   String? type;
+  String? title;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

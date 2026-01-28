@@ -60,7 +60,13 @@ Generate SHA Key [DEBUG]
 Generate Keystore file from project root directory
 
 ```bash
-  keytool -genkey -v -keystore android/app/release.jks -storetype RSA -alias upload -keyalg RSA -keysize 2048 -validity 10000
+  keytool -genkeypair \
+  -v \
+  -keystore android/app/release.jks \
+  -alias upload \
+  -keyalg RSA \
+  -keysize 2048 \
+  -validity 10000
 ```
 
 

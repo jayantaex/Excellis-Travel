@@ -21,7 +21,7 @@ class WithdrawlRequestScreen extends StatefulWidget {
 
 class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
   int page = 1;
-  int limit = 10;
+  int limit = 99999999999999;
   int total = 0;
   void _fetchWithdrawalRequests() {
     context.read<WalletBloc>().add(FetchWithdrawalRequestsEvent(
@@ -109,6 +109,7 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                             total = state.data?.data?.total ?? 0;
                             page = state.data?.data?.page ?? 1;
                             return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
                                   width: AppHelpers.getScreenWidth(context),
@@ -119,8 +120,8 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                       Text(
                                         'Withdrawal Requests',
                                         style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
                                             color:
                                                 AppHelpers.isDarkMode(context)
                                                     ? AppColors.white
@@ -136,7 +137,7 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                               selectedStatus: selectedStatus,
                                               onSelect: (status) {
                                                 page = 1;
-                                                limit = 10;
+                                                limit = limit;
                                                 selectedStatus = status;
 
                                                 _fetchWithdrawalRequests();
@@ -147,20 +148,37 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 16),
-                                          child: Text(
-                                            toTitleCase(selectedStatus),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                              color: AppColors.primary,
-                                            ),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                toTitleCase(selectedStatus),
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: AppColors.primary,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 4),
+                                              const Icon(
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
+                                                color: AppColors.primary,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                const SizedBox(height: 16),
+                                const Text(
+                                  'Showing all withdrawal requests',
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.textSecondary),
+                                ),
+                                const SizedBox(height: 12),
                                 Divider(
                                   color: AppColors.grey.withValues(alpha: 0.1),
                                   thickness: 1,

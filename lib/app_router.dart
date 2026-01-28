@@ -54,24 +54,6 @@ class AppRouter {
             BottomNavModule.builder(),
       ),
 
-      //payment
-      GoRoute(
-          path: PaymentModule.paymentProcessingPath,
-          name: PaymentModule.paymentProcessingName,
-          builder: (BuildContext context, GoRouterState state) =>
-              PaymentModule.paymentProcessingBuilder(context, state)),
-      GoRoute(
-          path: PaymentModule.paymentSuccessPath,
-          name: PaymentModule.paymentSuccessName,
-          builder: (BuildContext context, GoRouterState state) =>
-              PaymentModule.paymentSuccessBuilder(context, state)),
-      GoRoute(
-        path: PaymentModule.paymentFailedPath,
-        name: PaymentModule.paymentFailedName,
-        builder: (BuildContext context, GoRouterState state) =>
-            PaymentModule.paymentFailedBuilder(context, state),
-      ),
-
       //ticket
       GoRoute(
         path: BookingModule.bookingRoute,
@@ -198,6 +180,29 @@ class AppRouter {
           name: WalletModule.withdrawlRequest,
           builder: (BuildContext context, GoRouterState state) =>
               WalletModule.withdrawlRequestBuilder()),
+      GoRoute(
+          path: WalletModule.rePaymentDashboardPath,
+          name: WalletModule.rePaymentDashboard,
+          builder: (BuildContext context, GoRouterState state) =>
+              WalletModule.rePaymentDashboardBuilder()),
+
+      //payment
+      GoRoute(
+          path: PaymentModule.paymentProcessingPath,
+          name: PaymentModule.paymentProcessingName,
+          builder: (BuildContext context, GoRouterState state) =>
+              PaymentModule.paymentProcessingBuilder(context, state)),
+      GoRoute(
+          path: PaymentModule.paymentSuccessPath,
+          name: PaymentModule.paymentSuccessName,
+          builder: (BuildContext context, GoRouterState state) =>
+              PaymentModule.paymentSuccessBuilder(context, state)),
+      GoRoute(
+        path: PaymentModule.paymentFailedPath,
+        name: PaymentModule.paymentFailedName,
+        builder: (BuildContext context, GoRouterState state) =>
+            PaymentModule.paymentFailedBuilder(context, state),
+      ),
     ],
     errorBuilder: (BuildContext context, GoRouterState state) => const Scaffold(
       body: Center(

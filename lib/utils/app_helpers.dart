@@ -176,6 +176,10 @@ class AppHelpers {
       );
   }
 
+  static void hideCurrentSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
   static Future<bool?> showConfirmDialog(
     BuildContext context, {
     required String title,
@@ -254,7 +258,7 @@ class AppHelpers {
   }
 
   //UI helper
-  static double percenWidth({int? percent, required BuildContext context}) {
+  static double percentWidth({int? percent, required BuildContext context}) {
     if (percent == null) {
       return MediaQuery.sizeOf(context).width;
     }
@@ -296,7 +300,7 @@ class AppHelpers {
   }) =>
       SvgPicture.asset(
         isIcon == true
-            ? '${AppConstants.assetIcontUrl}$assetName.svg'
+            ? '${AppConstants.assetIconUrl}$assetName.svg'
             : '${AppConstants.assetImageUrl}$assetName.svg',
         width: width,
         height: height,

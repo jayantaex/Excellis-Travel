@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_styles.dart';
 import '../../../core/errors/error_screen.dart';
 import '../../../core/widgets/app_custom_appbar.dart';
@@ -8,6 +9,7 @@ import '../../../core/widgets/trans_white_bg_widget.dart';
 import '../../../utils/app_helpers.dart';
 import '../bloc/wallet_bloc.dart';
 import '../data/models/custom_cr_transaction_model.dart';
+import '../wallet_module.dart';
 import '../widgets/credit_wallet_transaction_card.dart';
 import '../widgets/credit_wallet_type_card.dart';
 
@@ -63,9 +65,21 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                   }
                   return Column(
                     children: [
-                      const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: AppCustomAppbar(centerTitle: 'Credit Wallet')),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: AppCustomAppbar(
+                            centerTitle: 'Credit Wallet',
+                            trailing: InkWell(
+                              onTap: () {
+                                context
+                                    .pushNamed(WalletModule.rePaymentDashboard);
+                              },
+                              child: const Icon(
+                                Icons.replay_rounded,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          )),
                       const SizedBox(height: 16),
                       if (state is FetchCreditBalanceTransactionsSuccess)
                         Text(
@@ -154,14 +168,13 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                                     is FetchCreditBalanceTransactionsSuccess)
                                   Expanded(
                                     child: ListView.builder(
-                                        reverse: true,
-                                        itemCount:
-                                            state.data?.data?.length ?? 0,
-                                        itemBuilder: (context, index) =>
-                                            CreditWalletTransactionCard(
-                                              data: state.data?.data?[index] ??
-                                                  CreditTransactionData(),
-                                            )),
+                                      itemCount: state.data?.data?.length ?? 0,
+                                      itemBuilder: (context, index) =>
+                                          CreditWalletTransactionCard(
+                                        data: state.data?.data?[index] ??
+                                            CreditTransactionData(),
+                                      ),
+                                    ),
                                   ),
                                 const SizedBox(height: 25),
                               ],

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -5,6 +6,9 @@ import 'package:equatable/equatable.dart';
 import '../../../core/network/api_response.dart';
 import '../data/models/credit_balance_model.dart';
 import '../data/models/custom_cr_transaction_model.dart';
+import '../data/models/overdue_data_model.dart';
+import '../data/models/repay_resp_model.dart';
+import '../data/models/repayment_data_model.dart';
 import '../data/models/transaction_model.dart';
 import '../data/models/wallet_charge_model.dart' hide Datam;
 import '../data/models/wallet_model.dart';
@@ -32,6 +36,8 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     on<FetchCreditBalanceTransactionsEvent>(
         _handleFetchCreditBalanceTransactions);
     on<ChargeCreditWalletMoneyEvent>(_handleChargeCreditWalletMoney);
+    on<FetchRePaymentEvent>(_handleFetchRePayment);
+    on<RePayEvent>(_handleRePay);
   }
 
   final WalletRepository walletRepository;
@@ -111,7 +117,6 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
         currentFilter:
             currentState is WalletLoaded ? currentState.currentFilter : 'all',
         transactions: newTransactions,
-        isLoadingMore: false,
       ));
     } else {
       emit(WalletError(
@@ -333,6 +338,33 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
       emit(ChargeCreditWalletMoneyError(
           message:
               response.errorMessage ?? 'Failed to charge credit wallet money'));
+    }
+  }
+
+  Future<void> _handleFetchRePayment(
+      FetchRePaymentEvent event, Emitter<WalletState> emit) async {
+    emit(const WalletLoading());
+    final ApiResponse<List<OverDueDataModel>> overDueResponse =
+        await walletRepository.fetchOverdueRepayments();
+    final ApiResponse<List<PendingRepaymentDataModel>> pendingResponse =
+        await walletRepository.fetchPendingRepayments();
+    if (overDueResponse.data != null && pendingResponse.data != null) {
+      emit(FetchRePaymentSuccess(
+          overDueData: overDueResponse.data!,
+          pendingRepaymentData: pendingResponse.data!));
+    }
+  }
+
+  Future<void> _handleRePay(RePayEvent event, Emitter<WalletState> emit) async {
+    emit(const WalletLoading());
+    final ApiResponse<RePayRespModel> response =
+        await walletRepository.confirmPayment(body: event.body);
+    if (response.data != null) {
+      emit(
+          RePaySuccess(message: response.data!.message ?? 'Payment confirmed'));
+    } else {
+      emit(RePayError(
+          message: response.errorMessage ?? 'Failed to confirm payment'));
     }
   }
 }

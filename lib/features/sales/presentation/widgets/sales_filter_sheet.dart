@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 import '../../../../core/constants/app_styles.dart';
-import '../../../../core/widgets/loading_widget.dart';
+import '../../../../core/widgets/loading_effect.dart';
 import '../../../../core/widgets/multi_drop_down_widget.dart';
 import '../../../../utils/app_date_picker.dart';
 import '../../../../utils/app_helpers.dart';
@@ -102,8 +102,8 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                           size: 16,
                         )),
                     maxCharacters: 16,
-                    hint: 'Enter your booking reference id',
-                    label: 'Booking Reference ID',
+                    hint: 'Enter PNR Number',
+                    label: 'PNR Number',
                     controller: widget.bookingIdController,
                   ),
                 ),
@@ -127,7 +127,6 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
                                   ? AppColors.white
                                   : AppColors.textPrimary,
                             ),
-                            isMultiline: true,
                             hint: 'Select sub sales executive',
                             onTap: () async {
                               await showSubSalesExecutiveSelector(
