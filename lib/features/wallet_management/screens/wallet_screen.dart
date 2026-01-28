@@ -97,8 +97,18 @@ class _WalletScreenState extends State<WalletScreen>
                     _fetchWalletBalance();
                   }
                   if (state is SubmitWithdrawalError) {
-                    AppHelpers.showSnackBar(context, state.message,
-                        backgroundColor: AppColors.error);
+                    AppHelpers.showSnackBar(
+                      context,
+                      state.message,
+                      duration: const Duration(minutes: 10),
+                      action: SnackBarAction(
+                        label: 'Close',
+                        onPressed: () {
+                          AppHelpers.hideCurrentSnackBar(context);
+                        },
+                      ),
+                      backgroundColor: AppColors.error,
+                    );
                     _fetchWalletBalance();
                   }
                 },

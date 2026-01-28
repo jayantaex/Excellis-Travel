@@ -95,7 +95,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     }
 
                     if (addressList.isNotEmpty && addressList.length > 3) {
-                      _pinController.text = addressList.last;
+                      _pinController.text = addressList.last.trim();
                       _selectedState =
                           addressList[addressList.length - 2].trim();
                       _cityController.text =

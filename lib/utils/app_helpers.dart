@@ -176,6 +176,10 @@ class AppHelpers {
       );
   }
 
+  static void hideCurrentSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
+
   static Future<bool?> showConfirmDialog(
     BuildContext context, {
     required String title,
