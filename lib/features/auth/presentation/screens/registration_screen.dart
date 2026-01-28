@@ -15,14 +15,15 @@ class RegistrationScreen extends StatelessWidget {
         onPopInvokedWithResult: (bool didPop, Object? result) async {
           if (!didPop) {
             await showAppSheet(
-                onSubmitPressed: () async {
-                  SystemNavigator.pop();
-                },
-                submitButtonRequired: true,
-                submitButtonTitle: 'Yes',
-                context: context,
-                title: 'Exit',
-                child: const AppExitSheet());
+              onSubmitPressed: () async {
+                SystemNavigator.pop();
+              },
+              submitButtonRequired: true,
+              submitButtonTitle: 'Yes',
+              context: context,
+              title: 'Exit',
+              child: const AppExitSheet(),
+            );
           }
         },
         child: Scaffold(

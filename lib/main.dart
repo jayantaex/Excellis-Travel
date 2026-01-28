@@ -17,7 +17,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageService.init();
   await LocalDB().initLocalDB();
-
   await EasyLocalization.ensureInitialized();
   if (firebaseSetup) {
     await Firebase.initializeApp();
