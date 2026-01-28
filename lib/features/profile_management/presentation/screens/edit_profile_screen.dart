@@ -184,6 +184,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _phoneController,
+                                      keyboardType: TextInputType.phone,
                                       label: 'Phone Number',
                                       maxCharacters: 10,
                                     ),
@@ -303,6 +304,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     const SizedBox(height: 16),
                                     AppPrimaryInput(
                                       controller: _pinController,
+                                      keyboardType: TextInputType.number,
                                       label: 'Pincode',
                                       maxCharacters: 6,
                                     ),
