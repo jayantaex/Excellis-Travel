@@ -26,7 +26,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+        ),
         backgroundColor: AppColors.black,
         body: BlocConsumer<ProfileBloc, ProfileState>(
           listener: (BuildContext context, ProfileState state) async {
