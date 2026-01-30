@@ -526,6 +526,7 @@ Future<void> showAddAndEditPassengerSheet(
                                     lastName: lastName,
                                     gender: selectedGender,
                                     type: travellerType,
+                                    countryCode: selectedCountryCode,
                                   ));
                                 },
                                 bgColor: AppHelpers.isDarkMode(context)

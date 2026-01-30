@@ -156,11 +156,13 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                   allowedChild: _allowedChild,
                   allowedInfant: _allowedInfant,
                 ),
-          ..._childPassengers.map((PassengerModel e) => PassengerCard(
-                onPassengerRemove: _removePassenger,
-                onPassengerUpdate: _updatePassenger,
-                passenger: e,
-              )),
+          ..._childPassengers.map(
+            (PassengerModel e) => PassengerCard(
+              onPassengerRemove: _removePassenger,
+              onPassengerUpdate: _updatePassenger,
+              passenger: e,
+            ),
+          ),
           _allowedChild == 0 ? const SizedBox() : const Divider(),
 
           // Infant
@@ -178,11 +180,13 @@ class _PassengerDetailsCardState extends State<PassengerDetailsCard> {
                   allowedChild: _allowedChild,
                   allowedInfant: _allowedInfant,
                 ),
-          ..._infantPassengers.map((PassengerModel e) => PassengerCard(
-                passenger: e,
-                onPassengerRemove: _removePassenger,
-                onPassengerUpdate: _updatePassenger,
-              )),
+          ..._infantPassengers.map(
+            (PassengerModel e) => PassengerCard(
+              passenger: e,
+              onPassengerRemove: _removePassenger,
+              onPassengerUpdate: _updatePassenger,
+            ),
+          ),
           const SizedBox(height: 10),
         ],
       ),

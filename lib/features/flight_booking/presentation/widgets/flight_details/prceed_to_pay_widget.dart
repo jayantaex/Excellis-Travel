@@ -382,11 +382,11 @@ Map<String, dynamic> getContactDetails(
 
 Map<String, dynamic> getPassengetDetails({required PassengerModel passenger}) =>
     <String, dynamic>{
-      'title': passenger.gender == 'Male' ? 'Mr' : 'Ms',
+      'title': passenger.title,
       'gender': passenger.gender,
       'firstName': passenger.firstName,
       'lastName': passenger.lastName,
-      'nationality': 'India',
+      'nationality': passenger.countryCode,
       'dateOfBirth': (passenger.dateOfBirth != null)
           ? AppHelpers.formatDate(DateTime.parse('${passenger.dateOfBirth}'),
               pattern: 'yyyy-MM-dd')
