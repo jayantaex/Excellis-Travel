@@ -22,8 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _handleAuthentication();
       await _checkForUpdate();
+      await _handleAuthentication();
     });
     super.initState();
   }
@@ -95,7 +95,9 @@ class _SplashScreenState extends State<SplashScreen> {
       final AppUpdateInfo updateInfo = await _appUpdateService.checkForUpdate();
       if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
         await _appUpdateService.immidiateUpdate();
+        return;
       }
+      print('No update available');
     } catch (e) {
       // showToast(message: 'Failed to check for update');
     }
