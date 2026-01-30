@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,13 +18,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await StorageService.init();
   await LocalDB().initLocalDB();
-
   await EasyLocalization.ensureInitialized();
-  if (firebaseSetup) {
+  if (firebaseSetup && Platform.isAndroid) {
     await Firebase.initializeApp();
     await FirebaseNotificationService.instance.initialize();
-    await DownloadManager.init();
   }
+  await DownloadManager.init();
 
   runApp(
     EasyLocalization(

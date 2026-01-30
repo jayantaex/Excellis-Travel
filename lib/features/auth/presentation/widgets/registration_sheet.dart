@@ -63,14 +63,15 @@ class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
 
   final List<DropdownMenuItem<String>> _states = <DropdownMenuItem<String>>[];
   final List<DropdownMenuItem<String>> _cities = <DropdownMenuItem<String>>[];
+  void _getAllStates() {
+    context.read<StatesBloc>().add(GetStatesEvent());
+  }
 
   final String errMsg = '';
   @override
   void initState() {
-    Future<void>.delayed(Duration.zero, () async {
-      if (context.mounted) {
-        context.read<StatesBloc>().add(GetStatesEvent());
-      }
+    Future.delayed(Duration.zero, () {
+      _getAllStates();
     });
     // Add listener to re-validate confirm password when password changes
     _passwordController.addListener(() {

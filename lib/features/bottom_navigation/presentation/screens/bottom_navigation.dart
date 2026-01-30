@@ -25,6 +25,9 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
   bool isLoading = true;
 
   List<Widget> _screens = <Widget>[];
+  void _loadProfile() {
+    context.read<ProfileBloc>().add(const LoadProfileEvent());
+  }
 
   @override
   void initState() {
@@ -33,9 +36,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
         final String? accessToken = await StorageService.getAccessToken();
         if (context.mounted) {
           if (accessToken != null && accessToken.isNotEmpty) {
-            if (context.mounted) {
-              context.read<ProfileBloc>().add(const LoadProfileEvent());
-            }
+            _loadProfile();
           }
         }
         _screens = const <Widget>[
@@ -61,14 +62,15 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             if (!didPop) {
               if (_currentIndex == 0) {
                 await showAppSheet(
-                    onSubmitPressed: () async {
-                      SystemNavigator.pop();
-                    },
-                    submitButtonRequired: true,
-                    submitButtonTitle: 'Yes',
-                    context: context,
-                    title: 'Exit',
-                    child: const AppExitSheet());
+                  onSubmitPressed: () async {
+                    SystemNavigator.pop();
+                  },
+                  submitButtonRequired: true,
+                  submitButtonTitle: 'Yes',
+                  context: context,
+                  title: 'Exit',
+                  child: const AppExitSheet(),
+                );
               }
               setState(() {
                 _currentIndex = 0;

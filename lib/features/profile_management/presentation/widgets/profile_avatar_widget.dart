@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +23,6 @@ class ProfileAvatarWidget extends StatelessWidget {
   Widget build(BuildContext context) => BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {},
         builder: (context, state) {
-          log("STAT ${state} ${imageBaseUrl}");
           if (state is ProfileLoaded) {
             return Badge(
               isLabelVisible: isEditable! && state is! ProfileImageUpdating,

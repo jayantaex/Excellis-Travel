@@ -1302,6 +1302,10 @@ class Adult {
     this.firstName,
     this.dateOfBirth,
     this.nationality,
+    this.gender,
+    this.number,
+    this.type,
+    this.countryCode,
   });
 
   factory Adult.fromJson(Map<String, dynamic> json) => Adult(
@@ -1311,6 +1315,10 @@ class Adult {
         firstName: '${json['firstName']}',
         dateOfBirth: json['dateOfBirth'] ?? '',
         nationality: '${json['nationality']}',
+        gender: '${json['gender']}',
+        number: '${json['number']}',
+        type: '${json['type']}',
+        countryCode: '${json['countryCode']}',
       );
   final bool? open;
   final String? title;
@@ -1318,6 +1326,10 @@ class Adult {
   final String? firstName;
   final String? dateOfBirth;
   final String? nationality;
+  final String? gender;
+  final String? number;
+  final String? type;
+  final String? countryCode;
 
   Map<String, dynamic> toJson() => {
         'open': open,

@@ -54,6 +54,10 @@ class _FlightListScreenState extends State<FlightListScreen> {
   List<int> totalTravelers = [];
   Map<String, dynamic> paramData = {};
 
+  void _searchFlights({required Map<String, dynamic> body}) {
+    context.read<FlightBloc>().add(SearchFlightsEvent(body: body));
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -65,7 +69,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
         paramData['travellers']['child'],
         paramData['travellers']['infant']
       ];
-      Future.delayed(const Duration(microseconds: 100), () {
+      Future.delayed(const Duration(microseconds: 10), () {
         body = getBody(
           depurture: paramData['depurture'],
           arrival: paramData['arrival'],
@@ -75,7 +79,7 @@ class _FlightListScreenState extends State<FlightListScreen> {
           isRoundTrip: paramData['isRoundTrip'],
           travellersArr: totalTravelers,
         );
-        context.read<FlightBloc>().add(SearchFlightsEvent(body: body!));
+        _searchFlights(body: body!);
       });
     });
 

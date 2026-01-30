@@ -1,5 +1,6 @@
+import 'dart:developer';
 import 'package:dotted_border/dotted_border.dart';
-
+import 'package:excellistravel/utils/title_case.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,12 +33,18 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
   final TextEditingController _markupController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   double _savedMarkup = 0.0;
+  void _getMarkup() {
+    context.read<TicketBloc>().add(
+          GetMarkup(
+            bookingId: widget.ticketData!.bookingReference ?? '',
+          ),
+        );
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      context
-          .read<TicketBloc>()
-          .add(GetMarkup(bookingId: widget.ticketData!.bookingReference ?? ''));
+      _getMarkup();
     });
     super.initState();
   }
@@ -388,6 +395,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                           0) {
                                                         return 'Markup cannot be negative';
                                                       }
+                                                      if (double.parse(value) >
+                                                          5000) {
+                                                        return 'Markup cannot be more than 5000';
+                                                      }
                                                       return null;
                                                     },
                                                     maxCharacters: 8,
@@ -462,30 +473,80 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                               ),
                                             ),
                                             title: Text(
-                                              '${adult.firstName ?? ''} ${adult.lastName ?? ''}',
+                                              toTitleCase(
+                                                  '${adult.title ?? ''} ${adult.firstName ?? ''} ${adult.lastName ?? ''}'),
                                               style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
                                                   color: isDark
                                                       ? AppColors.white
                                                       : AppColors.black),
                                             ),
-                                            subtitle: adult
-                                                        .dateOfBirth?.isEmpty ??
-                                                    true
-                                                ? null
-                                                : Text(
-                                                    AppHelpers.formatDate(
-                                                        DateTime.parse(adult
-                                                                .dateOfBirth ??
-                                                            DateTime.now()
-                                                                .toString()),
-                                                        pattern: 'dd MMM yyy'),
-                                                    style: TextStyle(
-                                                        color: isDark
-                                                            ? AppColors.white
-                                                                .withValues(
-                                                                    alpha: 0.7)
-                                                            : AppColors.grey),
-                                                  ),
+                                            subtitle: Row(
+                                              children: [
+                                                adult.dateOfBirth?.isEmpty ??
+                                                        true
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        AppHelpers.formatDate(
+                                                            DateTime.parse(adult
+                                                                    .dateOfBirth ??
+                                                                DateTime.now()
+                                                                    .toString()),
+                                                            pattern:
+                                                                'dd MMM yyy'),
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: isDark
+                                                                ? AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.7)
+                                                                : AppColors
+                                                                    .grey),
+                                                      ),
+                                                const SizedBox(width: 8),
+                                                adult.gender?.isEmpty ?? true
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        '${adult.gender}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: isDark
+                                                                ? AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.7)
+                                                                : AppColors
+                                                                    .grey),
+                                                      ),
+                                                const SizedBox(width: 8),
+                                                adult.nationality?.isEmpty ??
+                                                        true
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        '${adult.nationality}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: isDark
+                                                                ? AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.7)
+                                                                : AppColors
+                                                                    .grey),
+                                                      ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         ...widget.ticketData!.travellerDetails!
@@ -505,30 +566,74 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                               ),
                                             ),
                                             title: Text(
-                                              '${child.firstName} ${child.lastName}',
+                                              toTitleCase(
+                                                  '${child.title ?? ''} ${child.firstName ?? ''} ${child.lastName ?? ''}'),
                                               style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
                                                   color: isDark
                                                       ? AppColors.white
                                                       : AppColors.black),
                                             ),
-                                            subtitle: child
-                                                        .dateOfBirth?.isEmpty ??
-                                                    true
-                                                ? null
-                                                : Text(
-                                                    AppHelpers.formatDate(
-                                                        DateTime.parse(child
-                                                                .dateOfBirth ??
-                                                            DateTime.now()
-                                                                .toString()),
-                                                        pattern: 'dd MMM yyy'),
-                                                    style: TextStyle(
-                                                        color: isDark
-                                                            ? AppColors.white
-                                                                .withValues(
-                                                                    alpha: 0.7)
-                                                            : AppColors.grey),
-                                                  ),
+                                            subtitle: Row(
+                                              children: [
+                                                child.dateOfBirth?.isEmpty ??
+                                                        true
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        'DOB: ${AppHelpers.formatDate(DateTime.parse(child.dateOfBirth ?? DateTime.now().toString()), pattern: 'dd MMM yyy')}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: isDark
+                                                                ? AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.7)
+                                                                : AppColors
+                                                                    .grey),
+                                                      ),
+                                                const SizedBox(width: 8),
+                                                child.gender?.isEmpty ?? true
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        'Gender: ${child.gender}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: isDark
+                                                                ? AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.7)
+                                                                : AppColors
+                                                                    .grey),
+                                                      ),
+                                                const SizedBox(width: 8),
+                                                child.nationality?.isEmpty ??
+                                                        true
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        '${child.nationality}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: isDark
+                                                                ? AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.7)
+                                                                : AppColors
+                                                                    .grey),
+                                                      ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         ...widget.ticketData!.travellerDetails!
@@ -548,30 +653,72 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                               ),
                                             ),
                                             title: Text(
-                                              '${infant.firstName ?? ''} ${infant.lastName ?? ''}',
+                                              toTitleCase(
+                                                  '${infant.title ?? ''} ${infant.firstName ?? ''} ${infant.lastName ?? ''}'),
                                               style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
                                                   color: isDark
                                                       ? AppColors.white
                                                       : AppColors.black),
                                             ),
-                                            subtitle: infant
-                                                        .dateOfBirth?.isEmpty ??
-                                                    true
-                                                ? null
-                                                : Text(
-                                                    AppHelpers.formatDate(
-                                                        DateTime.parse(infant
-                                                                .dateOfBirth ??
-                                                            DateTime.now()
-                                                                .toString()),
-                                                        pattern: 'dd MMM yyy'),
-                                                    style: TextStyle(
-                                                        color: isDark
-                                                            ? AppColors.white
-                                                                .withValues(
-                                                                    alpha: 0.7)
-                                                            : AppColors.grey),
-                                                  ),
+                                            subtitle: Row(
+                                              children: [
+                                                infant.dateOfBirth?.isEmpty ??
+                                                        true
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        'DOB: ${AppHelpers.formatDate(DateTime.parse(infant.dateOfBirth ?? DateTime.now().toString()), pattern: 'dd MMM yyy')}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: isDark
+                                                                ? AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.7)
+                                                                : AppColors
+                                                                    .grey),
+                                                      ),
+                                                infant.gender?.isEmpty ?? true
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        '  Gender: ${infant.gender ?? ''}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: isDark
+                                                                ? AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.7)
+                                                                : AppColors
+                                                                    .grey),
+                                                      ),
+                                                (infant.nationality?.isEmpty ??
+                                                        true)
+                                                    ? const SizedBox.shrink()
+                                                    : Text(
+                                                        '  ${infant.nationality ?? ''}',
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: isDark
+                                                                ? AppColors
+                                                                    .white
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.7)
+                                                                : AppColors
+                                                                    .grey),
+                                                      ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(height: 8),
@@ -756,6 +903,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                     url, fileName);
 
                             if (taskId != null) {
+                              log('taskId: $taskId');
                               Fluttertoast.showToast(
                                   msg: 'Downloaded successfully');
                             }

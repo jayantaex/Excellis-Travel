@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,17 @@ class _LoginSheetState extends State<LoginSheet> {
 
   String usertype = 'retailer';
   String errMsg = '';
+
+  void _handleLogin() {
+    context.read<AuthBloc>().add(
+          LoginEvent(
+            fcmToken: '',
+            userName: _userNameController.text,
+            password: _passwordController.text,
+            userType: usertype,
+          ),
+        );
+  }
 
   @override
   void initState() {
@@ -193,18 +205,13 @@ class _LoginSheetState extends State<LoginSheet> {
                       title: 'LOGIN',
                       isLoading: widget.isLoading,
                       onPressed: () async {
-                        final fcmToken = await FirebaseNotificationService
-                            .instance
-                            .getFcmToken();
-                        log('fcmToken: $fcmToken');
-                        context.read<AuthBloc>().add(
-                              LoginEvent(
-                                fcmToken: '',
-                                userName: _userNameController.text,
-                                password: _passwordController.text,
-                                userType: usertype,
-                              ),
-                            );
+                        if (Platform.isAndroid) {
+                          final fcmToken = await FirebaseNotificationService
+                              .instance
+                              .getFcmToken();
+                          log('fcmToken: $fcmToken');
+                        }
+                        _handleLogin();
                       },
                     ),
                   ),
