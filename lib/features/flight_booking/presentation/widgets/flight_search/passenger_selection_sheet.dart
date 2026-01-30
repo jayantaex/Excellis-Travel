@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
@@ -96,7 +95,7 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
                         : AppColors.black),
               ),
               subtitle: const Text(
-                'Age above 12',
+                'Age above 12 years',
                 style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
