@@ -31,6 +31,17 @@ class _LoginSheetState extends State<LoginSheet> {
   String usertype = 'retailer';
   String errMsg = '';
 
+  void _handleLogin() {
+    context.read<AuthBloc>().add(
+          LoginEvent(
+            fcmToken: '',
+            userName: _userNameController.text,
+            password: _passwordController.text,
+            userType: usertype,
+          ),
+        );
+  }
+
   @override
   void initState() {
     // AppConstants.env == 'development'
@@ -200,14 +211,7 @@ class _LoginSheetState extends State<LoginSheet> {
                               .getFcmToken();
                           log('fcmToken: $fcmToken');
                         }
-                        context.read<AuthBloc>().add(
-                              LoginEvent(
-                                fcmToken: '',
-                                userName: _userNameController.text,
-                                password: _passwordController.text,
-                                userType: usertype,
-                              ),
-                            );
+                        _handleLogin();
                       },
                     ),
                   ),

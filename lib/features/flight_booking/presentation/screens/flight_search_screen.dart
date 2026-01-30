@@ -175,8 +175,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                       borderRadius: BorderRadius.circular(24),
                       border: AppHelpers.isDarkMode(context)
                           ? Border.all(
-                              color: AppColors.white.withValues(alpha: 0.05),
-                              width: 1)
+                              color: AppColors.white.withValues(alpha: 0.05))
                           : null,
                     ),
                     child: SizedBox(

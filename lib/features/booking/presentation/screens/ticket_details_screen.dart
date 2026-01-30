@@ -32,12 +32,18 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
   final TextEditingController _markupController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   double _savedMarkup = 0.0;
+  void _getMarkup() {
+    context.read<TicketBloc>().add(
+          GetMarkup(
+            bookingId: widget.ticketData!.bookingReference ?? '',
+          ),
+        );
+  }
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      context
-          .read<TicketBloc>()
-          .add(GetMarkup(bookingId: widget.ticketData!.bookingReference ?? ''));
+      _getMarkup();
     });
     super.initState();
   }

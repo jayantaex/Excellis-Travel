@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'core/common/common_module.dart';
+import 'core/errors/error_screen.dart';
 import 'features/auth/auth_module.dart';
 import 'features/bottom_navigation/bottom_nav_module.dart';
 import 'features/flight_booking/flight_booking_module.dart';
@@ -204,10 +205,7 @@ class AppRouter {
             PaymentModule.paymentFailedBuilder(context, state),
       ),
     ],
-    errorBuilder: (BuildContext context, GoRouterState state) => const Scaffold(
-      body: Center(
-        child: Text('Page not found!'),
-      ),
-    ),
+    errorBuilder: (BuildContext context, GoRouterState state) =>
+        const ErrorScreen(),
   );
 }
