@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:dotted_border/dotted_border.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -389,6 +387,10 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                                       if (double.parse(value) <
                                                           0) {
                                                         return 'Markup cannot be negative';
+                                                      }
+                                                      if (double.parse(value) >
+                                                          5000) {
+                                                        return 'Markup cannot be more than 5000';
                                                       }
                                                       return null;
                                                     },
