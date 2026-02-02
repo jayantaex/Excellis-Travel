@@ -209,6 +209,26 @@ Future<void> showAddAndEditPassengerSheet(
                           child: Builder(
                             builder: (context) => AppSearchDropdown<
                                     TravelerDataModel>(
+                                searchFn: (keyword, items) {
+                                  final List<int> shownIndexes = [];
+                                  for (int i = 0; i < items.length; i++) {
+                                    final item = items[i];
+                                    final firstName =
+                                        item.value?.firstName?.toLowerCase() ??
+                                            '';
+                                    final lastName =
+                                        item.value?.lastName?.toLowerCase() ??
+                                            '';
+                                    final searchKey = keyword.toLowerCase();
+
+                                    if (firstName.contains(searchKey) ||
+                                        lastName.contains(searchKey)) {
+                                      shownIndexes.add(i);
+                                    }
+                                  }
+                                  log('shownIndexes: $shownIndexes');
+                                  return shownIndexes;
+                                },
                                 items: travelers
                                     .map((e) => DropdownMenuItem<
                                             TravelerDataModel>(

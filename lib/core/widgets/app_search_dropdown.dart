@@ -18,9 +18,9 @@ class AppSearchDropdown<T extends Object> extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final T? value;
-  final Function(
+  final List<int> Function(
+    String keyword,
     List<DropdownMenuItem<T>> items,
-    String value,
   )? searchFn;
 
   @override
