@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
 import '../../../../../core/widgets/primary_button.dart';
@@ -81,9 +80,7 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
               ],
             ),
             const SizedBox(height: 10),
-            const Divider(
-              thickness: 0.5,
-            ),
+            const Divider(thickness: 0.5),
             const SizedBox(height: 15),
             ListTile(
               title: Text(
@@ -96,7 +93,7 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
                         : AppColors.black),
               ),
               subtitle: const Text(
-                'Age above 12',
+                'Age above 12 years',
                 style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

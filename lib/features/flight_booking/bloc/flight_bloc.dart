@@ -59,11 +59,12 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       final ApiResponse<FlightsDataModel> res =
           await repository.searchFlight(body: event.body);
       //  log('rwowghwgh ${res.toString()}');
-      if (res.statusCode != 200) {
+      if (res.data == null) {
         log('api error');
         emit(FlightSearchingError(
           message: '${res.errorMessage}',
         ));
+        return;
       } else {
         log('api success');
       }

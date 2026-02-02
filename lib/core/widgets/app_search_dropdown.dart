@@ -8,6 +8,7 @@ class AppSearchDropdown<T extends Object> extends StatelessWidget {
     super.key,
     required this.items,
     required this.onChanged,
+    this.searchFn,
     this.hintText,
     this.labelText,
     this.value,
@@ -17,6 +18,10 @@ class AppSearchDropdown<T extends Object> extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final T? value;
+  final Function(
+    List<DropdownMenuItem<T>> items,
+    String value,
+  )? searchFn;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -27,6 +32,7 @@ class AppSearchDropdown<T extends Object> extends StatelessWidget {
         ),
         child: SearchChoices<T>.single(
           isExpanded: true,
+          searchFn: searchFn,
           padding: EdgeInsets.zero,
           fieldDecoration:
               BoxDecoration(border: Border.all(style: BorderStyle.none)),

@@ -96,10 +96,9 @@ class _DateFilterWidgetState extends State<DateFilterWidget> {
     // Container: padding horizontal 16*2 = 32, margin horizontal 5*2 = 10
     // Text content: approximately 45-55px for month (3 chars) + day (2 chars)
     // Using responsive calculation based on screen density
-    final double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     const double itemPadding = 32.0; // horizontal padding 16*2
     const double itemMargin = 10.0; // horizontal margin 5*2
-    final double estimatedContentWidth = 50.0 * textScaleFactor;
+    const double estimatedContentWidth = 50.0;
     final double itemWidth = itemPadding + itemMargin + estimatedContentWidth;
 
     _cachedItemWidth = itemWidth;
