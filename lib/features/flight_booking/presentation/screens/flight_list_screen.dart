@@ -402,7 +402,7 @@ Map<String, dynamic> getBody({
       'travelers': getTravellers(travellersArr: travellersArr),
       'sources': ['GDS'],
       'searchCriteria': {
-        'maxFlightOffers': kDebugMode ? 20 : null,
+        'maxFlightOffers': kDebugMode ? 5 : null,
         'flightFilters': {
           'cabinRestrictions': [
             {
@@ -412,7 +412,7 @@ Map<String, dynamic> getBody({
             }
           ],
           'carrierRestrictions': {
-            'excludedCarrierCodes': ['TP']
+            'excludedCarrierCodes': ['AA', 'TP', 'AZ']
           }
         }
       }

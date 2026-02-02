@@ -209,6 +209,11 @@ Future<void> showAddAndEditPassengerSheet(
                           child: Builder(
                             builder: (context) => AppSearchDropdown<
                                     TravelerDataModel>(
+                                searchFn: (items, value) => items
+                                    .where((item) => item.value!.firstName!
+                                        .toLowerCase()
+                                        .contains(value.toLowerCase()))
+                                    .toList(),
                                 items: travelers
                                     .map((e) => DropdownMenuItem<
                                             TravelerDataModel>(

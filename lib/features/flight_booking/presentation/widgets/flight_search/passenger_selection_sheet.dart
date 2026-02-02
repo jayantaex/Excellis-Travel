@@ -80,9 +80,7 @@ class _PassengerSelectionSheetState extends State<PassengerSelectionSheet> {
               ],
             ),
             const SizedBox(height: 10),
-            const Divider(
-              thickness: 0.5,
-            ),
+            const Divider(thickness: 0.5),
             const SizedBox(height: 15),
             ListTile(
               title: Text(
