@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/network/api_client.dart';
-import '../profile_management/data/data_source/profile_management_remote_src.dart';
+import '../profile_management/data/source/profile_management_remote_src.dart';
 import '../profile_management/bloc/profile_bloc.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
 import 'screens/splash_screen.dart';

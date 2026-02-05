@@ -2,7 +2,7 @@ import 'dart:io';
 
 import '../../../../core/common/models/profile_data_model.dart';
 import '../../../../core/network/api_response.dart';
-import '../data_source/profile_management_remote_src.dart';
+import '../source/profile_management_remote_src.dart';
 
 class ProfileManagementRepository {
   ProfileManagementRepository({required this.profileManagementRemoteSrc});
@@ -18,8 +18,8 @@ class ProfileManagementRepository {
   }
 
   Future<ApiResponse<bool>> updateProfileImage({File? imageFile}) async {
-    final res =
-        await profileManagementRemoteSrc.updateProfileImage(imageFile: imageFile);
+    final res = await profileManagementRemoteSrc.updateProfileImage(
+        imageFile: imageFile);
     return res;
   }
 }

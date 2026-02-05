@@ -9,7 +9,7 @@ import '../../core/network/amadeus_client.dart';
 import '../../core/network/api_client.dart';
 import '../../core/services/local_db.dart';
 import '../profile_management/bloc/profile_bloc.dart';
-import '../profile_management/data/data_source/profile_management_remote_src.dart';
+import '../profile_management/data/source/profile_management_remote_src.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
 import '../wallet_management/bloc/wallet_bloc.dart';
 import '../wallet_management/data/repository/wallet_repository.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/network/api_client.dart';
 import '../booking/data/data_source/ticker_local_data_src.dart';
-import '../profile_management/data/data_source/profile_management_remote_src.dart';
+import '../profile_management/data/source/profile_management_remote_src.dart';
 import '../profile_management/bloc/profile_bloc.dart';
 import '../profile_management/data/repository/profile_management_repository.dart';
 import '../sales/api/sales_api.dart';
