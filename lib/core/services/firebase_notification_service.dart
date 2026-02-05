@@ -74,8 +74,12 @@ class FirebaseNotificationService {
         presentBadge: true,
         presentSound: true,
       );
-      await _localNotifications.show(notificationId, title, body,
-          const NotificationDetails(android: andriod, iOS: ios));
+      await _localNotifications.show(
+          id: notificationId,
+          title: title,
+          body: body,
+          notificationDetails:
+              const NotificationDetails(android: andriod, iOS: ios));
     } catch (e) {
       log('Error: $e');
     }
