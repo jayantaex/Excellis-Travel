@@ -64,7 +64,7 @@ class FlightListLoadingWidget extends StatelessWidget {
             child: SizedBox(
               height: AppHelpers.getScreenHeight(context) * 0.65,
               child: ListView.builder(
-                itemCount: 8,
+                itemCount: 4,
                 itemBuilder: (BuildContext context, int index) => Container(
                   margin: const EdgeInsets.only(bottom: 12),
                   child: LoadingEffect(

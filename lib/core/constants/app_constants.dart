@@ -35,12 +35,11 @@ class AppConstants {
       kDebugMode ? 'rzp_test_BMpADBZwVaESnu' : 'rzp_test_BMpADBZwVaESnu';
   static const String razorpaySecret =
       kDebugMode ? 'pRy84OpHvEyA7m862Dr7b3F7' : 'pRy84OpHvEyA7m862Dr7b3F7';
-
-  static const String razorpayUserName = 'Excellis Travel';
-
   //amadues api credentials
   static const String amadeusClientId = 'lGkPjtl8HfERmzZvY2CqVS2StiFCyT7f';
   static const String amadeusSecret = 'uiLxN0c50A8hmg3z';
+
+  static const String razorpayUserName = 'Excellis Travel';
 
   // Local asset Url
   static const String assetImageUrl = 'assets/images/';

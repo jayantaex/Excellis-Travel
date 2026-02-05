@@ -587,11 +587,12 @@ class FlightCardWidget extends StatelessWidget {
                                 //time
                                 Text(
                                   AppHelpers.formatDateTime(
-                                      DateTime.parse(
-                                        firstSegment?.departure?.at ??
-                                            DateTime.now().toString(),
-                                      ),
-                                      pattern: 'hh:mm:aa'),
+                                    DateTime.parse(
+                                      firstSegment?.departure?.at ??
+                                          DateTime.now().toString(),
+                                    ),
+                                    pattern: 'hh:mm:aa',
+                                  ),
                                   style: const TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w400,
@@ -656,10 +657,12 @@ class FlightCardWidget extends StatelessWidget {
                                     color: AppColors.grey),
                               ),
                               Text(
-                                AppHelpers.formatTime(DateTime.parse(
-                                  lastSegment?.arrival?.at ??
-                                      DateTime.now().toString(),
-                                )),
+                                AppHelpers.formatTime(
+                                    DateTime.parse(
+                                      lastSegment?.arrival?.at ??
+                                          DateTime.now().toString(),
+                                    ),
+                                    pattern: 'hh:mm:aa'),
                                 style: const TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w400,
