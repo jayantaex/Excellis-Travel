@@ -196,7 +196,9 @@ class _RePaymentDashboardScreenState extends State<RePaymentDashboardScreen>
                     subtitle: Text(
                       '${AppHelpers.formatDate(DateTime.parse(data[index].repaymentDate ?? ''), pattern: 'dd MMM, yyyy')} | ${AppHelpers.formatCurrency(double.parse(data[index].amount ?? '0'))}',
                       style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w500),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.grey),
                     ),
                     trailing: InkWell(
                       onTap: () async {
@@ -252,9 +254,19 @@ class _RePaymentDashboardScreenState extends State<RePaymentDashboardScreen>
                           ),
                         );
                       },
-                      child: const Text('Repay',
-                          style: TextStyle(
-                              fontSize: 12, color: AppColors.primary)),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.primary),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Text(
+                          'Repay',
+                          style:
+                              TextStyle(fontSize: 12, color: AppColors.primary),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -278,7 +290,9 @@ class _RePaymentDashboardScreenState extends State<RePaymentDashboardScreen>
                   subtitle: Text(
                     '${AppHelpers.formatDate(DateTime.parse(data[index].repaymentDate ?? ''), pattern: 'dd MMM, yyyy')} | ${AppHelpers.formatCurrency(double.parse(data[index].amount ?? '0'))}',
                     style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w500),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.grey),
                   ),
                   trailing: InkWell(
                     onTap: () async {
@@ -333,9 +347,17 @@ class _RePaymentDashboardScreenState extends State<RePaymentDashboardScreen>
                         ),
                       );
                     },
-                    child: const Text('Repay',
-                        style:
-                            TextStyle(fontSize: 12, color: AppColors.primary)),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.primary),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text('Repay',
+                          style: TextStyle(
+                              fontSize: 12, color: AppColors.primary)),
+                    ),
                   ),
                 ),
               ),

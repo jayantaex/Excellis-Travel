@@ -113,7 +113,10 @@ Widget _buildRow(
           ),
           const Spacer(),
           Text(
-            value,
+            value.trim(),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.right,
             style: TextStyle(
                 color: valueColor ??
                     (AppHelpers.isDarkMode(context)

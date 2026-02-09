@@ -38,15 +38,12 @@ class AppConstants {
   //amadues api credentials
   static const String amadeusClientId = 'lGkPjtl8HfERmzZvY2CqVS2StiFCyT7f';
   static const String amadeusSecret = 'uiLxN0c50A8hmg3z';
-
   static const String razorpayUserName = 'Excellis Travel';
 
   // Local asset Url
   static const String assetImageUrl = 'assets/images/';
   static const String assetIconUrl = 'assets/icons/';
   static const String imageNotFound = 'assets/images/image_not_found.png';
-
   static const String airCraftBox = 'air_craft_data';
-
   static const String passengerBox = 'passenger_data';
 }

@@ -48,7 +48,9 @@ Widget _buildRow(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          Text(title,
+          Text(title.trim(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w500,
@@ -57,7 +59,10 @@ Widget _buildRow(
           Container(
             alignment: Alignment.centerRight,
             width: AppHelpers.getScreenWidth(context) * 0.55,
-            child: Text(value,
+            child: Text(value.trim(),
+                maxLines: 2,
+                textAlign: TextAlign.right,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: AppHelpers.isDarkMode(context)
                         ? AppColors.white

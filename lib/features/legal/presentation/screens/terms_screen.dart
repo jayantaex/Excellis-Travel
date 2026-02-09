@@ -16,6 +16,7 @@ class TermsScreen extends StatefulWidget {
 
 class _TermsScreenState extends State<TermsScreen> {
   WebViewController? controller;
+  bool _isLoading = true;
 
   String termsUrl = AppConstants.termsAndConditions;
 
@@ -29,11 +30,18 @@ class _TermsScreenState extends State<TermsScreen> {
             // Update loading bar.
           },
           onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
+          onPageFinished: (String url) {
+            _isLoading = false;
+            setState(() {});
+          },
           onHttpError: (HttpResponseError error) {},
           onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) =>
-              NavigationDecision.navigate,
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith(AppConstants.termsAndConditions)) {
+              return NavigationDecision.navigate;
+            }
+            return NavigationDecision.prevent;
+          },
         ),
       )
       ..loadRequest(Uri.parse(termsUrl));
@@ -45,35 +53,42 @@ class _TermsScreenState extends State<TermsScreen> {
   Widget build(BuildContext context) => Scaffold(
         body: AppGradientBg(
           child: TransWhiteBgWidget(
-            child: SafeArea(
-              child: Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: AppCustomAppbar(
-                      centerTitle: 'Terms & Conditions',
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator.adaptive(
+                    strokeWidth: 2,
+                  ))
+                : SafeArea(
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: AppCustomAppbar(
+                            centerTitle: 'Terms & Conditions',
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24)),
+                              color: AppColors.white,
+                            ),
+                            child: controller == null
+                                ? const Center(
+                                    child: CircularProgressIndicator.adaptive())
+                                : ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(24),
+                                    ),
+                                    child:
+                                        WebViewWidget(controller: controller!)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(24)),
-                        color: AppColors.white,
-                      ),
-                      child: controller == null
-                          ? const Center(
-                              child: CircularProgressIndicator.adaptive())
-                          : ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(24),
-                              ),
-                              child: WebViewWidget(controller: controller!)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
         ),
       );

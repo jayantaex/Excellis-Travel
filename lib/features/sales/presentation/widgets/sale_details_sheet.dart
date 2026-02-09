@@ -109,6 +109,8 @@ class ContentRow extends StatelessWidget {
           ),
           Text(
             value,
+            textAlign: TextAlign.right,
+            overflow: TextOverflow.ellipsis,
             style: valueStyle ??
                 const TextStyle(
                   fontSize: 12,

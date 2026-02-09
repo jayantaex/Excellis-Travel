@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/constants/app_styles.dart';
 import '../../../core/widgets/primary_input.dart';
@@ -26,7 +27,9 @@ class DepositSheet extends StatelessWidget {
                 if (value == null || value.isEmpty) {
                   return 'Amount is required';
                 }
-                if (double.parse(value) <= 0) {
+                if (double.tryParse(value) == null ||
+                    double.tryParse(value)!.isNaN ||
+                    double.tryParse(value)!.isNegative) {
                   return 'Please enter a valid amount';
                 }
                 return null;

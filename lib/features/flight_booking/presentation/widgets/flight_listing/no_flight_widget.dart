@@ -12,16 +12,13 @@ class NoFlightWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 40,
-              backgroundColor: AppColors.white,
-              child: AppHelpers.assetImage(assetName: 'noFlight'),
-            ),
+            AppHelpers.assetImage(
+                assetName: 'noFlight', width: 100, height: 100),
             const SizedBox(height: 20),
             const Text(
               'No Flights Found',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: AppColors.white,
               ),
@@ -31,7 +28,7 @@ class NoFlightWidget extends StatelessWidget {
               'No flights found for the selected date range. Please try again with different dates.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 17,
                 color: AppColors.white,
               ),
             ),

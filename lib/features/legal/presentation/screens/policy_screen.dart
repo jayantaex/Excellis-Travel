@@ -9,13 +9,13 @@ import '../../../../core/widgets/trans_white_bg_widget.dart';
 
 class PolicyScreen extends StatefulWidget {
   const PolicyScreen({super.key});
-
   @override
   State<PolicyScreen> createState() => _PolicyScreenState();
 }
 
 class _PolicyScreenState extends State<PolicyScreen> {
   WebViewController? controller;
+  bool _isLoading = true;
 
   String policyUrl = AppConstants.privacyPolicy;
 
@@ -29,14 +29,17 @@ class _PolicyScreenState extends State<PolicyScreen> {
             // Update loading bar.
           },
           onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
+          onPageFinished: (String url) {
+            _isLoading = false;
+            setState(() {});
+          },
           onHttpError: (HttpResponseError error) {},
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              return NavigationDecision.prevent;
+            if (request.url.startsWith(AppConstants.privacyPolicy)) {
+              return NavigationDecision.navigate;
             }
-            return NavigationDecision.navigate;
+            return NavigationDecision.prevent;
           },
         ),
       )
@@ -49,35 +52,42 @@ class _PolicyScreenState extends State<PolicyScreen> {
   Widget build(BuildContext context) => Scaffold(
         body: AppGradientBg(
           child: TransWhiteBgWidget(
-            child: SafeArea(
-              child: Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: AppCustomAppbar(
-                      centerTitle: 'Privacy Policy',
+            child: _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator.adaptive(
+                    strokeWidth: 2,
+                  ))
+                : SafeArea(
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: AppCustomAppbar(
+                            centerTitle: 'Privacy Policy',
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24)),
+                              color: AppColors.white,
+                            ),
+                            child: controller == null
+                                ? const Center(
+                                    child: CircularProgressIndicator.adaptive())
+                                : ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(24),
+                                    ),
+                                    child:
+                                        WebViewWidget(controller: controller!)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(24)),
-                        color: AppColors.white,
-                      ),
-                      child: controller == null
-                          ? const Center(
-                              child: CircularProgressIndicator.adaptive())
-                          : ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(24),
-                              ),
-                              child: WebViewWidget(controller: controller!)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
         ),
       );

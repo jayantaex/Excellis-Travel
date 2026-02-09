@@ -177,6 +177,24 @@ class _WalletScreenState extends State<WalletScreen>
                                           submitButtonRequired: true,
                                           onSubmitPressed: () {
                                             Navigator.pop(context);
+
+                                            if (_amountController
+                                                .text.isEmpty) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter an amount',
+                                                  backgroundColor:
+                                                      AppColors.error);
+                                              return;
+                                            }
+                                            if (double.parse(
+                                                    _amountController.text) <=
+                                                0) {
+                                              AppHelpers.showSnackBar(context,
+                                                  'Please enter a valid amount',
+                                                  backgroundColor:
+                                                      AppColors.error);
+                                              return;
+                                            }
                                             final double doubleAmount =
                                                 double.parse(
                                                     _amountController.text);
