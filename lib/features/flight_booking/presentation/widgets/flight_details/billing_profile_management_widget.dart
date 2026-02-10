@@ -37,7 +37,12 @@ class _BillingProfileManagementWidgetState
   Widget build(BuildContext context) {
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     return ListTile(
-      leading: const CircleAvatar(child: Icon(Icons.person)),
+      leading: CircleAvatar(
+          child: Text(
+              '${widget.billingAddress?.firstName[0]}${widget.billingAddress?.lastName[0]}',
+              style: TextStyle(
+                color: isDark ? AppColors.white : AppColors.textPrimary,
+              ))),
       title: Text(
         '${widget.billingAddress?.firstName} ${widget.billingAddress?.lastName}',
         style: TextStyle(
@@ -74,9 +79,17 @@ class _BillingProfileManagementWidgetState
             ),
           );
         },
-        child: const Icon(
-          Icons.mode_edit_rounded,
-          color: AppColors.primary,
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: const Icon(
+            size: 18,
+            Icons.mode_edit_rounded,
+            color: AppColors.primary,
+          ),
         ),
       ),
     );

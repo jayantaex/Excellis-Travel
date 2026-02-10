@@ -877,21 +877,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                       ? () async {
                           try {
                             Fluttertoast.showToast(msg: 'Downloading...');
-                            // final bool res =
-                            //     await FileDownloaderService.saveFile(
-                            //   baseFare:
-                            //       '${(widget.ticketData?.fareDetails?.totalFare ?? 0.0) - (_savedMarkup)}',
-                            //   totalFare:
-                            //       '${widget.ticketData?.fareDetails?.totalFare}',
-                            //   markupPrice: widget.ticketData?.fareDetails
-                            //               ?.showTotalFare ==
-                            //           true
-                            //       ? _markupController.text
-                            //       : '${(widget.ticketData?.fareDetails?.markup ?? 0.00)}',
-                            //   bokkingRefId:
-                            //       '${widget.ticketData?.bookingReference}',
-                            //   showDownloadProgress: (count, total) {},
-                            // );
+
                             final String bookingRefId =
                                 '${widget.ticketData?.bookingReference}';
                             final String url =

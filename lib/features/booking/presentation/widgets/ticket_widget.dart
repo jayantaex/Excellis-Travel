@@ -352,7 +352,14 @@ class _TicketWidgetState extends State<TicketWidget> {
           widget.isLast ?? false
               ? const Padding(
                   padding: EdgeInsets.only(top: 12, bottom: 40),
-                  child: CircularProgressIndicator.adaptive(),
+                  child: SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.primary,
+                    ),
+                  ),
                 )
               : const SizedBox()
         ],

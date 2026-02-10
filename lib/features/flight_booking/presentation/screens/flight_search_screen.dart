@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -356,59 +357,67 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                   },
                                 ),
                                 const SizedBox(height: 16),
-                                isRoundTrip
-                                    ? AppPrimaryInput(
-                                        controller: TextEditingController(
-                                          text: roundTripDate == null
-                                              ? AppHelpers.formatDate(
-                                                  departureDate!.add(_fiveDay),
-                                                  pattern: 'E, dd MMM yyyy')
-                                              : AppHelpers.formatDate(
-                                                  roundTripDate ??
-                                                      _today.add(_fiveDay),
-                                                  pattern: 'E, dd MMM yyyy'),
-                                        ),
-                                        enable: true,
-                                        maxCharacters: 10,
-                                        hint: 'Pick your return date',
-                                        label: 'Return',
-                                        prefixIcon: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: SvgPicture.asset(
-                                            '${AppConstants.assetIconUrl}calender.svg',
-                                            colorFilter:
-                                                AppHelpers.isDarkMode(context)
-                                                    ? const ColorFilter.mode(
-                                                        AppColors.white,
-                                                        BlendMode.srcIn)
-                                                    : null,
+                                AnimatedScale(
+                                  scale: isRoundTrip ? 1 : 0,
+                                  duration: const Duration(milliseconds: 200),
+                                  child: isRoundTrip
+                                      ? AppPrimaryInput(
+                                          controller: TextEditingController(
+                                            text: roundTripDate == null
+                                                ? AppHelpers.formatDate(
+                                                    departureDate!
+                                                        .add(_fiveDay),
+                                                    pattern: 'E, dd MMM yyyy')
+                                                : AppHelpers.formatDate(
+                                                    roundTripDate ??
+                                                        _today.add(_fiveDay),
+                                                    pattern: 'E, dd MMM yyyy'),
                                           ),
-                                        ),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: AppHelpers.isDarkMode(context)
-                                              ? AppColors.white
-                                              : AppColors.black,
-                                        ),
-                                        onTap: () async {
-                                          if (context.mounted) {
-                                            FocusScope.of(context).unfocus();
-                                          }
-                                          roundTripDate = await _pickDate(
-                                            context: context,
-                                            firstDate: departureDate?.add(
-                                                    const Duration(hours: 2)) ??
-                                                _today.add(_oneDay),
-                                            initialDate: roundTripDate ??
-                                                departureDate?.add(_fiveDay) ??
-                                                _today.add(_fiveDay),
-                                          );
-                                          setState(() {});
-                                          //hide keyboard
-                                        },
-                                      )
-                                    : const SizedBox(),
+                                          enable: true,
+                                          maxCharacters: 10,
+                                          hint: 'Pick your return date',
+                                          label: 'Return',
+                                          prefixIcon: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: SvgPicture.asset(
+                                              '${AppConstants.assetIconUrl}calender.svg',
+                                              colorFilter:
+                                                  AppHelpers.isDarkMode(context)
+                                                      ? const ColorFilter.mode(
+                                                          AppColors.white,
+                                                          BlendMode.srcIn)
+                                                      : null,
+                                            ),
+                                          ),
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w500,
+                                            color:
+                                                AppHelpers.isDarkMode(context)
+                                                    ? AppColors.white
+                                                    : AppColors.black,
+                                          ),
+                                          onTap: () async {
+                                            if (context.mounted) {
+                                              FocusScope.of(context).unfocus();
+                                            }
+                                            roundTripDate = await _pickDate(
+                                              context: context,
+                                              firstDate: departureDate?.add(
+                                                      const Duration(
+                                                          hours: 2)) ??
+                                                  _today.add(_oneDay),
+                                              initialDate: roundTripDate ??
+                                                  departureDate
+                                                      ?.add(_fiveDay) ??
+                                                  _today.add(_fiveDay),
+                                            );
+                                            setState(() {});
+                                            //hide keyboard
+                                          },
+                                        )
+                                      : null,
+                                ),
                                 SizedBox(height: isRoundTrip ? 16 : 0),
                                 SizedBox(
                                   width: AppHelpers.getScreenWidth(context),
@@ -609,7 +618,8 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                                     ? 60
                                     : 55,
                             child: InkWell(
-                              onTap: () {
+                              onTap: () async {
+                                await HapticFeedback.lightImpact();
                                 _swapAirports();
                               },
                               child: AnimatedRotation(
@@ -628,6 +638,7 @@ class _FlightSearchScreenState extends State<FlightSearchScreen> {
                       ),
                     ),
                   ),
+
                   const RecentSearchWidget(),
                   TrendingSearches(onTrendingSearchTap: _onTrendingSearchTap),
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../utils/app_helpers.dart';
@@ -50,7 +51,8 @@ class _OfferFareTogglerTileState extends State<OfferFareTogglerTile> {
               scale: const AlwaysStoppedAnimation<double>(0.7),
               child: CupertinoSwitch(
                   value: offerFare,
-                  onChanged: (value) {
+                  onChanged: (value) async {
+                    await HapticFeedback.lightImpact();
                     setState(() {
                       offerFare = value;
                     });

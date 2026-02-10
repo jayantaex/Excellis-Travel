@@ -154,7 +154,7 @@ class AppButtonNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BottomNavigationBar(
-        enableFeedback: false,
+        enableFeedback: true,
         useLegacyColorScheme: false,
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: AppColors.grey,
