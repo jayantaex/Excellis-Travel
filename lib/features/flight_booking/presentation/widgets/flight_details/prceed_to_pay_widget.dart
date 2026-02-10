@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/constants/app_styles.dart';
 import '../../../../../core/widgets/app_sheet.dart';
@@ -41,11 +42,11 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
     'infants': <Map<String, dynamic>>[],
     'children': <Map<String, dynamic>>[]
   };
-  String paymentMode = 'wallet';
+  String paymentMode = 'Razorpay';
   final List<Map<String, dynamic>> paymentModes = [
+    {'name': 'Razorpay', 'value': 'Razorpay', 'icon': 'razorpay'},
     {'name': 'Excellis Wallet', 'value': 'wallet', 'icon': 'wallet'},
     {'name': 'Credit Wallet', 'value': 'credit_wallet', 'icon': 'creditWallet'},
-    {'name': 'Razorpay', 'value': 'Razorpay', 'icon': 'razorpay'}
   ];
 
   @override
@@ -85,8 +86,12 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                     SizedBox(
                       width: AppHelpers.getScreenWidth(context) * 0.45,
                       child: ListTile(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         minVerticalPadding: 0,
                         onTap: () async {
+                          await HapticFeedback.mediumImpact();
                           showAppSheet(
                               context: context,
                               title: 'Payment Mode',

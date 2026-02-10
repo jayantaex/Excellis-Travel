@@ -8,6 +8,7 @@ class AppDropDown extends StatelessWidget {
       {super.key,
       required this.title,
       required this.value,
+      this.isExpanded,
       required this.label,
       this.prefixIconName,
       required this.items,
@@ -15,6 +16,7 @@ class AppDropDown extends StatelessWidget {
   final String title;
   final String value;
   final String label;
+  final bool? isExpanded;
   final String? prefixIconName;
   final List<DropdownMenuItem<String>> items;
   final void Function(String?)? onChanged;
@@ -23,7 +25,7 @@ class AppDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDarkMode = AppHelpers.isDarkMode(context);
     return DropdownButtonFormField<String>(
-      isExpanded: true,
+      isExpanded: isExpanded ?? true,
       dropdownColor: isDarkMode ? AppColors.surfaceDark : AppColors.white,
       style: TextStyle(
           overflow: TextOverflow.ellipsis,

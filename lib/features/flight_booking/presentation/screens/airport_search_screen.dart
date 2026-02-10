@@ -123,6 +123,7 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
                                   width:
                                       AppHelpers.getScreenWidth(context) * 0.3,
                                   child: AppDropDown(
+                                    isExpanded: true,
                                     onChanged: (String? value) {
                                       _selectedCountyCode = value ?? 'IN';
                                     },

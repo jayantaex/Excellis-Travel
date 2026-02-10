@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_styles.dart';
@@ -196,6 +197,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                           ListTile(
                             onTap: () async {
+                              await HapticFeedback.mediumImpact();
                               await showAppSheet(
                                   onSubmitPressed: () {},
                                   submitButtonRequired: true,
