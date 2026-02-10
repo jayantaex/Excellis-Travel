@@ -16,27 +16,28 @@ import 'presentation/screens/bottom_navigation.dart';
 class BottomNavModule {
   static const String path = '/bottom_nav';
   static const String name = 'bottom_nav_screen';
+
+  // Shared instances — created once, reused on every navigation
+  static final ApiClient _apiClient = ApiClient();
   static final TicketsRepository ticketRepository = TicketsRepository(
-      ticketRemoteDataSrc: TicketRemoteDataSrc(apiClient: ApiClient()),
+      ticketRemoteDataSrc: TicketRemoteDataSrc(apiClient: _apiClient),
       ticketLocalDataSrc: TicketLocalDataSrc());
+  static final ProfileManagementRemoteSrc _profileApi =
+      ProfileManagementRemoteSrc(apiClient: _apiClient);
+  static final ProfileManagementRepository _profileRepo =
+      ProfileManagementRepository(profileManagementRemoteSrc: _profileApi);
+  static final SalesApi _salesApi = SalesApi(_apiClient);
+  static final SalesRepository _salesRepository = SalesRepository(_salesApi);
+
   static Widget builder() {
-    final ApiClient apiClient = ApiClient();
-    final ProfileManagementRemoteSrc profileApi =
-        ProfileManagementRemoteSrc(apiClient: apiClient);
-    final ProfileManagementRepository profileRepo =
-        ProfileManagementRepository(profileManagementRemoteSrc: profileApi);
-
-    final SalesApi salesApi = SalesApi(apiClient);
-    final SalesRepository salesRepository = SalesRepository(salesApi);
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<ProfileBloc>(
-          create: (_) => ProfileBloc(profileRepository: profileRepo),
+          create: (_) => ProfileBloc(profileRepository: _profileRepo),
         ),
         BlocProvider<TicketBloc>(
             create: (_) => TicketBloc(repository: ticketRepository)),
-        BlocProvider<SalesBloc>(create: (_) => SalesBloc(salesRepository)),
+        BlocProvider<SalesBloc>(create: (_) => SalesBloc(_salesRepository)),
       ],
       child: const BottomNavigationScreen(),
     );

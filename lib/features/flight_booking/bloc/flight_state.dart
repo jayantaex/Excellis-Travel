@@ -49,11 +49,25 @@ final class FlightLoaded extends FlightState {
   final double minPublishedFare;
   final double maxPublishedFare;
   final List<AirlineModel> airlines;
+
+  @override
+  List<Object> get props => [
+        data,
+        isFiltered,
+        minOfferFare,
+        maxOfferFare,
+        minPublishedFare,
+        maxPublishedFare,
+        airlines,
+      ];
 }
 
 final class FlightSearchingError extends FlightState {
   const FlightSearchingError({required this.message});
   final String message;
+
+  @override
+  List<Object> get props => [message];
 }
 
 //flight offer price
@@ -62,11 +76,17 @@ final class FlightOfferPriceLoading extends FlightState {}
 final class FlightOfferPriceLoaded extends FlightState {
   const FlightOfferPriceLoaded({required this.data});
   final FlightOfferPriceDataModel data;
+
+  @override
+  List<Object> get props => [data];
 }
 
 final class FlightOfferPriceError extends FlightState {
   const FlightOfferPriceError({required this.message});
   final String message;
+
+  @override
+  List<Object> get props => [message];
 }
 
 final class FlightOrderCreated extends FlightState {
@@ -76,6 +96,9 @@ final class FlightOrderCreated extends FlightState {
   });
   final OrderModel data;
   final String paymentVia;
+
+  @override
+  List<Object> get props => [data, paymentVia];
 }
 
 final class FlightOrderLoading extends FlightState {
@@ -85,6 +108,9 @@ final class FlightOrderLoading extends FlightState {
 final class FlightOrderCreationError extends FlightState {
   const FlightOrderCreationError({required this.error});
   final String error;
+
+  @override
+  List<Object> get props => [error];
 }
 
 final class FlightPaymentVerifing extends FlightState {
@@ -95,6 +121,9 @@ final class FlightPaymentVerified extends FlightState {
   const FlightPaymentVerified({required this.data, required this.paymentMode});
   final payment.PaymentVarifiedDataModel data;
   final String paymentMode;
+
+  @override
+  List<Object> get props => [data, paymentMode];
 }
 
 final class FlightPaymentVerificationFailed extends FlightState {

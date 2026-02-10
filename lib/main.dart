@@ -14,8 +14,14 @@ import 'utils/storage_service.dart';
 import 'app_router.dart';
 
 void main() async {
-  final bool firebaseSetup = true;
+  const bool firebaseSetup = true;
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Set orientation once at startup instead of on every build
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
   await StorageService.init();
   await LocalDB().initLocalDB();
   await EasyLocalization.ensureInitialized();
@@ -30,38 +36,38 @@ void main() async {
       supportedLocales: supportedLocales(),
       fallbackLocale: supportedLocales().first,
       path: 'assets/translations',
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
   @override
-  Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-    return MaterialApp.router(
-      title: 'Excellis Travel',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
-      routerConfig: AppRouter.router,
-      localizationsDelegates: [
-        CountryLocalizations.getDelegate(enableLocalization: false),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: supportedLocales().first,
-      supportedLocales: supportedLocales(),
-      scaffoldMessengerKey: _scaffoldMessengerKey,
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp.router(
+        title: 'Excellis Travel',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.light,
+        routerConfig: AppRouter.router,
+        localizationsDelegates: [
+          CountryLocalizations.getDelegate(enableLocalization: false),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: supportedLocales().first,
+        supportedLocales: supportedLocales(),
+        scaffoldMessengerKey: _scaffoldMessengerKey,
+      );
 }

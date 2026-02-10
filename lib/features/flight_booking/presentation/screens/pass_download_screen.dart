@@ -34,7 +34,8 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
   AirlineInfoProvider airlineInfoProvider = AirlineInfoProvider();
   @override
   void initState() {
-    Future.delayed(Duration.zero, () async {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       barCodeSvg = BarcodeService.buildBarcode(
         Barcode.code39(),
         widget.data.bookingReference ?? 'No-ref-id',
@@ -47,7 +48,6 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
               '');
       setState(() {});
     });
-    super.initState();
   }
 
   @override

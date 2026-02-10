@@ -60,30 +60,29 @@ class _FlightListScreenState extends State<FlightListScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () async {
-      paramData = widget.data;
-      depurtureDate = paramData['depurtureDate'];
-      cabinClass = paramData['cabinClass'];
-      totalTravelers = [
-        paramData['travellers']['adult'],
-        paramData['travellers']['child'],
-        paramData['travellers']['infant']
-      ];
-      Future.delayed(const Duration(microseconds: 10), () {
-        body = getBody(
-          depurture: paramData['depurture'],
-          arrival: paramData['arrival'],
-          depurtureDate: depurtureDate,
-          returnDate: paramData['returnDate'],
-          cabinClass: cabinClass,
-          isRoundTrip: paramData['isRoundTrip'],
-          travellersArr: totalTravelers,
-        );
-        _searchFlights(body: body!);
-      });
-    });
-
     super.initState();
+    paramData = widget.data;
+    depurtureDate = paramData['depurtureDate'];
+    cabinClass = paramData['cabinClass'];
+    totalTravelers = [
+      paramData['travellers']['adult'],
+      paramData['travellers']['child'],
+      paramData['travellers']['infant']
+    ];
+
+    // Use addPostFrameCallback instead of nested Future.delayed
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      body = getBody(
+        depurture: paramData['depurture'],
+        arrival: paramData['arrival'],
+        depurtureDate: depurtureDate,
+        returnDate: paramData['returnDate'],
+        cabinClass: cabinClass,
+        isRoundTrip: paramData['isRoundTrip'],
+        travellersArr: totalTravelers,
+      );
+      _searchFlights(body: body!);
+    });
   }
 
   @override
@@ -104,7 +103,6 @@ class _FlightListScreenState extends State<FlightListScreen> {
               currentFilter = state.currentFilter;
               airlines = state.airlines;
             }
-            log('${currentFilter?.aircraftCodes}');
             return flightSearchDrawer(
               context: context,
               onApply: _handleFilterApply,
