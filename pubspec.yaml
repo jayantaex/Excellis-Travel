@@ -3,7 +3,7 @@ description: "A Flight Booking App"
 publish_to: 'none' 
 
 #production version
-version: 1.0.5+15
+version: 1.0.6+16
 #major.minor.patch+build
 
 #development version
