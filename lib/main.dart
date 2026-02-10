@@ -17,7 +17,6 @@ void main() async {
   const bool firebaseSetup = true;
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Set orientation once at startup instead of on every build
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

@@ -35,7 +35,7 @@ class DownloadManager {
           'Authorization': 'Bearer $accessToken',
         },
       );
-      log('$savedDir/$fileName');
+      log('$savedDir/$fileName', name: 'Download Path');
 
       return taskId;
     } catch (e) {

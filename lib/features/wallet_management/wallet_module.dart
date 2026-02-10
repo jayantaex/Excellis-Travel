@@ -7,7 +7,7 @@ import 'data/src/wallet_remote_data_src.dart';
 import 'screens/credit_wallet_screen.dart';
 import 'screens/re_payment_dashboard_screen.dart';
 import 'screens/wallet_screen.dart';
-import 'screens/withdrawl_request_screen.dart';
+import 'screens/withdrawal_request_screen.dart';
 
 class WalletModule {
   static const walletPath = '/my-wallet';
@@ -35,9 +35,9 @@ class WalletModule {
         ),
         child: const CreditWalletScreen(),
       );
-  static const withdrawlRequestPath = '/withdrawl-request';
-  static const withdrawlRequest = 'withdrawl_request';
-  static Widget withdrawlRequestBuilder() => BlocProvider(
+  static const withdrawalRequestPath = '/withdrawal-request';
+  static const withdrawalRequest = 'withdrawal_request';
+  static Widget withdrawalRequestBuilder() => BlocProvider(
         create: (context) => WalletBloc(
           WalletRepository(
             WalletRemoteDataSrc(
@@ -45,7 +45,7 @@ class WalletModule {
             ),
           ),
         ),
-        child: const WithdrawlRequestScreen(),
+        child: const WithdrawalRequestScreen(),
       );
 
   static const rePaymentDashboardPath = '/re-payment-dashboard';

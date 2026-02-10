@@ -178,7 +178,7 @@ class FlightBookingRemoteSrc {
               },
               fromJson: (Map<String, dynamic> jsonData) =>
                   SeatMapDataModel.fromJson(jsonData));
-      log('${resp.data!.seatData}');
+      log('${resp.data!.seatData}', name: 'Flight Booking Remote Source');
       return resp;
     } catch (e) {
       return ApiResponse(errorMessage: e.toString(), statusCode: 400);

@@ -178,7 +178,7 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
 
       return;
     } catch (e) {
-      log('FlightSearch error: $e');
+      log('FlightSearch error: $e', name: 'Flight Bloc');
       emit(FlightSearchingError(
         message: '$e',
       ));

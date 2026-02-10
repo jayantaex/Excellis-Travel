@@ -53,9 +53,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       'routeName': WalletModule.creditWallet
     },
     <String, String>{
-      'title': 'Withdrawl Request',
+      'title': 'Withdrawal Request',
       'iconPath': '${AppConstants.assetIconUrl}withdrawl_request.svg',
-      'routeName': WalletModule.withdrawlRequest
+      'routeName': WalletModule.withdrawalRequest
     },
     <String, String>{
       'title': 'Terms & Conditions',
@@ -226,11 +226,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             }
 
                             if (option['routeName'] ==
-                                WalletModule.withdrawlRequest) {
+                                WalletModule.withdrawalRequest) {
                               if (!isLogedIn) {
                                 showToast(
                                     message:
-                                        'Please login to access withdrawl request');
+                                        'Please login to access withdrawal request');
                                 return;
                               }
 

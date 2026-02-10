@@ -209,7 +209,7 @@ class _LoginSheetState extends State<LoginSheet> {
                           final fcmToken = await FirebaseNotificationService
                               .instance
                               .getFcmToken();
-                          log('fcmToken: $fcmToken');
+                          log('fcmToken: $fcmToken', name: 'Firebase Service');
                         }
                         _handleLogin();
                       },

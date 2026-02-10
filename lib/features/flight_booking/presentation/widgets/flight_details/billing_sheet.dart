@@ -70,6 +70,20 @@ class _BillingSheetState extends State<BillingSheet> {
   }
 
   @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    mobileNumberController.dispose();
+    addressLine1Controller.dispose();
+    addressLine2Controller.dispose();
+    cityController.dispose();
+    pinCodeController.dispose();
+    countryController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => BlocConsumer<StatesBloc, StatesState>(
         listener: (context, state) {},
         builder: (context, state) {

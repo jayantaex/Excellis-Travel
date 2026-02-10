@@ -8,7 +8,7 @@ import 'screens/splash_screen.dart';
 
 class SplashModule {
   static String splashRoute = '/';
-  static String spashName = 'Splash';
+  static String splashName = 'Splash';
   static Widget builder() {
     final ApiClient apiClient = ApiClient();
     final ProfileManagementRemoteSrc profileApi =

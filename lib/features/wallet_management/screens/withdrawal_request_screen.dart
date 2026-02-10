@@ -12,14 +12,15 @@ import '../bloc/wallet_bloc.dart';
 import '../widgets/withdrawl_filter_sheet.dart';
 import '../widgets/withdrawl_request_card_widget.dart';
 
-class WithdrawlRequestScreen extends StatefulWidget {
-  const WithdrawlRequestScreen({super.key});
+class WithdrawalRequestScreen extends StatefulWidget {
+  const WithdrawalRequestScreen({super.key});
 
   @override
-  State<WithdrawlRequestScreen> createState() => _WithdrawlRequestScreenState();
+  State<WithdrawalRequestScreen> createState() =>
+      _WithdrawalRequestScreenState();
 }
 
-class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
+class _WithdrawalRequestScreenState extends State<WithdrawalRequestScreen> {
   int page = 1;
   int limit = 99999999999999;
   int total = 0;
@@ -132,7 +133,7 @@ class _WithdrawlRequestScreenState extends State<WithdrawlRequestScreen> {
                                           await showAppSheet(
                                             context: context,
                                             title: 'Filter',
-                                            child: WithdrawlFilterSheet(
+                                            child: WithdrawalFilterSheet(
                                               statuses: statuses,
                                               selectedStatus: selectedStatus,
                                               onSelect: (status) {

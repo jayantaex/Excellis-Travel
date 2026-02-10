@@ -16,7 +16,6 @@ class LoadingEffect extends StatelessWidget {
   final double? radius;
   final Color? baseColor;
   final Color? heighLightColor;
-
   final Color _baseColor = AppColors.white.withValues(alpha: 0.3);
   final Color _highlightColor = AppColors.white.withValues(alpha: 0.8);
 

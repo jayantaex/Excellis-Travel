@@ -32,9 +32,9 @@ class FirebaseNotificationService {
   Future<void> _requestPermission() async {
     final NotificationSettings settings = await _messaging.requestPermission();
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      log('User granted permission');
+      log('User granted permission', name: 'Firebase Service');
     } else {
-      log('User denied permission');
+      log('User denied permission', name: 'Firebase Service');
     }
   }
 
@@ -81,12 +81,12 @@ class FirebaseNotificationService {
           notificationDetails:
               const NotificationDetails(android: andriod, iOS: ios));
     } catch (e) {
-      log('Error: $e');
+      log('Error: $e', name: 'Firebase Service');
     }
   }
 
   Future<void> _handleBackgroundMessage(RemoteMessage message) async {
-    log('Background message: ${message.data}');
+    log('Background message: ${message.data}', name: 'Firebase Service');
     await showNotification(message);
   }
 }

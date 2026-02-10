@@ -52,6 +52,14 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
   }
 
   @override
+  void dispose() {
+    widget.bookingIdController.dispose();
+    widget.startDateController.dispose();
+    widget.endDateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -266,7 +274,8 @@ class _TicketFilterSheetState extends State<TicketFilterSheet> {
                   _errorMsg = '';
                 });
 
-                log('selectedStatus: $_selectedStatus');
+                log('selectedStatus: $_selectedStatus',
+                    name: 'Booking Filter Sheet');
 
                 // Validate: Allow filtering by status only, booking ID only, or dates only
                 // But require at least one filter criteria

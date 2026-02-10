@@ -314,7 +314,8 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                                   );
                             }
                           } catch (e) {
-                            log('ERROR: ${e.toString()}');
+                            log('ERROR: ${e.toString()}',
+                                name: 'Proceed to Pay Widget');
                           }
                         },
                         style: const TextStyle(

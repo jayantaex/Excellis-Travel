@@ -364,7 +364,7 @@ Future<bool> _saveToLocal(
     await flightBox.put(key, recentSearchedData);
     return true;
   } catch (e) {
-    log('Error while saving local DB $e');
+    log('Error while saving local DB $e', name: 'Flight List Screen');
     return false;
   }
 }

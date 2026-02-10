@@ -39,7 +39,7 @@ class _SeatMapScreenState extends State<SeatMapScreen> {
           .read<FlightBloc>()
           .add(GetSeatMapDataEvent(flightOfferData: widget.flightOffer));
     } catch (e) {
-      log('Error while parsing seat data $e');
+      log('Error while parsing seat data $e', name: 'Seat Map Screen');
     }
     setState(() {});
     super.initState();
