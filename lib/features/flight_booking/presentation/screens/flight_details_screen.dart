@@ -207,7 +207,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                             final String orderId = state.data.id ?? '';
                             const String mobile = '';
                             const String email = '';
-                            log('state.paymentVia: ${state.data.amount}');
+                            log('state.paymentVia: ${state.data.amount}',
+                                name: 'Flight Details Screen');
 
                             if (state.paymentVia == 'Razorpay') {
                               final int amount = state.data.amount ?? 0;
@@ -253,7 +254,8 @@ class _FlightDetailsScreenState extends State<FlightDetailsScreen> {
                                       FlightBookingModule.passDownloadName,
                                   'paymentData': state.data,
                                 };
-                                log('Details screen data: $data');
+                                log('Details screen data: $data',
+                                    name: 'Flight Details Screen');
                                 context.pushReplacementNamed(
                                     PaymentModule.paymentSuccessName,
                                     extra: data);

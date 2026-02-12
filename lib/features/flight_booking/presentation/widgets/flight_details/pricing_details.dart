@@ -22,7 +22,7 @@ class PricingDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDark = AppHelpers.isDarkMode(context);
     for (TravelerPricing element in flightOffer.travelerPricings!) {
-      log('${element.travelerType}----------');
+      log('${element.travelerType}', name: 'Pricing Details');
       switch (element.travelerType) {
         case 'ADULT':
           {

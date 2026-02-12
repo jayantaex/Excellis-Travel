@@ -83,8 +83,7 @@ class _BottomNavigationScreenState extends State<BottomNavigationScreen> {
             ),
             bottomNavigationBar: AppButtonNav(
               currentIndex: _currentIndex,
-              onTap: (int index) async {
-                await HapticFeedback.lightImpact();
+              onTap: (int index) {
                 setState(() {
                   _currentIndex = index;
                 });

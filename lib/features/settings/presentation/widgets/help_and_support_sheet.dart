@@ -74,6 +74,15 @@ class _HelpAndSupportSheetState extends State<HelpAndSupportSheet> {
   ];
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _remarkController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => Column(
         children: <Widget>[
           Column(

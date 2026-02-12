@@ -59,6 +59,15 @@ class _SalesFilterSheetState extends State<SalesFilterSheet> {
   }
 
   @override
+  void dispose() {
+    widget.bookingIdController.dispose();
+    widget.startDateController.dispose();
+    widget.endDateController.dispose();
+    _subSalesExecutiveController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => BlocConsumer<SalesBloc, SalesState>(
         listener: (context, state) {
           // Store sub sales executives when loaded

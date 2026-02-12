@@ -16,6 +16,9 @@ class SegmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDark = AppHelpers.isDarkMode(context);
     return ExpansionTile(
+      backgroundColor: AppColors.grey.withValues(alpha: 0.1),
+      splashColor: Colors.transparent,
+      iconColor: AppColors.primary,
       collapsedShape: const Border(),
       shape: const Border(),
       tilePadding: const EdgeInsets.all(0),

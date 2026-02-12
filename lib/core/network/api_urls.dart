@@ -20,9 +20,9 @@ class MainUrl {
 
   String getAirlineLogoUrl() {
     if (env == 'production') {
-      return '${AppConstants.imageKitUrl}/kp6vc3sud/ExTravel/logos/airlines-logos/';
+      return '${AppConstants.imageKitUrl}/4oyz1l9cd/ExTravel/logos/airlines-logos/';
     } else {
-      return '${AppConstants.imageKitUrl}/kp6vc3sud/ExTravel/logos/airlines-logos/';
+      return '${AppConstants.imageKitUrl}/4oyz1l9cd/ExTravel/logos/airlines-logos/';
     }
   }
 }

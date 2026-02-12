@@ -49,6 +49,12 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _markupController.dispose();
+    super.dispose();
+  }
+
   // String _airlineName = '';
   @override
   Widget build(BuildContext context) {
@@ -889,7 +895,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                                     url, fileName);
 
                             if (taskId != null) {
-                              log('taskId: $taskId');
+                              log('taskId: $taskId', name: 'Download Manager');
                               Fluttertoast.showToast(
                                   msg: 'Downloaded successfully');
                             }

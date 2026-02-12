@@ -9,9 +9,9 @@ import 'screens/city_search.dart';
 
 class CommonModule {
   static String citySearchName = 'city_search';
-  static String citySeacrRoute = '/city-search';
+  static String citySearchRoute = '/city-search';
   static String stateSearchName = 'state_search';
-  static String stateSeacrRoute = '/state-search';
+  static String stateSearchRoute = '/state-search';
   static final LocationRepository _locationRepository =
       LocationRepository(statesApi: LocationApi(apiClient: ApiClient()));
 

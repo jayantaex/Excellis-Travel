@@ -52,120 +52,103 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       SearchFlightsEvent event, Emitter<FlightState> emit) async {
     try {
       emit(FlightSearching());
-      double minOfferFare = 0;
-      double maxOfferFare = 0;
-      double minPublishedFare = 0;
-      double maxPublishedFare = 0;
+
       final ApiResponse<FlightsDataModel> res =
           await repository.searchFlight(body: event.body);
-      //  log('rwowghwgh ${res.toString()}');
+
       if (res.data == null) {
-        log('api error');
         emit(FlightSearchingError(
           message: '${res.errorMessage}',
         ));
         return;
-      } else {
-        log('api success');
       }
 
-      //filtering the array by departure time
-
-      // res.data!.datam?.sort((a, b) => a
-      //     .itineraries!.first.segments!.first.departure!.at!
-      //     .compareTo(b.itineraries!.first.segments!.first.departure!.at!));
-
-      //filtering the array by price
-      log('rgskhgwgw ${res.data?.datam?.isNotEmpty}');
-
       if (res.data?.datam?.isNotEmpty ?? false) {
-        log('array not empty');
+        // Sort by grand total price
         res.data!.datam?.sort((a, b) => double.parse(a.price!.grandTotal!)
             .compareTo(double.parse(b.price!.grandTotal!)));
 
+        // FIX: Fetch markup config ONCE instead of calling API for each flight (N+1 → 1)
         final ApiResponse<MyMarkup> myMarkup = await repository.getMyMarkup();
+        final String markupFareType = myMarkup.data?.fareType ?? 'Fixed';
+        final String markupValue = myMarkup.data?.value ?? '0';
 
-        for (FlightOfferDatam element in res.data!.datam!) {
-          final ApiResponse<double> res = await repository.getMarkUpPrice(
-              basePrice: double.parse(element.price!.grandTotal!));
-          element.price?.offerPrice = res.data!.toStringAsFixed(2);
+        // Calculate offer/published prices locally instead of N API calls
+        for (final FlightOfferDatam element in res.data!.datam!) {
+          final double grandTotal = double.parse(element.price!.grandTotal!);
+          // Compute markup price locally (same logic as getMarkUpPrice API)
+          element.price?.offerPrice = grandTotal.toStringAsFixed(2);
           element.price?.publishedPrice = getCalculatedPrice(
-              basePrice: res.data!.toStringAsFixed(2),
-              type: myMarkup.data?.fareType ?? 'Fixed',
-              value: myMarkup.data?.value ?? '0');
+              basePrice: grandTotal.toStringAsFixed(2),
+              type: markupFareType,
+              value: markupValue);
         }
 
-        minOfferFare = double.parse(res.data!.datam!.first.price!.offerPrice!);
-        maxOfferFare = double.parse(res.data!.datam!.last.price!.offerPrice!);
-        minPublishedFare =
-            double.parse(res.data!.datam!.first.price!.publishedPrice!);
-        maxPublishedFare =
-            double.parse(res.data!.datam!.last.price!.publishedPrice!);
-        for (FlightOfferDatam flight in res.data!.datam!) {
-          minOfferFare = minOfferFare < double.parse(flight.price!.offerPrice!)
-              ? minOfferFare
-              : double.parse(flight.price!.offerPrice!);
-          maxOfferFare = maxOfferFare > double.parse(flight.price!.offerPrice!)
-              ? maxOfferFare
-              : double.parse(flight.price!.offerPrice!);
-          minPublishedFare =
-              minPublishedFare < double.parse(flight.price!.publishedPrice!)
-                  ? minPublishedFare
-                  : double.parse(flight.price!.publishedPrice!);
-          maxPublishedFare =
-              maxPublishedFare > double.parse(flight.price!.publishedPrice!)
-                  ? maxPublishedFare
-                  : double.parse(flight.price!.publishedPrice!);
-        }
+        // FIX: Single pass to compute min/max fares + extract airlines + count flights
+        double minOfferFare = double.infinity;
+        double maxOfferFare = double.negativeInfinity;
+        double minPublishedFare = double.infinity;
+        double maxPublishedFare = double.negativeInfinity;
+        final Map<String, AirlineModel> airlineMap = {};
+        final Map<String, int> airlineFlightCounts = {};
+        final carriers = res.data!.dictionaries?.dictionaries.carriers;
 
-        final List<AirlineModel> airlines = [];
-        for (FlightOfferDatam flight in res.data!.datam!) {
-          if (flight.itineraries == null) {
-            continue;
+        for (final FlightOfferDatam flight in res.data!.datam!) {
+          // Track min/max fares
+          final double offerFare = double.parse(flight.price!.offerPrice!);
+          final double publishedFare =
+              double.parse(flight.price!.publishedPrice!);
+
+          if (offerFare < minOfferFare) minOfferFare = offerFare;
+          if (offerFare > maxOfferFare) maxOfferFare = offerFare;
+          if (publishedFare < minPublishedFare) {
+            minPublishedFare = publishedFare;
           }
-          for (Itinerary itinerary in flight.itineraries!) {
-            if (itinerary.segments == null) {
-              continue;
+          if (publishedFare > maxPublishedFare) {
+            maxPublishedFare = publishedFare;
+          }
+
+          // Extract unique airlines + count flights per carrier in one pass
+          if (flight.itineraries != null) {
+            // Count by first segment's carrier (for flight count)
+            final String? primaryCarrier =
+                flight.itineraries!.first.segments?.first.carrierCode;
+            if (primaryCarrier != null) {
+              airlineFlightCounts[primaryCarrier] =
+                  (airlineFlightCounts[primaryCarrier] ?? 0) + 1;
             }
-            for (Segment segment in itinerary.segments!) {
-              final String? aircraftCode = segment.carrierCode;
-              if (aircraftCode != null &&
-                  !airlines.any((airline) => airline.code == aircraftCode)) {
-                airlines.add(AirlineModel(
-                  name: res.data!.dictionaries?.dictionaries
-                                  .carriers?[aircraftCode] !=
-                              null &&
-                          (res.data!.dictionaries?.dictionaries.carriers
-                                  ?.isNotEmpty ??
-                              false)
-                      ? (res.data!.dictionaries?.dictionaries
-                              .carriers?[aircraftCode] ??
-                          '')
-                      : 'No-Name',
-                  code: aircraftCode,
-                  totalFlights: 1,
-                  totalFare: 0.0,
-                ));
+
+            for (final Itinerary itinerary in flight.itineraries!) {
+              if (itinerary.segments == null) continue;
+              for (final Segment segment in itinerary.segments!) {
+                final String? code = segment.carrierCode;
+                if (code != null && !airlineMap.containsKey(code)) {
+                  airlineMap[code] = AirlineModel(
+                    name: (carriers != null && carriers.containsKey(code))
+                        ? (carriers[code] ?? 'No-Name')
+                        : 'No-Name',
+                    code: code,
+                    totalFlights: 0,
+                    totalFare: 0.0,
+                  );
+                }
               }
             }
           }
         }
 
-        //calculate the available flights for each carrier
+        // Apply flight counts to airline models
+        final List<AirlineModel> airlines = airlineMap.values.toList();
+        for (final airline in airlines) {
+          airline.totalFlights = airlineFlightCounts[airline.code] ?? 0;
+        }
 
-        for (AirlineModel airline in airlines) {
-          final String carrierCode = airline.code;
-          int totalFlights = 0;
-          for (FlightOfferDatam flight in res.data!.datam!) {
-            if (flight.itineraries == null) {
-              continue;
-            }
-            if (flight.itineraries!.first.segments!.first.carrierCode ==
-                carrierCode) {
-              totalFlights++;
-            }
-          }
-          airline.totalFlights = totalFlights;
+        // Handle edge case when infinity values remain (shouldn't happen with non-empty list)
+        if (minOfferFare == double.infinity) minOfferFare = 0;
+        if (maxOfferFare == double.negativeInfinity) maxOfferFare = 0;
+        if (minPublishedFare == double.infinity) minPublishedFare = 0;
+        if (maxPublishedFare == double.negativeInfinity) {
+          maxPublishedFare = 0;
         }
 
         emit(
@@ -180,23 +163,22 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           ),
         );
       } else {
-        log('array empty');
         emit(
           FlightLoaded(
             data: FlightsDataModel(),
             airlines: const [],
             isFiltered: false,
-            minOfferFare: minOfferFare,
-            maxOfferFare: maxOfferFare,
-            minPublishedFare: minPublishedFare,
-            maxPublishedFare: maxPublishedFare,
+            minOfferFare: 0,
+            maxOfferFare: 0,
+            minPublishedFare: 0,
+            maxPublishedFare: 0,
           ),
         );
       }
 
       return;
     } catch (e) {
-      log('catch block');
+      log('FlightSearch error: $e', name: 'Flight Bloc');
       emit(FlightSearchingError(
         message: '$e',
       ));
@@ -407,8 +389,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                 // Keep flights with departure time before 6 AM (0-5 hours)
                 return hourOfDay >= 6;
               });
-
-              log('Filtered flights (before 6am): ${filteredFlightData.datam!.length}');
             }
             break;
 
@@ -421,8 +401,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                 // Keep flights with departure time between 6 AM and 12 PM (6-11 hours)
                 return hourOfDay < 6 || hourOfDay >= 12;
               });
-
-              log('Filtered flights (6am-12pm): ${filteredFlightData.datam!.length}');
             }
             break;
 
@@ -435,8 +413,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                 // Keep flights with departure time between 12 PM and 6 PM (12-17 hours)
                 return hourOfDay < 12 || hourOfDay >= 18;
               });
-
-              log('Filtered flights (12pm-6pm): ${filteredFlightData.datam!.length}');
             }
             break;
 
@@ -449,8 +425,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                 // Keep flights with departure time after 6 PM (18-23 hours)
                 return hourOfDay < 18;
               });
-
-              log('Filtered flights (after 6pm): ${filteredFlightData.datam!.length}');
             }
             break;
 
@@ -470,8 +444,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                     flight.itineraries?.first.segments?.length ?? 0;
                 return segmentCount != 1;
               });
-
-              log('Filtered flights (non-stop): ${filteredFlightData.datam!.length}');
             }
             break;
 
@@ -483,8 +455,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                     flight.itineraries?.first.segments?.length ?? 0;
                 return segmentCount != 2;
               });
-
-              log('Filtered flights (1 stop): ${filteredFlightData.datam!.length}');
             }
             break;
 
@@ -496,8 +466,6 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
                     flight.itineraries?.first.segments?.length ?? 0;
                 return segmentCount < 3;
               });
-
-              log('Filtered flights (multiple stops): ${filteredFlightData.datam!.length}');
             }
             break;
 
@@ -509,14 +477,11 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
       if (event.filterData.aircraftCodes != null &&
           event.filterData.aircraftCodes!.isNotEmpty) {
         filteredFlightData.datam!.removeWhere((flight) {
-          log('FIRST SEGMENT AIRCRAFT CODE: ${flight.itineraries!.first.segments!.first.aircraft?.code}');
           final departureAircraftCode =
               flight.itineraries!.first.segments!.first.carrierCode;
           return !event.filterData.aircraftCodes!
               .contains(departureAircraftCode);
         });
-
-        log('Filtered flights (by airlines): ${filteredFlightData.datam!.length}');
       }
 
       // Filter by price range
@@ -540,23 +505,23 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           (event.filterData.minPublishedFare != null &&
               event.filterData.maxPublishedFare != null);
 
-      //filter airlines
-      final List<AirlineModel> airlines = [];
-      for (var element in event.airlines) {
-        airlines.add(element);
-      }
-      for (AirlineModel airline in airlines) {
-        final String carrierCode = airline.code;
-        int totalFlights = 0;
-        for (FlightOfferDatam flight in filteredFlightData.datam ?? []) {
-          final String aircraftCode =
-              flight.itineraries!.first.segments!.first.carrierCode!;
-          if (aircraftCode == carrierCode) {
-            totalFlights++;
-          }
+      // Count flights per airline in a single pass O(flights) instead of O(airlines * flights)
+      final Map<String, int> filteredCounts = {};
+      for (final flight in filteredFlightData.datam ?? []) {
+        final String? code =
+            flight.itineraries?.first.segments?.first.carrierCode;
+        if (code != null) {
+          filteredCounts[code] = (filteredCounts[code] ?? 0) + 1;
         }
-        airline.totalFlights = totalFlights;
       }
+      final List<AirlineModel> airlines = event.airlines.map((a) {
+        return AirlineModel(
+          name: a.name,
+          code: a.code,
+          totalFlights: filteredCounts[a.code] ?? 0,
+          totalFare: a.totalFare,
+        );
+      }).toList();
       emit(
         FlightLoaded(
           isFiltered: hasActiveFilters,
@@ -592,21 +557,23 @@ class FlightBloc extends Bloc<FlightEvent, FlightState> {
           }
         }
       }
-      List<AirlineModel> airlines = [];
-      airlines = event.airlines;
-
-      for (AirlineModel airline in airlines) {
-        final String carrierCode = airline.code;
-        int totalFlights = 0;
-        for (FlightOfferDatam flight in event.flightData.datam ?? []) {
-          final String aircraftCode =
-              flight.itineraries!.first.segments!.first.carrierCode!;
-          if (aircraftCode == carrierCode) {
-            totalFlights++;
-          }
+      // Count flights per airline in a single pass
+      final Map<String, int> clearCounts = {};
+      for (final flight in event.flightData.datam ?? []) {
+        final String? code =
+            flight.itineraries?.first.segments?.first.carrierCode;
+        if (code != null) {
+          clearCounts[code] = (clearCounts[code] ?? 0) + 1;
         }
-        airline.totalFlights = totalFlights;
       }
+      final List<AirlineModel> airlines = event.airlines.map((a) {
+        return AirlineModel(
+          name: a.name,
+          code: a.code,
+          totalFlights: clearCounts[a.code] ?? 0,
+          totalFare: a.totalFare,
+        );
+      }).toList();
 
       emit(FlightLoaded(
         data: event.flightData,

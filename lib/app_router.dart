@@ -6,7 +6,7 @@ import 'features/auth/auth_module.dart';
 import 'features/bottom_navigation/bottom_nav_module.dart';
 import 'features/flight_booking/flight_booking_module.dart';
 import 'features/legal/legal_module.dart';
-import 'features/notifiaction/notification_module.dart';
+import 'features/notification/notification_module.dart';
 import 'features/payment/payment_module.dart';
 import 'features/profile_management/profile_management_module.dart';
 import 'features/sales/sales_module.dart';
@@ -20,7 +20,7 @@ class AppRouter {
     initialLocation: SplashModule.splashRoute,
     routes: <RouteBase>[
       GoRoute(
-        path: CommonModule.citySeacrRoute,
+        path: CommonModule.citySearchRoute,
         name: CommonModule.citySearchName,
         builder: (BuildContext context, GoRouterState state) =>
             CommonModule.citySearchBuilder(context, state),
@@ -28,7 +28,7 @@ class AppRouter {
       //Splash
       GoRoute(
         path: SplashModule.splashRoute,
-        name: SplashModule.spashName,
+        name: SplashModule.splashName,
         builder: (BuildContext context, GoRouterState state) =>
             SplashModule.builder(),
       ),
@@ -177,10 +177,10 @@ class AppRouter {
           builder: (BuildContext context, GoRouterState state) =>
               WalletModule.creditWalletBuilder()),
       GoRoute(
-          path: WalletModule.withdrawlRequestPath,
-          name: WalletModule.withdrawlRequest,
+          path: WalletModule.withdrawalRequestPath,
+          name: WalletModule.withdrawalRequest,
           builder: (BuildContext context, GoRouterState state) =>
-              WalletModule.withdrawlRequestBuilder()),
+              WalletModule.withdrawalRequestBuilder()),
       GoRoute(
           path: WalletModule.rePaymentDashboardPath,
           name: WalletModule.rePaymentDashboard,

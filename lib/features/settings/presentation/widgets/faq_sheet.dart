@@ -102,18 +102,25 @@ class FaqSheet extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                   itemCount: faqs.length,
-                  itemBuilder: (BuildContext context, int index) => ListTile(
-                        contentPadding: const EdgeInsets.all(0),
+                  itemBuilder: (BuildContext context, int index) =>
+                      ExpansionTile(
+                        iconColor: AppColors.primary,
+                        collapsedShape: const Border(),
+                        shape: const Border(),
+                        tilePadding: const EdgeInsets.all(0),
+                        childrenPadding: EdgeInsets.only(left: 12, bottom: 12),
                         title: Text(faqs[index]['question']!,
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w600)),
-                        subtitle: Text(
-                          faqs[index]['answer']!,
-                          style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.grey),
-                        ),
+                        children: <Widget>[
+                          Text(
+                            faqs[index]['answer']!,
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.grey),
+                          ),
+                        ],
                       )),
             )
           ],

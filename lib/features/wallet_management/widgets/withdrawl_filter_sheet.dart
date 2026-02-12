@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/app_styles.dart';
 import '../../../utils/title_case.dart';
 
-class WithdrawlFilterSheet extends StatelessWidget {
-  const WithdrawlFilterSheet(
+class WithdrawalFilterSheet extends StatelessWidget {
+  const WithdrawalFilterSheet(
       {super.key,
       required this.statuses,
       required this.selectedStatus,

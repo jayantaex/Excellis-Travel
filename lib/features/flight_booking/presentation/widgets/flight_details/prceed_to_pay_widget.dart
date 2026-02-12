@@ -91,7 +91,6 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                         ),
                         minVerticalPadding: 0,
                         onTap: () async {
-                          await HapticFeedback.mediumImpact();
                           showAppSheet(
                               context: context,
                               title: 'Payment Mode',
@@ -314,7 +313,8 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                                   );
                             }
                           } catch (e) {
-                            log('ERROR: ${e.toString()}');
+                            log('ERROR: ${e.toString()}',
+                                name: 'Proceed to Pay Widget');
                           }
                         },
                         style: const TextStyle(
@@ -407,7 +407,7 @@ Map<String, dynamic> calculateFareDetails(
     required List<Fee>? taxes,
     required bool showTotalFare}) {
   double tax = 0.0;
-  if (taxes != null || taxes!.isNotEmpty) {
+  if (taxes != null && taxes.isNotEmpty) {
     for (Fee element in taxes) {
       tax = tax + double.parse(element.amount ?? '0.0');
     }

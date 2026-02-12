@@ -63,7 +63,7 @@ Future<void> showAddAndEditPassengerSheet(
       ),
     );
   } catch (e) {
-    log('Error fetching saved passengers: $e');
+    log('Error fetching saved passengers: $e', name: 'Add Passenger Sheet');
     savedPassengerItems.add(const DropdownMenuItem<String>(
       value: '',
       child: Text('None - Add New Passenger'),
@@ -226,7 +226,8 @@ Future<void> showAddAndEditPassengerSheet(
                                       shownIndexes.add(i);
                                     }
                                   }
-                                  log('shownIndexes: $shownIndexes');
+                                  log('shownIndexes: $shownIndexes',
+                                      name: 'Add Passenger Sheet');
                                   return shownIndexes;
                                 },
                                 items: travelers

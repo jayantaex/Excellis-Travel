@@ -53,6 +53,12 @@ class _AirportSearchScreenState extends State<AirportSearchScreen> {
   }
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => Scaffold(
         body: AppGradientBg(
           child: TransWhiteBgWidget(
