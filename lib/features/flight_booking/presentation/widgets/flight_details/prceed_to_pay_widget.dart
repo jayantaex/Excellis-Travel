@@ -91,7 +91,6 @@ class _ProceedToPayWidgetState extends State<ProceedToPayWidget> {
                         ),
                         minVerticalPadding: 0,
                         onTap: () async {
-                          await HapticFeedback.mediumImpact();
                           showAppSheet(
                               context: context,
                               title: 'Payment Mode',

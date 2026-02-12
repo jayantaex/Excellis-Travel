@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_styles.dart';
 import '../../../../core/network/api_urls.dart';
+import '../../../../core/services/app_review.dart';
 import '../../../../core/services/barcode_service.dart';
 import '../../../../core/services/download_manager.dart';
 import '../../../../utils/airline_image_provider.dart' show getAirlineLogo;
@@ -32,6 +33,7 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
   String barCodeSvg = '';
   String airlineName = '';
   AirlineInfoProvider airlineInfoProvider = AirlineInfoProvider();
+  AppReviewService appReviewService = AppReviewService.instance;
   @override
   void initState() {
     super.initState();
@@ -592,27 +594,22 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                 bgColor: AppColors.primary,
                 onPressed: () async {
                   try {
-                    Fluttertoast.showToast(msg: 'Downloading...');
-                    final String bookingRefId =
-                        '${widget.data.bookingReference}';
-                    final String url =
-                        '${EndPoints.baseUrl}${EndPoints.downloadFile}/$bookingRefId/download?format=pdf';
-                    final String fileName =
-                        '${widget.data.bookingReference}_${DateTime.now().millisecondsSinceEpoch}.pdf';
-                    final String? taskId =
-                        await DownloadManager.downloadFile(url, fileName);
-                    // final bool res = await FileDownloaderService.saveFile(
-                    //   baseFare:
-                    //       '${(widget.data.fareDetails?.totalFare ?? 0.00) - (widget.data.fareDetails?.markup ?? 0.00)}',
-                    //   totalFare: '${widget.data.fareDetails?.totalFare}',
-                    //   markupPrice: '${widget.data.fareDetails?.markup ?? 0.00}',
-                    //   bokkingRefId: '${widget.data.bookingReference}',
-                    //   showDownloadProgress: (count, total) {},
-                    // );
+                    AppHelpers.debounce(() async {
+                      Fluttertoast.showToast(msg: 'Downloading...');
+                      final String bookingRefId =
+                          '${widget.data.bookingReference}';
+                      final String url =
+                          '${EndPoints.baseUrl}${EndPoints.downloadFile}/$bookingRefId/download?format=pdf';
+                      final String fileName =
+                          '${widget.data.bookingReference}_${DateTime.now().millisecondsSinceEpoch}.pdf';
+                      final String? taskId =
+                          await DownloadManager.downloadFile(url, fileName);
 
-                    if (taskId != null) {
-                      Fluttertoast.showToast(msg: 'Downloaded successfully');
-                    }
+                      if (taskId != null) {
+                        Fluttertoast.showToast(msg: 'Downloaded successfully');
+                      }
+                      await appReviewService.requestReview();
+                    });
                   } catch (e) {
                     Fluttertoast.showToast(msg: '$e');
                   }
@@ -621,8 +618,11 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
 
               const SizedBox(height: 8),
               TextButton(
-                  onPressed: () {
-                    context.goNamed(BottomNavModule.name);
+                  onPressed: () async {
+                    AppHelpers.debounce(() async {
+                      await appReviewService.requestReview();
+                      context.goNamed(BottomNavModule.name);
+                    });
                   },
                   child: const Text(
                     'Book another flight',
