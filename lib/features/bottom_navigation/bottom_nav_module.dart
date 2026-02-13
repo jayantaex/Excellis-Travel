@@ -29,17 +29,15 @@ class BottomNavModule {
   static final SalesApi _salesApi = SalesApi(_apiClient);
   static final SalesRepository _salesRepository = SalesRepository(_salesApi);
 
-  static Widget builder() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ProfileBloc>(
-          create: (_) => ProfileBloc(profileRepository: _profileRepo),
-        ),
-        BlocProvider<TicketBloc>(
-            create: (_) => TicketBloc(repository: ticketRepository)),
-        BlocProvider<SalesBloc>(create: (_) => SalesBloc(_salesRepository)),
-      ],
-      child: const BottomNavigationScreen(),
-    );
-  }
+  static Widget builder() => MultiBlocProvider(
+        providers: [
+          BlocProvider<ProfileBloc>(
+            create: (_) => ProfileBloc(profileRepository: _profileRepo),
+          ),
+          BlocProvider<TicketBloc>(
+              create: (_) => TicketBloc(repository: ticketRepository)),
+          BlocProvider<SalesBloc>(create: (_) => SalesBloc(_salesRepository)),
+        ],
+        child: const BottomNavigationScreen(),
+      );
 }

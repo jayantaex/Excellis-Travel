@@ -198,13 +198,15 @@ class _SettingScreenState extends State<SettingScreen> {
                           ListTile(
                             onTap: () async {
                               await HapticFeedback.mediumImpact();
-                              await showAppSheet(
-                                  onSubmitPressed: () {},
-                                  submitButtonRequired: true,
-                                  submitButtonTitle: 'Delete',
-                                  context: context,
-                                  title: 'Delete Account',
-                                  child: const DeleteAccountSheet());
+                              context.mounted
+                                  ? await showAppSheet(
+                                      onSubmitPressed: () {},
+                                      submitButtonRequired: true,
+                                      submitButtonTitle: 'Delete',
+                                      context: context,
+                                      title: 'Delete Account',
+                                      child: const DeleteAccountSheet())
+                                  : null;
                             },
                             contentPadding: const EdgeInsets.all(0),
                             title: const Text('Delete Account',

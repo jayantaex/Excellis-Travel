@@ -168,9 +168,9 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                                 ),
                                 Divider(
                                   color: AppHelpers.isDarkMode(context)
-                                      ? AppColors.white.withOpacity(0.1)
+                                      ? AppColors.white.withValues(alpha: 0.1)
                                       : AppColors.textSecondary
-                                          .withOpacity(0.1),
+                                          .withValues(alpha: 0.1),
                                   thickness: 1,
                                   height: 32,
                                 ),
