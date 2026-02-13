@@ -288,10 +288,14 @@ class PassengerTypeCard extends StatelessWidget {
             fontWeight: FontWeight.w400,
           )),
       trailing: allowedPassenger > currentPassenger
-          ? const CircleAvatar(
-              radius: 16,
-              child: Icon(Icons.add, size: 18, color: AppColors.secondary),
-            )
+          ? Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child:
+                  const Icon(Icons.add, size: 18, color: AppColors.secondary))
           : const SizedBox(),
     );
   }
