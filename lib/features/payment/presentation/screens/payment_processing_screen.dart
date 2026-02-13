@@ -31,6 +31,9 @@ class PaymentProcessingScreen extends StatefulWidget {
 
 class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
   final RazorpayService _razorpayService = RazorpayService();
+  void _createOrder({required Map<String, dynamic> body}) {
+    context.read<WalletBloc>().add(CreateRechargeOrderEvent(body: body));
+  }
 
   @override
   void initState() {
@@ -39,7 +42,7 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
         final Map<String, dynamic> body = {
           'amount': widget.amount,
         };
-        context.read<WalletBloc>().add(CreateRechargeOrderEvent(body: body));
+        _createOrder(body: body);
       }
     });
     super.initState();
@@ -61,6 +64,10 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
     // log('${response.message}');
     context.pushReplacementNamed(PaymentModule.paymentFailedName,
         queryParameters: {'message': response.message});
+  }
+
+  void _handleRecharge({required Map<String, dynamic> body}) {
+    context.read<WalletBloc>().add(RechargeWalletEvent(body: body));
   }
 
   @override
@@ -103,7 +110,7 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
                     }
                   }
                 };
-                context.read<WalletBloc>().add(RechargeWalletEvent(body: body));
+                _handleRecharge(body: body);
               }
 
               if (state is RechargeWalletSuccess) {

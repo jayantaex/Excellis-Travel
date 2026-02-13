@@ -97,7 +97,6 @@ class _SplashScreenState extends State<SplashScreen> {
         await _appUpdateService.immidiateUpdate();
         return;
       }
-      print('No update available');
     } catch (e) {
       // showToast(message: 'Failed to check for update');
     }

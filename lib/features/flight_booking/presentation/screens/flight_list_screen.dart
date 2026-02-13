@@ -247,25 +247,29 @@ class _FlightListScreenState extends State<FlightListScreen> {
                                           flightDictionary:
                                               state.data.dictionaries!,
                                         );
-                                        context.pushNamed(
-                                          FlightBookingModule.flightDetailsName,
-                                          extra: {
-                                            'data': state.isFiltered
-                                                ? state
-                                                    .filteredData!.datam![index]
-                                                : state.data.datam![index],
-                                            'flightDictionary':
-                                                state.data.dictionaries,
-                                            'arivalCity':
-                                                paramData['arrivalCity'],
-                                            'arivalAirport':
-                                                paramData['arrivalAirport'],
-                                            'departureCity':
-                                                paramData['departureCity'],
-                                            'departureAirport':
-                                                paramData['departureAirport'],
-                                          },
-                                        );
+                                        context.mounted
+                                            ? context.pushNamed(
+                                                FlightBookingModule
+                                                    .flightDetailsName,
+                                                extra: {
+                                                  'data': state.isFiltered
+                                                      ? state.filteredData!
+                                                          .datam![index]
+                                                      : state
+                                                          .data.datam![index],
+                                                  'flightDictionary':
+                                                      state.data.dictionaries,
+                                                  'arivalCity':
+                                                      paramData['arrivalCity'],
+                                                  'arivalAirport': paramData[
+                                                      'arrivalAirport'],
+                                                  'departureCity': paramData[
+                                                      'departureCity'],
+                                                  'departureAirport': paramData[
+                                                      'departureAirport'],
+                                                },
+                                              )
+                                            : null;
                                       },
                                       data: state.isFiltered
                                           ? state.filteredData!.datam![index]

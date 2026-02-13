@@ -259,21 +259,23 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               if (isLogedIn) {
                                 if (context.mounted) {
                                   await HapticFeedback.mediumImpact();
-                                  await showAppSheet(
-                                    context: context,
-                                    title: 'Logout',
-                                    child: const LogOutSheet(),
-                                    submitButtonRequired: true,
-                                    submitButtonTitle: 'Logout',
-                                    onSubmitPressed: () async {
-                                      await StorageService.clearTokens();
-                                      await _localDB.clearAllLocalDB();
-                                      context.mounted
-                                          ? context
-                                              .goNamed(AuthModule.loginName)
-                                          : null;
-                                    },
-                                  );
+                                  context.mounted
+                                      ? await showAppSheet(
+                                          context: context,
+                                          title: 'Logout',
+                                          child: const LogOutSheet(),
+                                          submitButtonRequired: true,
+                                          submitButtonTitle: 'Logout',
+                                          onSubmitPressed: () async {
+                                            await StorageService.clearTokens();
+                                            await _localDB.clearAllLocalDB();
+                                            context.mounted
+                                                ? context.goNamed(
+                                                    AuthModule.loginName)
+                                                : null;
+                                          },
+                                        )
+                                      : null;
                                 }
                                 return;
                               }
