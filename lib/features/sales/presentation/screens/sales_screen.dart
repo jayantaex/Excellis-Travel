@@ -55,9 +55,9 @@ class _SalesScreenState extends State<SalesScreen> {
   void dispose() {
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
-    _bookingIdController.dispose();
     _startDateController.dispose();
     _endDateController.dispose();
+    _bookingIdController.dispose();
     super.dispose();
   }
 

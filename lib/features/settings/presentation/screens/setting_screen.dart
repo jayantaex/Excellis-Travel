@@ -56,8 +56,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             ? AppColors.secondaryDark
                             : AppColors.white,
                         borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(24),
-                          topRight: Radius.circular(24),
+                          topLeft: Radius.circular(32),
+                          topRight: Radius.circular(32),
                         ),
                       ),
                       child: Column(
@@ -241,7 +241,7 @@ class _SettingScreenState extends State<SettingScreen> {
           height: 55,
           child: Column(
             children: <Widget>[
-              Text('V$appVersion',
+              Text('V $appVersion',
                   style: const TextStyle(fontSize: 16, color: AppColors.grey)),
             ],
           ),
