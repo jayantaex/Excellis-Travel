@@ -108,7 +108,8 @@ class FaqSheet extends StatelessWidget {
                         collapsedShape: const Border(),
                         shape: const Border(),
                         tilePadding: const EdgeInsets.all(0),
-                        childrenPadding: EdgeInsets.only(left: 12, bottom: 12),
+                        childrenPadding:
+                            const EdgeInsets.only(left: 12, bottom: 12),
                         title: Text(faqs[index]['question']!,
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w600)),

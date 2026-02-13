@@ -621,7 +621,9 @@ class _PassDownloadScreenState extends State<PassDownloadScreen> {
                   onPressed: () async {
                     AppHelpers.debounce(() async {
                       await appReviewService.requestReview();
-                      context.goNamed(BottomNavModule.name);
+                      context.mounted
+                          ? context.goNamed(BottomNavModule.name)
+                          : null;
                     });
                   },
                   child: const Text(

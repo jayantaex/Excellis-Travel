@@ -27,47 +27,33 @@ class AgencyRegistrationSheet extends StatefulWidget {
 class _AgencyRegistrationSheetState extends State<AgencyRegistrationSheet> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _companyNameController = TextEditingController();
-
   final TextEditingController _firstNameController = TextEditingController();
-
   final TextEditingController _lastNameController = TextEditingController();
-
   final TextEditingController _panNoController = TextEditingController();
-
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _phoneController = TextEditingController();
-
   final TextEditingController _officeAddressController =
       TextEditingController();
-
   final TextEditingController _pinController = TextEditingController();
-
   final TextEditingController _nearbyAirportController =
       TextEditingController();
-
   final TextEditingController _gstNoController = TextEditingController();
-
   final TextEditingController _aadhaarNoController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
-
   final TextEditingController _conPasswordController = TextEditingController();
-
   String usertype = 'retailer';
-
   String selectedCity = 'Vijayawada';
   String selectedState = 'Andhra Pradesh';
   String selectedStatCode = '';
+  final String errMsg = '';
   int selectedStateId = 0;
-
   final List<DropdownMenuItem<String>> _states = <DropdownMenuItem<String>>[];
   final List<DropdownMenuItem<String>> _cities = <DropdownMenuItem<String>>[];
+
   void _getAllStates() {
     context.read<StatesBloc>().add(GetStatesEvent());
   }
 
-  final String errMsg = '';
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
