@@ -247,7 +247,6 @@ Future<void> showAddAndEditPassengerSheet(
                                         value.firstName ?? '';
                                     lastNameController.text =
                                         value.lastName ?? '';
-
                                     selectedGender = value.gender ?? '';
                                     dob =
                                         DateTime.parse(value.dateOfBirth ?? '');

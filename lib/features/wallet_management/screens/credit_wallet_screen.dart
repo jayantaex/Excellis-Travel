@@ -74,9 +74,13 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                                 context
                                     .pushNamed(WalletModule.rePaymentDashboard);
                               },
-                              child: const Icon(
-                                Icons.replay_rounded,
-                                color: AppColors.white,
+                              child: CircleAvatar(
+                                backgroundColor:
+                                    AppColors.white.withValues(alpha: 0.2),
+                                child: const Icon(
+                                  Icons.replay_rounded,
+                                  color: AppColors.white,
+                                ),
                               ),
                             ),
                           )),
@@ -162,19 +166,39 @@ class _CreditWalletScreenState extends State<CreditWalletScreen> {
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.textSecondary),
                                 ),
+                                Divider(
+                                  color: AppHelpers.isDarkMode(context)
+                                      ? AppColors.white.withOpacity(0.1)
+                                      : AppColors.textSecondary
+                                          .withOpacity(0.1),
+                                  thickness: 1,
+                                  height: 32,
+                                ),
                                 const SizedBox(height: 12),
 
                                 if (state
                                     is FetchCreditBalanceTransactionsSuccess)
                                   Expanded(
-                                    child: ListView.builder(
-                                      itemCount: state.data?.data?.length ?? 0,
-                                      itemBuilder: (context, index) =>
-                                          CreditWalletTransactionCard(
-                                        data: state.data?.data?[index] ??
-                                            CreditTransactionData(),
-                                      ),
-                                    ),
+                                    child: state.data?.data?.isNotEmpty ?? false
+                                        ? ListView.builder(
+                                            itemCount:
+                                                state.data?.data?.length ?? 0,
+                                            itemBuilder: (context, index) =>
+                                                CreditWalletTransactionCard(
+                                              data: state.data?.data?[index] ??
+                                                  CreditTransactionData(),
+                                            ),
+                                          )
+                                        : const Center(
+                                            child: Text(
+                                              'No transactions found.',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.grey,
+                                              ),
+                                            ),
+                                          ),
                                   ),
                                 const SizedBox(height: 25),
                               ],

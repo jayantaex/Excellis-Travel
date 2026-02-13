@@ -182,7 +182,12 @@ class _RePaymentDashboardScreenState extends State<RePaymentDashboardScreen>
   Widget _buildOverdueRepaymentsTab(List<OverDueDataModel> data) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: data.isEmpty
-            ? const Center(child: Text('No overdue repayments'))
+            ? const Center(
+                child: Text('No Overdue Repayments',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey)))
             : Center(
                 child: ListView.builder(
                   itemCount: data.length,
@@ -277,7 +282,12 @@ class _RePaymentDashboardScreenState extends State<RePaymentDashboardScreen>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: data.isEmpty
-            ? const Center(child: Text('No pending repayments'))
+            ? const Center(
+                child: Text('No Pending Repayments',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey)))
             : ListView.builder(
                 itemCount: data.length,
                 itemBuilder: (context, index) => ListTile(

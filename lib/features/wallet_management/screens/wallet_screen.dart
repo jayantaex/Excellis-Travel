@@ -402,8 +402,8 @@ class _WalletScreenState extends State<WalletScreen>
                                             'No transactions found',
                                             style: TextStyle(
                                               fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.textSecondary,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.grey,
                                             ),
                                           ),
                                           const SizedBox(height: 8),
