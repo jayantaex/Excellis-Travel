@@ -17,7 +17,7 @@ class FlightsDataModel {
 
   FlightsDataModel({this.meta, this.datam, this.dictionaries});
   final Meta? meta;
-  final List<FlightOfferDatam>? datam;
+  List<FlightOfferDatam>? datam;
   final FlightDictionary? dictionaries;
 
   Map<String, dynamic> toJson() => {
